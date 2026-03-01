@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/graphics">
+        <file>throbber.png</file>
+        <file>arcvideo-splash.png</file>
+    </qresource>
+</RCC>

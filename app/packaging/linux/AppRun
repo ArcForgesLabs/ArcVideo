@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+APPDIR=$(readlink -f $(dirname "$0"))
+
+# Custom AppRun that ensures the AppImage doesn't dismount before arcvideo-crashhandler exits
+
+# Run main program
+"$APPDIR/usr/bin/arcvideo-editor" "$@"
+
+# Wait arbitrary amount of time
+sleep 5
+
+# While arcvideo-crashhandler exists, keep sleeping
+while [[ $(ps -aux | grep arcvideo-crashhandler | grep -v grep) ]]
+do
+	sleep 5
+done
