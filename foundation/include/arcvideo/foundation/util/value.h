@@ -70,6 +70,7 @@ public:
 
   Value(const char *s)
   {
+    if (!s) { type_ = NONE; return; }
     size_t sz = strlen(s);
     data_.resize(sz);
     memcpy(data_.data(), s, sz);
