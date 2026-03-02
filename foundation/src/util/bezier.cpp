@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 namespace arcvideo::foundation {
 
@@ -104,7 +105,7 @@ double Bezier::CalculateTFromX(bool cubic, double x, double a, double b, double 
     }
   }
 
-  return NAN;
+  return std::numeric_limits<double>::quiet_NaN();
 }
 
 }

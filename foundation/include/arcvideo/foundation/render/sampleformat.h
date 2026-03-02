@@ -152,7 +152,8 @@ public:
         if (i > INVALID && i < COUNT) {
           return static_cast<Format>(i);
         }
-      } catch (const std::invalid_argument &e) {}
+      } catch (const std::invalid_argument &) {
+      } catch (const std::out_of_range &) {}
 
       // Failed to deserialize from string
       return INVALID;
