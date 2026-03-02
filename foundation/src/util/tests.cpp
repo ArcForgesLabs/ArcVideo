@@ -32,7 +32,7 @@ bool Tester::run()
   size_t count = test_functions_.size();
 
   while (!test_functions_.empty()) {
-    echo("[%lu/%lu] %s :: ", index, count, test_names_.front());
+    echo("[%zu/%zu] %s :: ", index, count, test_names_.front());
 
     if (test_functions_.front()()) {
       echo("PASSED\n");

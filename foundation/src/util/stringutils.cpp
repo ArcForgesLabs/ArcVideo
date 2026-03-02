@@ -20,6 +20,7 @@
 
 #include "arcvideo/foundation/util/stringutils.h"
 
+#include <cstdio>
 #include <cstring>
 #include <stdarg.h>
 #include <stdexcept>

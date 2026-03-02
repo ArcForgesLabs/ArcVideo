@@ -55,8 +55,8 @@ std::string Timecode::time_to_timecode(const rational &time, const rational &tim
       int64_t total_seconds = std::floor(time_dbl);
 
       int64_t hours = total_seconds / 3600;
-      int64_t mins = total_seconds / 60 - hours * 60;
-      int64_t secs = total_seconds - mins * 60;
+      int64_t mins = (total_seconds % 3600) / 60;
+      int64_t secs = total_seconds % 60;
       int64_t fraction = std::llround((time_dbl - static_cast<double>(total_seconds)) * 1000);
 
       return StringUtils::format("%s%s:%s:%s.%s", prefix,
@@ -187,6 +187,11 @@ rational Timecode::timecode_to_time(std::string timecode, const rational &timeba
     }
 
     bool negative = (timecode.at(0) == '-');
+
+    // Strip sign from first element to avoid double-negative when applying sign later
+    if (negative && !timecode_split.at(0).empty() && timecode_split.at(0).at(0) == '-') {
+      timecode_split.at(0) = timecode_split.at(0).substr(1);
+    }
 
     double frame_rate = timebase.flipped().toDouble();
     int rounded_frame_rate = std::lround(frame_rate);

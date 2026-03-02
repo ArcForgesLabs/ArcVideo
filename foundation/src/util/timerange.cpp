@@ -156,6 +156,10 @@ std::list<TimeRange> TimeRange::Split(const int &chunk_size) const
 {
   std::list<TimeRange> split_ranges;
 
+  if (chunk_size <= 0) {
+    return split_ranges;
+  }
+
   int start_time = std::floor(this->in().toDouble() / static_cast<double>(chunk_size)) * chunk_size;
   int end_time = std::ceil(this->out().toDouble() / static_cast<double>(chunk_size)) * chunk_size;
 
@@ -306,7 +310,8 @@ TimeRangeListFrameIterator::TimeRangeListFrameIterator(const TimeRangeList &list
   custom_range_(false)
 {
   if (!list_.isEmpty() && timebase_.isNull()) {
-    std::cerr << "TimeRangeListFrameIterator created with null timebase but non-empty list, this will likely lead to infinite loops" << std::endl;
+    std::cerr << "TimeRangeListFrameIterator created with null timebase but non-empty list, marking as exhausted" << std::endl;
+    list_ = TimeRangeList();
   }
 
   UpdateIndexIfNecessary();

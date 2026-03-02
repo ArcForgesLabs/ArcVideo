@@ -154,11 +154,11 @@ void Color::toHsl(DataType *hue, DataType *sat, DataType *lightness) const
   {
     *hue = 60 * (green() - blue()) / (fCMax - fCMin);
   }
-  if (fCMax == green())
+  else if (fCMax == green())
   {
     *hue = 60 * (blue() - red()) / (fCMax - fCMin) + 120;
   }
-  if (fCMax == blue())
+  else if (fCMax == blue())
   {
     *hue = 60 * (red() - green()) / (fCMax - fCMin) + 240;
   }

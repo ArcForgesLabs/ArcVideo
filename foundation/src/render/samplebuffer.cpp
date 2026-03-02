@@ -126,6 +126,11 @@ void SampleBuffer::speed(double speed)
     return;
   }
 
+  if (speed == 0.0 || !std::isfinite(speed)) {
+    Log::Warning() << "Tried to speed a sample buffer with invalid speed value";
+    return;
+  }
+
   sample_count_per_channel_ = std::llround(static_cast<double>(sample_count_per_channel_) / speed);
 
   std::vector< std::vector<float> > output_data;

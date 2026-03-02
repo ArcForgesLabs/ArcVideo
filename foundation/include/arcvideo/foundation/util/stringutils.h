@@ -22,6 +22,7 @@
 #define ARCVIDEO_FOUNDATION_STRINGUTILS_H
 
 #include <algorithm>
+#include <cctype>
 #include <regex>
 #include <vector>
 #include <string>

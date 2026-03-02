@@ -64,7 +64,7 @@ public:
   Value(double v)
   {
     data_.resize(sizeof(double));
-    memcpy(data_.data(), &v, sizeof(int64_t));
+    memcpy(data_.data(), &v, sizeof(double));
     type_ = FLOAT;
   }
 
