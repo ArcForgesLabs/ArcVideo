@@ -22,9 +22,9 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <utility>
 
+#include "arcvideo/foundation/util/log.h"
 #include "arcvideo/foundation/util/timecodefunctions.h"
 
 namespace arcvideo::foundation {
@@ -311,7 +311,7 @@ TimeRangeListFrameIterator::TimeRangeListFrameIterator(const TimeRangeList &list
   custom_range_(false)
 {
   if (!list_.isEmpty() && timebase_.isNull()) {
-    std::cerr << "TimeRangeListFrameIterator created with null timebase but non-empty list, marking as exhausted" << std::endl;
+    Log::Warning() << "TimeRangeListFrameIterator created with null timebase but non-empty list, marking as exhausted";
     list_ = TimeRangeList();
   }
 

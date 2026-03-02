@@ -68,9 +68,9 @@ Color Color::fromHsv(const DataType &h, const DataType &s, const DataType &v)
   return Color(Rs + m, Gs + m, Bs + m);
 }
 
-Color::Color(const char *data, const PixelFormat &format, int ch_layout)
+Color::Color(const char *data, const PixelFormat &format, int nb_channels)
 {
-  *this = fromData(data, format, ch_layout);
+  *this = fromData(data, format, nb_channels);
 }
 
 void Color::toHsv(DataType *hue, DataType *sat, DataType *val) const

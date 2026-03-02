@@ -49,7 +49,7 @@ public:
     data_[3] = a;
   }
 
-  Color(const char *data, const PixelFormat &format, int ch_layout);
+  Color(const char *data, const PixelFormat &format, int nb_channels);
 
   /**
    * @brief Creates a Color struct from hue/saturation/value

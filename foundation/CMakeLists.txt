@@ -40,12 +40,12 @@ if(MSVC)
     /experimental:external
     /external:anglebrackets
     /external:W0
-    "$<$<CONFIG:RELEASE>:/O2>"
+    "$<$<CONFIG:Release>:/O2>"
     "$<$<COMPILE_LANGUAGE:CXX>:/MP>"
   )
 else()
   set(FOUNDATION_COMPILE_OPTIONS
-    "$<$<CONFIG:RELEASE>:-O2>"
+    "$<$<CONFIG:Release>:-O2>"
     -Wuninitialized
     -pedantic-errors
     -Wall

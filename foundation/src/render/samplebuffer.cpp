@@ -215,6 +215,16 @@ void SampleBuffer::silence_bytes(size_t start_byte, size_t end_byte)
     return;
   }
 
+  if (end_byte <= start_byte) {
+    return;
+  }
+
+  size_t buf_size = sample_count_per_channel_ * sizeof(float);
+  if (start_byte >= buf_size) {
+    return;
+  }
+  end_byte = std::min(end_byte, buf_size);
+
   for (int i=0;i<audio_params().channel_count();i++) {
     memset(reinterpret_cast<char*>(data_[i].data()) + start_byte, 0, end_byte - start_byte);
   }
@@ -224,6 +234,16 @@ void SampleBuffer::set(int channel, const float *data, size_t sample_offset, siz
 {
   if (!is_allocated()) {
     Log::Warning() << "Tried to fill an unallocated sample buffer";
+    return;
+  }
+
+  if (channel < 0 || channel >= audio_params_.channel_count()) {
+    Log::Warning() << "Tried to set data on out-of-range channel";
+    return;
+  }
+
+  if (sample_offset + sample_length > static_cast<size_t>(sample_count_per_channel_)) {
+    Log::Warning() << "Tried to set data beyond sample buffer bounds";
     return;
   }
 
