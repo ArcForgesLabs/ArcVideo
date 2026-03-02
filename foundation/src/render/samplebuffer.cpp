@@ -153,6 +153,10 @@ void SampleBuffer::speed(double speed)
 
 void SampleBuffer::transform_volume(float f)
 {
+  if (!is_allocated()) {
+    return;
+  }
+
   for (int i=0;i<audio_params().channel_count();i++) {
     transform_volume_for_channel(i, f);
   }
@@ -160,6 +164,10 @@ void SampleBuffer::transform_volume(float f)
 
 void SampleBuffer::transform_volume_for_channel(int channel, float volume)
 {
+  if (!is_allocated() || channel < 0 || channel >= audio_params_.channel_count()) {
+    return;
+  }
+
   float *cdat = data_[channel].data();
   size_t unopt_start = 0;
 
@@ -181,6 +189,10 @@ void SampleBuffer::transform_volume_for_channel(int channel, float volume)
 
 void SampleBuffer::transform_volume_for_sample(size_t sample_index, float volume)
 {
+  if (!is_allocated()) {
+    return;
+  }
+
   for (int i=0;i<audio_params().channel_count();i++) {
     transform_volume_for_sample_on_channel(sample_index, i, volume);
   }
@@ -188,6 +200,11 @@ void SampleBuffer::transform_volume_for_sample(size_t sample_index, float volume
 
 void SampleBuffer::transform_volume_for_sample_on_channel(size_t sample_index, int channel, float volume)
 {
+  if (!is_allocated() || channel < 0 || channel >= audio_params_.channel_count()
+      || sample_index >= static_cast<size_t>(sample_count_per_channel_)) {
+    return;
+  }
+
   data_[channel][sample_index] *= volume;
 }
 
