@@ -180,7 +180,7 @@ double StrToDoubleEmptyTolerant(const std::string &s, bool *ok)
 rational Timecode::timecode_to_time(std::string timecode, const rational &timebase, const Timecode::Display &display, bool *ok)
 {
   StringUtils::trim(timecode);
-  if (timecode.empty()) {
+  if (timecode.empty() || timebase.isNull() || timebase.isNaN()) {
     goto err_fatal;
   }
 
@@ -189,7 +189,8 @@ rational Timecode::timecode_to_time(std::string timecode, const rational &timeba
   case kTimecodeDropFrame:
   case kTimecodeSeconds:
   {
-    std::vector<std::string> timecode_split = StringUtils::split_regex(timecode, std::regex("(:)|(;)"));
+    static const std::regex timecode_delim("(:)|(;)");
+    std::vector<std::string> timecode_split = StringUtils::split_regex(timecode, timecode_delim);
 
     const int element_count = display == kTimecodeSeconds ? 3 : 4;
 
