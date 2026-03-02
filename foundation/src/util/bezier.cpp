@@ -85,7 +85,8 @@ double Bezier::CalculateTFromX(bool cubic, double x, double a, double b, double 
   double bottom = 0.0;
   double top = 1.0;
 
-  while (true) {
+  constexpr int kMaxIterations = 100;
+  for (int i = 0; i < kMaxIterations; ++i) {
     if (bottom == top) {
       return bottom;
     }
@@ -93,7 +94,7 @@ double Bezier::CalculateTFromX(bool cubic, double x, double a, double b, double 
     double mid = (bottom + top) * 0.5;
     double test = cubic ? CubicTtoY(a, b, c, d, mid) : QuadraticTtoY(a, b, c, mid);
 
-    if (std::abs(test - x) < 0.000001) {
+    if (std::abs(test - x) < 0.000001 || mid == bottom || mid == top) {
       return mid;
     } else if (x > test) {
       bottom = mid;

@@ -65,7 +65,10 @@ int StringUtils::to_int(const std::string &s, int base, bool *ok)
     int x = std::stoi(s, nullptr, base);
     if (ok) { *ok = true; }
     return x;
-  } catch (const std::invalid_argument &e) {
+  } catch (const std::invalid_argument &) {
+    if (ok) { *ok = false; }
+    return 0;
+  } catch (const std::out_of_range &) {
     if (ok) { *ok = false; }
     return 0;
   }
