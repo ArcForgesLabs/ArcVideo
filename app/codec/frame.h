@@ -22,7 +22,7 @@
 #define FRAME_H
 
 #include <memory>
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QVector>
 
 #include "common/define.h"

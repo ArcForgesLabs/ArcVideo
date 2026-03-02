@@ -21,7 +21,7 @@
 #ifndef BEZIERWIDGET_H
 #define BEZIERWIDGET_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QCheckBox>
 #include <QWidget>
 
@@ -29,7 +29,7 @@
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class BezierWidget : public QWidget
 {

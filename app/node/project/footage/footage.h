@@ -21,7 +21,7 @@
 #ifndef FOOTAGE_H
 #define FOOTAGE_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QList>
 #include <QDateTime>
 

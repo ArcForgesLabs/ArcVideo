@@ -45,7 +45,7 @@ public:
 
   virtual bool Open() override;
 
-  virtual bool WriteFrame(arcvideo::FramePtr frame, arcvideo::core::rational time) override;
+  virtual bool WriteFrame(arcvideo::FramePtr frame, arcvideo::foundation::rational time) override;
 
   virtual bool WriteAudio(const arcvideo::SampleBuffer &audio) override;
 

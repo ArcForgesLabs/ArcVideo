@@ -21,7 +21,7 @@
 #ifndef TIMELINEMARKER_H
 #define TIMELINEMARKER_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QPainter>
 #include <QString>
 #include <QXmlStreamReader>
@@ -29,7 +29,7 @@
 
 #include "undo/undocommand.h"
 
-using namespace arcvideo::core;
+using namespace arcvideo::foundation;
 
 namespace arcvideo {
 

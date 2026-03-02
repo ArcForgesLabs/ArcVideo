@@ -21,7 +21,7 @@
 #ifndef TYPESERIALIZER_H
 #define TYPESERIALIZER_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
@@ -29,7 +29,7 @@
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class TypeSerializer
 {

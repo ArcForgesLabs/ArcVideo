@@ -22,7 +22,7 @@
 #define AUDIOPROCESSOR_H
 
 #include <inttypes.h>
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QByteArray>
 
 extern "C" {
@@ -33,7 +33,7 @@ extern "C" {
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class AudioProcessor
 {

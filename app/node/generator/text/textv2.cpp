@@ -20,7 +20,7 @@
 
 #include "textv2.h"
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QAbstractTextDocumentLayout>
 #include <QDateTime>
 #include <QTextDocument>

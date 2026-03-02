@@ -21,11 +21,11 @@
 #ifndef TIMELINECOMMON_H
 #define TIMELINECOMMON_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 
 #include "common/define.h"
 
-using namespace arcvideo::core;
+using namespace arcvideo::foundation;
 
 namespace arcvideo {
 

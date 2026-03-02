@@ -20,14 +20,14 @@
 
 #include "elapsedcounterwidget.h"
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QDateTime>
 #include <QHBoxLayout>
 #include <cmath>
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 ElapsedCounterWidget::ElapsedCounterWidget(QWidget* parent) :
   QWidget(parent),

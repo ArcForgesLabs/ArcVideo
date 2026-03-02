@@ -21,13 +21,13 @@
 #ifndef RENDERJOBTRACKER_H
 #define RENDERJOBTRACKER_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 
 #include "common/jobtime.h"
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class RenderJobTracker
 {

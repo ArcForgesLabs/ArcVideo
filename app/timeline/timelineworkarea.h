@@ -21,14 +21,14 @@
 #ifndef TIMELINEWORKAREA_H
 #define TIMELINEWORKAREA_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QObject>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class TimelineWorkArea : public QObject
 {

@@ -21,13 +21,13 @@
 #ifndef VIEWERSIZER_H
 #define VIEWERSIZER_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QScrollBar>
 #include <QWidget>
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 /**
  * @brief A container widget that enforces the aspect ratio of a child widget

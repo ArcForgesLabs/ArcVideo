@@ -24,6 +24,7 @@ file(GLOB_RECURSE ARCVIDEO_SOURCES CONFIGURE_DEPENDS
 list(FILTER ARCVIDEO_SOURCES EXCLUDE REGEX ".*/main\\.cpp$")
 list(FILTER ARCVIDEO_SOURCES EXCLUDE REGEX ".*/version\\.(cpp|h)$")
 list(FILTER ARCVIDEO_SOURCES EXCLUDE REGEX ".*/crashhandler/.*")
+list(FILTER ARCVIDEO_SOURCES EXCLUDE REGEX ".*/core/.*")
 
 # Resource generation subdirectories (these generate .qrc files)
 add_subdirectory(shaders)

@@ -21,12 +21,12 @@
 #ifndef COLORCODING_H
 #define COLORCODING_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QObject>
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class ColorCoding : public QObject
 {

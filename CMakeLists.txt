@@ -99,8 +99,6 @@ find_package(OpenEXR CONFIG REQUIRED)
 find_package(Imath CONFIG REQUIRED)
 list(APPEND ARCVIDEO_LIBRARIES OpenEXR::OpenEXR Imath::Imath)
 
-# --- ArcVideo core (built into main target, headers in app/core/) ---
-
 # --- Qt6 ---
 set(QT_VERSION_MAJOR 6)
 set(QT_LIBRARIES Core Gui Widgets OpenGL LinguistTools Concurrent)
@@ -132,6 +130,10 @@ if(NOT TARGET FFMPEG::FFMPEG)
   target_link_libraries(FFMPEG::FFMPEG INTERFACE ${FFMPEG_LIBRARIES})
 endif()
 list(APPEND ARCVIDEO_LIBRARIES FFMPEG::FFMPEG)
+
+# --- ArcVideoFoundation (pure C++ core library, no Qt) ---
+add_subdirectory(foundation)
+list(APPEND ARCVIDEO_LIBRARIES arcvideo-foundation)
 
 # --- PortAudio (vcpkg CONFIG) ---
 find_package(portaudio CONFIG REQUIRED)
@@ -193,6 +195,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 list(APPEND ARCVIDEO_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/third_party)
 
 add_subdirectory(third_party)
+
+# Propagate OTIO support to foundation (after third_party defines OTIO::opentime)
+if(ARCVIDEO_HAVE_OTIO)
+  target_compile_definitions(arcvideo-foundation PUBLIC USE_OTIO)
+  target_link_libraries(arcvideo-foundation PUBLIC OTIO::opentime)
+endif()
+
 add_subdirectory(app)
 
 if (BUILD_TESTS)

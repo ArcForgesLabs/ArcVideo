@@ -21,13 +21,13 @@
 #ifndef MENUSHARED_H
 #define MENUSHARED_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include "widget/colorlabelmenu/colorlabelmenu.h"
 #include "widget/menu/menu.h"
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 /**
  * @brief A static object that provides various "stock" menus for use throughout the application

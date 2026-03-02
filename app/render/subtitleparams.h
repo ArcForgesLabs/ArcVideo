@@ -21,13 +21,13 @@
 #ifndef SUBTITLEPARAMS_H
 #define SUBTITLEPARAMS_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QRect>
 #include <QString>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
-using namespace arcvideo::core;
+using namespace arcvideo::foundation;
 
 namespace arcvideo {
 

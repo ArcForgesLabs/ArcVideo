@@ -341,9 +341,9 @@ public:
   bool toBool() const { return value<bool>(); }
   double toDouble() const { return value<double>(); }
   int64_t toInt() const { return value<int64_t>(); }
-  rational toRational() const { return value<arcvideo::core::rational>(); }
+  rational toRational() const { return value<arcvideo::foundation::rational>(); }
   QString toString() const { return value<QString>(); }
-  Color toColor() const { return value<arcvideo::core::Color>(); }
+  Color toColor() const { return value<arcvideo::foundation::Color>(); }
   QMatrix4x4 toMatrix() const { return value<QMatrix4x4>(); }
   VideoParams toVideoParams() const { return value<VideoParams>(); }
   AudioParams toAudioParams() const { return value<AudioParams>(); }

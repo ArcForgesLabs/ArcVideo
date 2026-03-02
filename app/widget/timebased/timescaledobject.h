@@ -21,7 +21,7 @@
 #ifndef TIMELINESCALEDOBJECT_H
 #define TIMELINESCALEDOBJECT_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QWidget>
 
 #include "node/block/block.h"

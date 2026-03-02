@@ -21,7 +21,7 @@
 #ifndef QTVERSIONABSTRACTION_H
 #define QTVERSIONABSTRACTION_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QComboBox>
 #include <QDateTime>
 #include <QFileInfo>
@@ -74,7 +74,7 @@ public:
     return nullptr;
   }
 
-  static QColor toQColor(const core::Color &c);
+  static QColor toQColor(const foundation::Color &c);
 
   /**
    * @brief Convert a pointer to a value that can be sent between NodeParams
@@ -95,20 +95,20 @@ public:
 
 };
 
-namespace core {
+namespace foundation {
 
-uint qHash(const core::rational& r, uint seed = 0);
-uint qHash(const core::TimeRange& r, uint seed = 0);
-
-}
+uint qHash(const foundation::rational& r, uint seed = 0);
+uint qHash(const foundation::TimeRange& r, uint seed = 0);
 
 }
 
-Q_DECLARE_METATYPE(arcvideo::core::rational)
-Q_DECLARE_METATYPE(arcvideo::core::Color)
-Q_DECLARE_METATYPE(arcvideo::core::TimeRange)
-Q_DECLARE_METATYPE(arcvideo::core::Bezier)
-Q_DECLARE_METATYPE(arcvideo::core::AudioParams)
-Q_DECLARE_METATYPE(arcvideo::core::SampleBuffer)
+}
+
+Q_DECLARE_METATYPE(arcvideo::foundation::rational)
+Q_DECLARE_METATYPE(arcvideo::foundation::Color)
+Q_DECLARE_METATYPE(arcvideo::foundation::TimeRange)
+Q_DECLARE_METATYPE(arcvideo::foundation::Bezier)
+Q_DECLARE_METATYPE(arcvideo::foundation::AudioParams)
+Q_DECLARE_METATYPE(arcvideo::foundation::SampleBuffer)
 
 #endif // QTVERSIONABSTRACTION_H
