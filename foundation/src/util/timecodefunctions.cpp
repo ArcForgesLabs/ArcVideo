@@ -62,6 +62,14 @@ std::string Timecode::time_to_timecode(const rational &time, const rational &tim
       int64_t secs = total_seconds % 60;
       int64_t fraction = std::llround((time_dbl - static_cast<double>(total_seconds)) * 1000);
 
+      if (fraction >= 1000) {
+        fraction -= 1000;
+        total_seconds++;
+        hours = total_seconds / 3600;
+        mins = (total_seconds % 3600) / 60;
+        secs = total_seconds % 60;
+      }
+
       return StringUtils::format("%s%s:%s:%s.%s", prefix,
                                                   StringUtils::to_string_leftpad(hours, 2).c_str(),
                                                   StringUtils::to_string_leftpad(mins, 2).c_str(),
