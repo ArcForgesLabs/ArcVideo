@@ -229,7 +229,7 @@ public:
 public slots:
   virtual bool Open() = 0;
 
-  virtual bool WriteFrame(arcvideo::FramePtr frame, arcvideo::core::rational time) = 0;
+  virtual bool WriteFrame(arcvideo::FramePtr frame, arcvideo::foundation::rational time) = 0;
   virtual bool WriteAudio(const arcvideo::SampleBuffer &audio) = 0;
   virtual bool WriteSubtitle(const SubtitleBlock *sub_block) = 0;
 

@@ -21,13 +21,13 @@
 #ifndef SUMSAMPLES_H
 #define SUMSAMPLES_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QPainter>
 #include <QVector>
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 /**
  * @brief A buffer of data used to store a visual representation of audio

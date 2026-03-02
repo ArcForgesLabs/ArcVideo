@@ -21,7 +21,7 @@
 #ifndef PLAYBACKCACHE_H
 #define PLAYBACKCACHE_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QDir>
 #include <QMutex>
 #include <QObject>
@@ -30,7 +30,7 @@
 
 #include "common/jobtime.h"
 
-using namespace arcvideo::core;
+using namespace arcvideo::foundation;
 
 namespace arcvideo {
 

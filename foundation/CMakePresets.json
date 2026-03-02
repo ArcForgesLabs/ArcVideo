@@ -1,0 +1,44 @@
+{
+  "version": 9,
+  "cmakeMinimumRequired": {
+    "major": 4,
+    "minor": 2,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "FILEPATH",
+          "value": "$penv{GLOBAL_VCPKG_PATH}/scripts/buildsystems/vcpkg.cmake"
+        },
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      },
+      "warnings": {
+        "dev": false
+      }
+    },
+    {
+      "name": "windows-vs",
+      "displayName": "Windows x64 (Visual Studio 2026)",
+      "description": "Multi-config VS 2026 build for ArcVideoFoundation",
+      "inherits": ["base"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Visual Studio 18 2026",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "binaryDir": "${sourceDir}/build/vs",
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows"
+      }
+    }
+  ]
+}

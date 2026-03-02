@@ -108,7 +108,7 @@ Core *Core::instance()
 
 void Core::DeclareTypesForQt()
 {
-  qRegisterMetaType<arcvideo::core::rational>();
+  qRegisterMetaType<arcvideo::foundation::rational>();
   qRegisterMetaType<NodeValue>();
   qRegisterMetaType<NodeValueTable>();
   qRegisterMetaType<NodeValueDatabase>();
@@ -117,8 +117,8 @@ void Core::DeclareTypesForQt()
   qRegisterMetaType<AudioParams>();
   qRegisterMetaType<NodeKeyframe::Type>();
   qRegisterMetaType<Decoder::RetrieveState>();
-  qRegisterMetaType<arcvideo::core::TimeRange>();
-  qRegisterMetaType<arcvideo::core::Color>();
+  qRegisterMetaType<arcvideo::foundation::TimeRange>();
+  qRegisterMetaType<arcvideo::foundation::Color>();
   qRegisterMetaType<arcvideo::AudioVisualWaveform>();
   qRegisterMetaType<arcvideo::VideoParams>();
   qRegisterMetaType<arcvideo::VideoParams::Interlacing>();

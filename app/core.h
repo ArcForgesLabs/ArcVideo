@@ -21,7 +21,7 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QFileInfoList>
 #include <QList>
 #include <QTimer>

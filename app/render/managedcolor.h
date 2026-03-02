@@ -21,7 +21,7 @@
 #ifndef MANAGEDCOLOR_H
 #define MANAGEDCOLOR_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 
 #include "colortransform.h"
 

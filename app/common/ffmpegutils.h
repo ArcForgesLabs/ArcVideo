@@ -27,13 +27,13 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 
 #include "render/videoparams.h"
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class FFmpegUtils {
 public:

@@ -1081,7 +1081,7 @@ protected:
   }
 
 protected slots:
-  virtual void GizmoDragStart(const arcvideo::NodeValueRow &row, double x, double y, const arcvideo::core::rational &time){}
+  virtual void GizmoDragStart(const arcvideo::NodeValueRow &row, double x, double y, const arcvideo::foundation::rational &time){}
 
   virtual void GizmoDragMove(double x, double y, const Qt::KeyboardModifiers &modifiers){}
 
@@ -1202,8 +1202,8 @@ private:
 
   QVector<Node*> GetDependenciesInternal(bool traverse, bool exclusive_only) const;
 
-  void ParameterValueChanged(const QString &input, int element, const arcvideo::core::TimeRange &range);
-  void ParameterValueChanged(const NodeInput& input, const arcvideo::core::TimeRange &range)
+  void ParameterValueChanged(const QString &input, int element, const arcvideo::foundation::TimeRange &range);
+  void ParameterValueChanged(const NodeInput& input, const arcvideo::foundation::TimeRange &range)
   {
     ParameterValueChanged(input.input(), input.element(), range);
   }

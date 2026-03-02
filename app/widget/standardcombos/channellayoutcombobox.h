@@ -21,14 +21,14 @@
 #ifndef CHANNELLAYOUTCOMBOBOX_H
 #define CHANNELLAYOUTCOMBOBOX_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QComboBox>
 
 #include "ui/humanstrings.h"
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class ChannelLayoutComboBox : public QComboBox
 {

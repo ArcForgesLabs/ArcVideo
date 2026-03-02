@@ -21,13 +21,13 @@
 #ifndef PLANARFILEDEVICE_H
 #define PLANARFILEDEVICE_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QFile>
 #include <QObject>
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class PlanarFileDevice : public QObject
 {

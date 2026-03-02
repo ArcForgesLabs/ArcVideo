@@ -21,14 +21,14 @@
 #ifndef VIDEOPARAMS_H
 #define VIDEOPARAMS_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QVector2D>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class VideoParams {
 public:

@@ -21,14 +21,14 @@
 #ifndef SAMPLEFORMATCOMBOBOX_H
 #define SAMPLEFORMATCOMBOBOX_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QComboBox>
 
 #include "ui/humanstrings.h"
 
 namespace arcvideo {
 
-using namespace core;
+using namespace foundation;
 
 class SampleFormatComboBox : public QComboBox
 {

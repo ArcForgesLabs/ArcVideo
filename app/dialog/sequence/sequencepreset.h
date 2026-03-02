@@ -21,7 +21,7 @@
 #ifndef SEQUENCEPARAM_H
 #define SEQUENCEPARAM_H
 
-#include "core/core.h"
+#include <arcvideo/foundation/foundation.h>
 #include <QXmlStreamWriter>
 
 #include "common/xmlutils.h"
