@@ -21,6 +21,7 @@
 #include "arcvideo/foundation/util/bezier.h"
 
 #include <algorithm>
+#include <cmath>
 
 namespace arcvideo::foundation {
 
