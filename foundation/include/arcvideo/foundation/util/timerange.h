@@ -265,7 +265,7 @@ public:
   {
     list_.insert(range);
     size_ = -1;
-    range_index_ = 0;
+    range_index_ = -1;
     frame_index_ = 0;
     UpdateIndexIfNecessary();
   }
@@ -274,7 +274,7 @@ public:
   {
     list_.insert(list);
     size_ = -1;
-    range_index_ = 0;
+    range_index_ = -1;
     frame_index_ = 0;
     UpdateIndexIfNecessary();
   }
