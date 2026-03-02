@@ -131,7 +131,8 @@ void SampleBuffer::speed(double speed)
     return;
   }
 
-  sample_count_per_channel_ = std::llround(static_cast<double>(sample_count_per_channel_) / speed);
+  sample_count_per_channel_ = std::max(static_cast<long long>(1),
+    std::llround(static_cast<double>(sample_count_per_channel_) / speed));
 
   std::vector< std::vector<float> > output_data;
 

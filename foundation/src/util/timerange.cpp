@@ -242,8 +242,8 @@ bool TimeRangeList::contains(const TimeRange &range, bool in_inclusive, bool out
 
 void TimeRangeList::shift(const rational &diff)
 {
-  for (int i=0; i<array_.size(); i++) {
-    array_[i] += diff;
+  for (auto &range : array_) {
+    range += diff;
   }
 }
 
