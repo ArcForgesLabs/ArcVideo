@@ -27,6 +27,7 @@ extern "C" {
 
 #include <climits>
 #include <iostream>
+#include <string>
 
 #ifdef USE_OTIO
 #include <opentime/rationalTime.h>

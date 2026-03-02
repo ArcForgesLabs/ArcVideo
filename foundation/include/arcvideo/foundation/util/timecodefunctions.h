@@ -21,6 +21,9 @@
 #ifndef ARCVIDEO_FOUNDATION_TIMECODEFUNCTIONS_H
 #define ARCVIDEO_FOUNDATION_TIMECODEFUNCTIONS_H
 
+#include <cstdint>
+#include <string>
+
 #include "rational.h"
 
 namespace arcvideo::foundation {

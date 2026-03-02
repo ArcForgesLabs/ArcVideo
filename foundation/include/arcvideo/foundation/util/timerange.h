@@ -21,6 +21,7 @@
 #ifndef ARCVIDEO_FOUNDATION_TIMERANGE_H
 #define ARCVIDEO_FOUNDATION_TIMERANGE_H
 
+#include <initializer_list>
 #include <list>
 #include <vector>
 
