@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <utility>
 
 #include "arcvideo/foundation/util/timecodefunctions.h"

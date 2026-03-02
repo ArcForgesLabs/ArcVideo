@@ -20,6 +20,7 @@
 
 #include "arcvideo/foundation/util/rational.h"
 
+#include <limits>
 #include <math.h>
 
 #include "arcvideo/foundation/util/stringutils.h"

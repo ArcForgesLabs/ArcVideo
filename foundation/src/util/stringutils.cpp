@@ -81,6 +81,12 @@ std::string StringUtils::format(const char *fmt, ...)
 
   int s = std::vsnprintf(nullptr, 0, fmt, ap1);
 
+  if (s < 0) {
+    va_end(ap2);
+    va_end(ap1);
+    return std::string();
+  }
+
   // Create string with size, adding 1 because vsnprintf will want to write a null terminator
   std::string r;
   s++;

@@ -20,6 +20,9 @@
 
 #include "arcvideo/foundation/util/timecodefunctions.h"
 
+#include <cmath>
+#include <stdexcept>
+
 extern "C" {
 #include <libavutil/mathematics.h>
 }
@@ -136,7 +139,10 @@ int64_t StrToInt64EmptyTolerant(const std::string &s, bool *ok)
       int64_t ll = std::stoll(s);
       if (ok) *ok = true;
       return ll;
-    } catch (const std::invalid_argument &e) {
+    } catch (const std::invalid_argument &) {
+      if (ok) *ok = false;
+      return 0;
+    } catch (const std::out_of_range &) {
       if (ok) *ok = false;
       return 0;
     }
@@ -153,7 +159,10 @@ double StrToDoubleEmptyTolerant(const std::string &s, bool *ok)
       double d = std::stod(s);
       if (ok) *ok = true;
       return d;
-    } catch (const std::invalid_argument &e) {
+    } catch (const std::invalid_argument &) {
+      if (ok) *ok = false;
+      return 0;
+    } catch (const std::out_of_range &) {
       if (ok) *ok = false;
       return 0;
     }
@@ -255,7 +264,9 @@ rational Timecode::timecode_to_time(std::string timecode, const rational &timeba
 
       // Convert seconds to rational
       return rational::fromDouble(timecode_secs, ok);
-    } catch (const std::invalid_argument &e) {
+    } catch (const std::invalid_argument &) {
+      goto err_fatal;
+    } catch (const std::out_of_range &) {
       goto err_fatal;
     }
   }
@@ -265,7 +276,9 @@ rational Timecode::timecode_to_time(std::string timecode, const rational &timeba
       int64_t ts = std::stoll(timecode);
       if (ok) *ok = true;
       return timestamp_to_time(ts, timebase);
-    } catch (const std::invalid_argument &e) {
+    } catch (const std::invalid_argument &) {
+      goto err_fatal;
+    } catch (const std::out_of_range &) {
       goto err_fatal;
     }
   }

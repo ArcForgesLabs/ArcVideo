@@ -25,6 +25,7 @@ extern "C" {
 #include <libavutil/rational.h>
 }
 
+#include <climits>
 #include <iostream>
 
 #ifdef USE_OTIO

@@ -1,5 +1,5 @@
-#ifndef LOG_H
-#define LOG_H
+#ifndef ARCVIDEO_FOUNDATION_LOG_H
+#define ARCVIDEO_FOUNDATION_LOG_H
 
 #include <iostream>
 
@@ -49,4 +49,4 @@ public:
 
 }
 
-#endif // LOG_H
+#endif // ARCVIDEO_FOUNDATION_LOG_H

@@ -126,7 +126,7 @@ void SampleBuffer::speed(double speed)
     return;
   }
 
-  if (speed == 0.0 || !std::isfinite(speed)) {
+  if (speed <= 0.0 || !std::isfinite(speed)) {
     Log::Warning() << "Tried to speed a sample buffer with invalid speed value";
     return;
   }
