@@ -4,3 +4,7 @@
 [submodule "third_party/OpenTimelineIO"]
 	path = third_party/OpenTimelineIO
 	url = https://github.com/AcademySoftwareFoundation/OpenTimelineIO.git
+[submodule "foundation"]
+	path = foundation
+	url = https://github.com/ArcForgesLabs/ArcVideoFoundation.git
+	branch = main

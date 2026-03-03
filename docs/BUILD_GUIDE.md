@@ -105,6 +105,7 @@ git submodule update --init --recursive
 
 | Submodule | Source |
 |-----------|--------|
+| ArcVideoFoundation | [ArcForgesLabs/ArcVideoFoundation](https://github.com/ArcForgesLabs/ArcVideoFoundation) (branch: main) |
 | KDDockWidgets | [KDAB/KDDockWidgets](https://github.com/KDAB/KDDockWidgets) |
 | OpenTimelineIO | [AcademySoftwareFoundation/OpenTimelineIO](https://github.com/AcademySoftwareFoundation/OpenTimelineIO) |
 
