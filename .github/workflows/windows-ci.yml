@@ -1,0 +1,167 @@
+name: Windows CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  build:
+    name: Windows x64 (FASTBuild)
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 120
+
+    env:
+      GLOBAL_VCPKG_PATH: C:\vcpkg
+      VCPKG_DEFAULT_TRIPLET: x64-windows
+
+    steps:
+      # ── Checkout ──────────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # ── Toolchain ─────────────────────────────────────────────
+      - name: Install CMake (Scoop)
+        uses: MinoruSekine/setup-scoop@v4
+        with:
+          apps: cmake
+
+      - name: Install FASTBuild
+        run: |
+          $url = 'https://www.fastbuild.org/downloads/v1.19/FASTBuild-Windows-x64-v1.19.zip'
+          $zip = Join-Path $env:RUNNER_TEMP 'fastbuild.zip'
+          $dest = Join-Path $env:RUNNER_TEMP 'fastbuild'
+          Invoke-WebRequest -Uri $url -OutFile $zip
+          Expand-Archive -Path $zip -DestinationPath $dest -Force
+          $dest >> $env:GITHUB_PATH
+          Write-Host "FASTBuild installed to $dest"
+
+      # ── MSVC environment (vcvarsall.bat) ──────────────────────
+      - name: Setup MSVC developer environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '18.0'
+
+      - name: Remove MinGW from PATH
+        run: |
+          $clean = ($env:PATH -split ';' | Where-Object { $_ -notmatch 'mingw' }) -join ';'
+          "PATH=$clean" >> $env:GITHUB_ENV
+
+      - name: Verify tool versions
+        run: |
+          Write-Host "CMake: $(cmake --version | Select-Object -First 1)"
+          Write-Host "CL:    $(cl 2>&1 | Select-Object -First 1)"
+          FBuild.exe -version
+
+      - name: Detect Windows SDK (rc.exe for FASTBuild)
+        run: |
+          $rc = Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\bin' -Recurse -Filter rc.exe |
+                Where-Object { $_.FullName -match '\\x64\\' } |
+                Sort-Object FullName |
+                Select-Object -Last 1
+          if (-not $rc) { throw 'rc.exe not found in Windows SDK' }
+          Write-Host "Found rc.exe → $($rc.DirectoryName)"
+          "WindowsKitRC=$($rc.DirectoryName)" >> $env:GITHUB_ENV
+          $rc.DirectoryName >> $env:GITHUB_PATH
+
+      # ── Qt6 ───────────────────────────────────────────────────
+      - name: Install Qt6
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.*'
+          arch: win64_msvc2022_64
+          cache: true
+
+      # ── vcpkg ─────────────────────────────────────────────────
+      - name: Setup vcpkg binary caching (GitHub Actions)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Restore vcpkg installed packages
+        id: vcpkg-cache
+        uses: actions/cache@v4
+        with:
+          path: C:\vcpkg\installed
+          key: vcpkg-x64-windows-${{ hashFiles('.github/workflows/windows-ci.yml', 'vcpkg.json') }}-v1
+          restore-keys: vcpkg-x64-windows-
+
+      - name: Install vcpkg packages
+        if: steps.vcpkg-cache.outputs.cache-hit != 'true'
+        env:
+          VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
+        run: |
+          & C:\vcpkg\vcpkg install --triplet x64-windows `
+            opencolorio openimageio openexr imath `
+            "ffmpeg[avcodec,avdevice,avfilter,avformat,swresample,swscale]" `
+            portaudio crashpad zlib libpng
+
+      # ── FASTBuild cache ──────────────────────────────────────
+      # The windows-ci preset sets FASTBUILD_CACHE_PATH to $LOCALAPPDATA/FASTBuild/Cache
+      - name: Resolve FASTBuild cache path
+        id: fbcache
+        run: |
+          $fbCache = Join-Path $env:LOCALAPPDATA 'FASTBuild' 'Cache'
+          New-Item $fbCache -ItemType Directory -Force | Out-Null
+          "path=$fbCache" >> $env:GITHUB_OUTPUT
+          Write-Host "FASTBuild cache: $fbCache"
+
+      - name: Restore FASTBuild compilation cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.fbcache.outputs.path }}
+          key: fbcache-${{ github.sha }}
+          restore-keys: fbcache-
+
+      - name: Enforce FASTBuild cache limit (4 GB)
+        run: |
+          $dir = '${{ steps.fbcache.outputs.path }}'
+          if (Test-Path $dir) {
+            $bytes = (Get-ChildItem $dir -Recurse -File -ErrorAction SilentlyContinue |
+                      Measure-Object Length -Sum).Sum
+            $sizeMB = [math]::Round($bytes / 1MB)
+            Write-Host "FASTBuild cache size: $sizeMB MB"
+            if ($bytes -gt 4GB) {
+              Write-Host '::warning::FASTBuild cache exceeds 4 GB — purging'
+              Remove-Item "$dir\*" -Recurse -Force
+            }
+          }
+
+      # ── Build ─────────────────────────────────────────────────
+      - name: Configure (CMake)
+        env:
+          CC: cl
+          CXX: cl
+        run: cmake --preset windows-ci
+
+      - name: Build (FASTBuild)
+        run: cmake --build --preset ci
+
+      # ── Artifacts ─────────────────────────────────────────────
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: arcvideo-editor-win-x64
+          path: |
+            build/ci/bin/arcvideo-editor.exe
+            build/ci/bin/arcvideo-crashhandler.exe
+          if-no-files-found: warn
+          retention-days: 14

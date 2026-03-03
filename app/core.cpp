@@ -971,7 +971,7 @@ void Core::SaveAutorecovery()
         // Write human-readable real name so it's not just a UUID
         {
           QFile realname_file(project_autorecovery_dir.filePath(QStringLiteral("realname.txt")));
-          realname_file.open(QFile::WriteOnly);
+          (void)realname_file.open(QFile::WriteOnly);
           realname_file.write(open_project_->pretty_filename().toUtf8());
           realname_file.close();
         }
