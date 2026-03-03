@@ -250,7 +250,7 @@ void CrashHandlerDialog::SendErrorReport()
   dump_part.setHeader(QNetworkRequest::ContentDispositionHeader, QStringLiteral("form-data; name=\"dump\"; filename=\"%1\"")
                       .arg(QFileInfo(report_filename_).fileName()));
   QFile* dump_file = new QFile(report_filename_);
-  dump_file->open(QFile::ReadOnly);
+  (void)dump_file->open(QFile::ReadOnly);
   dump_part.setBodyDevice(dump_file);
   dump_file->setParent(multipart); // Delete file with multipart
   multipart->append(dump_part);
