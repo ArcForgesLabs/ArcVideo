@@ -1,0 +1,121 @@
+name: "CodeQL Advanced"
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '19 17 * * 3'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 180
+
+    env:
+      GLOBAL_VCPKG_PATH: C:\vcpkg
+      VCPKG_DEFAULT_TRIPLET: x64-windows
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: c-cpp
+            build-mode: manual
+
+    steps:
+      # ── Checkout ──────────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      # ── Toolchain ─────────────────────────────────────────────
+      - name: Install CMake (Scoop)
+        uses: MinoruSekine/setup-scoop@v4
+        with:
+          apps: cmake
+
+      - name: Setup MSVC developer environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '18.0'
+
+      - name: Remove MinGW from PATH
+        run: |
+          $clean = ($env:PATH -split ';' | Where-Object { $_ -notmatch 'mingw' }) -join ';'
+          "PATH=$clean" >> $env:GITHUB_ENV
+
+      # ── Qt6 ───────────────────────────────────────────────────
+      - name: Install Qt6
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.*'
+          arch: win64_msvc2022_64
+          cache: true
+
+      # ── vcpkg ─────────────────────────────────────────────────
+      - name: Setup vcpkg binary caching (GitHub Actions)
+        uses: actions/github-script@v8
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Restore vcpkg installed packages
+        id: vcpkg-cache
+        uses: actions/cache@v5
+        with:
+          path: C:\vcpkg\installed
+          key: vcpkg-x64-windows-${{ hashFiles('vcpkg.json') }}-v1
+          restore-keys: vcpkg-x64-windows-
+
+      - name: Install vcpkg packages
+        if: steps.vcpkg-cache.outputs.cache-hit != 'true'
+        env:
+          VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
+        run: |
+          & C:\vcpkg\vcpkg install --triplet x64-windows `
+            opencolorio openimageio openexr imath `
+            "ffmpeg[avcodec,avdevice,avfilter,avformat,swresample,swscale]" `
+            portaudio crashpad zlib libpng
+
+      # ── CodeQL ────────────────────────────────────────────────
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          config: |
+            paths:
+              - app
+              - tools
+
+      - name: Configure (CMake — Visual Studio generator)
+        env:
+          CC: cl
+          CXX: cl
+        run: cmake --preset windows-vs
+
+      - name: Build (MSBuild — parallel)
+        run: cmake --build build/vs --config Release --parallel
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"
