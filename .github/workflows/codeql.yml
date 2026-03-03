@@ -110,8 +110,8 @@ jobs:
           CXX: cl
         run: cmake --preset windows-vs
 
-      - name: Build (MSBuild)
-        run: cmake --build build/vs --config Release
+      - name: Build (MSBuild — parallel)
+        run: cmake --build build/vs --config Release --parallel
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
