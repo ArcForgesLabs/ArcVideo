@@ -97,7 +97,7 @@ jobs:
 
       - name: Restore vcpkg installed packages
         id: vcpkg-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: C:\vcpkg\installed
           key: vcpkg-x64-windows-${{ hashFiles('.github/workflows/windows-ci.yml', 'vcpkg.json') }}-v1
@@ -124,7 +124,7 @@ jobs:
           Write-Host "FASTBuild cache: $fbCache"
 
       - name: Restore FASTBuild compilation cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.fbcache.outputs.path }}
           key: fbcache-${{ github.sha }}
