@@ -97,7 +97,9 @@ jobs:
         run: mkdir -p "$VCPKG_DEFAULT_BINARY_CACHE"
 
       - name: Clone ArcVideoRegistry (overlay ports)
-        run: git clone --depth 1 https://github.com/ArcForgesLabs/ArcVideoRegistry.git /tmp/ArcVideoRegistry
+        run: |
+          rm -rf /tmp/ArcVideoRegistry
+          git clone --depth 1 https://github.com/ArcForgesLabs/ArcVideoRegistry.git /tmp/ArcVideoRegistry
 
       - name: Install base vcpkg packages
         run: |
