@@ -738,7 +738,9 @@ void NodeView::UpdateSelectionCache()
     deselected = selected_nodes_;
     selected_nodes_.clear();
   } else {
-    for (Node* n : selected_nodes_) {
+    // Preserve old foreach copy semantics since selected_nodes_ is mutated in-loop.
+    const QVector<Node*> selected_nodes_snapshot = selected_nodes_;
+    for (Node* n : selected_nodes_snapshot) {
       bool still_selected = false;
 
       for (NodeViewItem *i : current_selection) {
