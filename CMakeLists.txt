@@ -149,23 +149,24 @@ if(NOT TARGET FFMPEG::FFMPEG)
 endif()
 list(APPEND ARCVIDEO_LIBRARIES FFMPEG::FFMPEG)
 
-# --- ArcVideoFoundation (pure C++ core library, no Qt) ---
-# SYSTEM: treat foundation public headers as system includes to suppress
-# our strict -Werror diagnostics on the submodule's header code.
-add_subdirectory(foundation SYSTEM)
-list(APPEND ARCVIDEO_LIBRARIES arcvideo-foundation)
+# --- ArcVideoFoundation (vcpkg, via ArcVideoRegistry overlay port) ---
+find_package(arcvideo-foundation CONFIG REQUIRED)
+list(APPEND ARCVIDEO_LIBRARIES ArcVideo::Foundation)
 
 # --- PortAudio (vcpkg CONFIG) ---
 find_package(portaudio CONFIG REQUIRED)
 list(APPEND ARCVIDEO_LIBRARIES portaudio)
 
-# --- Optional: OpenTimelineIO ---
-# Check if OTIO submodule is present (will be built in third_party/)
-if (EXISTS "${CMAKE_SOURCE_DIR}/third_party/OpenTimelineIO/CMakeLists.txt")
+# --- Optional: OpenTimelineIO (vcpkg) ---
+# Foundation exports USE_OTIO as a public compile definition when built with OTIO.
+# If that's the case, we must find the full OpenTimelineIO package for the app's
+# own OTIO interchange code (load/save .otio files).
+find_package(OpenTimelineIO CONFIG QUIET)
+if (OpenTimelineIO_FOUND)
   set(ARCVIDEO_HAVE_OTIO ON)
   list(APPEND ARCVIDEO_DEFINITIONS USE_OTIO)
   list(APPEND ARCVIDEO_LIBRARIES OTIO::opentimelineio)
-  message(STATUS "OpenTimelineIO found (submodule), OTIO interchange enabled.")
+  message(STATUS "OpenTimelineIO found (vcpkg), OTIO interchange enabled.")
 else()
   set(ARCVIDEO_HAVE_OTIO OFF)
   message(STATUS "OpenTimelineIO not found, OTIO interchange will be disabled.")
@@ -212,15 +213,6 @@ if(BUILD_DOXYGEN)
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-list(APPEND ARCVIDEO_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/third_party)
-
-add_subdirectory(third_party)
-
-# Propagate OTIO support to foundation (after third_party defines OTIO::opentime)
-if(ARCVIDEO_HAVE_OTIO)
-  target_compile_definitions(arcvideo-foundation PUBLIC USE_OTIO)
-  target_link_libraries(arcvideo-foundation PUBLIC OTIO::opentime)
-endif()
 
 add_subdirectory(app)
 

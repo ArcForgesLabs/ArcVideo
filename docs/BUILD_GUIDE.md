@@ -54,7 +54,11 @@ Install the following packages in **classic mode** (the project does not use a v
 ```powershell
 cd $env:GLOBAL_VCPKG_PATH
 
+# Clone the ArcVideo overlay registry (provides arcvideo-foundation and opentimelineio ports)
+git clone --depth 1 https://github.com/ArcForgesLabs/ArcVideoRegistry.git $env:GLOBAL_VCPKG_PATH\ArcVideoRegistry
+
 vcpkg install --triplet x64-windows `
+  --overlay-ports=$env:GLOBAL_VCPKG_PATH\ArcVideoRegistry\ports `
   opencolorio `
   openimageio `
   openexr `
@@ -65,7 +69,9 @@ vcpkg install --triplet x64-windows `
   qtbase `
   rapidjson `
   pybind11 `
-  kddockwidgets
+  kddockwidgets `
+  opentimelineio `
+  arcvideo-foundation
 ```
 
 ### Full dependency list
@@ -83,29 +89,19 @@ vcpkg install --triplet x64-windows `
 | `rapidjson` | Latest | JSON utilities |
 | `pybind11` | Latest | C++/Python binding headers |
 | `kddockwidgets` | 2.x | Docking framework |
+| `opentimelineio` | 0.19.0 | Timeline interchange (OTIO) |
+| `arcvideo-foundation` | 1.0.0 | ArcVideo core library (via overlay port) |
 
 Additional packages are pulled in automatically as transitive dependencies (e.g., `libjpeg-turbo`, `tiff`, `yaml-cpp`, `fmt`, `pystring`, etc.).
 
 ---
 
-## Step 3: Clone and Initialize
+## Step 3: Clone
 
 ```powershell
-git clone --recursive https://github.com/arcvideo-editor/olive.git
+git clone https://github.com/arcvideo-editor/olive.git
 cd olive
 ```
-
-If you already cloned without `--recursive`:
-```powershell
-git submodule update --init --recursive
-```
-
-### Submodules
-
-| Submodule | Source |
-|-----------|--------|
-| ArcVideoFoundation | [ArcForgesLabs/ArcVideoFoundation](https://github.com/ArcForgesLabs/ArcVideoFoundation) (branch: main) |
-| OpenTimelineIO | [AcademySoftwareFoundation/OpenTimelineIO](https://github.com/AcademySoftwareFoundation/OpenTimelineIO) |
 
 ---
 
@@ -178,4 +174,3 @@ This project requires **CMake 4.2+**. Update with `scoop update cmake`.
 | Triplet | x64-windows |
 | Debug format | `/Zi` (PDB, default) |
 | Configurations | All configs in one `.sln` |
-| Submodules | OpenTimelineIO |

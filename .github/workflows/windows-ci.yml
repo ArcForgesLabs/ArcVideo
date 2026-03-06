@@ -31,8 +31,6 @@ jobs:
       # ── Checkout ──────────────────────────────────────────────
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          submodules: recursive
 
       # ── Toolchain ─────────────────────────────────────────────
       - name: Install CMake (Scoop)
@@ -95,7 +93,11 @@ jobs:
           key: vcpkg-x64-windows-${{ hashFiles('.github/workflows/windows-ci.yml', 'vcpkg.json') }}-v1
           restore-keys: vcpkg-x64-windows-
 
-      - name: Install vcpkg packages
+      - name: Clone ArcVideoRegistry (overlay ports)
+        run: |
+          git clone --depth 1 https://github.com/ArcForgesLabs/ArcVideoRegistry.git C:\ArcVideoRegistry
+
+      - name: Install base vcpkg packages
         if: steps.vcpkg-cache.outputs.cache-hit != 'true'
         env:
           VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
@@ -104,6 +106,16 @@ jobs:
             opencolorio openimageio openexr imath `
             ffmpeg `
             portaudio crashpad qtbase rapidjson pybind11 kddockwidgets
+
+      - name: Install overlay-port packages (always fresh)
+        env:
+          VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
+        run: |
+          & C:\vcpkg\vcpkg.exe remove --triplet x64-windows `
+            opentimelineio arcvideo-foundation --recurse 2>$null
+          & C:\vcpkg\vcpkg.exe install --triplet x64-windows `
+            --overlay-ports=C:\ArcVideoRegistry\ports `
+            opentimelineio arcvideo-foundation
 
       # ── FASTBuild cache ──────────────────────────────────────
       # The windows-ci preset sets FASTBUILD_CACHE_PATH to $LOCALAPPDATA/FASTBuild/Cache
