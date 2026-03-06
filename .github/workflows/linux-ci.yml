@@ -104,9 +104,17 @@ jobs:
           vcpkg install \
             --triplet x64-linux-dynamic \
             --host-triplet x64-linux-dynamic \
-            --overlay-ports=/tmp/ArcVideoRegistry/ports \
             opencolorio openimageio openexr imath ffmpeg \
-            portaudio crashpad qtbase rapidjson pybind11 kddockwidgets \
+            portaudio crashpad qtbase rapidjson pybind11 kddockwidgets
+
+      - name: Install overlay-port packages (always fresh)
+        run: |
+          vcpkg remove --triplet x64-linux-dynamic \
+            opentimelineio arcvideo-foundation --recurse 2>/dev/null || true
+          vcpkg install \
+            --triplet x64-linux-dynamic \
+            --host-triplet x64-linux-dynamic \
+            --overlay-ports=/tmp/ArcVideoRegistry/ports \
             opentimelineio arcvideo-foundation
 
       # ── Build ─────────────────────────────────────────────────
