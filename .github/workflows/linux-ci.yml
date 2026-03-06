@@ -37,8 +37,6 @@ jobs:
       # ── Checkout ──────────────────────────────────────────────
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          submodules: recursive
 
       # ── Toolchain ─────────────────────────────────────────────
       - name: Install system dependencies
@@ -98,13 +96,18 @@ jobs:
       - name: Ensure vcpkg binary cache dir
         run: mkdir -p "$VCPKG_DEFAULT_BINARY_CACHE"
 
+      - name: Clone ArcVideoRegistry (overlay ports)
+        run: git clone --depth 1 https://github.com/ArcForgesLabs/ArcVideoRegistry.git /tmp/ArcVideoRegistry
+
       - name: Install base vcpkg packages
         run: |
           vcpkg install \
             --triplet x64-linux-dynamic \
             --host-triplet x64-linux-dynamic \
+            --overlay-ports=/tmp/ArcVideoRegistry/ports \
             opencolorio openimageio openexr imath ffmpeg \
-            portaudio crashpad qtbase rapidjson pybind11 kddockwidgets
+            portaudio crashpad qtbase rapidjson pybind11 kddockwidgets \
+            opentimelineio arcvideo-foundation
 
       # ── Build ─────────────────────────────────────────────────
       - name: Configure (CMake)
