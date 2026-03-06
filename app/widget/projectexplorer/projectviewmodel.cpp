@@ -296,7 +296,7 @@ QMimeData *ProjectViewModel::mimeData(const QModelIndexList &indexes) const
   // we keep a list of dragged items
   QVector<void*> dragged_items;
 
-  foreach (QModelIndex index, indexes) {
+  for (QModelIndex index : indexes) {
     if (index.isValid()) {
       // Check if we've dragged this item before
       if (!dragged_items.contains(index.internalPointer())) {
@@ -464,7 +464,7 @@ void ProjectViewModel::ConnectItem(Node *n)
     connect(f, &Folder::BeginRemoveItem, this, &ProjectViewModel::FolderBeginRemoveItem);
     connect(f, &Folder::EndRemoveItem, this, &ProjectViewModel::FolderEndRemoveItem);
 
-    foreach (Node* c, f->children()) {
+    for (Node* c : f->children()) {
       ConnectItem(c);
     }
   }
@@ -481,7 +481,7 @@ void ProjectViewModel::DisconnectItem(Node *n)
     disconnect(f, &Folder::BeginRemoveItem, this, &ProjectViewModel::FolderBeginRemoveItem);
     disconnect(f, &Folder::EndRemoveItem, this, &ProjectViewModel::FolderEndRemoveItem);
 
-    foreach (Node* c, f->children()) {
+    for (Node* c : f->children()) {
       DisconnectItem(c);
     }
   }

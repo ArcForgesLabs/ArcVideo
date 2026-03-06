@@ -352,7 +352,7 @@ private:
 
   ViewerSafeMarginInfo safe_margin_;
 
-  Node* gizmos_;
+  Node* gizmos_ = nullptr;
   NodeValueRow gizmo_db_;
   VideoParams gizmo_params_;
   AudioParams gizmo_audio_params_;

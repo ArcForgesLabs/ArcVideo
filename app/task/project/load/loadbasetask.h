@@ -48,7 +48,7 @@ public:
   }
 
 protected:
-  Project* project_;
+  Project* project_ = nullptr;
 
   MainWindowLayoutInfo layout_;
 

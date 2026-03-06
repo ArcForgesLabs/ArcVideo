@@ -46,7 +46,7 @@ public:
   };
 
   struct AttachedFootage {
-    ViewerOutput* footage;
+    ViewerOutput* footage = nullptr;
     QString output;
   };
 

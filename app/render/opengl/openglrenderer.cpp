@@ -71,9 +71,9 @@ public:
   }
 
 private:
-  const char* name_;
+  const char* name_ = nullptr;
 
-  QOpenGLFunctions* functions_;
+  QOpenGLFunctions* functions_ = nullptr;
 
 };
 

@@ -47,9 +47,9 @@ protected:
   virtual void resizeEvent(QResizeEvent *e) override;
 
 private:
-  TrackList* list_;
+  TrackList* list_ = nullptr;
 
-  TrackViewSplitter* splitter_;
+  TrackViewSplitter* splitter_ = nullptr;
 
   Qt::Alignment alignment_;
 

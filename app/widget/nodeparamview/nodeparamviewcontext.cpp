@@ -99,7 +99,7 @@ void NodeParamViewContext::RemoveNodesWithContext(Node *ctx)
 
 void NodeParamViewContext::SetInputChecked(const NodeInput &input, bool e)
 {
-  foreach (NodeParamViewItem *item, items_) {
+  for (NodeParamViewItem *item : items_) {
     if (item->GetNode() == input.node()) {
       item->SetInputChecked(input, e);
     }
@@ -108,14 +108,14 @@ void NodeParamViewContext::SetInputChecked(const NodeInput &input, bool e)
 
 void NodeParamViewContext::SetTimebase(const rational &timebase)
 {
-  foreach (NodeParamViewItem* item, items_) {
+  for (NodeParamViewItem* item : items_) {
     item->SetTimebase(timebase);
   }
 }
 
 void NodeParamViewContext::SetTimeTarget(ViewerOutput *n)
 {
-  foreach (NodeParamViewItem* item, items_) {
+  for (NodeParamViewItem* item : items_) {
     item->SetTimeTarget(n);
   }
 }
@@ -159,7 +159,7 @@ void NodeParamViewContext::AddEffectMenuItemTriggered(QAction *a)
 
     QVector<Project*> graphs_added_to;
 
-    foreach (Node *ctx, contexts_) {
+    for (Node *ctx : contexts_) {
       NodeInput ctx_input = ctx->GetEffectInput();
 
       if (!graphs_added_to.contains(ctx->parent())) {

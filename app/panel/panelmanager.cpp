@@ -68,7 +68,7 @@ PanelWidget *PanelManager::CurrentlyHovered() const
 {
   QPoint global_mouse = QCursor::pos();
 
-  foreach (PanelWidget* panel, focus_history_) {
+  for (PanelWidget* panel : focus_history_) {
     if (panel->rect().contains(panel->mapFromGlobal(global_mouse))) {
       return panel;
     }
@@ -79,7 +79,7 @@ PanelWidget *PanelManager::CurrentlyHovered() const
 
 PanelWidget *PanelManager::GetPanelWithName(const QString &name) const
 {
-  foreach (PanelWidget* panel, focus_history_) {
+  for (PanelWidget* panel : focus_history_) {
     if (panel->objectName() == name) {
       return panel;
     }
@@ -129,7 +129,7 @@ void PanelManager::FocusChanged(QWidget *old, QWidget *now)
   Q_UNUSED(old)
 
   QObject* parent = now;
-  PanelWidget* panel_cast_test;
+  PanelWidget* panel_cast_test = nullptr;
 
   // Loop through widget's parent hierarchy
   if (!focus_history_.empty()) {

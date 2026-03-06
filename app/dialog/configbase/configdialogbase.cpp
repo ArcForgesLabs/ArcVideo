@@ -61,7 +61,7 @@ ConfigDialogBase::ConfigDialogBase(QWidget* parent) :
 
 void ConfigDialogBase::accept()
 {
-  foreach (ConfigDialogBaseTab* tab, tabs_) {
+  for (ConfigDialogBaseTab* tab : tabs_) {
     if (!tab->Validate()) {
       return;
     }
@@ -69,7 +69,7 @@ void ConfigDialogBase::accept()
 
   MultiUndoCommand* command = new MultiUndoCommand();
 
-  foreach (ConfigDialogBaseTab* tab, tabs_) {
+  for (ConfigDialogBaseTab* tab : tabs_) {
     tab->Accept(command);
   }
 

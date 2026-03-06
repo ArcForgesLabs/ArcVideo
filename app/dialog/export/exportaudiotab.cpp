@@ -87,7 +87,7 @@ int ExportAudioTab::SetFormat(ExportFormat::Format format)
   setEnabled(!acodecs.isEmpty());
   codec_combobox_->blockSignals(true);
   codec_combobox_->clear();
-  foreach (ExportCodec::Codec acodec, acodecs) {
+  for (ExportCodec::Codec acodec : acodecs) {
     codec_combobox_->addItem(ExportCodec::GetCodecName(acodec), acodec);
   }
   codec_combobox_->blockSignals(false);

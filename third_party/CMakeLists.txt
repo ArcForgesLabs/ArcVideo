@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+if(MSVC)
+  add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:/MP>")
+endif()
+
 # --- OpenTimelineIO (optional, built from submodule) ---
 if(ARCVIDEO_HAVE_OTIO)
   set(OTIO_SHARED_LIBS OFF CACHE INTERNAL "Build OTIO as static library")
@@ -26,26 +30,13 @@ if(ARCVIDEO_HAVE_OTIO)
   add_subdirectory(OpenTimelineIO EXCLUDE_FROM_ALL)
 
   # OTIO uses PRIVATE includes for its src dir; expose for consumers
-  target_include_directories(opentimelineio PUBLIC
+  target_include_directories(opentimelineio SYSTEM PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/OpenTimelineIO/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/OpenTimelineIO/src>
   )
-  target_include_directories(opentime PUBLIC
+  target_include_directories(opentime SYSTEM PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/OpenTimelineIO/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/OpenTimelineIO/src>
   )
 endif()
 
-set(KDDockWidgets_STATIC ON CACHE INTERNAL "Force KDDockWidgets to build statically")
-set(KDDockWidgets_QT6 ON CACHE INTERNAL "Build KDDockWidgets with Qt6")
-set(KDDockWidgets_FRONTENDS "qtwidgets" CACHE INTERNAL "Only build QtWidgets frontend")
-set(KDDockWidgets_EXAMPLES OFF CACHE INTERNAL "Disable KDDockWidgets examples")
-set(KDDockWidgets_TESTS OFF CACHE INTERNAL "Disable KDDockWidgets tests")
-
-# KDDockWidgets needs Qt private modules
-find_package(Qt6 REQUIRED COMPONENTS WidgetsPrivate)
-if(WIN32)
-  find_package(Qt6 REQUIRED COMPONENTS GuiPrivate)
-endif()
-
-add_subdirectory(KDDockWidgets EXCLUDE_FROM_ALL)

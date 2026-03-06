@@ -119,7 +119,7 @@ void DiskManager::CreatedFile(const QString &cache_folder, const QString &filena
 
 void DiskManager::DeleteSpecificFile(const QString &filename)
 {
-  foreach (DiskCacheFolder* f, open_folders_) {
+  for (DiskCacheFolder* f : open_folders_) {
     f->DeleteSpecificFile(filename);
   }
 }
@@ -139,7 +139,7 @@ DiskCacheFolder *DiskManager::GetOpenFolder(const QString &path)
   }
 
   // See if we have an existing path with this name
-  foreach (DiskCacheFolder* f, open_folders_) {
+  for (DiskCacheFolder* f : open_folders_) {
     if (f->GetPath() == path) {
       return f;
     }
@@ -345,7 +345,7 @@ bool DiskCacheFolder::DeleteLeastRecent()
   auto hash_to_delete = disk_data_.begin();
 
   if (disk_data_.begin() != disk_data_.end()) {
-    for (auto it=disk_data_.begin()+1; it!=disk_data_.end(); it++) {
+    for (auto it = std::next(disk_data_.begin()); it!=disk_data_.end(); it++) {
       if (it->access_time < hash_to_delete->access_time) {
         hash_to_delete = it;
       }

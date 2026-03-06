@@ -88,15 +88,15 @@ private:
 
   InterlacedComboBox *interlacing_combo_;
 
-  SampleRateComboBox* audio_sample_rate_field_;
+  SampleRateComboBox* audio_sample_rate_field_ = nullptr;
 
-  ChannelLayoutComboBox* audio_channels_field_;
+  ChannelLayoutComboBox* audio_channels_field_ = nullptr;
 
-  VideoDividerComboBox* preview_resolution_field_;
+  VideoDividerComboBox* preview_resolution_field_ = nullptr;
 
-  QLabel* preview_resolution_label_;
+  QLabel* preview_resolution_label_ = nullptr;
 
-  PixelFormatComboBox* preview_format_field_;
+  PixelFormatComboBox* preview_format_field_ = nullptr;
 
   QCheckBox *preview_autocache_field_;
 

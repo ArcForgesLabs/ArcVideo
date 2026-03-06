@@ -256,7 +256,7 @@ void Track::SetIndex(const int &index)
 
 Block *Track::BlockContainingTime(const rational &time) const
 {
-  foreach (Block* block, blocks_) {
+  for (Block* block : blocks_) {
     if (block->in() < time && block->out() > time) {
       return block;
     } else if (block->out() == time) {
@@ -269,7 +269,7 @@ Block *Track::BlockContainingTime(const rational &time) const
 
 Block *Track::NearestBlockBefore(const rational &time) const
 {
-  foreach (Block* block, blocks_) {
+  for (Block* block : blocks_) {
     // Blocks are sorted by time, so the first Block who's out point is at/after this time is the correct Block
     if (block->in() == time) {
       break;
@@ -285,7 +285,7 @@ Block *Track::NearestBlockBefore(const rational &time) const
 
 Block *Track::NearestBlockBeforeOrAt(const rational &time) const
 {
-  foreach (Block* block, blocks_) {
+  for (Block* block : blocks_) {
     // Blocks are sorted by time, so the first Block who's out point is at/after this time is the correct Block
     if (block->out() > time) {
       return block;
@@ -297,7 +297,7 @@ Block *Track::NearestBlockBeforeOrAt(const rational &time) const
 
 Block *Track::NearestBlockAfterOrAt(const rational &time) const
 {
-  foreach (Block* block, blocks_) {
+  for (Block* block : blocks_) {
     // Blocks are sorted by time, so the first Block after this time is the correct Block
     if (block->in() >= time) {
       return block;
@@ -309,7 +309,7 @@ Block *Track::NearestBlockAfterOrAt(const rational &time) const
 
 Block *Track::NearestBlockAfter(const rational &time) const
 {
-  foreach (Block* block, blocks_) {
+  for (Block* block : blocks_) {
     // Blocks are sorted by time, so the first Block after this time is the correct Block
     if (block->in() > time) {
       return block;
@@ -350,7 +350,7 @@ void Track::InvalidateCache(const TimeRange& range, const QString& from, int ele
 {
   TimeRange limited;
 
-  const Block* b;
+  const Block* b = nullptr;
 
   if (from == kBlockInput
       && element >= 0

@@ -47,19 +47,19 @@ private:
 
   rational timebase_;
 
-  RationalSlider* time_slider_;
+  RationalSlider* time_slider_ = nullptr;
 
-  QComboBox* type_select_;
+  QComboBox* type_select_ = nullptr;
 
-  QGroupBox* bezier_group_;
+  QGroupBox* bezier_group_ = nullptr;
 
-  FloatSlider* bezier_in_x_slider_;
+  FloatSlider* bezier_in_x_slider_ = nullptr;
 
-  FloatSlider* bezier_in_y_slider_;
+  FloatSlider* bezier_in_y_slider_ = nullptr;
 
-  FloatSlider* bezier_out_x_slider_;
+  FloatSlider* bezier_out_x_slider_ = nullptr;
 
-  FloatSlider* bezier_out_y_slider_;
+  FloatSlider* bezier_out_y_slider_ = nullptr;
 
 private slots:
   void KeyTypeChanged(int index);

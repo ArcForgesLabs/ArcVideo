@@ -45,7 +45,7 @@ private:
 
   ColorPreviewBox *box_;
 
-  QLabel* label_;
+  QLabel* label_ = nullptr;
 
 };
 
@@ -59,9 +59,9 @@ public slots:
   void SetValues(const Color& reference, const Color& display);
 
 private:
-  PixelSamplerWidget* reference_view_;
+  PixelSamplerWidget* reference_view_ = nullptr;
 
-  PixelSamplerWidget* display_view_;
+  PixelSamplerWidget* display_view_ = nullptr;
 
 };
 

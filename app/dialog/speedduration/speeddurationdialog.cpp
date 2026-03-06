@@ -184,7 +184,7 @@ void SpeedDurationDialog::accept()
   // Set duration values
   TimelineRippleDeleteGapsAtRegionsCommand::RangeList ripple_ranges;
 
-  foreach (ClipBlock *c, clips_) {
+  for (ClipBlock *c : clips_) {
     rational proposed_length = c->length();
 
     if (dur_slider_->IsTristate()) {
@@ -220,33 +220,33 @@ void SpeedDurationDialog::accept()
   if (speed_slider_->IsTristate()) {
     if (link_box_->isChecked() && !dur_slider_->IsTristate()) {
       // Automatically determine speed from duration
-      foreach (ClipBlock *c, clips_) {
+      for (ClipBlock *c : clips_) {
         command->add_child(new NodeParamSetStandardValueCommand(NodeKeyframeTrackReference(NodeInput(c, ClipBlock::kSpeedInput)), GetSpeedAdjustment(c->speed(), c->length(), dur_slider_->GetValue())));
       }
     }
   } else {
     // Set speeds to value of slider
-    foreach (ClipBlock *c, clips_) {
+    for (ClipBlock *c : clips_) {
       command->add_child(new NodeParamSetStandardValueCommand(NodeKeyframeTrackReference(NodeInput(c, ClipBlock::kSpeedInput)), speed_slider_->GetValue()));
     }
   }
 
   // Set reverse values
   if (!reverse_box_->isTristate()) {
-    foreach (ClipBlock *c, clips_) {
+    for (ClipBlock *c : clips_) {
       command->add_child(new NodeParamSetStandardValueCommand(NodeKeyframeTrackReference(NodeInput(c, ClipBlock::kReverseInput)), reverse_box_->isChecked()));
     }
   }
 
   // Set reverse values
   if (!maintain_audio_pitch_box_->isTristate()) {
-    foreach (ClipBlock *c, clips_) {
+    for (ClipBlock *c : clips_) {
       command->add_child(new NodeParamSetStandardValueCommand(NodeKeyframeTrackReference(NodeInput(c, ClipBlock::kMaintainAudioPitchInput)), maintain_audio_pitch_box_->isChecked()));
     }
   }
 
   if (loop_combo_->currentIndex() != -1) {
-    foreach (ClipBlock *c, clips_) {
+    for (ClipBlock *c : clips_) {
       command->add_child(new NodeParamSetStandardValueCommand(NodeKeyframeTrackReference(NodeInput(c, ClipBlock::kLoopModeInput)), loop_combo_->currentData()));
     }
   }

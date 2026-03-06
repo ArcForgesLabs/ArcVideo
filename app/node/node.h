@@ -1062,7 +1062,7 @@ protected:
   {
     T *gizmo = new T(this);
     gizmo->SetDragValueBehavior(behavior);
-    foreach (const NodeKeyframeTrackReference &input, inputs) {
+    for (const NodeKeyframeTrackReference &input : inputs) {
       gizmo->AddInput(input);
     }
     connect(gizmo, &DraggableGizmo::HandleStart, this, &Node::GizmoDragStart);
@@ -1246,7 +1246,7 @@ private:
 
   OutputConnections output_connections_;
 
-  Folder* folder_;
+  Folder* folder_ = nullptr;
 
   QMap<InputElementPair, ValueHint> value_hints_;
 

@@ -112,12 +112,12 @@ private:
   /**
    * @brief Main widget that shows the list of commands
    */
-  ActionSearchList* list_widget;
+  ActionSearchList* list_widget = nullptr;
 
   /**
    * @brief Attached menu bar object
    */
-  QMenuBar* menu_bar_;
+  QMenuBar* menu_bar_ = nullptr;
 };
 
 /**

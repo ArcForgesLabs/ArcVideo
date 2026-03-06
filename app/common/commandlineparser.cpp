@@ -25,11 +25,11 @@
 
 CommandLineParser::~CommandLineParser()
 {
-  foreach (const KnownOption& o, options_) {
+  for (const KnownOption& o : options_) {
     delete o.option;
   }
 
-  foreach (const KnownPositionalArgument& a, positional_args_) {
+  for (const KnownPositionalArgument& a : positional_args_) {
     delete a.option;
   }
 }
@@ -68,7 +68,7 @@ void CommandLineParser::Process(const QVector<QString> &argv)
       for (int j=0; j<options_.size(); j++) {
         KnownOption& o = options_[j];
 
-        foreach (const QString& s, o.args) {
+        for (const QString& s : o.args) {
           if (!s.compare(arg_basename, Qt::CaseInsensitive)) {
             // Flag discovered!
             o.option->Set();
@@ -120,7 +120,7 @@ void CommandLineParser::PrintHelp(const char* filename)
     positional_args.append(']');
   }
 
-  const char* basename;
+  const char* basename = nullptr;
 #ifdef Q_OS_WINDOWS
   basename = strrchr(filename, '\\');
   if (!basename) {
@@ -139,7 +139,7 @@ void CommandLineParser::PrintHelp(const char* filename)
   }
 
   printf("Usage: %s [options] %s\n\n", basename, positional_args.toUtf8().constData());
-  foreach (const KnownOption& o, options_) {
+  for (const KnownOption& o : options_) {
     if (o.hidden) {
       continue;
     }

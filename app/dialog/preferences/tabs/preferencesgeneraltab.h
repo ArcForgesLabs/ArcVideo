@@ -43,19 +43,19 @@ public:
 private:
   void AddLanguage(const QString& locale_name);
 
-  QComboBox* language_combobox_;
+  QComboBox* language_combobox_ = nullptr;
 
-  QComboBox* autoscroll_method_;
+  QComboBox* autoscroll_method_ = nullptr;
 
-  QCheckBox* rectified_waveforms_;
+  QCheckBox* rectified_waveforms_ = nullptr;
 
-  RationalSlider* default_still_length_;
+  RationalSlider* default_still_length_ = nullptr;
 
-  QCheckBox* autorecovery_enabled_;
+  QCheckBox* autorecovery_enabled_ = nullptr;
 
-  IntegerSlider* autorecovery_interval_;
+  IntegerSlider* autorecovery_interval_ = nullptr;
 
-  IntegerSlider* autorecovery_maximum_;
+  IntegerSlider* autorecovery_maximum_ = nullptr;
 
 };
 

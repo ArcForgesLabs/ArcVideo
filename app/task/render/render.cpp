@@ -54,7 +54,7 @@ bool RenderTask::Render(ColorManager* manager,
 
   // Store real time before any rendering takes place
   // Queue audio jobs
-  foreach (const TimeRange& range, audio_range) {
+  for (const TimeRange &range : audio_range) {
     // Don't count audio progress, since it's generally a lot faster than video and is weighted at
     // 50%, which makes the progress bar look weird to the uninitiated
     //total_length += r.length().toDouble();
@@ -223,13 +223,13 @@ bool RenderTask::Render(ColorManager* manager,
 
   if (IsCancelled() || !result) {
     // Cancel every watcher we created
-    foreach (RenderTicketWatcher* watcher, running_watchers_) {
+    for (RenderTicketWatcher* watcher : running_watchers_) {
       watcher->Cancel();
       disconnect(watcher, &RenderTicketWatcher::Finished, this, &RenderTask::TicketDone);
       RenderManager::instance()->RemoveTicket(watcher->GetTicket());
     }
 
-    foreach (RenderTicketWatcher* watcher, running_watchers_) {
+    for (RenderTicketWatcher* watcher : running_watchers_) {
       watcher->WaitForFinished();
     }
   }

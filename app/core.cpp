@@ -342,7 +342,7 @@ void Core::DialogImportShow()
 
     // Locate the most recently focused Project panel (assume that's the panel the user wants to import into)
     ProjectPanel* active_project_panel = PanelManager::instance()->MostRecentlyFocused<ProjectPanel>();
-    Project* active_project;
+    Project* active_project = nullptr;
 
     if (active_project_panel == nullptr // Check that we found a Project panel
         || (active_project = active_project_panel->project()) == nullptr) { // and that we could find an active Project
@@ -397,7 +397,7 @@ void Core::CreateNewFolder()
 {
   // Locate the most recently focused Project panel (assume that's the panel the user wants to import into)
   ProjectPanel* active_project_panel = PanelManager::instance()->MostRecentlyFocused<ProjectPanel>();
-  Project* active_project;
+  Project* active_project = nullptr;
 
   if (active_project_panel == nullptr // Check that we found a Project panel
       || (active_project = active_project_panel->project()) == nullptr) { // and that we could find an active Project
@@ -528,7 +528,7 @@ void Core::ImportTaskComplete(Task* task)
 
   MultiUndoCommand *command = import_task->GetCommand();
 
-  foreach (Footage *f, import_task->GetImportedFootage()) {
+  for (Footage *f : import_task->GetImportedFootage()) {
     // Look for multi-layer images
     if (f->GetAudioStreamCount() == 0 && f->GetVideoStreamCount() > 1) {
       bool all_stills = true;
@@ -799,7 +799,7 @@ void Core::StartGUI(bool full_screen)
 void Core::SaveProjectInternal(const QString& override_filename)
 {
   // Create save manager
-  Task* psm;
+  Task* psm = nullptr;
 
   if (open_project_->filename().endsWith(QStringLiteral(".otio"), Qt::CaseInsensitive)) {
 #ifdef USE_OTIO
@@ -889,7 +889,7 @@ void Core::SaveUnrecoveredList()
     QTextStream ts(&autorecovery_index);
 
     bool first = true;
-    foreach (const QUuid& uuid, autorecovered_projects_) {
+    for (const QUuid& uuid : autorecovered_projects_) {
       if (first) {
         first = false;
       } else {
@@ -1320,7 +1320,7 @@ void Core::OpenProjectInternal(const QString &filename, bool recovery_project)
     }
   }
 
-  Task* load_task;
+  Task* load_task = nullptr;
 
   if (filename.endsWith(QStringLiteral(".otio"), Qt::CaseInsensitive)) {
     // Load OpenTimelineIO project
@@ -1360,7 +1360,7 @@ int Core::CountFilesInFileList(const QFileInfoList &filenames)
 {
   int file_count = 0;
 
-  foreach (const QFileInfo& f, filenames) {
+  for (const QFileInfo& f : filenames) {
     // For some reason QDir::NoDotAndDotDot	doesn't work with entryInfoList, so we have to check manually
     if (f.fileName() == "." || f.fileName() == "..") {
       continue;
@@ -1404,7 +1404,7 @@ bool Core::LabelNodes(const QVector<Node *> &nodes, MultiUndoCommand *parent)
   if (ok) {
     NodeRenameCommand* rename_command = new NodeRenameCommand();
 
-    foreach (Node* n, nodes) {
+    for (Node* n : nodes) {
       rename_command->AddNode(n, s);
     }
 
@@ -1513,7 +1513,7 @@ void Core::CacheActiveSequence(bool in_out_only)
 
     ViewerPanel* found_panel = nullptr;
 
-    foreach (ViewerPanel* viewer, all_viewers) {
+    for (ViewerPanel* viewer : all_viewers) {
       if (viewer->GetConnectedViewer() == p->GetConnectedViewer()) {
         found_panel = viewer;
         break;

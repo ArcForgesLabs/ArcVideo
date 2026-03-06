@@ -180,7 +180,7 @@ void Html::WriteFragment(QXmlStreamWriter *writer, const QTextFragment &fragment
 
   QStringList lines = fragment.text().split(QChar::LineSeparator);
   bool first_line = true;
-  foreach (const QString &l, lines) {
+  for (const QString &l : lines) {
     if (first_line) {
       first_line = false;
     } else {
@@ -195,7 +195,7 @@ void Html::WriteFragment(QXmlStreamWriter *writer, const QTextFragment &fragment
 void Html::WriteCSSProperty(QString *style, const QString &key, const QStringList &values)
 {
   QString value;
-  foreach (QString v, values) {
+  for (QString v : values) {
     if (v.contains(' ')) {
       v = QStringLiteral("'%1'").arg(v);
     }
@@ -280,7 +280,7 @@ QTextCharFormat Html::ReadCharFormat(const QXmlStreamAttributes &attributes)
 {
   QTextCharFormat fmt;
 
-  foreach (const QXmlStreamAttribute &attr, attributes) {
+  for (const QXmlStreamAttribute &attr : attributes) {
     if (StrEquals(attr.name(), QStringLiteral("style"))) {
       auto css = GetCSSFromStyle(attr.value().toString());
 
@@ -298,7 +298,7 @@ QTextCharFormat Html::ReadCharFormat(const QXmlStreamAttributes &attributes)
         } else if (it.key() == QStringLiteral("font-style")) {
           fmt.setFontItalic(StrEquals(first_val, QStringLiteral("italic")));
         } else if (it.key() == QStringLiteral("text-decoration")) {
-          foreach (const QString &v, it.value()) {
+          for (const QString &v : it.value()) {
             if (StrEquals(v, QStringLiteral("underline"))) {
               fmt.setFontUnderline(true);
             } else if (StrEquals(v, QStringLiteral("line-through"))) {
@@ -350,7 +350,7 @@ QTextBlockFormat Html::ReadBlockFormat(const QXmlStreamAttributes &attributes)
 {
   QTextBlockFormat block_fmt;
 
-  foreach (const QXmlStreamAttribute &attr, attributes) {
+  for (const QXmlStreamAttribute &attr : attributes) {
     if (StrEquals(attr.name(), QStringLiteral("align"))) {
       if (StrEquals(attr.value(), QStringLiteral("right"))) {
         block_fmt.setAlignment(Qt::AlignRight);
@@ -395,7 +395,7 @@ QMap<QString, QStringList> Html::GetCSSFromStyle(const QString &s)
 
   QStringList list = s.split(QChar(';'));
 
-  foreach (const QString &a, list) {
+  for (const QString &a : list) {
     QStringList kv = a.split(QChar(':'));
 
     if (kv.size() != 2) {

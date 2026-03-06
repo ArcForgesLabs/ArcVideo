@@ -67,11 +67,11 @@ Node::~Node()
   setParent(nullptr);
 
   // Remove all immediates
-  foreach (NodeInputImmediate* i, standard_immediates_) {
+  for (NodeInputImmediate* i : standard_immediates_) {
     delete i;
   }
   for (auto it=array_immediates_.cbegin(); it!=array_immediates_.cend(); it++) {
-    foreach (NodeInputImmediate* i, it.value()) {
+    for (NodeInputImmediate* i : it.value()) {
       delete i;
     }
   }
@@ -1071,7 +1071,7 @@ Node *Node::CopyNodeAndDependencyGraphMinusItemsInternal(QMap<Node*, Node*>& cre
   for (auto it=node->input_connections_.cbegin(); it!=node->input_connections_.cend(); it++) {
     NodeInput input = it->first;
     Node* connected = it->second;
-    Node* connected_copy;
+    Node* connected_copy = nullptr;
 
     if (connected->IsItem()) {
       // This is an item and we avoid copying those and just connect to them directly
@@ -1102,7 +1102,7 @@ Node *Node::CopyNodeAndDependencyGraphMinusItems(Node *node, MultiUndoCommand *c
 
 Node *Node::CopyNodeInGraph(Node *node, MultiUndoCommand *command)
 {
-  Node* copy;
+  Node* copy = nullptr;
 
   if (ARCVIDEO_CONFIG("SplitClipsCopyNodes").toBool()) {
     copy = Node::CopyNodeAndDependencyGraphMinusItems(node, command);
@@ -1332,7 +1332,7 @@ void Node::Save(QXmlStreamWriter *writer) const
     writer->writeTextElement(QStringLiteral("color"), QString::number(this->GetOverrideColor()));
   }
 
-  foreach (const QString& input, this->inputs()) {
+  for (const QString& input : this->inputs()) {
     writer->writeStartElement(QStringLiteral("input"));
 
     SaveInput(writer, input);
@@ -1342,7 +1342,7 @@ void Node::Save(QXmlStreamWriter *writer) const
 
   if (!this->links().empty()) {
     writer->writeStartElement(QStringLiteral("links"));
-    foreach (Node* link, this->links()) {
+    for (Node* link : this->links()) {
       writer->writeTextElement(QStringLiteral("link"), QString::number(reinterpret_cast<quintptr>(link)));
     }
     writer->writeEndElement(); // links
@@ -1623,7 +1623,7 @@ void Node::SaveImmediate(QXmlStreamWriter *writer, const QString &input, int ele
   // Write standard value
   writer->writeStartElement(QStringLiteral("standard"));
 
-  foreach (const QVariant& v, this->GetSplitStandardValue(input, element)) {
+  for (const QVariant& v : this->GetSplitStandardValue(input, element)) {
     writer->writeStartElement(QStringLiteral("track"));
 
     if (data_type == NodeValue::kVideoParams) {
@@ -1844,7 +1844,7 @@ void Node::CopyInputs(const Node *source, Node *destination, bool include_connec
 {
   Q_ASSERT(source->id() == destination->id());
 
-  foreach (const QString& input, source->inputs()) {
+  for (const QString& input : source->inputs()) {
     // NOTE: This assert is to ensure that inputs in the source also exist in the destination, which
     //       they should. If they don't and you hit this assert, check if you're handling group
     //       passthroughs correctly.
@@ -2322,7 +2322,7 @@ void Node::InvalidateFromKeyframeTimeChange()
 
   // Invalidate entire area surrounding the keyframe (either where it currently is, or where it used to be before it
   // was resorted in the if block above)
-  foreach (const TimeRange& r, invalidate_range) {
+  for (const TimeRange &r : invalidate_range) {
     ParameterValueChanged(key->key_track_ref().input(), r);
   }
 

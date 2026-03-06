@@ -160,7 +160,7 @@ struct NodeInputPair {
     return node == rhs.node && input == rhs.input;
   }
 
-  Node* node;
+  Node* node = nullptr;
   QString input;
 };
 
@@ -285,7 +285,7 @@ public:
   }
 
 private:
-  Node* node_;
+  Node* node_ = nullptr;
   QString input_;
   int element_;
 

@@ -80,7 +80,7 @@ void TrackView::ConnectTrackList(TrackList *list)
   list_ = list;
 
   if (list_ != nullptr) {
-    foreach (Track* track, list_->GetTracks()) {
+    for (Track* track : list_->GetTracks()) {
       InsertTrack(track);
     }
 

@@ -77,11 +77,11 @@ public slots:
 
 private:
   ExportFormat::Format fmt_;
-  QComboBox* codec_combobox_;
-  SampleRateComboBox* sample_rate_combobox_;
-  ChannelLayoutComboBox* channel_layout_combobox_;
+  QComboBox* codec_combobox_ = nullptr;
+  SampleRateComboBox* sample_rate_combobox_ = nullptr;
+  ChannelLayoutComboBox* channel_layout_combobox_ = nullptr;
   SampleFormatComboBox *sample_format_combobox_;
-  IntegerSlider* bit_rate_slider_;
+  IntegerSlider* bit_rate_slider_ = nullptr;
 
   static const int kDefaultBitRate;
 

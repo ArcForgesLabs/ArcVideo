@@ -103,7 +103,7 @@ void NodeViewContext::RemoveChild(Node *node)
   // Delete edges first because the edge destructor will try to reference item (maybe that should
   // be changed...)
   QVector<NodeViewEdge*> edges_to_remove = item->GetAllEdgesRecursively();
-  foreach (NodeViewEdge *edge, edges_to_remove) {
+  for (NodeViewEdge *edge : edges_to_remove) {
     if (node == item->GetNode() || edge->output() == node || edge->input().node() == node) {
       ChildInputDisconnected(edge->output(), edge->input());
     }
@@ -177,7 +177,7 @@ void NodeViewContext::SetFlowDirection(NodeViewCommon::FlowDirection dir)
 {
   flow_dir_ = dir;
 
-  foreach (NodeViewItem *item, item_map_) {
+  for (NodeViewItem *item : item_map_) {
     item->SetFlowDirection(dir);
   }
 }
@@ -186,7 +186,7 @@ void NodeViewContext::SetCurvedEdges(bool e)
 {
   curved_edges_ = e;
 
-  foreach (NodeViewEdge *edge, edges_) {
+  for (NodeViewEdge *edge : edges_) {
     edge->SetCurved(e);
   }
 }
@@ -196,14 +196,14 @@ int NodeViewContext::DeleteSelected(NodeViewDeleteCommand *command)
   int count = 0;
 
   // Delete any selected edges
-  foreach (NodeViewEdge *edge, edges_) {
+  for (NodeViewEdge *edge : edges_) {
     if (edge->isSelected()) {
       command->AddEdge(edge->output(), edge->input());
     }
   }
 
   // Delete any selected nodes
-  foreach (NodeViewItem *node, item_map_) {
+  for (NodeViewItem *node : item_map_) {
     if (node->isSelected()) {
       command->AddNode(node->GetNode(), context_);
       count++;
@@ -215,7 +215,7 @@ int NodeViewContext::DeleteSelected(NodeViewDeleteCommand *command)
 
 void NodeViewContext::Select(const QVector<Node *> &nodes)
 {
-  foreach (Node *n, nodes) {
+  for (Node *n : nodes) {
     if (NodeViewItem *item = item_map_.value(n)) {
       item->setSelected(true);
     }
@@ -290,7 +290,7 @@ QVariant NodeViewContext::itemChange(GraphicsItemChange change, const QVariant &
 
 void NodeViewContext::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-  bool clicked_inside_titlebar = (event->pos().y() < last_titlebar_height_);
+  bool clicked_inside_titlebar = (event->pos().toPoint().y() < last_titlebar_height_);
 
   setFlag(ItemIsMovable, clicked_inside_titlebar);
   setFlag(ItemIsSelectable, clicked_inside_titlebar);

@@ -157,7 +157,7 @@ ViewerWidget::~ViewerWidget()
 
   auto windows = windows_;
 
-  foreach (ViewerWindow* window, windows) {
+  for (ViewerWindow* window : windows) {
     delete window;
   }
 
@@ -226,7 +226,7 @@ void ViewerWidget::ConnectNodeEvent(ViewerOutput *n)
 
   ColorManager* color_manager = n->project()->color_manager();
 
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->ConnectColorManager(color_manager);
   }
 
@@ -273,7 +273,7 @@ void ViewerWidget::DisconnectNodeEvent(ViewerOutput *n)
   // Effectively disables the viewer and clears the state
   SetViewerResolution(0, 0);
 
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->DisconnectColorManager();
   }
 
@@ -340,7 +340,7 @@ void ViewerWidget::SetColorMenuEnabled(bool enabled)
 
 void ViewerWidget::SetMatrix(const QMatrix4x4 &mat)
 {
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->SetMatrixCrop(mat);
   }
 }
@@ -349,7 +349,7 @@ void ViewerWidget::SetFullScreen(QScreen *screen)
 {
   if (!screen) {
     // Try to find the screen that contains the mouse cursor currently
-    foreach (QScreen* test, QGuiApplication::screens()) {
+    for (QScreen* test : QGuiApplication::screens()) {
       if (test->geometry().contains(QCursor::pos())) {
         screen = test;
         break;
@@ -474,7 +474,7 @@ bool ViewerWidget::ShouldForceWaveform() const
 
 void ViewerWidget::SetEmptyImage()
 {
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->SetBlank();
   }
 }
@@ -646,10 +646,10 @@ void ViewerWidget::DetectMulticamNode(const rational &time)
   if (multicam_panel_ && multicam_panel_->isVisible()) {
     if (Sequence *s = dynamic_cast<Sequence*>(GetConnectedNode())) {
       // Prefer selected nodes
-      for (Node *n : qAsConst(node_view_selected_)) {
+      for (Node *n : std::as_const(node_view_selected_)) {
         if ((multicam = dynamic_cast<MultiCamNode*>(n))) {
           // Found multicam, now try to find corresponding clip from selected timeline blocks
-          for (Block *b : qAsConst(timeline_selected_blocks_)) {
+          for (Block *b : std::as_const(timeline_selected_blocks_)) {
             if (ClipBlock *c = dynamic_cast<ClipBlock*>(b)) {
               if (c->range().Contains(time) && c->ContextContainsNode(multicam)) {
                 clip = c;
@@ -663,7 +663,7 @@ void ViewerWidget::DetectMulticamNode(const rational &time)
 
       // Next, prefer multicam from selected block
       if (!multicam) {
-        for (Block *b : qAsConst(timeline_selected_blocks_)) {
+        for (Block *b : std::as_const(timeline_selected_blocks_)) {
           if (b->range().Contains(time)) {
             if ((clip = dynamic_cast<ClipBlock*>(b))) {
               if ((multicam = clip->FindMulticam())) {
@@ -928,7 +928,7 @@ void ViewerWidget::PlayInternal(int speed, bool in_to_out_only)
   }
 
   // Kindly tell all viewers to stop playing and caching so all resources can be used for playback
-  foreach (ViewerWidget* viewer, instances_) {
+  for (ViewerWidget* viewer : instances_) {
     if (viewer != this) {
       viewer->PauseInternal();
     }
@@ -1014,7 +1014,7 @@ void ViewerWidget::PauseInternal()
     playback_speed_ = 0;
     controls_->ShowPlayButton();
 
-    foreach (ViewerDisplayWidget *dw, playback_devices_){
+    for (ViewerDisplayWidget *dw : playback_devices_){
       dw->Pause();
     }
 
@@ -1112,7 +1112,7 @@ bool ViewerWidget::ViewerMightBeAStill()
 
 void ViewerWidget::SetDisplayImage(RenderTicketPtr ticket)
 {
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     QVariant push;
     if (ticket) {
       if (dynamic_cast<MulticamDisplay*>(dw)) {
@@ -1188,7 +1188,7 @@ void ViewerWidget::FinishPlayPreprocess()
 
   display_widget_->ResetFPSTimer();
 
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->Play(playback_start_time, playback_speed_, timebase(), IsVideoVisible());
   }
 
@@ -1302,7 +1302,7 @@ void ViewerWidget::RendererGeneratedFrameForQueue()
       if (IsPlaying() || prequeuing_video_) {
         rational ts = watcher->property("time").value<rational>();
 
-        foreach (ViewerDisplayWidget *dw, playback_devices_) {
+        for (ViewerDisplayWidget *dw : playback_devices_) {
           QVariant push;
           if (dynamic_cast<MulticamDisplay*>(dw)) {
             push = watcher->GetTicket()->property("multicam_output");
@@ -1638,7 +1638,7 @@ void ViewerWidget::SetColorTransform(const ColorTransform &transform)
 
 void ViewerWidget::SetSignalCursorColorEnabled(bool e)
 {
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->SetSignalCursorColorEnabled(e);
   }
 }
@@ -1755,7 +1755,7 @@ void ViewerWidget::PlaybackTimerUpdate()
     }
   }
 
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->queue()->PurgeBefore(current_time, playback_speed_);
   }
 }
@@ -1764,7 +1764,7 @@ void ViewerWidget::SetViewerResolution(int width, int height)
 {
   sizer_->SetChildSize(width, height);
 
-  foreach (ViewerWindow* vw, windows_) {
+  for (ViewerWindow* vw : windows_) {
     vw->SetResolution(width, height);
   }
 }
@@ -1773,7 +1773,7 @@ void ViewerWidget::SetViewerPixelAspect(const rational &ratio)
 {
   sizer_->SetPixelAspectRatio(ratio);
 
-  foreach (ViewerWindow* vw, windows_) {
+  for (ViewerWindow* vw : windows_) {
     vw->SetPixelAspectRatio(ratio);
   }
 }
@@ -1797,7 +1797,7 @@ void ViewerWidget::InterlacingChangedSlot(VideoParams::Interlacing interlacing)
   // Automatically set a "sane" deinterlacing option
   bool deint = interlacing != VideoParams::kInterlaceNone;
 
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->SetDeinterlacing(deint);
   }
 }
@@ -1806,7 +1806,7 @@ void ViewerWidget::UpdateRendererVideoParameters()
 {
   VideoParams vp = GetConnectedNode()->GetVideoParams();
 
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->SetVideoParams(vp);
   }
 }
@@ -1817,7 +1817,7 @@ void ViewerWidget::UpdateRendererAudioParameters()
 
   UpdateAudioProcessor();
 
-  foreach (ViewerDisplayWidget *dw, playback_devices_) {
+  for (ViewerDisplayWidget *dw : playback_devices_) {
     dw->SetAudioParams(ap);
   }
 }

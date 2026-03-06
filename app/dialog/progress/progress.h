@@ -50,9 +50,9 @@ protected:
   void ShowErrorMessage(const QString& title, const QString& message);
 
 private:
-  QProgressBar* bar_;
+  QProgressBar* bar_ = nullptr;
 
-  ElapsedCounterWidget* elapsed_timer_lbl_;
+  ElapsedCounterWidget* elapsed_timer_lbl_ = nullptr;
 
   bool show_progress_;
 

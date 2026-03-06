@@ -53,7 +53,7 @@ bool SaveOTIOTask::Run()
 
   std::vector<OTIO::SerializableObject*> serialized;
 
-  foreach (Sequence* seq, sequences) {
+  for (Sequence* seq : sequences) {
     auto otio_timeline = SerializeTimeline(seq);
 
     if (otio_timeline) {
@@ -61,7 +61,7 @@ bool SaveOTIOTask::Run()
       serialized.push_back(otio_timeline);
     } else {
       // Delete all existing timelines
-      foreach (auto s, serialized) {
+      for (auto *s : serialized) {
         s->possibly_delete();
       }
 
@@ -86,7 +86,7 @@ bool SaveOTIOTask::Run()
     collection->possibly_delete();
 
     // Delete all existing timelines
-    foreach (auto s, serialized) {
+    for (auto *s : serialized) {
       s->possibly_delete();
     }
   }
@@ -134,7 +134,7 @@ OTIO::Track *SaveOTIOTask::SerializeTrack(Track *track, double sequence_rate, ra
     goto fail;
   }
 
-  foreach (Block* block, track->Blocks()) {
+  for (Block* block : track->Blocks()) {
     OTIO::Composable* otio_block = nullptr;
 
     if (dynamic_cast<ClipBlock*>(block)) {
@@ -219,13 +219,13 @@ bool SaveOTIOTask::SerializeTrackList(TrackList *list, OTIO::Timeline* otio_time
 
   rational max_track_length = RATIONAL_MIN;
 
-  foreach (Track* track, list->GetTracks()) {
+  for (Track* track : list->GetTracks()) {
     if (track->track_length() > max_track_length) {
       max_track_length = track->track_length();
     }
   }
 
-  foreach (Track* track, list->GetTracks()) {
+  for (Track* track : list->GetTracks()) {
     auto otio_track = SerializeTrack(track, sequence_rate, max_track_length);
 
     if (!otio_track) {

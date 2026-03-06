@@ -125,7 +125,7 @@ private:
   void VideoInvalidatedFromNode(ViewerOutput *context, PlaybackCache *cache, const arcvideo::TimeRange &range);
   void AudioInvalidatedFromNode(ViewerOutput *context, PlaybackCache *cache, const arcvideo::TimeRange &range);
 
-  Project* project_;
+  Project* project_ = nullptr;
 
   ProjectCopier *copier_;
 
@@ -147,7 +147,7 @@ private:
   QVector<RenderTicketWatcher*> running_video_tasks_;
   QVector<RenderTicketWatcher*> running_audio_tasks_;
 
-  ColorManager* copied_color_manager_;
+  ColorManager* copied_color_manager_ = nullptr;
 
   struct VideoJob {
     Node *node;

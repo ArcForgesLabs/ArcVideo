@@ -52,9 +52,9 @@ protected:
   }
 
 private:
-  Project* project_;
+  Project* project_ = nullptr;
 
-  TimelineWorkArea* points_;
+  TimelineWorkArea* points_ = nullptr;
 
   bool old_enabled_;
 

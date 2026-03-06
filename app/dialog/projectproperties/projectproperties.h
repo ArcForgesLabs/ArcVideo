@@ -45,11 +45,11 @@ public slots:
 private:
   bool VerifyPathAndWarnIfBad(const QString &path);
 
-  Project* working_project_;
+  Project* working_project_ = nullptr;
 
-  QLineEdit* ocio_filename_;
+  QLineEdit* ocio_filename_ = nullptr;
 
-  QComboBox* default_input_colorspace_;
+  QComboBox* default_input_colorspace_ = nullptr;
 
   QComboBox *reference_space_;
 
@@ -57,7 +57,7 @@ private:
 
   QString ocio_config_error_;
 
-  PathWidget* custom_cache_path_;
+  PathWidget* custom_cache_path_ = nullptr;
 
   static const int kDiskCacheRadioCount = 3;
   QRadioButton *disk_cache_radios_[kDiskCacheRadioCount];

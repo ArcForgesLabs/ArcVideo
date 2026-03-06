@@ -48,7 +48,7 @@ private:
 
   bool SerializeTrackList(TrackList* list, OTIO::Timeline *otio_timeline, double sequence_rate);
 
-  Project* project_;
+  Project* project_ = nullptr;
 
 };
 

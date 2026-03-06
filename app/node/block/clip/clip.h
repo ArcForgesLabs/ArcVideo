@@ -240,8 +240,8 @@ private:
 
   QVector<Block*> block_links_;
 
-  TransitionBlock* in_transition_;
-  TransitionBlock* out_transition_;
+  TransitionBlock* in_transition_ = nullptr;
+  TransitionBlock* out_transition_ = nullptr;
 
   ViewerOutput *connected_viewer_;
 

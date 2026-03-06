@@ -140,7 +140,7 @@ void ImportTool::DragMove(TimelineViewMouseEvent *event)
       rational earliest_ghost = RATIONAL_MAX;
 
       // Move ghosts to the mouse cursor
-      foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+      for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
         ghost->SetInAdjustment(time_movement);
         ghost->SetOutAdjustment(time_movement);
         ghost->SetTrackAdjustment(track_movement);
@@ -197,7 +197,7 @@ void ImportTool::PlaceAt(const QVector<ViewerOutput *> &footage, const rational 
 {
   DraggedFootageData refs;
 
-  foreach (ViewerOutput* f, footage) {
+  for (ViewerOutput* f : footage) {
     refs.append({f, f->GetEnabledStreamsAsReferences()});
   }
 
@@ -265,7 +265,7 @@ void ImportTool::FootageToGhosts(rational ghost_start, const DraggedFootageData 
     }
 
     // Create ghosts
-    foreach (const Track::Reference& ref, it->second) {
+    for (const Track::Reference& ref : it->second) {
       Track::Type track_type = ref.type();
       Track::Reference dest_track(track_type, track_offsets.at(track_type));
 

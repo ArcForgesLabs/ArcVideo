@@ -49,7 +49,7 @@ public:
 private:
   void UpdateLabel();
 
-  QLabel* label_;
+  QLabel* label_ = nullptr;
 
   double multiplier_;
   QString value_;

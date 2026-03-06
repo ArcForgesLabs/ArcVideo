@@ -511,7 +511,7 @@ private:
   /**
    * @brief Internal main window object
    */
-  MainWindow* main_window_;
+  MainWindow* main_window_ = nullptr;
 
   /**
    * @brief List of currently open projects
@@ -566,7 +566,7 @@ private:
   /**
    * @brief Internal translator
    */
-  QTranslator* translator_;
+  QTranslator* translator_ = nullptr;
 
   /**
    * @brief List of projects that are unsaved but have autorecovery projects

@@ -181,7 +181,7 @@ void TrackList::UpdateTotalLength()
 {
   total_length_ = 0;
 
-  foreach (Track* track, track_cache_) {
+  for (Track* track : track_cache_) {
     if (track) {
       total_length_ = qMax(total_length_, track->track_length());
     }

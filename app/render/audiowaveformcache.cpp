@@ -33,7 +33,7 @@ AudioWaveformCache::AudioWaveformCache(QObject *parent) :
 void AudioWaveformCache::WriteWaveform(const TimeRange &range, const TimeRangeList &valid_ranges, const AudioVisualWaveform *waveform)
 {
   // Write each valid range to the segments
-  foreach (const TimeRange& r, valid_ranges) {
+  for (const TimeRange &r : valid_ranges) {
     if (waveform) {
       waveforms_->OverwriteSums(*waveform, r.in(), r.in() - range.in(), r.length());
     }

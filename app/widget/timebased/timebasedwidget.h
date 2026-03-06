@@ -203,11 +203,11 @@ private:
 
   bool UserIsDraggingPlayhead() const;
 
-  ViewerOutput* viewer_node_;
+  ViewerOutput* viewer_node_ = nullptr;
 
-  TimeRuler* ruler_;
+  TimeRuler* ruler_ = nullptr;
 
-  ResizableTimelineScrollBar* scrollbar_;
+  ResizableTimelineScrollBar* scrollbar_ = nullptr;
 
   bool auto_max_scrollbar_;
 

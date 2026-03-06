@@ -198,7 +198,7 @@ protected:
 private:
   QUuid uuid_;
 
-  Folder* root_;
+  Folder* root_ = nullptr;
 
   QString filename_;
 

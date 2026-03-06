@@ -107,7 +107,7 @@ private:
    *
    * If this is nullptr, all sizing operations are no-ops
    */
-  QWidget* widget_;
+  QWidget* widget_ = nullptr;
 
   /**
    * @brief Internal resolution values
@@ -123,8 +123,8 @@ private:
   double zoom_;
   double current_widget_scale_;
 
-  QScrollBar* horiz_scrollbar_;
-  QScrollBar* vert_scrollbar_;
+  QScrollBar* horiz_scrollbar_ = nullptr;
+  QScrollBar* vert_scrollbar_ = nullptr;
 
 private slots:
   void ScrollBarMoved();

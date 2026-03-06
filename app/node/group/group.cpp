@@ -135,7 +135,7 @@ void NodeGroup::SaveCustom(QXmlStreamWriter *writer) const
 {
   writer->writeStartElement(QStringLiteral("inputpassthroughs"));
 
-  foreach (const NodeGroup::InputPassthrough &ip, this->GetInputPassthroughs()) {
+  for (const NodeGroup::InputPassthrough &ip : this->GetInputPassthroughs()) {
     writer->writeStartElement(QStringLiteral("inputpassthrough"));
 
     // Reference to inner input
@@ -179,7 +179,7 @@ void NodeGroup::PostLoadEvent(SerializedData *data)
 {
   super::PostLoadEvent(data);
 
-  foreach (const SerializedData::GroupLink &l, data->group_input_links) {
+  for (const SerializedData::GroupLink &l : data->group_input_links) {
     if (Node *input_node = data->node_ptrs.value(l.input_node)) {
       NodeInput resolved(input_node, l.input_id, l.input_element);
 

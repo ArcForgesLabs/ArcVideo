@@ -138,9 +138,9 @@ private:
 
   Qt::KeyboardModifiers modifiers_;
 
-  QEvent* source_event_;
+  QEvent* source_event_ = nullptr;
 
-  const QMimeData* mime_data_;
+  const QMimeData* mime_data_ = nullptr;
 
   bool bypass_import_buffer_;
 

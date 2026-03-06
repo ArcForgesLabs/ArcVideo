@@ -38,7 +38,7 @@ ProjectImportErrorDialog::ProjectImportErrorDialog(const QStringList& filenames,
                                   "support their formats.")));
 
   QListWidget* list_widget = new QListWidget();
-  foreach (const QString& s, filenames) {
+  for (const QString& s : filenames) {
     list_widget->addItem(s);
   }
   layout->addWidget(list_widget);

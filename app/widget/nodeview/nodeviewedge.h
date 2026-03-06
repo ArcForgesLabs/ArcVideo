@@ -126,9 +126,9 @@ private:
 
   int element_;
 
-  NodeViewItem* from_item_;
+  NodeViewItem* from_item_ = nullptr;
 
-  NodeViewItem* to_item_;
+  NodeViewItem* to_item_ = nullptr;
 
   int edge_width_;
 

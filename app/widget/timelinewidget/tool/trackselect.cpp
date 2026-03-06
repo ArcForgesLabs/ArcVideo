@@ -46,7 +46,7 @@ void TrackSelectTool::MousePress(TimelineViewMouseEvent *event)
     }
   } else {
     // All tracks
-    foreach (Track *track, parent()->sequence()->GetTracks()) {
+    for (Track *track : parent()->sequence()->GetTracks()) {
       SelectBlocksOnTrack(track, event, &blocks, forward);
     }
   }
@@ -79,7 +79,7 @@ void TrackSelectTool::SelectBlocksOnTrack(Track *track, TimelineViewMouseEvent *
 
       if (!(event->GetModifiers() & Qt::AltModifier)) {
         if (ClipBlock *clip = dynamic_cast<ClipBlock*>(b)) {
-          foreach (Block *link, clip->block_links()) {
+          for (Block *link : clip->block_links()) {
             if (!blocks->contains(link)) {
               parent()->AddSelection(link);
               blocks->append(link);

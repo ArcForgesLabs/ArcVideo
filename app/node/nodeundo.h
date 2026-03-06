@@ -48,8 +48,8 @@ protected:
   virtual void undo() override;
 
 private:
-  Node* node_;
-  Node* context_;
+  Node* node_ = nullptr;
+  Node* context_ = nullptr;
   Node::Position pos_;
   Node::Position old_pos_;
   bool added_;
@@ -79,8 +79,8 @@ protected:
 private:
   void move_recursively(Node *node, const QPointF &diff);
 
-  Node* node_;
-  Node* context_;
+  Node* node_ = nullptr;
+  Node* context_ = nullptr;
   Node::Position pos_;
   QVector<UndoCommand*> commands_;
 
@@ -165,7 +165,7 @@ protected:
   }
 
 private:
-  Node* node_;
+  Node* node_ = nullptr;
   QString input_;
   int index_;
 
@@ -216,7 +216,7 @@ protected:
   }
 
 private:
-  Node* node_;
+  Node* node_ = nullptr;
   QString input_;
   int size_;
   int old_size_;
@@ -256,8 +256,8 @@ protected:
     node_->InputArrayInsert(input_, index_);
 
     // Restore keyframes
-    foreach (const NodeKeyframeTrack& track, keyframes_) {
-      foreach (NodeKeyframe* key, track) {
+    for (const NodeKeyframeTrack& track : keyframes_) {
+      for (NodeKeyframe* key : track) {
         key->setParent(node_);
       }
     }
@@ -269,7 +269,7 @@ protected:
   }
 
 private:
-  Node* node_;
+  Node* node_ = nullptr;
   QString input_;
   int index_;
 
@@ -322,7 +322,7 @@ private:
   Node *output_;
   NodeInput input_;
 
-  NodeEdgeRemoveCommand* remove_command_;
+  NodeEdgeRemoveCommand* remove_command_ = nullptr;
 
 };
 
@@ -341,8 +341,8 @@ protected:
 private:
   QObject memory_manager_;
 
-  Project* graph_;
-  Node* node_;
+  Project* graph_ = nullptr;
+  Node* node_ = nullptr;
 };
 
 class NodeRemoveAndDisconnectCommand : public UndoCommand {
@@ -386,10 +386,10 @@ protected:
 private:
   QObject memory_manager_;
 
-  Node* node_;
-  Project* graph_;
+  Node* node_ = nullptr;
+  Project* graph_ = nullptr;
 
-  MultiUndoCommand* command_;
+  MultiUndoCommand* command_ = nullptr;
 
 };
 
@@ -424,7 +424,7 @@ protected:
 
     // Remove exclusive dependencies
     QVector<Node*> deps = node_->GetExclusiveDependencies();
-    foreach (Node* d, deps) {
+    for (Node* d : deps) {
       command_->add_child(new NodeRemoveAndDisconnectCommand(d));
     }
   }
@@ -440,8 +440,8 @@ protected:
   }
 
 private:
-  Node* node_;
-  MultiUndoCommand* command_;
+  Node* node_ = nullptr;
+  MultiUndoCommand* command_ = nullptr;
 
 };
 
@@ -481,8 +481,8 @@ protected:
   }
 
 private:
-  Node* a_;
-  Node* b_;
+  Node* a_ = nullptr;
+  Node* b_ = nullptr;
   bool link_;
   bool done_;
 
@@ -505,14 +505,14 @@ protected:
   {
     unlinked_ = node_->links();
 
-    foreach (Node* link, unlinked_) {
+    for (Node* link : unlinked_) {
       Node::Unlink(node_, link);
     }
   }
 
   virtual void undo() override
   {
-    foreach (Node* link, unlinked_) {
+    for (Node* link : unlinked_) {
       Node::Link(node_, link);
     }
 
@@ -520,7 +520,7 @@ protected:
   }
 
 private:
-  Node* node_;
+  Node* node_ = nullptr;
 
   QVector<Node*> unlinked_;
 
@@ -531,8 +531,8 @@ public:
   NodeLinkManyCommand(const QVector<Node*> nodes, bool link) :
     nodes_(nodes)
   {
-    foreach (Node* a, nodes_) {
-      foreach (Node* b, nodes_) {
+    for (Node* a : nodes_) {
+      for (Node* b : nodes_) {
         if (a != b) {
           add_child(new NodeLinkCommand(a, b, link));
         }
@@ -663,9 +663,9 @@ protected:
   virtual void undo() override;
 
 private:
-  Node* input_;
+  Node* input_ = nullptr;
 
-  NodeKeyframe* keyframe_;
+  NodeKeyframe* keyframe_ = nullptr;
 
   QObject memory_manager_;
 
@@ -683,9 +683,9 @@ protected:
   virtual void undo() override;
 
 private:
-  Node* input_;
+  Node* input_ = nullptr;
 
-  NodeKeyframe* keyframe_;
+  NodeKeyframe* keyframe_ = nullptr;
 
   QObject memory_manager_;
 
@@ -704,7 +704,7 @@ protected:
   virtual void undo() override;
 
 private:
-  NodeKeyframe* key_;
+  NodeKeyframe* key_ = nullptr;
 
   rational old_time_;
   rational new_time_;
@@ -724,7 +724,7 @@ protected:
   virtual void undo() override;
 
 private:
-  NodeKeyframe* key_;
+  NodeKeyframe* key_ = nullptr;
 
   QVariant old_value_;
   QVariant new_value_;
@@ -801,7 +801,7 @@ protected:
   virtual void undo() override;
 
 private:
-  Node* node_;
+  Node* node_ = nullptr;
 
   QString input_;
 

@@ -267,7 +267,7 @@ public:
     }
 
   private:
-    TimelineWidget* timeline_;
+    TimelineWidget* timeline_ = nullptr;
     TimelineWidgetSelections old_;
     TimelineWidgetSelections now_;
     bool process_block_changes_;
@@ -330,15 +330,15 @@ private:
 
   QVector<TimelineTool*> tools_;
 
-  ImportTool* import_tool_;
+  ImportTool* import_tool_ = nullptr;
 
-  TimelineTool* active_tool_;
+  TimelineTool* active_tool_ = nullptr;
 
   QVector<TimelineViewGhostItem*> ghost_items_;
 
   QVector<TimelineAndTrackView*> views_;
 
-  RationalSlider* timecode_label_;
+  RationalSlider* timecode_label_ = nullptr;
 
   QVector<Block*> selected_blocks_;
 
@@ -348,7 +348,7 @@ private:
 
   bool use_audio_time_units_;
 
-  QSplitter* view_splitter_;
+  QSplitter* view_splitter_ = nullptr;
 
   MultiUndoCommand *subtitle_show_command_;
   Track *subtitle_tentative_track_;

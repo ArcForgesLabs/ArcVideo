@@ -39,27 +39,27 @@ public:
   virtual void Accept(MultiUndoCommand* command) override;
 
 private:
-  QComboBox* audio_backend_combobox_;
+  QComboBox* audio_backend_combobox_ = nullptr;
 
   /**
    * @brief UI widget for selecting the output audio device
    */
-  QComboBox* audio_output_devices_;
+  QComboBox* audio_output_devices_ = nullptr;
 
   /**
    * @brief UI widget for selecting the input audio device
    */
-  QComboBox* audio_input_devices_;
+  QComboBox* audio_input_devices_ = nullptr;
 
   /**
    * @brief UI widget for editing the recording channels
    */
-  QComboBox* recording_combobox_;
+  QComboBox* recording_combobox_ = nullptr;
 
   /**
    * @brief Button that triggers a refresh of the available audio devices
    */
-  QPushButton* refresh_devices_btn_;
+  QPushButton* refresh_devices_btn_ = nullptr;
 
   SampleRateComboBox *output_rate_combo_;
   ChannelLayoutComboBox *output_ch_layout_combo_;

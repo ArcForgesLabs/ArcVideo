@@ -54,7 +54,7 @@ private slots:
 private:
   void UpdateColor();
 
-  ColorManager* color_manager_;
+  ColorManager* color_manager_ = nullptr;
 
   ManagedColor color_;
 

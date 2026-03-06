@@ -115,7 +115,7 @@ private:
   /**
    * @brief UI widget for editing keyboard shortcuts
    */
-  QTreeWidget* keyboard_tree_;
+  QTreeWidget* keyboard_tree_ = nullptr;
 
   /**
    * @brief List of keyboard shortcut actions that can be triggered (links with key_shortcut_items and

@@ -83,25 +83,25 @@ private:
   struct InputUI {
     InputUI();
 
-    QLabel* main_label;
-    NodeParamViewWidgetBridge* widget_bridge;
-    NodeParamViewConnectedLabel* connected_label;
-    NodeParamViewKeyframeControl* key_control;
-    QGridLayout* layout;
+    QLabel* main_label = nullptr;
+    NodeParamViewWidgetBridge* widget_bridge = nullptr;
+    NodeParamViewConnectedLabel* connected_label = nullptr;
+    NodeParamViewKeyframeControl* key_control = nullptr;
+    QGridLayout* layout = nullptr;
     int row;
     QPushButton *extra_btn;
     QCheckBox *optional_checkbox;
 
-    NodeParamViewArrayButton* array_insert_btn;
-    NodeParamViewArrayButton* array_remove_btn;
+    NodeParamViewArrayButton* array_insert_btn = nullptr;
+    NodeParamViewArrayButton* array_remove_btn = nullptr;
   };
 
   QHash<NodeInput, InputUI> input_ui_map_;
 
   struct ArrayUI {
-    QWidget* widget;
+    QWidget* widget = nullptr;
     int count;
-    NodeParamViewArrayButton* append_btn;
+    NodeParamViewArrayButton* append_btn = nullptr;
   };
 
   void SetTimeTargetOnInputUI(const InputUI &ui);
@@ -226,9 +226,9 @@ protected slots:
   virtual void Retranslate() override;
 
 private:
-  NodeParamViewItemBody* body_;
+  NodeParamViewItemBody* body_ = nullptr;
 
-  Node* node_;
+  Node* node_ = nullptr;
 
   NodeParamViewCheckBoxBehavior create_checkboxes_;
 

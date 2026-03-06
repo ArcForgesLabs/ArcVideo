@@ -60,9 +60,9 @@ private:
 
   void AddItemInternal(QTreeWidgetItem* folder, PresetPtr preset, bool is_custom, int index, const QString& description = QString());
 
-  QTreeWidget* preset_tree_;
+  QTreeWidget* preset_tree_ = nullptr;
 
-  QTreeWidgetItem* my_presets_folder_;
+  QTreeWidgetItem* my_presets_folder_ = nullptr;
 
   QVector<PresetPtr> default_preset_data_;
 

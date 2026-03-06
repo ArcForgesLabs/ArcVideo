@@ -93,15 +93,15 @@ public slots:
   virtual void accept() override;
 
 private:
-  Sequence* sequence_;
+  Sequence* sequence_ = nullptr;
 
-  SequenceDialogPresetTab* preset_tab_;
+  SequenceDialogPresetTab* preset_tab_ = nullptr;
 
-  SequenceDialogParameterTab* parameter_tab_;
+  SequenceDialogParameterTab* parameter_tab_ = nullptr;
 
   bool make_undoable_;
 
-  QLineEdit* name_field_;
+  QLineEdit* name_field_ = nullptr;
 
   /**
    * @brief An UndoCommand for setting the parameters on a sequence
@@ -121,7 +121,7 @@ private:
     virtual void undo() override;
 
   private:
-    Sequence* sequence_;
+    Sequence* sequence_ = nullptr;
 
     VideoParams new_video_params_;
     AudioParams new_audio_params_;

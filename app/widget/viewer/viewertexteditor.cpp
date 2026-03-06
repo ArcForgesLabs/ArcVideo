@@ -161,7 +161,7 @@ void ViewerTextEditor::UpdateToolBar(ViewerTextEditorToolBar *toolbar, const QTe
   }
 
   QString style = f.fontStyleName().toString();
-  QStringList styles = QFontDatabase().styles(family);
+  QStringList styles = QFontDatabase::styles(family);
   if (!styles.isEmpty() && (style.isEmpty() || !styles.contains(style))) {
     // There seems to be no better way to find the "regular" style outside of this heuristic.
     // Feel free to add more if a font isn't working right.
@@ -193,7 +193,7 @@ void ViewerTextEditor::UpdateToolBar(ViewerTextEditorToolBar *toolbar, const QTe
 void ViewerTextEditor::FormatChanged(const QTextCharFormat &f)
 {
   if (!block_update_toolbar_signal_) {
-    foreach (ViewerTextEditorToolBar *toolbar, toolbars_) {
+    for (ViewerTextEditorToolBar *toolbar : toolbars_) {
       UpdateToolBar(toolbar, f, textCursor().blockFormat(), this->alignment());
     }
   }
@@ -268,8 +268,8 @@ void ViewerTextEditor::ApplyStyle(QTextCharFormat *format, const QString &family
 {
   // NOTE: Windows appears to require setting weight and italic manually, while macOS and Linux are
   //       perfectly fine with just the style name
-  format->setFontWeight(QFontDatabase().weight(family, style));
-  format->setFontItalic(QFontDatabase().italic(family, style));
+  format->setFontWeight(QFontDatabase::weight(family, style));
+  format->setFontItalic(QFontDatabase::italic(family, style));
 
   format->setFontStyleName(style);
 }
@@ -540,8 +540,8 @@ void ViewerTextEditorToolBar::UpdateFontStyleList(const QString &family)
 
   style_combo_->blockSignals(true);
   style_combo_->clear();
-  QStringList l = QFontDatabase().styles(family);
-  foreach (const QString &style, l) {
+  QStringList l = QFontDatabase::styles(family);
+  for (const QString &style : l) {
     style_combo_->addItem(style);
   }
   style_combo_->setCurrentText(temp);
@@ -560,7 +560,7 @@ void ViewerTextEditorToolBar::mousePressEvent(QMouseEvent *event)
   QWidget::mousePressEvent(event);
 
   if (event->button() == Qt::LeftButton && drag_enabled_) {
-    drag_anchor_ = event->pos();
+    drag_anchor_ = event->position().toPoint();
   }
 }
 
@@ -569,7 +569,7 @@ void ViewerTextEditorToolBar::mouseMoveEvent(QMouseEvent *event)
   QWidget::mouseMoveEvent(event);
 
   if ((event->buttons() & Qt::LeftButton) && drag_enabled_) {
-    this->move(mapToParent(QPoint(event->pos() - drag_anchor_)));
+    this->move(mapToParent(QPoint(event->position().toPoint() - drag_anchor_)));
   }
 }
 

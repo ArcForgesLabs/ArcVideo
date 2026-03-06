@@ -62,7 +62,7 @@ TimelineView::TimelineView(Qt::Alignment vertical_alignment, QWidget *parent) :
 void TimelineView::mousePressEvent(QMouseEvent *event)
 {
   // If we click on marker, jump to that point in the timeline
-  QPointF scene_pos = mapToScene(event->pos());
+  QPointF scene_pos = mapToScene(event->position().toPoint());
   for (auto it=clip_marker_rects_.cbegin(); it!=clip_marker_rects_.cend(); it++) {
     if (it.value().contains(scene_pos)) {
       GetViewerNode()->SetPlayhead(it.key()->time().in());
@@ -143,7 +143,7 @@ void TimelineView::mouseDoubleClickEvent(QMouseEvent *event)
 
 void TimelineView::dragEnterEvent(QDragEnterEvent *event)
 {
-  TimelineViewMouseEvent timeline_event = CreateMouseEvent(event->pos(), Qt::NoButton, event->keyboardModifiers());
+  TimelineViewMouseEvent timeline_event = CreateMouseEvent(event->position().toPoint(), Qt::NoButton, event->modifiers());
 
   timeline_event.SetMimeData(event->mimeData());
   timeline_event.SetEvent(event);
@@ -153,7 +153,7 @@ void TimelineView::dragEnterEvent(QDragEnterEvent *event)
 
 void TimelineView::dragMoveEvent(QDragMoveEvent *event)
 {
-  TimelineViewMouseEvent timeline_event = CreateMouseEvent(event->pos(), Qt::NoButton, event->keyboardModifiers());
+  TimelineViewMouseEvent timeline_event = CreateMouseEvent(event->position().toPoint(), Qt::NoButton, event->modifiers());
 
   timeline_event.SetMimeData(event->mimeData());
   timeline_event.SetEvent(event);
@@ -168,7 +168,7 @@ void TimelineView::dragLeaveEvent(QDragLeaveEvent *event)
 
 void TimelineView::dropEvent(QDropEvent *event)
 {
-  TimelineViewMouseEvent timeline_event = CreateMouseEvent(event->pos(), Qt::NoButton, event->keyboardModifiers());
+  TimelineViewMouseEvent timeline_event = CreateMouseEvent(event->position().toPoint(), Qt::NoButton, event->modifiers());
 
   timeline_event.SetMimeData(event->mimeData());
   timeline_event.SetEvent(event);
@@ -186,7 +186,7 @@ void TimelineView::drawBackground(QPainter *painter, const QRectF &rect)
 
   int line_y = 0;
 
-  foreach (Track* track, connected_track_list_->GetTracks()) {
+  for (Track* track : connected_track_list_->GetTracks()) {
     line_y += track->GetTrackHeightInPixels();
 
     // One px gap between tracks
@@ -222,7 +222,7 @@ void TimelineView::drawForeground(QPainter *painter, const QRectF &rect)
       if (it.key().type() == connected_track_list_->type()) {
         int track_index = it.key().index();
 
-        foreach (const TimeRange& range, it.value()) {
+        for (const TimeRange &range : it.value()) {
           painter->drawRect(TimeToScene(range.in()),
                             GetTrackY(track_index),
                             TimeToScene(range.length()),
@@ -237,7 +237,7 @@ void TimelineView::drawForeground(QPainter *painter, const QRectF &rect)
 
   // Draw ghosts
   if (ghosts_ && !ghosts_->isEmpty()) {
-    foreach (TimelineViewGhostItem* ghost, (*ghosts_)) {
+    for (TimelineViewGhostItem* ghost : (*ghosts_)) {
       if (ghost->GetTrack().type() == connected_track_list_->type()
           && !ghost->IsInvisible()) {
         int track_index = ghost->GetAdjustedTrack().index();
@@ -360,7 +360,7 @@ TimelineCoordinate TimelineView::SceneToCoordinate(const QPointF& pt)
 
 TimelineViewMouseEvent TimelineView::CreateMouseEvent(QMouseEvent *event)
 {
-  return CreateMouseEvent(event->pos(), event->button(), event->modifiers());
+  return CreateMouseEvent(event->position().toPoint(), event->button(), event->modifiers());
 }
 
 TimelineViewMouseEvent TimelineView::CreateMouseEvent(const QPoint& pos, Qt::MouseButton button, Qt::KeyboardModifiers modifiers)
@@ -381,7 +381,7 @@ void TimelineView::DrawBlocks(QPainter *painter, bool foreground)
   rational start_time = SceneToTime(GetTimelineLeftBound());
   rational end_time = SceneToTime(GetTimelineRightBound());
 
-  foreach (Track* track, connected_track_list_->GetTracks()) {
+  for (Track* track : connected_track_list_->GetTracks()) {
     // Get first visible block in this track
     Block* block = track->NearestBlockBeforeOrAt(start_time);
 
@@ -856,7 +856,7 @@ Block *TimelineView::GetItemAtScenePos(const rational &time, int track_index) co
     Track* track = connected_track_list_->GetTrackAt(track_index);
 
     if (track) {
-      foreach (Block* b, track->Blocks()) {
+      for (Block* b : track->Blocks()) {
         if (b->in() <= time && b->out() > time) {
           return b;
         }

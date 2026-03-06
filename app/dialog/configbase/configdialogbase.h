@@ -47,9 +47,9 @@ protected:
   virtual void AcceptEvent(){}
 
 private:
-  QListWidget* list_widget_;
+  QListWidget* list_widget_ = nullptr;
 
-  QStackedWidget* preference_pane_stack_;
+  QStackedWidget* preference_pane_stack_ = nullptr;
 
   QList<ConfigDialogBaseTab*> tabs_;
 

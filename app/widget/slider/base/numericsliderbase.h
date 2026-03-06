@@ -65,7 +65,7 @@ private:
 
   virtual QVariant AdjustValue(const QVariant& value) const override;
 
-  SliderLadder* drag_ladder_;
+  SliderLadder* drag_ladder_ = nullptr;
 
   int ladder_element_count_;
 

@@ -356,7 +356,7 @@ public:
 private:
   Type type_;
   QVariant data_;
-  const Node* from_;
+  const Node* from_ = nullptr;
   QString tag_;
   bool array_;
 

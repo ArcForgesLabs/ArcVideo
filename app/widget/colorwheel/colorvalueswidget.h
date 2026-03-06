@@ -62,9 +62,9 @@ private:
 
   FloatSlider* CreateColorSlider();
 
-  FloatSlider* red_slider_;
-  FloatSlider* green_slider_;
-  FloatSlider* blue_slider_;
+  FloatSlider* red_slider_ = nullptr;
+  FloatSlider* green_slider_ = nullptr;
+  FloatSlider* blue_slider_ = nullptr;
 
   QLabel *hex_lbl_;
   StringSlider *hex_slider_;
@@ -121,15 +121,15 @@ private:
 
   void UpdateRefFromDisplay();
 
-  ColorManager* manager_;
+  ColorManager* manager_ = nullptr;
 
-  ColorPreviewBox* preview_;
+  ColorPreviewBox* preview_ = nullptr;
 
-  ColorValuesTab* input_tab_;
+  ColorValuesTab* input_tab_ = nullptr;
 
-  ColorValuesTab* reference_tab_;
+  ColorValuesTab* reference_tab_ = nullptr;
 
-  ColorValuesTab* display_tab_;
+  ColorValuesTab* display_tab_ = nullptr;
 
   ColorProcessorPtr input_to_ref_;
 

@@ -62,7 +62,7 @@ private:
 
   bool show_cache_status_;
 
-  PlaybackCache* playback_cache_;
+  PlaybackCache* playback_cache_ = nullptr;
 
 };
 

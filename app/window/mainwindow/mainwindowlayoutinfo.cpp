@@ -8,7 +8,7 @@ void MainWindowLayoutInfo::toXml(QXmlStreamWriter *writer) const
 
   writer->writeStartElement(QStringLiteral("folders"));
 
-  foreach (Folder* folder, open_folders_) {
+  for (Folder *folder : open_folders_) {
     writer->writeTextElement(QStringLiteral("folder"), QString::number(reinterpret_cast<quintptr>(folder)));
   }
 
@@ -16,7 +16,7 @@ void MainWindowLayoutInfo::toXml(QXmlStreamWriter *writer) const
 
   writer->writeStartElement(QStringLiteral("timeline"));
 
-  foreach (Sequence *sequence, open_sequences_) {
+  for (Sequence *sequence : open_sequences_) {
     writer->writeTextElement(QStringLiteral("sequence"), QString::number(reinterpret_cast<quintptr>(sequence)));
   }
 
@@ -24,7 +24,7 @@ void MainWindowLayoutInfo::toXml(QXmlStreamWriter *writer) const
 
   writer->writeStartElement(QStringLiteral("viewers"));
 
-  foreach (Sequence *sequence, open_sequences_) {
+  for (Sequence *sequence : open_sequences_) {
     writer->writeTextElement(QStringLiteral("viewer"), QString::number(reinterpret_cast<quintptr>(sequence)));
   }
 

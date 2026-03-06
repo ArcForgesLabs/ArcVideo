@@ -24,7 +24,7 @@ option(BUILD_DOXYGEN "Build Doxygen documentation" OFF)
 option(BUILD_TESTS "Build unit tests" OFF)
 option(USE_WERROR "Error on compile warning" OFF)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -45,36 +45,48 @@ include(cmake/Sanitizers.cmake)
 enable_sanitizers(arcvideo-sanitizers)
 list(APPEND ARCVIDEO_LIBRARIES arcvideo-sanitizers)
 
-# Set compiler options
+# Compiler options — split by platform
+# On clang-cl, /W4 is the correct equivalent of GCC -Wall -Wextra.
 if(MSVC)
   set(ARCVIDEO_COMPILE_OPTIONS
-    /wd4267
-    /wd4244
-    /experimental:external
-    /external:anglebrackets
-    /external:W0
-    "$<$<CONFIG:RELEASE>:/O2>"
+    /W4
+    /EHsc
     "$<$<COMPILE_LANGUAGE:CXX>:/MP>"
+    "$<$<CONFIG:RELEASE>:/O2>"
   )
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    # clang-cl: suppress only FASTBuild and MSVC-compat noise
+    list(APPEND ARCVIDEO_COMPILE_OPTIONS
+      -Wno-unused-command-line-argument
+      -Wno-unused-parameter
+      -Wno-microsoft-include
+    )
+  else()
+    # Native cl.exe: use /external:W0 to suppress third-party header warnings
+    list(APPEND ARCVIDEO_COMPILE_OPTIONS
+      /external:anglebrackets
+      /external:W0
+      /wd4100
+    )
+  endif()
   if (USE_WERROR)
-    list(APPEND ARCVIDEO_COMPILE_OPTIONS "/WX")
+    list(APPEND ARCVIDEO_COMPILE_OPTIONS /WX)
   endif()
 else()
   set(ARCVIDEO_COMPILE_OPTIONS
     "$<$<CONFIG:RELEASE>:-O2>"
     -Wuninitialized
-    -pedantic-errors
     -Wall
     -Wextra
     -Wno-unused-parameter
     -Wshadow
   )
   if (USE_WERROR)
-    list(APPEND ARCVIDEO_COMPILE_OPTIONS "-Werror")
+    list(APPEND ARCVIDEO_COMPILE_OPTIONS -Werror)
   endif()
 endif()
 
-set(ARCVIDEO_DEFINITIONS -DQT_DEPRECATED_WARNINGS)
+set(ARCVIDEO_DEFINITIONS -DQT_DISABLE_DEPRECATED_BEFORE=0x060000)
 if (WIN32)
   list(APPEND ARCVIDEO_DEFINITIONS -DUNICODE -D_UNICODE)
 endif()
@@ -101,19 +113,25 @@ list(APPEND ARCVIDEO_LIBRARIES OpenEXR::OpenEXR Imath::Imath)
 
 # --- Qt6 ---
 set(QT_VERSION_MAJOR 6)
-set(QT_LIBRARIES Core Gui Widgets OpenGL LinguistTools Concurrent)
+set(QT_LIBRARIES Core Gui Widgets OpenGL Concurrent)
 if (UNIX AND NOT APPLE)
   list(APPEND QT_LIBRARIES DBus)
 endif()
-find_package(Qt6 REQUIRED COMPONENTS ${QT_LIBRARIES} OpenGLWidgets OPTIONAL_COMPONENTS Network)
+find_package(Qt6 REQUIRED COMPONENTS ${QT_LIBRARIES} OpenGLWidgets OPTIONAL_COMPONENTS Network LinguistTools)
 if (NOT Qt6Network_FOUND)
   message(STATUS "Qt6::Network not found, crash reporting will be disabled.")
+endif()
+if (NOT Qt6LinguistTools_FOUND)
+  message(STATUS "Qt6::LinguistTools not found, translation generation will be disabled.")
 endif()
 list(APPEND ARCVIDEO_LIBRARIES
   Qt6::Core Qt6::Gui Qt6::Widgets Qt6::OpenGL Qt6::Concurrent Qt6::OpenGLWidgets
 )
 
-# --- KDDockWidgets (submodule, built statically) ---
+# --- KDDockWidgets (vcpkg CONFIG) ---
+find_package(KDBindings CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+find_package(KDDockWidgets-qt6 CONFIG REQUIRED)
 list(APPEND ARCVIDEO_LIBRARIES KDAB::kddockwidgets)
 
 # --- FFmpeg (vcpkg) ---
@@ -132,7 +150,9 @@ endif()
 list(APPEND ARCVIDEO_LIBRARIES FFMPEG::FFMPEG)
 
 # --- ArcVideoFoundation (pure C++ core library, no Qt) ---
-add_subdirectory(foundation)
+# SYSTEM: treat foundation public headers as system includes to suppress
+# our strict -Werror diagnostics on the submodule's header code.
+add_subdirectory(foundation SYSTEM)
 list(APPEND ARCVIDEO_LIBRARIES arcvideo-foundation)
 
 # --- PortAudio (vcpkg CONFIG) ---

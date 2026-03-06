@@ -90,9 +90,9 @@ protected:
 private:
   bool draw_border_;
 
-  QLabel* lbl_;
+  QLabel* lbl_ = nullptr;
 
-  CollapseButton* collapse_btn_;
+  CollapseButton* collapse_btn_ = nullptr;
 
   QPushButton *pin_btn_;
 

@@ -363,7 +363,7 @@ public:
       QRectF scene_rect = QRectF(rubberband_scene_start_, current).normalized();
 
       selected_ = rubberband_preselected_;
-      foreach (const DrawnObject &kp, drawn_objects_) {
+      for (const DrawnObject &kp : drawn_objects_) {
         if (scene_rect.intersects(kp.second)) {
           Select(kp.first);
         }
@@ -431,7 +431,7 @@ private:
     }
 
   private:
-    T* key_;
+    T* key_ = nullptr;
 
     rational old_time_;
     rational new_time_;

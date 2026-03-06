@@ -21,6 +21,7 @@
 #include "timeformat.h"
 
 #include <QDateTime>
+#include <QTimeZone>
 
 namespace arcvideo {
 
@@ -70,7 +71,7 @@ void TimeFormatNode::Value(const NodeValueRow &value, const NodeGlobals &globals
 {
   qint64 ms_since_epoch = value[kTimeInput].toDouble()*1000;
   bool time_is_local = value[kLocalTimeInput].toBool();
-  QDateTime dt = QDateTime::fromMSecsSinceEpoch(ms_since_epoch, time_is_local ? Qt::LocalTime : Qt::UTC);
+  QDateTime dt = QDateTime::fromMSecsSinceEpoch(ms_since_epoch, time_is_local ? QTimeZone::LocalTime : QTimeZone::UTC);
   QString format = value[kFormatInput].toString();
   QString output = dt.toString(format);
   table->Push(NodeValue(NodeValue::kText, output, this));

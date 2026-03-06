@@ -437,7 +437,7 @@ NodeValueTable NodeValueTable::Merge(QList<NodeValueTable> tables)
   while (true) {
     bool all_merged = true;
 
-    foreach (const NodeValueTable& t, tables) {
+    for (const NodeValueTable& t : tables) {
       if (row < t.Count()) {
         all_merged = false;
       } else {

@@ -112,7 +112,7 @@ void NodeParamViewWidgetBridge::CreateWidgets()
       QComboBox* combobox = new QComboBox(parent);
 
       QStringList items = GetInnerInput().GetComboBoxStrings();
-      foreach (const QString& s, items) {
+      for (const QString& s : items) {
         combobox->addItem(s);
       }
 
@@ -177,7 +177,7 @@ void NodeParamViewWidgetBridge::CreateWidgets()
     UpdateWidgetValues();
 
     // Install event filter to disable widgets picking up scroll events
-    foreach (QWidget* w, widgets_) {
+    for (QWidget* w : widgets_) {
       w->installEventFilter(&scroll_filter_);
     }
 
@@ -734,7 +734,7 @@ void NodeParamViewWidgetBridge::SetProperty(const QString &key, const QVariant &
 
       QStringList items = value.toStringList();
       int index = 0;
-      foreach (const QString& s, items) {
+      for (const QString& s : items) {
         if (s.isEmpty()) {
           cb->insertSeparator(cb->count());
           cb->setItemData(cb->count()-1, -1);
@@ -761,19 +761,19 @@ void NodeParamViewWidgetBridge::SetProperty(const QString &key, const QVariant &
     if (key == QStringLiteral("view")) {
       FloatSlider::DisplayType display_type = static_cast<FloatSlider::DisplayType>(value.toInt());
 
-      foreach (QWidget* w, widgets_) {
+      for (QWidget* w : widgets_) {
         static_cast<FloatSlider*>(w)->SetDisplayType(display_type);
       }
     } else if (key == QStringLiteral("decimalplaces")) {
       int dec_places = value.toInt();
 
-      foreach (QWidget* w, widgets_) {
+      for (QWidget* w : widgets_) {
         static_cast<FloatSlider*>(w)->SetDecimalPlaces(dec_places);
       }
     } else if (key == QStringLiteral("autotrim")) {
       bool autotrim = value.toBool();
 
-      foreach (QWidget* w, widgets_) {
+      for (QWidget* w : widgets_) {
         static_cast<FloatSlider*>(w)->SetAutoTrimDecimalPlaces(autotrim);
       }
     }
@@ -783,13 +783,13 @@ void NodeParamViewWidgetBridge::SetProperty(const QString &key, const QVariant &
     if (key == QStringLiteral("view")) {
       RationalSlider::DisplayType display_type = static_cast<RationalSlider::DisplayType>(value.toInt());
 
-      foreach (QWidget* w, widgets_) {
+      for (QWidget* w : widgets_) {
         static_cast<RationalSlider*>(w)->SetDisplayType(display_type);
       }
     } else if (key == QStringLiteral("viewlock")) {
       bool locked = value.toBool();
 
-      foreach (QWidget* w, widgets_) {
+      for (QWidget* w : widgets_) {
         static_cast<RationalSlider*>(w)->SetLockDisplayType(locked);
       }
     }

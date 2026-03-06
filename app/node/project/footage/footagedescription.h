@@ -82,7 +82,7 @@ public:
 
   bool StreamIsVideo(int index) const
   {
-    foreach (const VideoParams& vp, video_streams_) {
+    for (const VideoParams& vp : video_streams_) {
       if (vp.stream_index() == index) {
         return true;
       }
@@ -93,7 +93,7 @@ public:
 
   bool StreamIsAudio(int index) const
   {
-    foreach (const AudioParams& ap, audio_streams_) {
+    for (const AudioParams& ap : audio_streams_) {
       if (ap.stream_index() == index) {
         return true;
       }
@@ -104,7 +104,7 @@ public:
 
   bool StreamIsSubtitle(int index) const
   {
-    foreach (const SubtitleParams& sp, subtitle_streams_) {
+    for (const SubtitleParams& sp : subtitle_streams_) {
       if (sp.stream_index() == index) {
         return true;
       }

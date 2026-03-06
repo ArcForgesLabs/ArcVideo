@@ -197,7 +197,7 @@ private:
   NodeViewContext *GetContextItemFromNodeItem(NodeViewItem *item);
 
   struct AttachedItem {
-    NodeViewItem* item;
+    NodeViewItem* item = nullptr;
     Node *node;
     QPointF original_pos;
   };
@@ -205,12 +205,12 @@ private:
   void SetAttachedItems(const QVector<AttachedItem> &items);
   QVector<AttachedItem> attached_items_;
 
-  NodeViewEdge* drop_edge_;
+  NodeViewEdge* drop_edge_ = nullptr;
   NodeInput drop_input_;
 
-  NodeViewEdge* create_edge_;
-  NodeViewItem* create_edge_output_item_;
-  NodeViewItem* create_edge_input_item_;
+  NodeViewEdge* create_edge_ = nullptr;
+  NodeViewItem* create_edge_output_item_ = nullptr;
+  NodeViewItem* create_edge_input_item_ = nullptr;
   NodeInput create_edge_input_;
   bool create_edge_already_exists_;
   bool create_edge_from_output_;
@@ -227,7 +227,7 @@ private:
 
   QMap<NodeViewItem*, QPointF> dragging_items_;
 
-  NodeView* overlay_view_;
+  NodeView* overlay_view_ = nullptr;
 
   double scale_;
 

@@ -122,7 +122,7 @@ private:
 
   rational end_time_;
 
-  TimeBasedWidget* snap_service_;
+  TimeBasedWidget* snap_service_ = nullptr;
 
   bool y_axis_enabled_;
 

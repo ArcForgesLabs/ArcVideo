@@ -75,7 +75,7 @@ rational TimelineTool::ValidateTimeMovement(rational movement)
 {
   bool first_ghost = true;
 
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     if (ghost->GetMode() != Timeline::kMove) {
       continue;
     }
@@ -96,7 +96,7 @@ rational TimelineTool::ValidateTimeMovement(rational movement)
 
 int TimelineTool::ValidateTrackMovement(int movement, const QVector<TimelineViewGhostItem*>& ghosts)
 {
-  foreach (TimelineViewGhostItem* ghost, ghosts) {
+  for (TimelineViewGhostItem* ghost : ghosts) {
     if (ghost->GetMode() != Timeline::kMove) {
       continue;
     }
@@ -121,7 +121,7 @@ void TimelineTool::GetGhostData(rational *earliest_point, rational *latest_point
   rational ep = RATIONAL_MAX;
   rational lp = RATIONAL_MIN;
 
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     ep = qMin(ep, ghost->GetAdjustedIn());
     lp = qMax(lp, ghost->GetAdjustedOut());
   }

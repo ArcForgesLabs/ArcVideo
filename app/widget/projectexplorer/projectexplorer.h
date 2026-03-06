@@ -151,13 +151,13 @@ private:
    */
   QAbstractItemView* CurrentView() const;
 
-  QStackedWidget* stacked_widget_;
+  QStackedWidget* stacked_widget_ = nullptr;
 
-  ProjectExplorerNavigation* nav_bar_;
+  ProjectExplorerNavigation* nav_bar_ = nullptr;
 
-  ProjectExplorerIconView* icon_view_;
-  ProjectExplorerListView* list_view_;
-  ProjectExplorerTreeView* tree_view_;
+  ProjectExplorerIconView* icon_view_ = nullptr;
+  ProjectExplorerListView* list_view_ = nullptr;
+  ProjectExplorerTreeView* tree_view_ = nullptr;
 
   ProjectToolbar::ViewType view_type_;
 

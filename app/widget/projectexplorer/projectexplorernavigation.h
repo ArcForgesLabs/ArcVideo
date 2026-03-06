@@ -105,11 +105,11 @@ private:
 
   void UpdateIcons();
 
-  QPushButton* dir_up_btn_;
+  QPushButton* dir_up_btn_ = nullptr;
 
-  QLabel* dir_lbl_;
+  QLabel* dir_lbl_ = nullptr;
 
-  QSlider* size_slider_;
+  QSlider* size_slider_ = nullptr;
 };
 
 }

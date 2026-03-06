@@ -205,7 +205,7 @@ DecoderPtr Decoder::CreateFromID(const QString &id)
   // Create list to iterate through
   QVector<DecoderPtr> decoder_list = ReceiveListOfAllDecoders();
 
-  foreach (DecoderPtr d, decoder_list) {
+  for (DecoderPtr d : decoder_list) {
     if (d->id() == id) {
       return d;
     }

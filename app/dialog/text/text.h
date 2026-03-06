@@ -42,7 +42,7 @@ public:
   }
 
 private:
-  QPlainTextEdit* text_edit_;
+  QPlainTextEdit* text_edit_ = nullptr;
 
 };
 

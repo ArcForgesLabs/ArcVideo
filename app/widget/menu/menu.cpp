@@ -72,7 +72,7 @@ void Menu::InsertAlphabetically(QAction *entry)
 {
   QList<QAction*> actions = this->actions();
 
-  foreach (QAction* action, actions) {
+  for (QAction* action : actions) {
     if (action->text() > entry->text()) {
       insertAction(action, entry);
       return;

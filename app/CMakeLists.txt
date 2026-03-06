@@ -40,20 +40,22 @@ set(ARCVIDEO_RESOURCES
 )
 
 # Translations
-add_subdirectory(ts)
-qt_add_translation(ARCVIDEO_QM_FILES ${ARCVIDEO_TS_FILES})
+if(Qt6LinguistTools_FOUND)
+  add_subdirectory(ts)
+  qt_add_translation(ARCVIDEO_QM_FILES ${ARCVIDEO_TS_FILES})
 
-set(QRC_BODY "")
-foreach(QM_FILE ${ARCVIDEO_QM_FILES})
-  get_filename_component(QM_FILENAME_COMPONENT ${QM_FILE} NAME_WE)
-  string(APPEND QRC_BODY "<file alias=\"${QM_FILENAME_COMPONENT}\">${QM_FILE}</file>\n")
-endforeach()
-configure_file(ts/translations.qrc.in ts/translations.qrc @ONLY)
+  set(QRC_BODY "")
+  foreach(QM_FILE ${ARCVIDEO_QM_FILES})
+    get_filename_component(QM_FILENAME_COMPONENT ${QM_FILE} NAME_WE)
+    string(APPEND QRC_BODY "<file alias=\"${QM_FILENAME_COMPONENT}\">${QM_FILE}</file>\n")
+  endforeach()
+  configure_file(ts/translations.qrc.in ts/translations.qrc @ONLY)
 
-set(ARCVIDEO_RESOURCES
-  ${ARCVIDEO_RESOURCES}
-  ${CMAKE_CURRENT_BINARY_DIR}/ts/translations.qrc
-)
+  set(ARCVIDEO_RESOURCES
+    ${ARCVIDEO_RESOURCES}
+    ${CMAKE_CURRENT_BINARY_DIR}/ts/translations.qrc
+  )
+endif()
 
 # Add version object
 add_library(arcvideo-version-obj

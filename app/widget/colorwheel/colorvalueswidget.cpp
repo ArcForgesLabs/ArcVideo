@@ -111,7 +111,7 @@ bool ColorValuesWidget::eventFilter(QObject *watcher, QEvent *event)
     // Should signal to Core to stop pixel sampling and to us to remove our event filter
     bool use_this_color = true;
 
-    foreach (QWidget *w, ignore_pick_from_) {
+    for (QWidget *w : ignore_pick_from_) {
       if (w->underMouse()) {
         use_this_color = false;
         break;
@@ -367,7 +367,7 @@ void ColorValuesTab::LegacyChanged(bool legacy)
   int decimal_places = legacy ? 0 : 5;
   double drag_multiplier = legacy ? 1.0 : 0.01;
 
-  foreach (FloatSlider *s, sliders_) {
+  for (FloatSlider *s : sliders_) {
     s->SetValue(s->GetValue() * legacy_multiplier);
     s->SetDecimalPlaces(decimal_places);
     s->SetDragMultiplier(drag_multiplier);

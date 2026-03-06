@@ -63,9 +63,9 @@ signals:
   void TimeChanged(const rational &t);
 
 private:
-  QCheckBox* image_sequence_checkbox_;
+  QCheckBox* image_sequence_checkbox_ = nullptr;
 
-  RationalSlider* frame_slider_;
+  RationalSlider* frame_slider_ = nullptr;
 
 private slots:
   void ImageSequenceCheckBoxToggled(bool e);

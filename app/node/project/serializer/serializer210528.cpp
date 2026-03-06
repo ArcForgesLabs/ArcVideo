@@ -62,7 +62,7 @@ ProjectSerializer210528::LoadData ProjectSerializer210528::Load(Project *project
             qWarning() << "Failed to load node with empty ID";
             reader->skipCurrentElement();
           } else {
-            Node* node;
+            Node* node = nullptr;
             bool handled_elsewhere = false;
 
             if (is_root) {
@@ -594,7 +594,7 @@ bool ProjectSerializer210528::LoadPosition(QXmlStreamReader *reader, quintptr *n
 
 void ProjectSerializer210528::PostConnect(const XMLNodeData &xml_node_data) const
 {
-  foreach (const XMLNodeData::SerializedConnection& con, xml_node_data.desired_connections) {
+  for (const XMLNodeData::SerializedConnection& con : xml_node_data.desired_connections) {
     if (Node *out = xml_node_data.node_ptrs.value(con.output_node)) {
       // Use output param as hint tag since we grandfathered those in
       Node::ValueHint hint(con.output_param);
@@ -605,14 +605,14 @@ void ProjectSerializer210528::PostConnect(const XMLNodeData &xml_node_data) cons
     }
   }
 
-  foreach (const XMLNodeData::BlockLink& l, xml_node_data.block_links) {
+  for (const XMLNodeData::BlockLink& l : xml_node_data.block_links) {
     Node *a = l.block;
     Node *b = xml_node_data.node_ptrs.value(l.link);
 
     Node::Link(a, b);
   }
 
-  foreach (const XMLNodeData::GroupLink &l, xml_node_data.group_input_links) {
+  for (const XMLNodeData::GroupLink &l : xml_node_data.group_input_links) {
     if (Node *input_node = xml_node_data.node_ptrs.value(l.input_node)) {
       NodeInput resolved(input_node, l.input_id, l.input_element);
 

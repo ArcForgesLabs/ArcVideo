@@ -86,7 +86,7 @@ arcvideo/
 │   ├── ui/           # Styles and graphics
 │   └── widget/       # Qt UI widgets
 ├── cmake/            # CMake modules
-├── third_party/      # Git submodules (KDDockWidgets, OpenTimelineIO)
+├── third_party/      # Git submodules (OpenTimelineIO)
 ├── tests/            # Unit tests
 ├── tools/            # Dev utilities (CMakeReload, SlnBridge)
 └── docs/             # Build guides and documentation

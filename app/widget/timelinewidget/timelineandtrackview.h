@@ -42,11 +42,11 @@ public:
   TrackView* track_view() const;
 
 private:
-  QSplitter* splitter_;
+  QSplitter* splitter_ = nullptr;
 
-  TimelineView* view_;
+  TimelineView* view_ = nullptr;
 
-  TrackView* track_view_;
+  TrackView* track_view_ = nullptr;
 
 private slots:
   void ViewValueChanged(int v);

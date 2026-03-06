@@ -153,7 +153,7 @@ void BlockSplitPreservingLinksCommand::prepare()
       if (Block::AreLinked(a, b)) {
         // These blocks are linked, ensure all the splits are linked too
 
-        foreach (const QVector<Block*>& split_list, splits_) {
+        for (const QVector<Block*>& split_list : splits_) {
           NodeLinkCommand* blc = new NodeLinkCommand(split_list.at(i), split_list.at(j), true);
           blc->redo_now();
           commands_.append(blc);

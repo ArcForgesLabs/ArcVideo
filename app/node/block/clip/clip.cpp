@@ -398,7 +398,7 @@ void ClipBlock::LinkChangeEvent()
 {
   block_links_.clear();
 
-  foreach (Node* n, links()) {
+  for (Node* n : links()) {
     ClipBlock* b = dynamic_cast<ClipBlock*>(n);
 
     if (b) {

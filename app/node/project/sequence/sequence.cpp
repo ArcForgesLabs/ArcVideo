@@ -152,7 +152,7 @@ rational Sequence::VerifyLengthInternal(Track::Type type) const
 
 void Sequence::InputConnectedEvent(const QString &input, int element, Node *output)
 {
-  foreach (TrackList* list, track_lists_) {
+  for (TrackList* list : track_lists_) {
     if (list->track_input() == input) {
       // Return because we found our input
       list->TrackConnected(output, element);
@@ -165,7 +165,7 @@ void Sequence::InputConnectedEvent(const QString &input, int element, Node *outp
 
 void Sequence::InputDisconnectedEvent(const QString &input, int element, Node *output)
 {
-  foreach (TrackList* list, track_lists_) {
+  for (TrackList* list : track_lists_) {
     if (list->track_input() == input) {
       // Return because we found our input
       list->TrackDisconnected(output, element);
@@ -180,8 +180,8 @@ void Sequence::UpdateTrackCache()
 {
   track_cache_.clear();
 
-  foreach (TrackList* list, track_lists_) {
-    foreach (Track* track, list->GetTracks()) {
+  for (TrackList* list : track_lists_) {
+    for (Track* track : list->GetTracks()) {
       track_cache_.append(track);
     }
   }

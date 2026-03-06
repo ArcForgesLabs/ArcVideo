@@ -65,7 +65,7 @@ void NodeTreeView::SetNodes(const QVector<Node *> &nodes)
   this->clear();
   item_map_.clear();
 
-  foreach (Node* n, nodes_) {
+  for (Node* n : nodes_) {
     QTreeWidgetItem* node_item = new QTreeWidgetItem();
     node_item->setText(0, n->Name());
     if (checkboxes_enabled_) {
@@ -74,7 +74,7 @@ void NodeTreeView::SetNodes(const QVector<Node *> &nodes)
     node_item->setData(0, kItemType, kItemTypeNode);
     node_item->setData(0, kItemNodePointer, QtUtils::PtrToValue(n));
 
-    foreach (const QString& input, n->inputs()) {
+    for (const QString& input : n->inputs()) {
       if (n->IsInputHidden(input) || (only_show_keyframable_ && !n->IsInputKeyframable(input))) {
         continue;
       }
@@ -95,7 +95,7 @@ void NodeTreeView::SetNodes(const QVector<Node *> &nodes)
           this_element_track = -1;
         }
 
-        QTreeWidgetItem* element_item;
+        QTreeWidgetItem* element_item = nullptr;
 
         if (input_item) {
           element_item = CreateItem(input_item, NodeKeyframeTrackReference(input_ref, this_element_track));

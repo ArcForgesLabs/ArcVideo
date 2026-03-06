@@ -49,12 +49,12 @@ private:
   /**
    * @brief Setting for associated/premultiplied alpha
    */
-  QCheckBox* video_premultiply_alpha_;
+  QCheckBox* video_premultiply_alpha_ = nullptr;
 
   /**
    * @brief Setting for this media's color space
    */
-  QComboBox* video_color_space_;
+  QComboBox* video_color_space_ = nullptr;
 
   /**
    * @brief Setting for this streams's color range
@@ -64,27 +64,27 @@ private:
   /**
    * @brief Setting for video interlacing
    */
-  InterlacedComboBox* video_interlace_combo_;
+  InterlacedComboBox* video_interlace_combo_ = nullptr;
 
   /**
    * @brief Sets the start index for image sequences
    */
-  IntegerSlider* imgseq_start_time_;
+  IntegerSlider* imgseq_start_time_ = nullptr;
 
   /**
    * @brief Sets the end index for image sequences
    */
-  IntegerSlider* imgseq_end_time_;
+  IntegerSlider* imgseq_end_time_ = nullptr;
 
   /**
    * @brief Sets the frame rate for image sequences
    */
-  FrameRateComboBox* imgseq_frame_rate_;
+  FrameRateComboBox* imgseq_frame_rate_ = nullptr;
 
   /**
    * @brief Sets the pixel aspect ratio of the stream
    */
-  PixelAspectRatioComboBox* pixel_aspect_combo_;
+  PixelAspectRatioComboBox* pixel_aspect_combo_ = nullptr;
 
   class VideoStreamChangeCommand : public UndoCommand {
   public:

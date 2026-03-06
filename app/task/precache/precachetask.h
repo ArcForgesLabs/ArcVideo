@@ -43,9 +43,9 @@ protected:
   virtual bool AudioDownloaded(const TimeRange& range, const SampleBuffer &samples) override;
 
 private:
-  Project* project_;
+  Project* project_ = nullptr;
 
-  Footage* footage_;
+  Footage* footage_ = nullptr;
 
 };
 

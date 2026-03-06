@@ -237,7 +237,7 @@ void ProjectPropertiesDialog::OCIOFilenameUpdated()
     // List input color spaces
     QStringList input_cs = ColorManager::ListAvailableColorspaces(c);
 
-    foreach (QString cs, input_cs) {
+    for (QString cs : input_cs) {
       default_input_colorspace_->addItem(cs);
 
       if (cs == working_project_->color_manager()->GetDefaultInputColorSpace()) {

@@ -53,15 +53,15 @@ signals:
   void TaskCancelled(Task* t);
 
 private:
-  QLabel* task_name_lbl_;
-  QProgressBar* progress_bar_;
-  QPushButton* cancel_btn_;
+  QLabel* task_name_lbl_ = nullptr;
+  QProgressBar* progress_bar_ = nullptr;
+  QPushButton* cancel_btn_ = nullptr;
 
-  QStackedWidget* status_stack_;
-  ElapsedCounterWidget* elapsed_timer_lbl_;
-  QLabel* task_error_lbl_;
+  QStackedWidget* status_stack_ = nullptr;
+  ElapsedCounterWidget* elapsed_timer_lbl_ = nullptr;
+  QLabel* task_error_lbl_ = nullptr;
 
-  Task* task_;
+  Task* task_ = nullptr;
 
 private slots:
   void UpdateProgress(double d);

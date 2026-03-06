@@ -280,7 +280,7 @@ void TransitionRemoveCommand::undo()
 void TrackListInsertGaps::prepare()
 {
   // Determine if all tracks will be affected, which will allow us to make some optimizations
-  foreach (Track* track, track_list_->GetTracks()) {
+  for (Track* track : track_list_->GetTracks()) {
     if (track->IsLocked()) {
       continue;
     }
@@ -292,7 +292,7 @@ void TrackListInsertGaps::prepare()
   QVector<Block*> blocks_to_append_gap_to;
   QVector<Track*> tracks_to_append_gap_to;
 
-  for (Track* track : qAsConst(working_tracks_)) {
+  for (Track* track : std::as_const(working_tracks_)) {
     for (Block* b : track->Blocks()) {
       if (dynamic_cast<GapBlock*>(b) && b->in() <= point_ && b->out() >= point_) {
         // Found a gap at the location
@@ -336,7 +336,7 @@ void TrackListInsertGaps::prepare()
 
 void TrackListInsertGaps::redo()
 {
-  foreach (Block* gap, gaps_to_extend_) {
+  for (Block* gap : gaps_to_extend_) {
     gap->set_length_and_media_out(gap->length() + length_);
   }
 
@@ -344,7 +344,7 @@ void TrackListInsertGaps::redo()
     split_command_->redo_now();
   }
 
-  foreach (auto add_gap, gaps_added_) {
+  for (auto add_gap : gaps_added_) {
     add_gap.gap->setParent(add_gap.track->parent());
     add_gap.track->InsertBlockAfter(add_gap.gap, add_gap.before);
   }
@@ -353,7 +353,7 @@ void TrackListInsertGaps::redo()
 void TrackListInsertGaps::undo()
 {
   // Remove added gaps
-  foreach (auto add_gap, gaps_added_) {
+  for (auto add_gap : gaps_added_) {
     add_gap.gap->track()->RippleRemoveBlock(add_gap.gap);
     add_gap.gap->setParent(&memory_manager_);
   }
@@ -364,7 +364,7 @@ void TrackListInsertGaps::undo()
   }
 
   // Restore original length of gaps
-  foreach (Block* gap, gaps_to_extend_) {
+  for (Block* gap : gaps_to_extend_) {
     gap->set_length_and_media_out(gap->length() - length_);
   }
 }
@@ -505,7 +505,7 @@ void TrackReplaceBlockWithGapCommand::undo()
 
 void TrackReplaceBlockWithGapCommand::CreateRemoveTransitionCommandIfNecessary(bool next)
 {
-  Block* relevant_block;
+  Block* relevant_block = nullptr;
 
   if (next) {
     relevant_block = block_->next();

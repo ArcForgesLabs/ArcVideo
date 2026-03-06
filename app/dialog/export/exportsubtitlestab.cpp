@@ -60,7 +60,7 @@ int ExportSubtitlesTab::SetFormat(ExportFormat::Format format)
   scodecs = ExportFormat::GetSubtitleCodecs(sidecar_format_combobox_->GetFormat());
 
   codec_combobox_->clear();
-  foreach (ExportCodec::Codec scodec, scodecs) {
+  for (ExportCodec::Codec scodec : scodecs) {
     codec_combobox_->addItem(ExportCodec::GetCodecName(scodec), scodec);
   }
 

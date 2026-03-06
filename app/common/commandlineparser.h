@@ -99,7 +99,7 @@ private:
   struct KnownOption {
     QStringList args;
     QString description;
-    Option* option;
+    Option* option = nullptr;
     bool takes_arg;
     QString arg_placeholder;
     bool hidden;
@@ -108,7 +108,7 @@ private:
   struct KnownPositionalArgument {
     QString name;
     QString description;
-    PositionalArgument* option;
+    PositionalArgument* option = nullptr;
     bool required;
   };
 

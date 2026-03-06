@@ -52,11 +52,11 @@ protected:
   }
 
 private:
-  Track* track_;
+  Track* track_ = nullptr;
 
-  Block* block_;
+  Block* block_ = nullptr;
 
-  Block* before_;
+  Block* before_ = nullptr;
 
 };
 
@@ -86,8 +86,8 @@ protected:
   }
 
 private:
-  Track* track_;
-  Block* block_;
+  Track* track_ = nullptr;
+  Block* block_ = nullptr;
 };
 
 class TrackInsertBlockAfterCommand : public UndoCommand
@@ -117,11 +117,11 @@ protected:
   }
 
 private:
-  Track* track_;
+  Track* track_ = nullptr;
 
-  Block* block_;
+  Block* block_ = nullptr;
 
-  Block* before_;
+  Block* before_ = nullptr;
 };
 
 /**
@@ -156,9 +156,9 @@ protected:
   }
 
 private:
-  Track* track_;
-  Block* old_;
-  Block* replace_;
+  Track* track_ = nullptr;
+  Block* old_ = nullptr;
+  Block* replace_ = nullptr;
 
 };
 

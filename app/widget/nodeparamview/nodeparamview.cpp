@@ -178,7 +178,7 @@ void NodeParamView::CloseContextsBelongingToProject(Project *p)
   return;
   int original_node_count = items_.size();
 
-  foreach (Node* n, nodes) {
+  for (Node* n : nodes) {
     // If we've already added this node (either a duplicate or a pinned node), don't add another
     if (items_.contains(n)) {
       continue;
@@ -207,7 +207,7 @@ void NodeParamView::DeselectNodes(const QVector<Node *> &nodes)
   // Remove item from map and delete the widget
   int original_node_count = items_.size();
 
-  foreach (Node* n, nodes) {
+  for (Node* n : nodes) {
     // Filter out duplicates
     if (!items_.contains(n)) {
       continue;
@@ -236,7 +236,7 @@ void NodeParamView::UpdateContexts()
 {
   bool changes_made = false;
 
-  foreach (Node *ctx, current_contexts_) {
+  for (Node *ctx : current_contexts_) {
     if (!contexts_.contains(ctx)) {
       // Context is being removed
       RemoveContext(ctx);
@@ -244,7 +244,7 @@ void NodeParamView::UpdateContexts()
     }
   }
 
-  foreach (Node *ctx, contexts_) {
+  for (Node *ctx : contexts_) {
     if (!current_contexts_.contains(ctx)) {
       // Context is being added
       AddContext(ctx);
@@ -266,7 +266,7 @@ void NodeParamView::UpdateContexts()
       connect(group, &NodeGroup::InputPassthroughRemoved, this, &NodeParamView::GroupInputPassthroughRemoved);
     }
 
-    foreach (NodeParamViewContext *ctx, context_items_) {
+    for (NodeParamViewContext *ctx : context_items_) {
       SortItemsInContext(ctx);
     }
 
@@ -346,7 +346,7 @@ void NodeParamView::TimebaseChangedEvent(const rational &timebase)
     keyframe_view_->SetTimebase(timebase);
   }
 
-  foreach (NodeParamViewContext* ctx, context_items_) {
+  for (NodeParamViewContext* ctx : context_items_) {
     ctx->SetTimebase(timebase);
   }
 }
@@ -358,7 +358,7 @@ void NodeParamView::ConnectedNodeChangeEvent(ViewerOutput *n)
     keyframe_view_->SetTimeTarget(n);
   }
 
-  foreach (NodeParamViewContext* item, context_items_) {
+  for (NodeParamViewContext* item : context_items_) {
     item->SetTimeTarget(n);
   }
 }
@@ -389,13 +389,13 @@ void NodeParamView::DeleteSelected()
     c->add_child(dc);
 
     // Add all nodes
-    foreach (NodeParamViewItem *item, selected_nodes_) {
+    for (NodeParamViewItem *item : selected_nodes_) {
       Node *n = item->GetNode();
       dc->AddNode(n, item->GetContext());
     }
 
     // Make reconnections where possible
-    foreach (NodeParamViewItem *item, selected_nodes_) {
+    for (NodeParamViewItem *item : selected_nodes_) {
       Node *n = item->GetNode();
 
       Node *node_being_deleted = n;
@@ -430,7 +430,7 @@ void NodeParamView::SetSelectedNodes(const QVector<NodeParamViewItem *> &nodes, 
     handle_focused_node = !focused_node_ || selected_nodes_.contains(focused_node_);
   }
 
-  foreach (NodeParamViewItem *n, selected_nodes_) {
+  for (NodeParamViewItem *n : selected_nodes_) {
     n->SetHighlighted(false);
   }
 
@@ -453,7 +453,7 @@ void NodeParamView::SetSelectedNodes(const QVector<NodeParamViewItem *> &nodes, 
   if (handle_focused_node) {
     focused_node_ = nullptr;
 
-    foreach (NodeParamViewItem *n, selected_nodes_) {
+    for (NodeParamViewItem *n : selected_nodes_) {
       if (n->GetNode()->HasGizmos()) {
         focused_node_ = n;
         break;
@@ -473,7 +473,7 @@ void NodeParamView::SetSelectedNodes(const QVector<Node::ContextPair> &nodes, bo
 {
   QVector<NodeParamViewItem*> items;
 
-  foreach (const Node::ContextPair &n, nodes) {
+  for (const Node::ContextPair &n : nodes) {
     for (auto it=context_items_.cbegin(); it!=context_items_.cend(); it++) {
       NodeParamViewContext *ctx = *it;
 
@@ -685,7 +685,7 @@ void NodeParamView::RemoveContext(Node *ctx)
   disconnect(ctx, &Node::NodeAddedToContext, this, &NodeParamView::NodeAddedToContext);
   disconnect(ctx, &Node::NodeRemovedFromContext, this, &NodeParamView::NodeRemovedFromContext);
 
-  foreach (NodeParamViewContext *item, context_items_) {
+  for (NodeParamViewContext *item : context_items_) {
     item->RemoveContext(ctx);
     item->RemoveNodesWithContext(ctx);
 
@@ -755,7 +755,7 @@ void NodeParamView::SortItemsInContext(NodeParamViewContext *context_item)
     NodeParamViewItem *item = *it;
 
     int distance = -1;
-    foreach (Node *ctx, context_item->GetContexts()) {
+    for (Node *ctx : context_item->GetContexts()) {
       distance = qMax(distance, GetDistanceBetweenNodes(ctx, item->GetNode()));
     }
 
@@ -779,7 +779,7 @@ void NodeParamView::SortItemsInContext(NodeParamViewContext *context_item)
     }
   }
 
-  foreach (auto info, distances) {
+  for (auto info : distances) {
     context_item->GetDockArea()->AddItem(info.first);
   }
 }
@@ -953,7 +953,7 @@ void NodeParamView::NodeRemovedFromContext(Node *n)
 {
   Node *ctx = static_cast<Node*>(sender());
 
-  foreach (NodeParamViewContext *ctx_item, context_items_) {
+  for (NodeParamViewContext *ctx_item : context_items_) {
     ctx_item->RemoveNode(n, ctx);
   }
 
@@ -975,14 +975,14 @@ void NodeParamView::InputCheckBoxChanged(const NodeInput &input, bool e)
 
 void NodeParamView::GroupInputPassthroughAdded(NodeGroup *group, const NodeInput &input)
 {
-  foreach (NodeParamViewContext *pvctx, context_items_) {
+  for (NodeParamViewContext *pvctx : context_items_) {
     pvctx->SetInputChecked(input, true);
   }
 }
 
 void NodeParamView::GroupInputPassthroughRemoved(NodeGroup *group, const NodeInput &input)
 {
-  foreach (NodeParamViewContext *pvctx, context_items_) {
+  for (NodeParamViewContext *pvctx : context_items_) {
     pvctx->SetInputChecked(input, false);
   }
 }

@@ -38,7 +38,7 @@ public:
 private:
   virtual void Retranslate() override;
 
-  TaskView* view_;
+  TaskView* view_ = nullptr;
 };
 
 }

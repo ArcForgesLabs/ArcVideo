@@ -51,15 +51,15 @@ private slots:
   void UpdateViews(const QString &display);
 
 private:
-  ColorManager* color_manager_;
+  ColorManager* color_manager_ = nullptr;
 
-  QComboBox* input_combobox_;
+  QComboBox* input_combobox_ = nullptr;
 
-  QComboBox* display_combobox_;
+  QComboBox* display_combobox_ = nullptr;
 
-  QComboBox* view_combobox_;
+  QComboBox* view_combobox_ = nullptr;
 
-  QComboBox* look_combobox_;
+  QComboBox* look_combobox_ = nullptr;
 
 private slots:
   void ComboBoxChanged();

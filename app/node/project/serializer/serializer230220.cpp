@@ -457,13 +457,13 @@ void ProjectSerializer230220::Save(QXmlStreamWriter *writer, const SaveData &dat
 
 void ProjectSerializer230220::PostConnect(const QVector<Node *> &nodes, SerializedData *project_data) const
 {
-  foreach (const SerializedData::SerializedConnection& con, project_data->desired_connections) {
+  for (const SerializedData::SerializedConnection& con : project_data->desired_connections) {
     if (Node *out = project_data->node_ptrs.value(con.output_node)) {
       Node::ConnectEdge(out, con.input);
     }
   }
 
-  foreach (const SerializedData::BlockLink& l, project_data->block_links) {
+  for (const SerializedData::BlockLink& l : project_data->block_links) {
     Node *a = l.block;
     Node *b = project_data->node_ptrs.value(l.link);
 

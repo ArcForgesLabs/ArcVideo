@@ -86,12 +86,12 @@ public:
 
   QVector2D resolution() const
   {
-    return QVector2D(width_, height_);
+    return QVector2D(static_cast<float>(width_), static_cast<float>(height_));
   }
 
   QVector2D square_resolution() const
   {
-    return QVector2D(par_width_, height_);
+    return QVector2D(static_cast<float>(par_width_), static_cast<float>(height_));
   }
 
   int height() const

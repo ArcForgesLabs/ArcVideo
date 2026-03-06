@@ -173,7 +173,7 @@ bool OIIODecoder::FileTypeIsSupported(const QString& fn)
     QStringList extension_list = QString::fromStdString(OIIO::get_string_attribute("extension_list")).split(';');
 
     // The format of "extension_list" is "format:ext", we want to separate it into a simple list of extensions
-    foreach (const QString& ext, extension_list) {
+    for (const QString& ext : extension_list) {
       QStringList format_and_ext = ext.split(':');
 
       supported_formats_.append(format_and_ext.at(1).split(','));

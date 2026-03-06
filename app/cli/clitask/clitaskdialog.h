@@ -35,7 +35,7 @@ public:
   bool Run();
 
 private:
-  Task* task_;
+  Task* task_ = nullptr;
 
 };
 

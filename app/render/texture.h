@@ -150,7 +150,7 @@ public:
   AcceleratedJob *job() const { return job_; }
 
 private:
-  Renderer* renderer_;
+  Renderer* renderer_ = nullptr;
 
   VideoParams params_;
 

@@ -73,7 +73,7 @@ private:
   struct Buffer
   {
     qint64 time;
-    char* data;
+    char* data = nullptr;
   };
 
   std::map< int, std::list<Buffer> > pool_;

@@ -155,7 +155,7 @@ void TrackViewItem::DeleteAllEmptyTracks()
   QVector<Track*> tracks_to_remove;
   QStringList track_names_to_remove;
 
-  foreach (Track *t, sequence->GetTracks()) {
+  for (Track *t : sequence->GetTracks()) {
     if (t->Blocks().isEmpty()) {
       tracks_to_remove.append(t);
       track_names_to_remove.append(t->GetLabelOrName());
@@ -169,7 +169,7 @@ void TrackViewItem::DeleteAllEmptyTracks()
                               tr("This will delete the following tracks:\n\n%1\n\nDo you wish to continue?").arg(track_names_to_remove.join('\n')),
                               QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
       MultiUndoCommand *command = new MultiUndoCommand();
-      foreach (Track *track, tracks_to_remove) {
+      for (Track *track : tracks_to_remove) {
         command->add_child(new TimelineRemoveTrackCommand(track));
       }
       Core::instance()->undo_stack()->push(command, tr("Deleted All Empty Tracks"));

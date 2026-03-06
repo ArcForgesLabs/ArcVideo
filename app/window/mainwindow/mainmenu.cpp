@@ -370,7 +370,7 @@ void MainMenu::ToolsMenuAboutToShow()
 {
   // Ensure checked Tool is correct
   QList<QAction*> tool_actions = tools_group_->actions();
-  foreach (QAction* a, tool_actions) {
+  for (QAction* a : tool_actions) {
     if (a->data() == Core::instance()->tool()) {
       a->setChecked(true);
       break;
@@ -407,7 +407,7 @@ void MainMenu::WindowMenuAboutToShow()
 
   // Alphabetize actions - keeps actions in a consistent order since PanelManager::panels() is
   // ordered from most recently focused to least, which may be confusing user experience.
-  foreach (PanelWidget* panel, PanelManager::instance()->panels()) {
+  for (PanelWidget* panel : PanelManager::instance()->panels()) {
     QAction* panel_action = panel->toggleAction();
 
     bool inserted = false;

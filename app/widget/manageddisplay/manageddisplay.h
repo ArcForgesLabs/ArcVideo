@@ -254,21 +254,21 @@ private:
    * @brief Main drawing surface abstraction
    */
 #ifdef USE_QOPENGLWINDOW
-  QWindow* inner_widget_;
+  QWindow* inner_widget_ = nullptr;
 #else
-  QWidget* inner_widget_;
+  QWidget* inner_widget_ = nullptr;
 #endif
   QWidget *wrapper_;
 
   /**
    * @brief Renderer abstraction
    */
-  Renderer* attached_renderer_;
+  Renderer* attached_renderer_ = nullptr;
 
   /**
    * @brief Connected color manager
    */
-  ColorManager* color_manager_;
+  ColorManager* color_manager_ = nullptr;
 
   /**
    * @brief Color management service

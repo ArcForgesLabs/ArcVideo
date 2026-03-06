@@ -46,7 +46,7 @@ protected:
   virtual void TimeTargetConnectEvent(ViewerOutput *){}
 
 private:
-  ViewerOutput* time_target_;
+  ViewerOutput* time_target_ = nullptr;
 
   int path_index_;
 

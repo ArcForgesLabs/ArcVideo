@@ -123,7 +123,7 @@ QVector<NodeViewEdge *> NodeViewItem::GetAllEdgesRecursively() const
 {
   QVector<NodeViewEdge *> list = edges_;
 
-  foreach (NodeViewItem *item, children_) {
+  for (NodeViewItem *item : children_) {
     list.append(item->GetAllEdgesRecursively());
   }
 
@@ -268,7 +268,7 @@ void NodeViewItem::SetExpanded(bool e, bool hide_titlebar)
 
     if (IsOutputItem()) {
       // Create items for each input of the node
-      foreach (const QString &input, node_->inputs()) {
+      for (const QString &input : node_->inputs()) {
         if (IsInputValid(input)) {
           NodeViewItem *item = new NodeViewItem(node_, input, -1, context_, this);
           children_.append(item);
@@ -298,9 +298,9 @@ void NodeViewItem::SetExpanded(bool e, bool hide_titlebar)
       }
     }
   } else {
-    foreach (NodeViewItem *child, children_) {
+    for (NodeViewItem *child : children_) {
       QVector<NodeViewEdge*> child_edges = child->edges();
-      foreach (NodeViewEdge *edge, child_edges) {
+      for (NodeViewEdge *edge : child_edges) {
         edge->set_to_item(this);
       }
       delete child;
@@ -478,14 +478,14 @@ QVariant NodeViewItem::itemChange(QGraphicsItem::GraphicsItemChange change, cons
 
 void NodeViewItem::ReadjustAllEdges()
 {
-  foreach (NodeViewEdge* edge, edges_) {
+  for (NodeViewEdge* edge : edges_) {
     if (NodeViewItem *to_item = edge->to_item()) {
       static_cast<NodeViewItem*>(to_item->parentItem())->UpdateFlowDirectionOfInputItem(to_item);
     }
 
     edge->Adjust();
   }
-  foreach (NodeViewItem *child, children_) {
+  for (NodeViewItem *child : children_) {
     child->ReadjustAllEdges();
   }
 }
@@ -704,7 +704,7 @@ void NodeViewItem::UpdateChildrenPositions()
   int y = 1;
   int h = DefaultItemHeight();
 
-  foreach (NodeViewItem *c, children_) {
+  for (NodeViewItem *c : children_) {
     c->setPos(QPointF(0, y * h));
 
     y += c->GetLogicalHeightWithChildren();
@@ -721,7 +721,7 @@ int NodeViewItem::GetLogicalHeightWithChildren() const
 {
   int h = 1;
 
-  foreach (NodeViewItem *c, children_) {
+  for (NodeViewItem *c : children_) {
     h += c->GetLogicalHeightWithChildren();
   }
 
@@ -748,7 +748,7 @@ void NodeViewItem::RepopulateInputs()
   if (IsOutputItem()) {
     has_connectable_inputs_ = false;
 
-    foreach (const QString& input, node_->inputs()) {
+    for (const QString& input : node_->inputs()) {
       if (IsInputValid(input)) {
         has_connectable_inputs_ = true;
         break;
@@ -798,7 +798,7 @@ NodeViewItem *NodeViewItem::GetItemForInput(NodeInput input)
   if (IsExpanded()) {
     if (input_.isEmpty()) {
       // Look for the input in our children
-      foreach (NodeViewItem *i, children_) {
+      for (NodeViewItem *i : children_) {
         if (i->input_ == input.input()) {
           return i->GetItemForInput(input);
         }

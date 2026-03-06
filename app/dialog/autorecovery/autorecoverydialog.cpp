@@ -43,7 +43,7 @@ AutoRecoveryDialog::AutoRecoveryDialog(const QString &message, const QStringList
 
 void AutoRecoveryDialog::accept()
 {
-  foreach (QTreeWidgetItem* checkable, checkable_items_) {
+  for (QTreeWidgetItem* checkable : checkable_items_) {
     if (checkable->checkState(0) == Qt::Checked) {
       QString filename = checkable->data(0, kFilenameRole).toString();
       Core::instance()->OpenRecoveryProject(filename);
@@ -77,7 +77,7 @@ void AutoRecoveryDialog::PopulateTree(const QStringList& recoveries, bool autoch
   // Each entry in `recoveries` is a directory with 1+ recovery projects in it
   QDir autorecovery_root(FileFunctions::GetAutoRecoveryRoot());
 
-  foreach (const QString& recovery_folder, recoveries) {
+  for (const QString& recovery_folder : recoveries) {
     QDir recovery_dir(autorecovery_root.filePath(recovery_folder));
 
     QString pretty_name;

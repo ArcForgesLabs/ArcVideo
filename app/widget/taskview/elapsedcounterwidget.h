@@ -45,9 +45,9 @@ public slots:
   void Stop();
 
 private:
-  QLabel* elapsed_lbl_;
+  QLabel* elapsed_lbl_ = nullptr;
 
-  QLabel* remaining_lbl_;
+  QLabel* remaining_lbl_ = nullptr;
 
   double last_progress_;
 

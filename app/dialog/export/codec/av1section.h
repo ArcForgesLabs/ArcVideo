@@ -44,7 +44,7 @@ private:
   static const int kMinimumCRF = 0;
   static const int kMaximumCRF = 63;
 
-  QSlider* crf_slider_;
+  QSlider* crf_slider_ = nullptr;
 
 };
 
@@ -62,9 +62,9 @@ public:
   virtual void AddOpts(EncodingParams* params) override;
 
 private:
-  QStackedWidget* compression_method_stack_;
+  QStackedWidget* compression_method_stack_ = nullptr;
 
-  AV1CRFSection* crf_section_;
+  AV1CRFSection* crf_section_ = nullptr;
 
   QComboBox *preset_combobox_;
 };

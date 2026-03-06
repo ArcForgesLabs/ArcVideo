@@ -159,7 +159,7 @@ private:
 
     inner_->clear();
 
-    foreach (const rational& fr, VideoParams::kSupportedFrameRates) {
+    for (const rational& fr : VideoParams::kSupportedFrameRates) {
       inner_->addItem(VideoParams::FrameRateToString(fr), QVariant::fromValue(fr));
     }
 
@@ -181,7 +181,7 @@ private:
     inner_->blockSignals(false);
   }
 
-  QComboBox* inner_;
+  QComboBox* inner_ = nullptr;
 
   rational custom_rate_;
 

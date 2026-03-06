@@ -43,13 +43,13 @@ public:
   virtual void Accept(MultiUndoCommand* command) override;
 
 private:
-  PathWidget* disk_cache_location_;
+  PathWidget* disk_cache_location_ = nullptr;
 
-  FloatSlider* cache_ahead_slider_;
+  FloatSlider* cache_ahead_slider_ = nullptr;
 
-  FloatSlider* cache_behind_slider_;
+  FloatSlider* cache_behind_slider_ = nullptr;
 
-  DiskCacheFolder* default_disk_cache_folder_;
+  DiskCacheFolder* default_disk_cache_folder_ = nullptr;
 
 };
 

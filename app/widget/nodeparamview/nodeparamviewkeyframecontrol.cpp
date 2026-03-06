@@ -165,7 +165,7 @@ void NodeParamViewKeyframeControl::ToggleKeyframe(bool e)
     }
   } else if (!e && !keys.isEmpty()) {
     // Remove all keyframes at this time
-    foreach (NodeKeyframe* key, keys) {
+    for (NodeKeyframe* key : keys) {
       command->add_child(new NodeParamRemoveKeyframeCommand(key));
 
       if (input_.node()->GetKeyframeTracks(input_).size() == 1) {
@@ -260,7 +260,7 @@ void NodeParamViewKeyframeControl::KeyframeEnableBtnClicked(bool e)
       const QVector<QVariant>& stored_vals = input_.node()->GetSplitValueAtTime(input_, GetCurrentTimeAsNodeTime());
 
       // Delete all keyframes
-      foreach (const NodeKeyframeTrack& track, input_.node()->GetKeyframeTracks(input_)) {
+      for (const NodeKeyframeTrack& track : input_.node()->GetKeyframeTracks(input_)) {
         for (int i=track.size()-1;i>=0;i--) {
           command->add_child(new NodeParamRemoveKeyframeCommand(track.at(i)));
         }

@@ -132,21 +132,21 @@ void TrackRippleRemoveAreaCommand::redo()
 
     // Perform removals
     if (!removals_.isEmpty()) {
-      foreach (auto op, removals_) {
+      for (auto op : removals_) {
         // Ripple remove them all first
         track_->RippleRemoveBlock(op.block);
       }
 
       // Create undo commands for node removals where possible
       if (remove_block_commands_.isEmpty()) {
-        foreach (auto op, removals_) {
+        for (auto op : removals_) {
           if (NodeCanBeRemoved(op.block)) {
             remove_block_commands_.append(CreateRemoveCommand(op.block));
           }
         }
       }
 
-      foreach (UndoCommand* c, remove_block_commands_) {
+      for (UndoCommand* c : remove_block_commands_) {
         c->redo_now();
       }
     }
@@ -171,7 +171,7 @@ void TrackRippleRemoveAreaCommand::undo()
       remove_block_commands_.at(i)->undo_now();
     }
 
-    foreach (auto op, removals_) {
+    for (auto op : removals_) {
       track_->InsertBlockAfter(op.block, op.before);
     }
   }
@@ -182,7 +182,7 @@ void TrackRippleRemoveAreaCommand::undo()
 //
 void TrackListRippleRemoveAreaCommand::prepare()
 {
-  foreach (Track* track, list_->GetTracks()) {
+  for (Track* track : list_->GetTracks()) {
     if (track->IsLocked()) {
       continue;
     }
@@ -195,14 +195,14 @@ void TrackListRippleRemoveAreaCommand::prepare()
 
 void TrackListRippleRemoveAreaCommand::redo()
 {
-  foreach (TrackRippleRemoveAreaCommand* c, commands_) {
+  for (TrackRippleRemoveAreaCommand* c : commands_) {
     c->redo_now();
   }
 }
 
 void TrackListRippleRemoveAreaCommand::undo()
 {
-  foreach (TrackRippleRemoveAreaCommand* c, commands_) {
+  for (TrackRippleRemoveAreaCommand* c : commands_) {
     c->undo_now();
   }
 }
@@ -386,7 +386,7 @@ void TimelineRippleDeleteGapsAtRegionsCommand::prepare()
   QHash<Track*, QVector<RemovalRequest> > requested_gaps;
 
   // Convert regions to gaps
-  for (const QPair<Track*, TimeRange> &region : qAsConst(regions_)) {
+  for (const QPair<Track*, TimeRange> &region : std::as_const(regions_)) {
     Track *track = region.first;
     const TimeRange &range = region.second;
 
@@ -424,7 +424,7 @@ void TimelineRippleDeleteGapsAtRegionsCommand::prepare()
     rational ripple_length = RATIONAL_MAX;
     rational latest_point = RATIONAL_MIN;
 
-    foreach (const QVector<RemovalRequest> &gaps_on_track, requested_gaps) {
+    for (const QVector<RemovalRequest> &gaps_on_track : requested_gaps) {
       if (gap_index < gaps_on_track.size()) {
         const RemovalRequest &gap = gaps_on_track.at(gap_index);
         earliest_point = qMin(earliest_point, gap.range.in());
@@ -436,7 +436,7 @@ void TimelineRippleDeleteGapsAtRegionsCommand::prepare()
     // Determine which gaps will be involved in this operation
     QVector<GapBlock*> gaps;
 
-    foreach (Track* track, timeline_->GetTracks()) {
+    for (Track* track : timeline_->GetTracks()) {
       if (track->IsLocked()) {
         continue;
       }
@@ -492,7 +492,7 @@ void TimelineRippleDeleteGapsAtRegionsCommand::prepare()
     }
 
     if (ripple_length > 0) {
-      foreach (GapBlock *gap, gaps) {
+      for (GapBlock *gap : gaps) {
         if (gap_lengths.value(gap) == ripple_length) {
           commands_.append(new TrackRippleRemoveBlockCommand(gap->track(), gap));
         } else {

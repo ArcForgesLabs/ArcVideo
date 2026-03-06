@@ -104,7 +104,7 @@ private:
   /**
    * @brief Internal reference to the linked QAction
    */
-  QAction* action;
+  QAction* action = nullptr;
 };
 
 }

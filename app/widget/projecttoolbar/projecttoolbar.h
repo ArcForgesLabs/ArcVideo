@@ -68,15 +68,15 @@ private:
   void Retranslate();
   void UpdateIcons();
 
-  QPushButton* new_button_;
-  QPushButton* open_button_;
-  QPushButton* save_button_;
+  QPushButton* new_button_ = nullptr;
+  QPushButton* open_button_ = nullptr;
+  QPushButton* save_button_ = nullptr;
 
-  QLineEdit* search_field_;
+  QLineEdit* search_field_ = nullptr;
 
-  QPushButton* tree_button_;
-  QPushButton* list_button_;
-  QPushButton* icon_button_;
+  QPushButton* tree_button_ = nullptr;
+  QPushButton* list_button_ = nullptr;
+  QPushButton* icon_button_ = nullptr;
 
 private slots:
   void ViewButtonClicked();

@@ -58,9 +58,9 @@ public slots:
   void RemoveTask(Task* t);
 
 private:
-  QWidget* central_widget_;
+  QWidget* central_widget_ = nullptr;
 
-  QVBoxLayout* layout_;
+  QVBoxLayout* layout_ = nullptr;
 
   QHash<Task*, TaskViewItem*> items_;
 

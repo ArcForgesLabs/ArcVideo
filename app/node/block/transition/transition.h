@@ -98,9 +98,9 @@ private:
 
   void InsertTransitionTimes(AcceleratedJob* job, const double& time) const;
 
-  ClipBlock* connected_out_block_;
+  ClipBlock* connected_out_block_ = nullptr;
 
-  ClipBlock* connected_in_block_;
+  ClipBlock* connected_in_block_ = nullptr;
 
 };
 

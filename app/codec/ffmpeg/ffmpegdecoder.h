@@ -117,10 +117,10 @@ private:
     }
 
   private:
-    AVFormatContext* fmt_ctx_;
-    AVCodecContext* codec_ctx_;
-    AVStream* avstream_;
-    AVDictionary* opts_;
+    AVFormatContext* fmt_ctx_ = nullptr;
+    AVCodecContext* codec_ctx_ = nullptr;
+    AVStream* avstream_ = nullptr;
+    AVDictionary* opts_ = nullptr;
 
   };
 

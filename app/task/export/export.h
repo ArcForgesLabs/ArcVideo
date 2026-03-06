@@ -59,7 +59,7 @@ private:
 
   QHash<TimeRange, SampleBuffer> audio_map_;
 
-  ColorManager* color_manager_;
+  ColorManager* color_manager_ = nullptr;
 
   EncodingParams params_;
 

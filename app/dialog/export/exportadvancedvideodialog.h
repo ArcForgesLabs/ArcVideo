@@ -47,11 +47,11 @@ public:
   }
 
 private:
-  IntegerSlider* thread_slider_;
+  IntegerSlider* thread_slider_ = nullptr;
 
-  QComboBox* pixel_format_combobox_;
+  QComboBox* pixel_format_combobox_ = nullptr;
 
-  QComboBox* yuv_color_range_combobox_;
+  QComboBox* yuv_color_range_combobox_ = nullptr;
 
 };
 

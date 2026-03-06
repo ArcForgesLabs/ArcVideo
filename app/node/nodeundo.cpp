@@ -63,7 +63,7 @@ void NodeRemovePositionFromAllContextsCommand::redo()
 {
   Project *graph = node_->parent();
 
-  foreach (Node* context, graph->nodes()) {
+  for (Node* context : graph->nodes()) {
     if (context->ContextContainsNode(node_)) {
       contexts_.insert({context, context->GetNodePositionInContext(node_)});
       context->RemoveNodeFromContext(node_);
@@ -298,7 +298,7 @@ void NodeViewDeleteCommand::AddNode(Node *node, Node *context)
 
 void NodeViewDeleteCommand::AddEdge(Node *output, const NodeInput &input)
 {
-  foreach (const Node::OutputConnection &edge, edges_) {
+  for (const Node::OutputConnection &edge : edges_) {
     if (edge.first == output && edge.second == input) {
       return;
     }
@@ -309,7 +309,7 @@ void NodeViewDeleteCommand::AddEdge(Node *output, const NodeInput &input)
 
 bool NodeViewDeleteCommand::ContainsNode(Node *node, Node *context)
 {
-  foreach (const Node::ContextPair &pair, nodes_) {
+  for (const Node::ContextPair &pair : nodes_) {
     if (pair.node == node && pair.context == context) {
       return true;
     }
@@ -333,11 +333,11 @@ Project *NodeViewDeleteCommand::GetRelevantProject() const
 
 void NodeViewDeleteCommand::redo()
 {
-  foreach (const Node::OutputConnection &edge, edges_) {
+  for (const Node::OutputConnection &edge : edges_) {
     Node::DisconnectEdge(edge.first, edge.second);
   }
 
-  foreach (const Node::ContextPair &pair, nodes_) {
+  for (const Node::ContextPair &pair : nodes_) {
     RemovedNode rn;
 
     rn.node = pair.node;

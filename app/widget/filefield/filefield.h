@@ -56,9 +56,9 @@ signals:
   void FilenameChanged(const QString& filename);
 
 private:
-  QLineEdit* line_edit_;
+  QLineEdit* line_edit_ = nullptr;
 
-  QPushButton* browse_btn_;
+  QPushButton* browse_btn_ = nullptr;
 
   bool directory_mode_;
 

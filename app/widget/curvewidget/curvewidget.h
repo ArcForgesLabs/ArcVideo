@@ -100,17 +100,17 @@ private:
 
   QHash<NodeKeyframeTrackReference, QColor> keyframe_colors_;
 
-  NodeTreeView* tree_view_;
+  NodeTreeView* tree_view_ = nullptr;
 
-  QPushButton* linear_button_;
+  QPushButton* linear_button_ = nullptr;
 
-  QPushButton* bezier_button_;
+  QPushButton* bezier_button_ = nullptr;
 
-  QPushButton* hold_button_;
+  QPushButton* hold_button_ = nullptr;
 
-  CurveView* view_;
+  CurveView* view_ = nullptr;
 
-  NodeParamViewKeyframeControl* key_control_;
+  NodeParamViewKeyframeControl* key_control_ = nullptr;
 
   QVector<Node*> nodes_;
 

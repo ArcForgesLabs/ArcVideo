@@ -211,9 +211,9 @@ private:
 
   int element_;
 
-  NodeKeyframe* previous_;
+  NodeKeyframe* previous_ = nullptr;
 
-  NodeKeyframe* next_;
+  NodeKeyframe* next_ = nullptr;
 
 };
 

@@ -51,7 +51,7 @@ protected:
   virtual bool Run() override;
 
 private:
-  Project* project_;
+  Project* project_ = nullptr;
 
   QString override_filename_;
 

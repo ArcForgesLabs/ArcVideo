@@ -261,7 +261,7 @@ ProjectSerializer::Result ProjectSerializer::LoadWithSerializerVersion(uint vers
   // We should now have the version, if we have a serializer for it, use it to load the project
   ProjectSerializer *serializer = nullptr;
 
-  foreach (ProjectSerializer *s, instances_) {
+  for (ProjectSerializer *s : instances_) {
     if (version == s->Version()) {
       serializer = s;
       break;

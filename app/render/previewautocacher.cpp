@@ -233,7 +233,7 @@ void PreviewAutoCacher::VideoRendered()
   // Process passthroughs no matter what, if the viewer was switched, the passthrough map would be
   // cleared anyway
   QVector<RenderTicketPtr> tickets = video_immediate_passthroughs_.take(watcher);
-  foreach (RenderTicketPtr t, tickets) {
+  for (RenderTicketPtr t : tickets) {
     if (watcher->HasResult()) {
       t->setProperty("multicam_output", watcher->GetTicket()->property("multicam_output"));
       t->Finish(watcher->Get());
@@ -660,7 +660,7 @@ void PreviewAutoCacher::ConformFinished()
 
   qDebug() << "CONFORM RESPONSE TEMPORARILY DISABLED";
   /*for (auto it=audio_cache_data_.begin(); it!=audio_cache_data_.end(); it++) {
-    foreach (const TimeRange &range, it.value().needs_conform) {
+    for (const TimeRange &range : it.value().needs_conform) {
       it.key()->Request(range);
     }
     it.value().needs_conform.clear();

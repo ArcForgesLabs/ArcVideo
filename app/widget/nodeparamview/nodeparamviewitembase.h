@@ -84,7 +84,7 @@ protected slots:
   virtual void Retranslate(){}
 
 private:
-  NodeParamViewItemTitleBar* title_bar_;
+  NodeParamViewItemTitleBar* title_bar_ = nullptr;
 
   QWidget *body_;
 

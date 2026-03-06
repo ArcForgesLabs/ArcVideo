@@ -53,11 +53,11 @@ private slots:
   void ConnectedTaskDeleted();
 
 private:
-  TaskManager* manager_;
+  TaskManager* manager_ = nullptr;
 
-  QProgressBar* bar_;
+  QProgressBar* bar_ = nullptr;
 
-  Task* connected_task_;
+  Task* connected_task_ = nullptr;
 
 };
 

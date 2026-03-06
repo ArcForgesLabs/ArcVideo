@@ -37,7 +37,7 @@ public:
   static void Process(RenderTicketPtr ticket, Renderer* render_ctx, DecoderCache* decoder_cache, ShaderCache* shader_cache);
 
   struct RenderedWaveform {
-    const ClipBlock* block;
+    const ClipBlock* block = nullptr;
     AudioVisualWaveform waveform;
     TimeRange range;
     bool silence;
@@ -82,11 +82,11 @@ private:
 
   RenderTicketPtr ticket_;
 
-  Renderer* render_ctx_;
+  Renderer* render_ctx_ = nullptr;
 
-  DecoderCache* decoder_cache_;
+  DecoderCache* decoder_cache_ = nullptr;
 
-  ShaderCache* shader_cache_;
+  ShaderCache* shader_cache_ = nullptr;
 
 };
 

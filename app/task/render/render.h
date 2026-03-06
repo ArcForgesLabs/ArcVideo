@@ -118,7 +118,7 @@ private:
 
   void StartTicket(QThread *watcher_thread, ColorManager *manager, const rational &time, RenderMode::Mode mode, FrameHashCache *cache, const QSize &force_size, const QMatrix4x4 &force_matrix, PixelFormat force_format, int force_channel_count, ColorProcessorPtr force_color_output);
 
-  ViewerOutput* viewer_;
+  ViewerOutput* viewer_ = nullptr;
 
   VideoParams video_params_;
 

@@ -81,27 +81,27 @@ private:
   /**
    * @brief Stack of widgets that changes based on whether the stream is a video or audio stream
    */
-  QStackedWidget* stacked_widget_;
+  QStackedWidget* stacked_widget_ = nullptr;
 
   /**
    * @brief Media name text field
    */
-  QLineEdit* footage_name_field_;
+  QLineEdit* footage_name_field_ = nullptr;
 
   /**
    * @brief Internal pointer to Media object (set in constructor)
    */
-  Footage* footage_;
+  Footage* footage_ = nullptr;
 
   /**
    * @brief A list widget for listing the tracks in Media
    */
-  QListWidget* track_list;
+  QListWidget* track_list = nullptr;
 
   /**
    * @brief Frame rate to conform to
    */
-  QDoubleSpinBox* conform_fr;
+  QDoubleSpinBox* conform_fr = nullptr;
 
 private slots:
   /**

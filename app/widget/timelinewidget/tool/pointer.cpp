@@ -266,7 +266,7 @@ void PointerTool::InitiateDragInternal(Block *clicked_item,
     if (!slide_instead_of_moving) {
       // If the user tries to move a transition without moving the clip it belongs to, we turn
       // this into a slide
-      foreach (Block* block, clips) {
+      for (Block* block : clips) {
         if (TransitionBlock* transit = dynamic_cast<TransitionBlock*>(block)) {
           if (!CanTransitionMove(transit, clips)) {
             slide_instead_of_moving = true;
@@ -295,7 +295,7 @@ void PointerTool::InitiateDragInternal(Block *clicked_item,
       QHash<Track*, Block*> earliest_block_on_track;
       QHash<Track*, Block*> latest_block_on_track;
 
-      foreach (Block* this_block, clips) {
+      for (Block* this_block : clips) {
         Block* current_earliest = earliest_block_on_track.value(this_block->track(), nullptr);
         if (!current_earliest || this_block->in() < current_earliest->in()) {
           earliest_block_on_track.insert(this_block->track(), this_block);
@@ -315,7 +315,7 @@ void PointerTool::InitiateDragInternal(Block *clicked_item,
 
         // First we add the block that's out trimming, the one prior to the earliest
         {
-          TimelineViewGhostItem* earliest_ghost;
+          TimelineViewGhostItem* earliest_ghost = nullptr;
           bool slide_with_earliest_previous = true;
           if (sliding_due_to_transition && earliest->previous()) {
             if (TransitionBlock *transit = dynamic_cast<TransitionBlock *>(earliest)) {
@@ -339,7 +339,7 @@ void PointerTool::InitiateDragInternal(Block *clicked_item,
 
         // Then we add the block that's in trimming, the one after the latest
         if (latest->next()) {
-          TimelineViewGhostItem* latest_ghost;
+          TimelineViewGhostItem* latest_ghost = nullptr;
 
           bool slide_with_latest_next = true;
           if (sliding_due_to_transition) {
@@ -379,7 +379,7 @@ void PointerTool::InitiateDragInternal(Block *clicked_item,
       }
     } else {
       // Prepare for a standard pointer move by creating ghosts for them and any related blocks
-      foreach (Block* block, clips) {
+      for (Block* block : clips) {
         if (dynamic_cast<GapBlock*>(block)) {
           continue;
         }
@@ -427,7 +427,7 @@ void PointerTool::InitiateDragInternal(Block *clicked_item,
       ClipBlock *cb = dynamic_cast<ClipBlock*>(block);
       if (cb) {
         // See if this clip has a transition attached, and move it with the trim if so
-        TransitionBlock* connected_transition;
+        TransitionBlock* connected_transition = nullptr;
 
         // Get appropriate transition for the side of the clip
         if (trim_mode == Timeline::kTrimIn) {
@@ -563,7 +563,7 @@ void PointerTool::ProcessDrag(const TimelineCoordinate &mouse_pos)
   }
 
   // Perform movement
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     switch (ghost->GetMode()) {
     case Timeline::kNone:
       break;
@@ -602,8 +602,8 @@ void PointerTool::ProcessDrag(const TimelineCoordinate &mouse_pos)
 }
 
 struct GhostBlockPair {
-  TimelineViewGhostItem* ghost;
-  Block* block;
+  TimelineViewGhostItem* ghost = nullptr;
+  Block* block = nullptr;
 };
 
 void PointerTool::FinishDrag(TimelineViewMouseEvent *event)
@@ -613,7 +613,7 @@ void PointerTool::FinishDrag(TimelineViewMouseEvent *event)
   QList<GhostBlockPair> blocks_trimming;
 
   // Sort ghosts depending on which ones are trimming, which are moving, and which are sliding
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     if (ghost->HasBeenAdjusted()) {
       Block* b = QtUtils::ValueToPtr<Block>(ghost->GetData(TimelineViewGhostItem::kAttachedBlock));
 
@@ -637,7 +637,7 @@ void PointerTool::FinishDrag(TimelineViewMouseEvent *event)
   MultiUndoCommand* command = new MultiUndoCommand();
 
   if (!blocks_trimming.isEmpty()) {
-    foreach (const GhostBlockPair& p, blocks_trimming) {
+    for (const GhostBlockPair& p : blocks_trimming) {
       TimelineViewGhostItem* ghost = p.ghost;
 
       if (!ghost->GetData(TimelineViewGhostItem::kTrimShouldBeIgnored).toBool()) {
@@ -694,7 +694,7 @@ void PointerTool::FinishDrag(TimelineViewMouseEvent *event)
     QMap<Node*, Node*> relinks;
 
     // Now we can re-add each clip
-    foreach (const GhostBlockPair& p, blocks_moving) {
+    for (const GhostBlockPair& p : blocks_moving) {
       Block* block = p.block;
 
       if (duplicate_clips) {
@@ -763,7 +763,7 @@ void PointerTool::FinishDrag(TimelineViewMouseEvent *event)
     QHash<Track::Reference, Block*> out_adjacents;
     rational movement;
 
-    foreach (const GhostBlockPair& p, blocks_sliding) {
+    for (const GhostBlockPair& p : blocks_sliding) {
       const Track::Reference& track = p.ghost->GetTrack();
 
       switch (p.ghost->GetMode()) {
@@ -847,7 +847,7 @@ void PointerTool::InitiateDrag(Block *clicked_item, Timeline::MovementMode trim_
 
 TimelineViewGhostItem *PointerTool::GetExistingGhostFromBlock(Block *block)
 {
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     if (QtUtils::ValueToPtr<Block>(ghost->GetData(TimelineViewGhostItem::kAttachedBlock)) == block) {
       return ghost;
     }
@@ -866,7 +866,7 @@ TimelineViewGhostItem* PointerTool::AddGhostFromBlock(Block* block, Timeline::Mo
     return nullptr;
   }
 
-  TimelineViewGhostItem* ghost;
+  TimelineViewGhostItem* ghost = nullptr;
 
   // Check if we've already made a ghost for this block
   if (check_if_exists) {
@@ -933,7 +933,7 @@ bool PointerTool::IsClipTrimmable(Block *clip,
                                   const QVector<Block*>& items,
                                   const Timeline::MovementMode& mode)
 {
-  foreach (Block* compare, items) {
+  for (Block* compare : items) {
     if (clip->track() == compare->track()
         && clip != compare
         && ((compare->in() < clip->in() && mode == Timeline::kTrimIn)
@@ -949,7 +949,7 @@ rational PointerTool::ValidateInTrimming(rational movement)
 {
   bool first_ghost = true;
 
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     if (ghost->GetMode() != Timeline::kTrimIn) {
       continue;
     }
@@ -985,7 +985,7 @@ rational PointerTool::ValidateOutTrimming(rational movement)
 {
   bool first_ghost = true;
 
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     if (ghost->GetMode() != Timeline::kTrimOut) {
       continue;
     }
