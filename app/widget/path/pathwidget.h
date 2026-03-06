@@ -46,9 +46,9 @@ private slots:
   void LineEditChanged();
 
 private:
-  QLineEdit* path_edit_;
+  QLineEdit* path_edit_ = nullptr;
 
-  QPushButton* browse_btn_;
+  QPushButton* browse_btn_ = nullptr;
 
 };
 

@@ -128,19 +128,19 @@ bool FootageDescription::Save(const QString &filename) const
 
   writer.writeAttribute(QStringLiteral("count"), QString::number(total_stream_count_));
 
-  foreach (const VideoParams& vp, video_streams_) {
+  for (const VideoParams& vp : video_streams_) {
     writer.writeStartElement(QStringLiteral("video"));
     vp.Save(&writer);
     writer.writeEndElement(); // video
   }
 
-  foreach (const AudioParams& ap, audio_streams_) {
+  for (const AudioParams& ap : audio_streams_) {
     writer.writeStartElement(QStringLiteral("audio"));
     TypeSerializer::SaveAudioParams(&writer, ap);
     writer.writeEndElement(); // audio
   }
 
-  foreach (const SubtitleParams& sp, subtitle_streams_) {
+  for (const SubtitleParams& sp : subtitle_streams_) {
     writer.writeStartElement(QStringLiteral("subtitle"));
     sp.Save(&writer);
     writer.writeEndElement(); // audio

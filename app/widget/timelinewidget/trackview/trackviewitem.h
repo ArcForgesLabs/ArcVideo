@@ -45,16 +45,16 @@ signals:
 private:
   QPushButton* CreateMSLButton(const QColor &checked_color) const;
 
-  QStackedWidget* stack_;
+  QStackedWidget* stack_ = nullptr;
 
-  ClickableLabel* label_;
-  FocusableLineEdit* line_edit_;
+  ClickableLabel* label_ = nullptr;
+  FocusableLineEdit* line_edit_ = nullptr;
 
-  QPushButton* mute_button_;
-  QPushButton* solo_button_;
-  QPushButton* lock_button_;
+  QPushButton* mute_button_ = nullptr;
+  QPushButton* solo_button_ = nullptr;
+  QPushButton* lock_button_ = nullptr;
 
-  Track* track_;
+  Track* track_ = nullptr;
 
 private slots:
   void LabelClicked();

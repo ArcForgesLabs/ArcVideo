@@ -81,26 +81,26 @@ protected:
 
 private:
   struct TrimOperation {
-    Block* block;
+    Block* block = nullptr;
     rational old_length;
     rational new_length;
   };
 
   struct RemoveOperation {
-    Block* block;
-    Block* before;
+    Block* block = nullptr;
+    Block* before = nullptr;
   };
 
-  Track* track_;
+  Track* track_ = nullptr;
   TimeRange range_;
 
   TrimOperation trim_out_;
   QVector<RemoveOperation> removals_;
   TrimOperation trim_in_;
-  Block* insert_previous_;
+  Block* insert_previous_ = nullptr;
   bool allow_splitting_gaps_;
 
-  BlockSplitCommand* splice_split_command_;
+  BlockSplitCommand* splice_split_command_ = nullptr;
   QVector<UndoCommand*> remove_block_commands_;
 
 };
@@ -132,7 +132,7 @@ protected:
   virtual void undo() override;
 
 private:
-  TrackList* list_;
+  TrackList* list_ = nullptr;
 
   QList<Track*> working_tracks_;
 
@@ -153,7 +153,7 @@ public:
   }
 
 private:
-  Sequence* timeline_;
+  Sequence* timeline_ = nullptr;
 
 };
 
@@ -161,7 +161,7 @@ class TrackListRippleToolCommand : public UndoCommand
 {
 public:
   struct RippleInfo {
-    Block* block;
+    Block* block = nullptr;
     bool append_gap;
   };
 
@@ -189,7 +189,7 @@ protected:
 private:
   void ripple(bool redo);
 
-  TrackList* track_list_;
+  TrackList* track_list_ = nullptr;
 
   QHash<Track*, RippleInfo> info_;
   rational ripple_movement_;
@@ -197,7 +197,7 @@ private:
 
   struct WorkingData {
     GapBlock* created_gap = nullptr;
-    Block* removed_gap_after;
+    Block* removed_gap_after = nullptr;
     rational old_length;
     rational earliest_point_of_change;
   };
@@ -242,7 +242,7 @@ protected:
   virtual void undo() override;
 
 private:
-  Sequence* timeline_;
+  Sequence* timeline_ = nullptr;
   RangeList regions_;
 
   QVector<UndoCommand*> commands_;

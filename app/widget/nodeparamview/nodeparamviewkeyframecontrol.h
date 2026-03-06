@@ -59,10 +59,10 @@ private:
 
   rational ConvertToViewerTime(const rational& r) const;
 
-  QPushButton* prev_key_btn_;
-  QPushButton* toggle_key_btn_;
-  QPushButton* next_key_btn_;
-  QPushButton* enable_key_btn_;
+  QPushButton* prev_key_btn_ = nullptr;
+  QPushButton* toggle_key_btn_ = nullptr;
+  QPushButton* next_key_btn_ = nullptr;
+  QPushButton* enable_key_btn_ = nullptr;
 
   NodeInput input_;
 

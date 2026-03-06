@@ -59,7 +59,7 @@ protected:
 private:
   bool modified_;
 
-  Project* project_;
+  Project* project_ = nullptr;
 
   bool prepared_;
 

@@ -64,7 +64,7 @@ private:
 
   int height_;
 
-  ViewerDisplayWidget* display_widget_;
+  ViewerDisplayWidget* display_widget_ = nullptr;
 
   rational pixel_aspect_;
 

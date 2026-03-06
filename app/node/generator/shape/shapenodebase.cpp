@@ -145,7 +145,7 @@ void ShapeNodeBase::GizmoDragMove(double x, double y, const Qt::KeyboardModifier
     static const int kXYCount = 2;
     bool negative[kXYCount] = {false};
 
-    double original_ratio;
+    double original_ratio = 0;
     if (keep_ratio) {
       original_ratio = w_drag.GetStartValue().toDouble() / h_drag.GetStartValue().toDouble();
     }

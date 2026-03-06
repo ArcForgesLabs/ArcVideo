@@ -43,11 +43,11 @@ private:
   /**
    * @brief UI widget for selecting the current UI style
    */
-  QComboBox* style_combobox_;
+  QComboBox* style_combobox_ = nullptr;
 
   QVector<ColorCodingComboBox*> color_btns_;
 
-  ColorCodingComboBox* marker_btn_;
+  ColorCodingComboBox* marker_btn_ = nullptr;
 
 };
 

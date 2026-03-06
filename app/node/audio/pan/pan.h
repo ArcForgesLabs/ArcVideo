@@ -48,8 +48,8 @@ public:
   static const QString kPanningInput;
 
 private:
-  NodeInput* samples_input_;
-  NodeInput* panning_input_;
+  NodeInput* samples_input_ = nullptr;
+  NodeInput* panning_input_ = nullptr;
 
 };
 

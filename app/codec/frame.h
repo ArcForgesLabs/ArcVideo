@@ -156,7 +156,7 @@ public:
 private:
   VideoParams params_;
 
-  char* data_;
+  char* data_ = nullptr;
   int data_size_;
 
   rational timestamp_;

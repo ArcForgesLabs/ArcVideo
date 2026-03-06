@@ -41,14 +41,14 @@ void SlipTool::ProcessDrag(const TimelineCoordinate &mouse_pos)
   rational time_movement = drag_start_.GetFrame() - mouse_pos.GetFrame();
 
   // Validate slip (enforce all ghosts moving in legal ways)
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     if (ghost->GetMediaIn() + time_movement < 0) {
       time_movement = -ghost->GetMediaIn();
     }
   }
 
   // Perform slip
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     ghost->SetMediaInAdjustment(time_movement);
   }
 
@@ -71,7 +71,7 @@ void SlipTool::FinishDrag(TimelineViewMouseEvent *event)
   MultiUndoCommand* command = new MultiUndoCommand();
 
   // Find earliest point to ripple around
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     Block* b = QtUtils::ValueToPtr<Block>(ghost->GetData(TimelineViewGhostItem::kAttachedBlock));
 
     ClipBlock *cb = dynamic_cast<ClipBlock*>(b);

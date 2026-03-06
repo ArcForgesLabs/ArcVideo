@@ -173,28 +173,28 @@ private:
   QWidget* SetupColorSection();
   QWidget* SetupCodecSection();
 
-  QComboBox* codec_combobox_;
-  FrameRateComboBox* frame_rate_combobox_;
-  QCheckBox* maintain_aspect_checkbox_;
-  QComboBox* scaling_method_combobox_;
+  QComboBox* codec_combobox_ = nullptr;
+  FrameRateComboBox* frame_rate_combobox_ = nullptr;
+  QCheckBox* maintain_aspect_checkbox_ = nullptr;
+  QComboBox* scaling_method_combobox_ = nullptr;
 
-  CodecStack* codec_stack_;
-  ImageSection* image_section_;
-  H264Section* h264_section_;
-  H264Section* h265_section_;
-  AV1Section* av1_section_;
+  CodecStack* codec_stack_ = nullptr;
+  ImageSection* image_section_ = nullptr;
+  H264Section* h264_section_ = nullptr;
+  H264Section* h265_section_ = nullptr;
+  AV1Section* av1_section_ = nullptr;
   CineformSection *cineform_section_;
 
-  ColorSpaceChooser* color_space_chooser_;
+  ColorSpaceChooser* color_space_chooser_ = nullptr;
 
-  IntegerSlider* width_slider_;
-  IntegerSlider* height_slider_;
+  IntegerSlider* width_slider_ = nullptr;
+  IntegerSlider* height_slider_ = nullptr;
 
-  ColorManager* color_manager_;
+  ColorManager* color_manager_ = nullptr;
 
-  InterlacedComboBox* interlaced_combobox_;
-  PixelAspectRatioComboBox* pixel_aspect_combobox_;
-  PixelFormatComboBox* pixel_format_field_;
+  InterlacedComboBox* interlaced_combobox_ = nullptr;
+  PixelAspectRatioComboBox* pixel_aspect_combobox_ = nullptr;
+  PixelFormatComboBox* pixel_format_field_ = nullptr;
 
   int threads_;
 

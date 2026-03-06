@@ -160,7 +160,7 @@ int ProjectExplorer::ConfirmItemDeletion(Node* item)
   msgbox.setIcon(QMessageBox::Warning);
 
   QStringList connected_nodes_names;
-  foreach (const Node::OutputConnection& connected, item->output_connections()) {
+  for (const Node::OutputConnection &connected : item->output_connections()) {
     if (!dynamic_cast<Folder*>(connected.second.node())) {
       connected_nodes_names.append(GetHumanReadableNodeName(connected.second.node()));
     }
@@ -190,7 +190,7 @@ bool ProjectExplorer::DeleteItemsInternal(const QVector<Node*>& selected, bool& 
     bool can_delete_item = true;
 
     if (check_if_item_is_in_use) {
-      foreach (const Node::OutputConnection& oc, node->output_connections()) {
+      for (const Node::OutputConnection &oc : node->output_connections()) {
         Folder* folder_test = dynamic_cast<Folder*>(oc.second.node());
         if (!folder_test) {
           // This sequence outputs to SOMETHING, confirm the user if they want to delete this
@@ -365,7 +365,7 @@ void ProjectExplorer::ShowContextMenu()
     bool all_items_have_video_streams = true;
     bool all_items_are_footage_or_sequence = true;
 
-    foreach (Node* i, context_menu_items_) {
+    for (Node* i : context_menu_items_) {
       Footage* footage_cast_test = dynamic_cast<Footage*>(i);
       Sequence* sequence_cast_test = dynamic_cast<Sequence*>(i);
 
@@ -392,7 +392,7 @@ void ProjectExplorer::ShowContextMenu()
         QAction* a = proxy_menu->addAction(tr("No sequences exist in project"));
         a->setEnabled(false);
       } else {
-        foreach (Sequence* i, sequences) {
+        for (Sequence* i : sequences) {
           QAction* a = proxy_menu->addAction(tr("For \"%1\"").arg(i->GetLabel()));
           a->setData(QtUtils::PtrToValue(i));
         }
@@ -506,7 +506,7 @@ void ProjectExplorer::ContextMenuStartProxy(QAction *a)
   Sequence* sequence = QtUtils::ValueToPtr<Sequence>(a->data());
 
   // To get here, the `context_menu_items_` must be all kFootage
-  foreach (Node* item, context_menu_items_) {
+  for (Node* item : context_menu_items_) {
     Footage* f = static_cast<Footage*>(item);
 
     int sz = f->InputArraySize(Footage::kVideoParamsInput);
@@ -531,7 +531,7 @@ void ProjectExplorer::ViewSelectionChanged()
 
   QVector<Node *> nodes;
 
-  foreach (const QModelIndex &index, selection) {
+  for (const QModelIndex &index : selection) {
     Node *sel = static_cast<Node*>(sort_model_.mapToSource(index).internalPointer());
     if (!nodes.contains(sel)) {
       nodes.append(sel);

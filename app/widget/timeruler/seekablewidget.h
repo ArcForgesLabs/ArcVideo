@@ -134,8 +134,8 @@ private:
 
   void CommitResizeHandle();
 
-  TimelineMarkerList* markers_;
-  TimelineWorkArea* workarea_;
+  TimelineMarkerList* markers_ = nullptr;
+  TimelineWorkArea* workarea_ = nullptr;
 
   int text_height_;
 

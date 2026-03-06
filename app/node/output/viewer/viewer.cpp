@@ -514,7 +514,7 @@ void ViewerOutput::InputValueChangedEvent(const QString &input, int element)
 
 void ViewerOutput::set_parameters_from_footage(const QVector<ViewerOutput *> footage)
 {
-  foreach (ViewerOutput* f, footage) {
+  for (ViewerOutput* f : footage) {
     QVector<VideoParams> video_streams = f->GetEnabledVideoStreams();
     QVector<AudioParams> audio_streams = f->GetEnabledAudioStreams();
 

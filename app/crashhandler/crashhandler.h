@@ -45,13 +45,13 @@ private:
 
   static QString GetSymbolPath();
 
-  QTextEdit* summary_edit_;
+  QTextEdit* summary_edit_ = nullptr;
 
-  QTextEdit* crash_report_;
+  QTextEdit* crash_report_ = nullptr;
 
-  QPushButton* send_report_btn_;
+  QPushButton* send_report_btn_ = nullptr;
 
-  QPushButton* dont_send_btn_;
+  QPushButton* dont_send_btn_ = nullptr;
 
   QString report_filename_;
 

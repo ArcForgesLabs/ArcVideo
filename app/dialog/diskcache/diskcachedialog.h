@@ -42,13 +42,13 @@ public slots:
   virtual void accept() override;
 
 private:
-  DiskCacheFolder* folder_;
+  DiskCacheFolder* folder_ = nullptr;
 
-  FloatSlider* maximum_cache_slider_;
+  FloatSlider* maximum_cache_slider_ = nullptr;
 
-  QCheckBox* clear_disk_cache_;
+  QCheckBox* clear_disk_cache_ = nullptr;
 
-  QPushButton* clear_cache_btn_;
+  QPushButton* clear_cache_btn_ = nullptr;
 
 private slots:
   void ClearDiskCache();

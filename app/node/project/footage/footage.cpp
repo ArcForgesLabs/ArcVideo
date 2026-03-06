@@ -502,7 +502,7 @@ void Footage::Reprobe()
         // Probe and create cache
         QVector<DecoderPtr> decoder_list = Decoder::ReceiveListOfAllDecoders();
 
-        foreach (DecoderPtr decoder, decoder_list) {
+        for (DecoderPtr decoder : decoder_list) {
           footage_info = decoder->Probe(filename, cancelled_);
 
           if (footage_info.IsValid()) {

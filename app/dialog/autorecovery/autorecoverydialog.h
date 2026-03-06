@@ -42,7 +42,7 @@ private:
 
   void PopulateTree(const QStringList &recoveries, bool autocheck);
 
-  QTreeWidget* tree_widget_;
+  QTreeWidget* tree_widget_ = nullptr;
 
   QVector<QTreeWidgetItem*> checkable_items_;
 

@@ -21,7 +21,7 @@ ConformManager::Conform ConformManager::GetConformState(const QString &decoder_i
 
   ConformTask *conforming_task = nullptr;
 
-  foreach (const ConformData &data, conforming_) {
+  for (const ConformData &data : conforming_) {
     if (data.stream == stream && data.params == params) {
       // Already creating conform in a task
       conforming_task = data.task;
@@ -77,7 +77,7 @@ QVector<QString> ConformManager::GetConformedFilename(const QString &cache_path,
 
 bool ConformManager::AllConformsExist(const QVector<QString> &filenames)
 {
-  foreach (const QString &fn, filenames) {
+  for (const QString &fn : filenames) {
     if (!QFileInfo::exists(fn)) {
       return false;
     }

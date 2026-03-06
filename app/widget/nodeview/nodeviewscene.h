@@ -74,7 +74,7 @@ public slots:
 private:
   QHash<Node*, NodeViewContext*> context_map_;
 
-  Project* graph_;
+  Project* graph_ = nullptr;
 
   NodeViewCommon::FlowDirection direction_;
 

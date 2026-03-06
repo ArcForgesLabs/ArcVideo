@@ -38,7 +38,7 @@ public slots:
 private:
   virtual void Retranslate() override;
 
-  ManagedPixelSamplerWidget* sampler_widget_;
+  ManagedPixelSamplerWidget* sampler_widget_ = nullptr;
 
 };
 

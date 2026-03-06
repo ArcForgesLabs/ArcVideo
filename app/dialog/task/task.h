@@ -68,7 +68,7 @@ signals:
   void TaskFailed(Task* task);
 
 private:
-  Task* task_;
+  Task* task_ = nullptr;
 
   bool destroy_on_close_;
 

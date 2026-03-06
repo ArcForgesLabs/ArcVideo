@@ -73,17 +73,17 @@ public slots:
   void SetColor(const ManagedColor &c);
 
 private:
-  ColorManager* color_manager_;
+  ColorManager* color_manager_ = nullptr;
 
-  ColorWheelWidget* color_wheel_;
+  ColorWheelWidget* color_wheel_ = nullptr;
 
-  ColorValuesWidget* color_values_widget_;
+  ColorValuesWidget* color_values_widget_ = nullptr;
 
-  ColorGradientWidget* hsv_value_gradient_;
+  ColorGradientWidget* hsv_value_gradient_ = nullptr;
 
   ColorProcessorPtr input_to_ref_processor_;
 
-  ColorSpaceChooser* chooser_;
+  ColorSpaceChooser* chooser_ = nullptr;
 
   ColorSwatchChooser *swatch_;
 

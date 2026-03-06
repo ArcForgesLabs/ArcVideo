@@ -63,11 +63,11 @@ protected:
   virtual void mouseDoubleClickEvent(QMouseEvent* event) override;
 
 private:
-  Node* node_;
+  Node* node_ = nullptr;
 
   QString input_;
 
-  QLabel* count_lbl_;
+  QLabel* count_lbl_ = nullptr;
 
 private slots:
   void UpdateCounter(const QString &input, int old_size, int new_size);

@@ -37,7 +37,7 @@ public:
 private:
   void UpdateFootageItem(int index);
 
-  QTreeWidget* table_;
+  QTreeWidget* table_ = nullptr;
 
   QVector<Footage*> footage_;
 

@@ -66,48 +66,48 @@ public slots:
 
 private:
   // "New" menu shared items
-  QAction* new_project_item_;
-  QAction* new_sequence_item_;
-  QAction* new_folder_item_;
+  QAction* new_project_item_ = nullptr;
+  QAction* new_sequence_item_ = nullptr;
+  QAction* new_folder_item_ = nullptr;
 
   // "Edit" menu shared items
-  QAction* edit_cut_item_;
-  QAction* edit_copy_item_;
-  QAction* edit_paste_item_;
-  QAction* edit_paste_insert_item_;
-  QAction* edit_duplicate_item_;
-  QAction* edit_rename_item_;
-  QAction* edit_delete_item_;
-  QAction* edit_ripple_delete_item_;
-  QAction* edit_split_item_;
-  QAction* edit_speedduration_item_;
+  QAction* edit_cut_item_ = nullptr;
+  QAction* edit_copy_item_ = nullptr;
+  QAction* edit_paste_item_ = nullptr;
+  QAction* edit_paste_insert_item_ = nullptr;
+  QAction* edit_duplicate_item_ = nullptr;
+  QAction* edit_rename_item_ = nullptr;
+  QAction* edit_delete_item_ = nullptr;
+  QAction* edit_ripple_delete_item_ = nullptr;
+  QAction* edit_split_item_ = nullptr;
+  QAction* edit_speedduration_item_ = nullptr;
 
   // List of addable items
   QVector<QAction*> addable_items_;
 
   // "In/Out" menu shared items
-  QAction* inout_set_in_item_;
-  QAction* inout_set_out_item_;
-  QAction* inout_reset_in_item_;
-  QAction* inout_reset_out_item_;
-  QAction* inout_clear_inout_item_;
+  QAction* inout_set_in_item_ = nullptr;
+  QAction* inout_set_out_item_ = nullptr;
+  QAction* inout_reset_in_item_ = nullptr;
+  QAction* inout_reset_out_item_ = nullptr;
+  QAction* inout_clear_inout_item_ = nullptr;
 
   // "Clip Edit" menu shared items
-  QAction* clip_add_default_transition_item_;
-  QAction* clip_link_unlink_item_;
-  QAction* clip_enable_disable_item_;
-  QAction* clip_nest_item_;
+  QAction* clip_add_default_transition_item_ = nullptr;
+  QAction* clip_link_unlink_item_ = nullptr;
+  QAction* clip_enable_disable_item_ = nullptr;
+  QAction* clip_nest_item_ = nullptr;
 
   // TimeRuler menu shared items
-  QActionGroup* frame_view_mode_group_;
-  QAction* view_timecode_view_dropframe_item_;
-  QAction* view_timecode_view_nondropframe_item_;
-  QAction* view_timecode_view_seconds_item_;
-  QAction* view_timecode_view_frames_item_;
-  QAction* view_timecode_view_milliseconds_item_;
+  QActionGroup* frame_view_mode_group_ = nullptr;
+  QAction* view_timecode_view_dropframe_item_ = nullptr;
+  QAction* view_timecode_view_nondropframe_item_ = nullptr;
+  QAction* view_timecode_view_seconds_item_ = nullptr;
+  QAction* view_timecode_view_frames_item_ = nullptr;
+  QAction* view_timecode_view_milliseconds_item_ = nullptr;
 
   // Color coding menu items
-  ColorLabelMenu* color_coding_menu_;
+  ColorLabelMenu* color_coding_menu_ = nullptr;
 
   static MenuShared* instance_;
 

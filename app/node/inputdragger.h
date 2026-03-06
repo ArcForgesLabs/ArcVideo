@@ -69,7 +69,7 @@ private:
 
   QVariant end_value_;
 
-  NodeKeyframe* dragging_key_;
+  NodeKeyframe* dragging_key_ = nullptr;
   QVector<NodeKeyframe*> created_keys_;
 
   static int input_being_dragged;

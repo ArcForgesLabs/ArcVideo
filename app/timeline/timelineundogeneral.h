@@ -50,7 +50,7 @@ protected:
   virtual void undo() override;
 
 private:
-  Block* block_;
+  Block* block_ = nullptr;
   rational old_length_;
   rational new_length_;
 
@@ -74,7 +74,7 @@ protected:
   virtual void undo();
 
 private:
-  Block* block_;
+  Block* block_ = nullptr;
   rational old_length_;
   rational new_length_;
 
@@ -98,7 +98,7 @@ protected:
   virtual void undo();
 
 private:
-  ClipBlock* block_;
+  ClipBlock* block_ = nullptr;
   rational old_media_in_;
   rational new_media_in_;
 
@@ -148,16 +148,16 @@ protected:
   virtual void undo() override;
 
 private:
-  TrackList* timeline_;
+  TrackList* timeline_ = nullptr;
 
-  Track* track_;
-  Node* merge_;
+  Track* track_ = nullptr;
+  Node* merge_ = nullptr;
   NodeInput base_;
   NodeInput blend_;
 
   NodeInput direct_;
 
-  MultiUndoCommand* position_command_;
+  MultiUndoCommand* position_command_ = nullptr;
 
   QObject memory_manager_;
 
@@ -219,15 +219,15 @@ protected:
   virtual void undo() override;
 
 private:
-  TransitionBlock* block_;
+  TransitionBlock* block_ = nullptr;
 
-  Track* track_;
+  Track* track_ = nullptr;
 
-  Block* out_block_;
-  Block* in_block_;
+  Block* out_block_ = nullptr;
+  Block* in_block_ = nullptr;
 
   bool remove_from_graph_;
-  UndoCommand* remove_command_;
+  UndoCommand* remove_command_ = nullptr;
 
 };
 
@@ -256,13 +256,13 @@ protected:
 private:
   void CreateRemoveTransitionCommandIfNecessary(bool next);
 
-  Track* track_;
-  Block* block_;
+  Track* track_ = nullptr;
+  Block* block_ = nullptr;
 
-  GapBlock* existing_gap_;
-  GapBlock* existing_merged_gap_;
+  GapBlock* existing_gap_ = nullptr;
+  GapBlock* existing_merged_gap_ = nullptr;
   bool existing_gap_precedes_;
-  GapBlock* our_gap_;
+  GapBlock* our_gap_ = nullptr;
 
   bool handle_transitions_;
 
@@ -298,7 +298,7 @@ protected:
   }
 
 private:
-  Block* block_;
+  Block* block_ = nullptr;
 
   bool old_enabled_;
 
@@ -334,7 +334,7 @@ protected:
   virtual void undo() override;
 
 private:
-  TrackList* track_list_;
+  TrackList* track_list_ = nullptr;
 
   rational point_;
 
@@ -345,14 +345,14 @@ private:
   QVector<Block*> gaps_to_extend_;
 
   struct AddGap {
-    GapBlock* gap;
-    Block* before;
-    Track* track;
+    GapBlock* gap = nullptr;
+    Block* before = nullptr;
+    Track* track = nullptr;
   };
 
   QVector<AddGap> gaps_added_;
 
-  BlockSplitPreservingLinksCommand* split_command_;
+  BlockSplitPreservingLinksCommand* split_command_ = nullptr;
 
   QObject memory_manager_;
 

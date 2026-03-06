@@ -134,25 +134,25 @@ private:
 
   QHash<Node *, Node *> GenerateExistingPasteMap(const ProjectSerializer::Result &r);
 
-  KeyframeView* keyframe_view_;
+  KeyframeView* keyframe_view_ = nullptr;
 
   QVector<NodeParamViewContext*> context_items_;
 
-  QScrollBar* vertical_scrollbar_;
+  QScrollBar* vertical_scrollbar_ = nullptr;
 
   int last_scroll_val_;
 
-  QScrollArea* param_scroll_area_;
+  QScrollArea* param_scroll_area_ = nullptr;
 
-  QWidget* param_widget_container_;
+  QWidget* param_widget_container_ = nullptr;
 
-  NodeParamViewDockArea* param_widget_area_;
+  NodeParamViewDockArea* param_widget_area_ = nullptr;
 
   QVector<Node*> pinned_nodes_;
 
   QVector<Node*> active_nodes_;
 
-  NodeParamViewItem* focused_node_;
+  NodeParamViewItem* focused_node_ = nullptr;
   QVector<NodeParamViewItem*> selected_nodes_;
 
   QVector<Node*> contexts_;

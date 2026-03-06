@@ -34,7 +34,7 @@ ProjectImportTask::ProjectImportTask(Folder *folder, const QStringList &filename
   command_(nullptr),
   folder_(folder)
 {
-  foreach (const QString& f, filenames) {
+  for (const QString& f : filenames) {
     filenames_.append(QFileInfo(f));
   }
 

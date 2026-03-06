@@ -35,7 +35,7 @@ class NodeInput;
 class NodeGroup;
 
 #define XMLAttributeLoop(reader, item) \
-  foreach (const QXmlStreamAttribute& item, reader->attributes())
+  for (const QXmlStreamAttribute& item : reader->attributes())
 
 /**
  * @brief Workaround for QXmlStreamReader::readNextStartElement not detecting the end of a document

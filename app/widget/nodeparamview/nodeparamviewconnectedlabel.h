@@ -53,7 +53,7 @@ private:
 
   void CreateTree();
 
-  ClickableLabel* connected_to_lbl_;
+  ClickableLabel* connected_to_lbl_ = nullptr;
 
   NodeInput input_;
 

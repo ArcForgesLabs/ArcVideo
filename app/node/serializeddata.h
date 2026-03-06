@@ -37,7 +37,7 @@ struct SerializedData {
   };
 
   struct BlockLink {
-    Node* block;
+    Node* block = nullptr;
     quintptr link;
   };
 

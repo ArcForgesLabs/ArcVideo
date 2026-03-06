@@ -74,7 +74,7 @@ void StyleManager::ParsePaletteGroup(QSettings *ini, QPalette *palette, QPalette
   ini->beginGroup(group_name);
 
   QStringList keys = ini->childKeys();
-  foreach (QString k, keys) {
+  for (QString k : keys) {
     ParsePaletteColor(ini, palette, group, k);
   }
 

@@ -84,25 +84,25 @@ private:
 
   static const AVCodec *GetEncoder(ExportCodec::Codec c, SampleFormat aformat);
 
-  AVFormatContext* fmt_ctx_;
+  AVFormatContext* fmt_ctx_ = nullptr;
 
-  AVStream* video_stream_;
-  AVCodecContext* video_codec_ctx_;
+  AVStream* video_stream_ = nullptr;
+  AVCodecContext* video_codec_ctx_ = nullptr;
   AVFilterGraph *video_scale_ctx_;
   AVFilterContext *video_buffersrc_ctx_;
   AVFilterContext *video_buffersink_ctx_;
   PixelFormat video_conversion_fmt_;
 
-  AVStream* audio_stream_;
-  AVCodecContext* audio_codec_ctx_;
-  SwrContext* audio_resample_ctx_;
-  AVFrame* audio_frame_;
+  AVStream* audio_stream_ = nullptr;
+  AVCodecContext* audio_codec_ctx_ = nullptr;
+  SwrContext* audio_resample_ctx_ = nullptr;
+  AVFrame* audio_frame_ = nullptr;
   int audio_max_samples_;
   int audio_frame_offset_;
   int audio_write_count_;
 
-  AVStream* subtitle_stream_;
-  AVCodecContext* subtitle_codec_ctx_;
+  AVStream* subtitle_stream_ = nullptr;
+  AVCodecContext* subtitle_codec_ctx_ = nullptr;
 
   bool open_;
 

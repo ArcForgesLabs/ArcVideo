@@ -98,7 +98,7 @@ public:
   {
     QVector<T*> list;
 
-    foreach (Node* node, item_children_) {
+    for (Node* node : item_children_) {
       T* cast_test = dynamic_cast<T*>(node);
       if (cast_test) {
         list.append(cast_test);
@@ -174,7 +174,7 @@ private:
   template<typename T>
   static void ListOutputsOfTypeInternal(const Folder* n, QVector<T*>& list, bool recursive)
   {
-    foreach (const Node::OutputConnection& c, n->output_connections()) {
+    for (const Node::OutputConnection &c : n->output_connections()) {
       Node* connected = c.second.node();
 
       T* cast_test = dynamic_cast<T*>(connected);
@@ -214,9 +214,9 @@ protected:
   virtual void undo() override;
 
 private:
-  Folder* folder_;
+  Folder* folder_ = nullptr;
 
-  Node* child_;
+  Node* child_ = nullptr;
 
 };
 

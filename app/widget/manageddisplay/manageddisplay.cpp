@@ -133,7 +133,7 @@ Menu *ManagedDisplayWidget::GetColorSpaceMenu(QMenu *parent, bool auto_connect)
     connect(ocio_colorspace_menu, &Menu::triggered, this, &ManagedDisplayWidget::MenuColorspaceSelect);
   }
 
-  foreach (const QString& c, colorspaces) {
+  for (const QString& c : colorspaces) {
     QAction* action = ocio_colorspace_menu->addAction(c);
     action->setCheckable(true);
     action->setChecked(color_transform_.output() == c);
@@ -339,7 +339,7 @@ Menu* ManagedDisplayWidget::GetDisplayMenu(QMenu* parent, bool auto_connect)
     connect(ocio_display_menu, &Menu::triggered, this, &ManagedDisplayWidget::MenuDisplaySelect);
   }
 
-  foreach (const QString& d, displays) {
+  for (const QString& d : displays) {
     QAction* action = ocio_display_menu->addAction(d);
     action->setCheckable(true);
     action->setChecked(color_transform_.display() == d);
@@ -359,7 +359,7 @@ Menu* ManagedDisplayWidget::GetViewMenu(QMenu* parent, bool auto_connect)
     connect(ocio_view_menu, &Menu::triggered, this, &ManagedDisplayWidget::MenuViewSelect);
   }
 
-  foreach (const QString& v, views) {
+  for (const QString& v : views) {
     QAction* action = ocio_view_menu->addAction(v);
     action->setCheckable(true);
     action->setChecked(color_transform_.view() == v);
@@ -386,7 +386,7 @@ Menu* ManagedDisplayWidget::GetLookMenu(QMenu* parent, bool auto_connect)
   no_look_action->setData(QString());
 
   // Set up the rest of the looks
-  foreach (const QString& l, looks) {
+  for (const QString& l : looks) {
     QAction* action = ocio_look_menu->addAction(l);
     action->setCheckable(true);
     action->setChecked(color_transform_.look() == l);

@@ -41,7 +41,7 @@ NodeTableView::NodeTableView(QWidget* parent) :
 
 void NodeTableView::SelectNodes(const QVector<Node *> &nodes)
 {
-  foreach (Node* n, nodes) {
+  for (Node* n : nodes) {
     QTreeWidgetItem* top_item = new QTreeWidgetItem();
     top_item->setText(0, n->GetLabelAndName());
     top_item->setFirstColumnSpanned(true);
@@ -54,7 +54,7 @@ void NodeTableView::SelectNodes(const QVector<Node *> &nodes)
 
 void NodeTableView::DeselectNodes(const QVector<Node *> &nodes)
 {
-  foreach (Node* n, nodes) {
+  for (Node* n : nodes) {
     delete top_level_item_map_.take(n);
   }
 }

@@ -112,7 +112,7 @@ public:
 
       writer.writeStartElement(QStringLiteral("presets"));
 
-      foreach (PresetPtr p, custom_preset_data_) {
+      for (PresetPtr p : custom_preset_data_) {
         writer.writeStartElement(QStringLiteral("preset"));
 
         p->Save(&writer);
@@ -237,7 +237,7 @@ private:
 
   QString preset_name_;
 
-  QWidget* parent_;
+  QWidget* parent_ = nullptr;
 
 };
 

@@ -100,7 +100,7 @@ bool LoadOTIOTask::Run()
   // Generate a list of sequences with the same names as the timelines.
   // Assumes each timeline has a unique name.
   int unnamed_sequence_count = 0;
-  foreach (auto timeline, timelines) {
+  for (auto timeline : timelines) {
     Sequence* sequence = new Sequence();
     if (!timeline->name().empty()) {
       sequence->SetLabel(QString::fromStdString(timeline->name()));
@@ -115,7 +115,7 @@ bool LoadOTIOTask::Run()
     timeline_sequnce_map.insert(timeline, sequence);
 
     // Get number of clips for loading bar
-    foreach (auto track, timeline->tracks()->children()) {
+    for (auto track : timeline->tracks()->children()) {
       auto otio_track = static_cast<OTIO::Track*>(track.value);
       number_of_clips += otio_track->children().size();
     }
@@ -136,7 +136,7 @@ bool LoadOTIOTask::Run()
     return true;
   }
 
-  foreach (auto timeline, timeline_sequnce_map.keys()) {
+  for (auto timeline : timeline_sequnce_map.keys()) {
     Sequence* sequence = timeline_sequnce_map.value(timeline);
     sequence->setParent(project_);
     FolderAddChild(project_->root(), sequence).redo_now();
@@ -275,7 +275,7 @@ bool LoadOTIOTask::Run()
             // Link footage
             QString footage_url = QString::fromStdString(static_cast<OTIO::ExternalReference*>(otio_clip->media_reference())->target_url());
 
-            Footage* probed_item;
+            Footage* probed_item = nullptr;
 
             if (imported_footage.contains(footage_url)) {
               probed_item = imported_footage.value(footage_url);

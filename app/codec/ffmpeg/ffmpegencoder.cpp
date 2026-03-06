@@ -55,14 +55,18 @@ QStringList FFmpegEncoder::GetPixelFormatsForCodec(ExportCodec::Codec c) const
   const AVCodec* codec_info = GetEncoder(c, SampleFormat::INVALID);
 
   if (codec_info) {
-    for (int i=0; codec_info->pix_fmts[i]!=-1; i++) {
-      if (FFmpegUtils::ConvertJPEGSpaceToRegularSpace(codec_info->pix_fmts[i]) != codec_info->pix_fmts[i]) {
-        // This is a deprecated "JPEG" space, skip it
-        continue;
+    const AVPixelFormat *fmt_list = nullptr;
+    int num_fmts = 0;
+    if (avcodec_get_supported_config(nullptr, codec_info, AV_CODEC_CONFIG_PIX_FORMAT, 0,
+                                     reinterpret_cast<const void **>(&fmt_list), &num_fmts) >= 0
+        && fmt_list) {
+      for (int i = 0; i < num_fmts; i++) {
+        if (FFmpegUtils::ConvertJPEGSpaceToRegularSpace(fmt_list[i]) != fmt_list[i]) {
+          continue;
+        }
+        const char *pix_fmt_name = av_get_pix_fmt_name(fmt_list[i]);
+        pix_fmts.append(pix_fmt_name);
       }
-
-      const char* pix_fmt_name = av_get_pix_fmt_name(codec_info->pix_fmts[i]);
-      pix_fmts.append(pix_fmt_name);
     }
   }
 
@@ -88,11 +92,17 @@ std::vector<SampleFormat> FFmpegEncoder::GetSampleFormatsForCodec(ExportCodec::C
   } else {
     const AVCodec* codec_info = GetEncoder(c, SampleFormat::INVALID);
 
-    if (codec_info && codec_info->sample_fmts) {
-      for (int i=0; codec_info->sample_fmts[i]!=-1; i++) {
-        SampleFormat this_format = FFmpegUtils::GetNativeSampleFormat(static_cast<AVSampleFormat>(codec_info->sample_fmts[i]));
-        if (this_format != SampleFormat::INVALID) {
-          f.push_back(this_format);
+    if (codec_info) {
+      const AVSampleFormat *fmt_list = nullptr;
+      int num_fmts = 0;
+      if (avcodec_get_supported_config(nullptr, codec_info, AV_CODEC_CONFIG_SAMPLE_FORMAT, 0,
+                                       reinterpret_cast<const void **>(&fmt_list), &num_fmts) >= 0
+          && fmt_list) {
+        for (int i = 0; i < num_fmts; i++) {
+          SampleFormat this_format = FFmpegUtils::GetNativeSampleFormat(fmt_list[i]);
+          if (this_format != SampleFormat::INVALID) {
+            f.push_back(this_format);
+          }
         }
       }
     }
@@ -173,7 +183,7 @@ bool FFmpegEncoder::Open()
 
     {
       // Set color range
-      AVFilterContext* range_filter;
+      AVFilterContext* range_filter = nullptr;
 
       snprintf(filter_args, FILTER_ARG_SZ, "in_range=full:out_range=%s",
                params().video_params().color_range() == VideoParams::kColorRangeFull ? "full" : "limited");
@@ -186,7 +196,7 @@ bool FFmpegEncoder::Open()
 
     if (src_alpha_pix_fmt != encoder_pix_fmt) {
       // Transform pixel format
-      AVFilterContext* format_filter;
+      AVFilterContext* format_filter = nullptr;
 
       snprintf(filter_args, FILTER_ARG_SZ, "pix_fmts=%u", encoder_pix_fmt);
 

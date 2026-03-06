@@ -48,7 +48,7 @@ public:
 private:
   virtual void Retranslate() override;
 
-  AudioMonitor* audio_monitor_;
+  AudioMonitor* audio_monitor_ = nullptr;
 
 };
 

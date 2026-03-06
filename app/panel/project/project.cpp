@@ -221,7 +221,7 @@ QVector<ViewerOutput *> ProjectPanel::GetSelectedFootage() const
   QVector<Node*> items = SelectedItems();
   QVector<ViewerOutput*> footage;
 
-  foreach (Node* i, items) {
+  for (Node* i : items) {
     if (dynamic_cast<ViewerOutput*>(i)) {
       footage.append(static_cast<ViewerOutput*>(i));
     }

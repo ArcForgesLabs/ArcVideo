@@ -2,7 +2,7 @@
 
 ## Overview
 
-ArcVideo uses **CMake 4.2+** with the **Visual Studio 2026** generator. Dependencies are managed through **vcpkg** (classic mode) and a manually installed **Qt6**.
+ArcVideo uses **CMake 4.2+** with the **Visual Studio 2026** generator. Dependencies are managed through **vcpkg** (classic mode), including **Qt6**.
 
 The VS generator is **multi-config** — a single `cmake --preset windows-vs` produces one `.sln` containing Debug, Release, and all other configurations.
 
@@ -17,7 +17,6 @@ The VS generator is **multi-config** — a single `cmake --preset windows-vs` pr
 | **Visual Studio 2026** | Latest | [visualstudio.microsoft.com](https://visualstudio.microsoft.com/) |
 | **CMake** | ≥ 4.2 | `scoop install cmake` |
 | **vcpkg** | Latest | `git clone https://github.com/microsoft/vcpkg.git` → `bootstrap-vcpkg.bat` |
-| **Qt6** | ≥ 6.2 | Manual install from [qt.io](https://www.qt.io/) (all modules except QtWebEngine) |
 | **Git** | Latest | `scoop install git` |
 
 ---
@@ -30,9 +29,6 @@ Set the following **permanent User environment variables** (PowerShell as Admini
 # vcpkg root (use a custom name to avoid VS hijacking VCPKG_ROOT)
 [System.Environment]::SetEnvironmentVariable("GLOBAL_VCPKG_PATH", "C:\path\to\vcpkg", "User")
 
-# Qt6 install path (the directory containing bin/, lib/, include/)
-[System.Environment]::SetEnvironmentVariable("CMAKE_PREFIX_PATH", "C:\Qt\6.x.x\msvc2022_64", "User")
-
 # Windows SDK resource compiler path (required for FASTBuild / CLion)
 # Find yours: Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Filter "rc.exe"
 [System.Environment]::SetEnvironmentVariable("WindowsKitRC", "C:\Program Files (x86)\Windows Kits\10\bin\10.0.xxxxx.0\x64", "User")
@@ -44,7 +40,6 @@ Set the following **permanent User environment variables** (PowerShell as Admini
 | Variable | Required for | Why |
 |----------|-------------|-----|
 | `GLOBAL_VCPKG_PATH` | All | VS overrides `VCPKG_ROOT` with its bundled vcpkg. Custom name avoids hijacking. |
-| `CMAKE_PREFIX_PATH` | All | Allows CMake to find Qt6 without hardcoding paths. |
 | `WindowsKitRC` | FASTBuild / CLion | FASTBuild needs `rc.exe` on PATH. The SDK bin directory isn't on PATH by default. |
 | `FASTBUILD_CACHE_PATH` | FASTBuild / CLion | FASTBuild compilation cache location. Must be a permanent env var. |
 
@@ -64,11 +59,13 @@ vcpkg install --triplet x64-windows `
   openimageio `
   openexr `
   imath `
-  ffmpeg[avcodec,avdevice,avfilter,avformat,swresample,swscale] `
+  ffmpeg `
   portaudio `
   crashpad `
-  zlib `
-  libpng
+  qtbase `
+  rapidjson `
+  pybind11 `
+  kddockwidgets
 ```
 
 ### Full dependency list
@@ -82,8 +79,10 @@ vcpkg install --triplet x64-windows `
 | `ffmpeg` | 8.0.1 | Video/audio codec |
 | `portaudio` | 19.7 | Audio playback |
 | `crashpad` | 2024-04-11 | Crash reporting |
-| `zlib` | 1.3.1 | Compression |
-| `libpng` | 1.6.55 | PNG image support |
+| `qtbase` | 6.x | Qt Core/Gui/Widgets |
+| `rapidjson` | Latest | JSON utilities |
+| `pybind11` | Latest | C++/Python binding headers |
+| `kddockwidgets` | 2.x | Docking framework |
 
 Additional packages are pulled in automatically as transitive dependencies (e.g., `libjpeg-turbo`, `tiff`, `yaml-cpp`, `fmt`, `pystring`, etc.).
 
@@ -106,7 +105,6 @@ git submodule update --init --recursive
 | Submodule | Source |
 |-----------|--------|
 | ArcVideoFoundation | [ArcForgesLabs/ArcVideoFoundation](https://github.com/ArcForgesLabs/ArcVideoFoundation) (branch: main) |
-| KDDockWidgets | [KDAB/KDDockWidgets](https://github.com/KDAB/KDDockWidgets) |
 | OpenTimelineIO | [AcademySoftwareFoundation/OpenTimelineIO](https://github.com/AcademySoftwareFoundation/OpenTimelineIO) |
 
 ---
@@ -180,4 +178,4 @@ This project requires **CMake 4.2+**. Update with `scoop update cmake`.
 | Triplet | x64-windows |
 | Debug format | `/Zi` (PDB, default) |
 | Configurations | All configs in one `.sln` |
-| Submodules | KDDockWidgets, OpenTimelineIO |
+| Submodules | OpenTimelineIO |

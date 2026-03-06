@@ -156,7 +156,7 @@ private:
 template<class T>
 T* PanelManager::MostRecentlyFocused()
 {
-  T* cast_test;
+  T* cast_test = nullptr;
 
   for (int i=0;i<focus_history_.size();i++) {
     cast_test = dynamic_cast<T*>(focus_history_.at(i));
@@ -174,9 +174,9 @@ QList<T*> PanelManager::GetPanelsOfType()
 {
   QList<T*> panels;
 
-  T* cast_test;
+  T* cast_test = nullptr;
 
-  foreach (PanelWidget* panel, focus_history_) {
+  for (PanelWidget* panel : focus_history_) {
     cast_test = dynamic_cast<T*>(panel);
 
     if (cast_test) {

@@ -133,7 +133,7 @@ protected:
   }
 
 private:
-  TimeBasedWidget* widget_;
+  TimeBasedWidget* widget_ = nullptr;
 
   bool show_and_raise_on_connect_;
 

@@ -87,7 +87,7 @@ bool FileFunctions::CanCopyDirectoryWithoutOverwriting(const QString& source, co
 {
   QFileInfoList info_list = QDir(source).entryInfoList();
 
-  foreach (const QFileInfo& info, info_list) {
+  for (const QFileInfo& info : info_list) {
     // QDir::NoDotAndDotDot continues to not work, so we have to check manually
     if (info.fileName() == QStringLiteral(".") || info.fileName() == QStringLiteral("..")) {
       continue;
@@ -125,7 +125,7 @@ void FileFunctions::CopyDirectory(const QString &source, const QString &dest, bo
 
   QFileInfoList l = d.entryInfoList();
 
-  foreach (const QFileInfo& info, l) {
+  for (const QFileInfo& info : l) {
     // QDir::NoDotAndDotDot continues to not work, so we have to check manually
     if (info.fileName() == QStringLiteral(".") || info.fileName() == QStringLiteral("..")) {
       continue;

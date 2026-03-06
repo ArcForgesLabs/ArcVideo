@@ -146,7 +146,7 @@ private:
 
   void DisconnectItem(Node *n);
 
-  Project* project_;
+  Project* project_ = nullptr;
 
 private slots:
   void FolderBeginInsertItem(Node *n, int insert_index);

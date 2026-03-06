@@ -61,11 +61,11 @@ public:
 private:
   static AVFilterContext* CreateTempoFilter(AVFilterGraph *graph, AVFilterContext *link, const double& tempo);
 
-  AVFilterGraph* filter_graph_;
+  AVFilterGraph* filter_graph_ = nullptr;
 
-  AVFilterContext* buffersrc_ctx_;
+  AVFilterContext* buffersrc_ctx_ = nullptr;
 
-  AVFilterContext* buffersink_ctx_;
+  AVFilterContext* buffersink_ctx_ = nullptr;
 
   AudioParams from_;
   AVSampleFormat from_fmt_;

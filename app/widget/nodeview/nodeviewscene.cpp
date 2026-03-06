@@ -38,21 +38,21 @@ void NodeViewScene::SetFlowDirection(NodeViewCommon::FlowDirection direction)
 {
   direction_ = direction;
 
-  foreach (NodeViewContext *ctx, context_map_) {
+  for (NodeViewContext *ctx : context_map_) {
     ctx->SetFlowDirection(direction_);
   }
 }
 
 void NodeViewScene::SelectAll()
 {
-  foreach (QGraphicsItem* i, items()) {
+  for (QGraphicsItem* i : items()) {
     i->setSelected(true);
   }
 }
 
 void NodeViewScene::DeselectAll()
 {
-  foreach (QGraphicsItem* i, items()) {
+  for (QGraphicsItem* i : items()) {
     i->setSelected(false);
   }
 }
@@ -61,7 +61,7 @@ QVector<NodeViewItem *> NodeViewScene::GetSelectedItems() const
 {
   QVector<NodeViewItem *> items;
 
-  foreach (NodeViewContext *ctx, context_map_) {
+  for (NodeViewContext *ctx : context_map_) {
     items.append(ctx->GetSelectedItems());
   }
 
@@ -109,7 +109,7 @@ void NodeViewScene::SetEdgesAreCurved(bool curved)
   if (curved_edges_ != curved) {
     curved_edges_ = curved;
 
-    foreach (NodeViewContext *ctx, context_map_) {
+    for (NodeViewContext *ctx : context_map_) {
       ctx->SetCurvedEdges(curved_edges_);
     }
   }

@@ -130,7 +130,7 @@ NodeParamViewItemBody::NodeParamViewItemBody(Node* node, NodeParamViewCheckBoxBe
   QVector<Node*> connected_signals;
 
   // Create widgets all root level components
-  foreach (QString input, node->inputs()) {
+  for (QString input : node->inputs()) {
     Node *n = node;
 
     NodeInput resolved = NodeGroup::ResolveInput(NodeInput(n, input));
@@ -278,7 +278,7 @@ void NodeParamViewItemBody::SetTimeTarget(ViewerOutput *target)
 {
   time_target_ = target;
 
-  foreach (const InputUI& ui_obj, input_ui_map_) {
+  for (const InputUI& ui_obj : input_ui_map_) {
     SetTimeTargetOnInputUI(ui_obj);
   }
 }
@@ -350,7 +350,7 @@ void NodeParamViewItemBody::UpdateUIForEdgeConnection(const NodeInput& input)
 
     bool is_connected = NodeGroup::ResolveInput(input).IsConnected();
 
-    foreach (QWidget* w, ui_objects.widget_bridge->widgets()) {
+    for (QWidget* w : ui_objects.widget_bridge->widgets()) {
       w->setVisible(!is_connected);
     }
 
@@ -508,7 +508,7 @@ void NodeParamViewItemBody::SetTimebase(const rational& timebase)
 {
   timebase_ = timebase;
 
-  foreach (const InputUI& ui_obj, input_ui_map_) {
+  for (const InputUI& ui_obj : input_ui_map_) {
     SetTimebaseOnInputUI(ui_obj);
   }
 }

@@ -125,7 +125,7 @@ Menu *NodeFactory::CreateMenu(QWidget* parent, bool create_none_item, Node::Cate
 
     // See if a menu with this category name already exists
     QList<QAction*> menu_actions = menu->actions();
-    foreach (QAction* action, menu_actions) {
+    for (QAction* action : menu_actions) {
       if (action->menu() && action->menu()->title() == category_name) {
         destination = static_cast<Menu*>(action->menu());
         break;
@@ -187,7 +187,7 @@ QString NodeFactory::GetIDFromMenuAction(QAction *action)
 QString NodeFactory::GetNameFromID(const QString &id)
 {
   if (!id.isEmpty()) {
-    foreach (Node* n, library_) {
+    for (Node* n : library_) {
       if (n->id() == id) {
         return n->Name();
       }
@@ -199,7 +199,7 @@ QString NodeFactory::GetNameFromID(const QString &id)
 
 Node *NodeFactory::CreateFromID(const QString &id)
 {
-  foreach (Node* n, library_) {
+  for (Node* n : library_) {
     if (n->id() == id) {
       return n->copy();
     }

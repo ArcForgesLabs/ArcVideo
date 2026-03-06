@@ -50,7 +50,7 @@ void ScrollingLabel::SetText(const QStringList &text)
   text_height_ = fm.height();
 
   int width = 0;
-  foreach (const QString& s, text_) {
+  for (const QString& s : text_) {
     width = qMax(width, QtUtils::QFontMetricsWidth(fm, s));
   }
 

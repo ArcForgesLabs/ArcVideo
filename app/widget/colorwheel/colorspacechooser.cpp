@@ -54,7 +54,7 @@ ColorSpaceChooser::ColorSpaceChooser(ColorManager* color_manager, bool enable_in
 
     QStringList input_spaces = color_manager->ListAvailableColorspaces();
 
-    foreach (const QString& s, input_spaces) {
+    for (const QString& s : input_spaces) {
       input_combobox_->addItem(s);
     }
 
@@ -78,7 +78,7 @@ ColorSpaceChooser::ColorSpaceChooser(ColorManager* color_manager, bool enable_in
 
       QStringList display_spaces = color_manager->ListAvailableDisplays();
 
-      foreach (const QString& s, display_spaces) {
+      for (const QString& s : display_spaces) {
         display_combobox_->addItem(s);
       }
 
@@ -112,7 +112,7 @@ ColorSpaceChooser::ColorSpaceChooser(ColorManager* color_manager, bool enable_in
 
       look_combobox_->addItem(tr("(None)"), QString());
 
-      foreach (const QString& s, looks) {
+      for (const QString& s : looks) {
         look_combobox_->addItem(s, s);
       }
 
@@ -168,7 +168,7 @@ void ColorSpaceChooser::UpdateViews(const QString& display)
 
   QStringList views = color_manager_->ListAvailableViews(display);
 
-  foreach (const QString& s, views) {
+  for (const QString& s : views) {
     view_combobox_->addItem(s);
   }
 

@@ -111,7 +111,7 @@ void TrackViewSplitter::SetHeightWithSizes(QList<int> sizes)
     sizes.replace(sizes.size() - 1, spacer_height_);
   }
 
-  foreach (int s, sizes) {
+  for (int s : sizes) {
     start_height += s + handleWidth();
   }
 

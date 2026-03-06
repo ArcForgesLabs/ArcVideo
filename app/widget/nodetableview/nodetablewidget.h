@@ -48,7 +48,7 @@ protected:
   }
 
 private:
-  NodeTableView* view_;
+  NodeTableView* view_ = nullptr;
 
 };
 

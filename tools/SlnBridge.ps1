@@ -5,7 +5,7 @@
     SlnBridge automates the two-step workflow:
       1. cmake --preset <preset>   → generates the VS solution (.slnx)
       2. cmake --build             → builds only the third-party libraries
-         (KDDockWidgets, OpenTimelineIO) for both Debug and Release configs
+         (OpenTimelineIO) for both Debug and Release configs
          so the solution opens without errors.
 
     After running this script, open the .slnx in Visual Studio and develop
@@ -133,7 +133,7 @@ if (-not $SkipConfigure) {
 Write-Host
 
 # Step 2: Build third-party libraries
-$thirdPartyTargets = @("kddockwidgets", "opentimelineio", "opentime")
+$thirdPartyTargets = @("opentimelineio", "opentime")
 
 Write-Log ">> Step 2: Building third-party libraries..." Cyan
 $targetList = $thirdPartyTargets -join ', '

@@ -124,7 +124,7 @@ private:
   Track::Type drag_track_type_;
   Timeline::MovementMode drag_movement_mode_;
 
-  Block* clicked_item_;
+  Block* clicked_item_ = nullptr;
 
   QPoint drag_global_start_;
 

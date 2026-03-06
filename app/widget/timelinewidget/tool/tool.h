@@ -85,7 +85,7 @@ protected:
   static const int kDefaultDistanceFromOutput;
 
 private:
-  TimelineWidget* parent_;
+  TimelineWidget* parent_ = nullptr;
 
 };
 

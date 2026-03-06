@@ -167,9 +167,9 @@ protected:
   virtual void undo() override;
 
 private:
-  TimelineMarkerList* marker_list_;
+  TimelineMarkerList* marker_list_ = nullptr;
 
-  TimelineMarker* added_marker_;
+  TimelineMarker* added_marker_ = nullptr;
   QObject memory_manager_;
 
 };
@@ -185,8 +185,8 @@ protected:
   virtual void undo() override;
 
 private:
-  TimelineMarker* marker_;
-  QObject* marker_list_;
+  TimelineMarker* marker_ = nullptr;
+  QObject* marker_list_ = nullptr;
 
   QObject memory_manager_;
 
@@ -203,7 +203,7 @@ protected:
   virtual void undo() override;
 
 private:
-  TimelineMarker* marker_;
+  TimelineMarker* marker_ = nullptr;
   int old_color_;
   int new_color_;
 
@@ -220,7 +220,7 @@ protected:
   virtual void undo() override;
 
 private:
-  TimelineMarker* marker_;
+  TimelineMarker* marker_ = nullptr;
   QString old_name_;
   QString new_name_;
 };
@@ -239,7 +239,7 @@ protected:
   virtual void undo() override;
 
 private:
-  TimelineMarker* marker_;
+  TimelineMarker* marker_ = nullptr;
   TimeRange old_time_;
   TimeRange new_time_;
 

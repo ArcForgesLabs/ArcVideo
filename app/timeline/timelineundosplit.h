@@ -61,13 +61,13 @@ protected:
   virtual void undo() override;
 
 private:
-  Block* block_;
-  Block* new_block_;
+  Block* block_ = nullptr;
+  Block* new_block_ = nullptr;
 
   rational old_length_;
   rational point_;
 
-  MultiUndoCommand* reconnect_tree_command_;
+  MultiUndoCommand* reconnect_tree_command_ = nullptr;
 
   NodeInput moved_transition_;
 
@@ -158,11 +158,11 @@ protected:
   }
 
 private:
-  Track* track_;
+  Track* track_ = nullptr;
 
   rational point_;
 
-  UndoCommand* command_;
+  UndoCommand* command_ = nullptr;
 
 };
 

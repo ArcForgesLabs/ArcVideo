@@ -46,7 +46,7 @@ private:
   static const int kMinimumCRF = 0;
   static const int kMaximumCRF = 51;
 
-  QSlider* crf_slider_;
+  QSlider* crf_slider_ = nullptr;
 
 };
 
@@ -69,9 +69,9 @@ public:
   void SetMaximumBitRate(int64_t b);
 
 private:
-  FloatSlider* target_rate_;
+  FloatSlider* target_rate_ = nullptr;
 
-  FloatSlider* max_rate_;
+  FloatSlider* max_rate_ = nullptr;
 
 };
 
@@ -88,7 +88,7 @@ public:
   void SetFileSize(int64_t f);
 
 private:
-  FloatSlider* file_size_;
+  FloatSlider* file_size_ = nullptr;
 
 };
 
@@ -110,13 +110,13 @@ public:
   virtual void SetOpts(const EncodingParams *p) override;
 
 private:
-  QStackedWidget* compression_method_stack_;
+  QStackedWidget* compression_method_stack_ = nullptr;
 
-  H264CRFSection* crf_section_;
+  H264CRFSection* crf_section_ = nullptr;
 
-  H264BitRateSection* bitrate_section_;
+  H264BitRateSection* bitrate_section_ = nullptr;
 
-  H264FileSizeSection* filesize_section_;
+  H264FileSizeSection* filesize_section_ = nullptr;
 
   QComboBox *preset_combobox_;
 };

@@ -56,7 +56,7 @@ int ExportVideoTab::SetFormat(ExportFormat::Format format)
   QList<ExportCodec::Codec> vcodecs = ExportFormat::GetVideoCodecs(format);
   setEnabled(!vcodecs.isEmpty());
   codec_combobox()->clear();
-  foreach (ExportCodec::Codec vcodec, vcodecs) {
+  for (ExportCodec::Codec vcodec : vcodecs) {
     codec_combobox()->addItem(ExportCodec::GetCodecName(vcodec), vcodec);
   }
   return vcodecs.size();

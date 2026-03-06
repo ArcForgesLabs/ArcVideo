@@ -1,17 +1,16 @@
-name: "CodeQL Advanced"
+name: Linux CI (Docker Self-Hosted)
 
 on:
-  schedule:
-    - cron: "0 0 1 * *"
-  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
-  security-events: write
-  packages: read
-  actions: read
   contents: read
 
 defaults:
@@ -19,26 +18,20 @@ defaults:
     shell: bash
 
 jobs:
-  analyze:
-    name: Analyze (${{ matrix.language }})
+  build:
+    name: Linux x64 (FASTBuild)
     runs-on: [self-hosted, linux, arcforges]
     if: >-
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
-    timeout-minutes: 180
+    timeout-minutes: 120
     env:
       VCPKG_DEFAULT_BINARY_CACHE: /cache/vcpkg
       VCPKG_DEFAULT_HOST_TRIPLET: x64-linux-dynamic
+      FASTBUILD_CACHE_PATH: /cache/fastbuild
       GLOBAL_VCPKG_PATH: /tmp/vcpkg
       VCPKG_MAX_CONCURRENCY: 6
       CMAKE_BUILD_PARALLEL_LEVEL: 6
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - language: c-cpp
-            build-mode: manual
 
     steps:
       # ── Checkout ──────────────────────────────────────────────
@@ -113,24 +106,14 @@ jobs:
             opencolorio openimageio openexr imath ffmpeg \
             portaudio crashpad qtbase rapidjson pybind11 kddockwidgets
 
-      # ── CodeQL ────────────────────────────────────────────────
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
-          queries: security-and-quality
-          config: |
-            paths:
-              - app
-
+      # ── Build ─────────────────────────────────────────────────
       - name: Configure (CMake)
         run: cmake --preset linux-ci -DUSE_WERROR=ON
 
-      - name: Build
-        run: cmake --build build/linux-ci
+      - name: Build (FASTBuild)
+        run: cmake --build --preset linux-ci
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
-        with:
-          category: "/language:${{ matrix.language }}"
+      - name: Trim FASTBuild cache
+        if: always()
+        run: fbuild -cachetrim 10240
+        working-directory: ${{ github.workspace }}/build/linux-ci

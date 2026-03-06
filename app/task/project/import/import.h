@@ -71,9 +71,9 @@ private:
 
   static int64_t GetImageSequenceLimit(const QString &start_fn, int64_t start, bool up);
 
-  MultiUndoCommand* command_;
+  MultiUndoCommand* command_ = nullptr;
 
-  Folder* folder_;
+  Folder* folder_ = nullptr;
 
   QFileInfoList filenames_;
 

@@ -93,9 +93,9 @@ private:
 
   GLuint CompileShader(GLenum type, const QString &code);
 
-  QOpenGLContext* context_;
+  QOpenGLContext* context_ = nullptr;
 
-  QOpenGLFunctions* functions_;
+  QOpenGLFunctions* functions_ = nullptr;
 
   QOffscreenSurface surface_;
 

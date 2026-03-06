@@ -95,14 +95,14 @@ void NodeView::SetContexts(const QVector<Node*> &nodes)
   }
 
   // Remove contexts that are no longer in the list
-  foreach (Node *n, contexts_) {
+  for (Node *n : contexts_) {
     if (!nodes.contains(n)) {
       RemoveContext(n);
     }
   }
 
   // Add contexts that are now in the list
-  foreach (Node *n, nodes) {
+  for (Node *n : nodes) {
     if (scene_.context_map().size() >= kMaximumContexts) {
       break;
     }
@@ -143,7 +143,7 @@ void NodeView::DeleteSelected()
 
   int count = 0;
 
-  foreach (NodeViewContext *ctx, scene_.context_map()) {
+  for (NodeViewContext *ctx : scene_.context_map()) {
     count += ctx->DeleteSelected(command);
   }
 
@@ -195,7 +195,7 @@ void NodeView::Select(const QVector<Node::ContextPair> &nodes, bool center_view_
 
   scene_.DeselectAll();
 
-  foreach (const Node::ContextPair &p, nodes) {
+  for (const Node::ContextPair &p : nodes) {
     NodeViewContext *ctx = scene_.context_map().value(p.context);
     if (ctx) {
       NodeViewItem *item = ctx->GetItemFromMap(p.node);
@@ -354,7 +354,7 @@ void NodeView::SetColorLabel(int index)
 {
   MultiUndoCommand *command = new MultiUndoCommand();
 
-  for (Node* node : qAsConst(selected_nodes_)) {
+  for (Node* node : std::as_const(selected_nodes_)) {
     command->add_child(new NodeOverrideColorCommand(node, index));
   }
 
@@ -380,8 +380,8 @@ void NodeView::keyPressEvent(QKeyEvent *event)
   case Qt::Key_Down:
   {
     MultiUndoCommand *pos_command = new MultiUndoCommand();
-    for (Node *n : qAsConst(selected_nodes_)) {
-      for (Node *context : qAsConst(contexts_)) {
+    for (Node *n : std::as_const(selected_nodes_)) {
+      for (Node *context : std::as_const(contexts_)) {
         if (context->ContextContainsNode(n)) {
           Node::Position old_pos = context->GetNodePositionInContext(n);
 
@@ -437,7 +437,7 @@ void NodeView::mousePressEvent(QMouseEvent *event)
   if (HandPress(event)) return;
 
   // Get the item that the user clicked on, if any
-  QGraphicsItem* item = itemAt(event->pos());
+  QGraphicsItem* item = itemAt(event->position().toPoint());
 
   if (event->button() == Qt::LeftButton) {
     // Sane defaults
@@ -495,7 +495,7 @@ void NodeView::mousePressEvent(QMouseEvent *event)
       scene_.addItem(create_edge_);
 
       // Position edge to mouse cursor
-      PositionNewEdge(event->pos());
+      PositionNewEdge(event->position().toPoint());
       return;
     }
   }
@@ -522,7 +522,7 @@ void NodeView::mousePressEvent(QMouseEvent *event)
 
   // For any selected item, store its position in case the user is dragging it somewhere else
   auto selected_items = scene_.GetSelectedItems();
-  foreach (NodeViewItem *i, selected_items) {
+  for (NodeViewItem *i : selected_items) {
     // Ignore items attached to the cursor
     if (!IsItemAttachedToCursor(i)) {
       dragging_items_.insert(i, i->GetNodePosition());
@@ -535,7 +535,7 @@ void NodeView::mouseMoveEvent(QMouseEvent *event)
   if (HandMove(event)) return;
 
   if (create_edge_) {
-    PositionNewEdge(event->pos());
+    PositionNewEdge(event->position().toPoint());
     return;
   }
 
@@ -545,7 +545,7 @@ void NodeView::mouseMoveEvent(QMouseEvent *event)
 
   // See if there are any items attached
   if (!attached_items_.isEmpty()) {
-    ProcessMovingAttachedNodes(event->pos());
+    ProcessMovingAttachedNodes(event->position().toPoint());
   }
 }
 
@@ -565,10 +565,10 @@ void NodeView::mouseReleaseEvent(QMouseEvent *event)
   bool had_attached_items = !attached_items_.isEmpty();
 
   if (!attached_items_.isEmpty()) {
-    select_context = GetContextAtMousePos(event->pos());
+    select_context = GetContextAtMousePos(event->position().toPoint());
 
     if (select_context) {
-      select_nodes = ProcessDroppingAttachedNodes(command, select_context, event->pos());
+      select_nodes = ProcessDroppingAttachedNodes(command, select_context, event->position().toPoint());
     } else {
       QToolTip::showText(QCursor::pos(), tr("Nodes must be placed inside a context."));
     }
@@ -601,7 +601,7 @@ void NodeView::mouseDoubleClickEvent(QMouseEvent *event)
   super::mouseDoubleClickEvent(event);
 
   if (!(event->modifiers() & Qt::ControlModifier)) {
-    NodeViewItem *item_at_cursor = dynamic_cast<NodeViewItem*>(itemAt(event->pos()));
+    NodeViewItem *item_at_cursor = dynamic_cast<NodeViewItem*>(itemAt(event->position().toPoint()));
     if (item_at_cursor) {
       item_at_cursor->ToggleExpanded();
     }
@@ -662,9 +662,9 @@ void NodeView::dragMoveEvent(QDragMoveEvent *event)
   if (attached_items_.empty()) {
     event->ignore();
   } else {
-    ProcessMovingAttachedNodes(event->pos());
+    ProcessMovingAttachedNodes(event->position().toPoint());
 
-    if (GetContextAtMousePos(event->pos())) {
+    if (GetContextAtMousePos(event->position().toPoint())) {
       event->accept();
     } else {
       event->ignore();
@@ -674,9 +674,9 @@ void NodeView::dragMoveEvent(QDragMoveEvent *event)
 
 void NodeView::dropEvent(QDropEvent *event)
 {
-  if (Node *drop_ctx = GetContextAtMousePos(event->pos())) {
+  if (Node *drop_ctx = GetContextAtMousePos(event->position().toPoint())) {
     MultiUndoCommand *command = new MultiUndoCommand();
-    QVector<Node*> select_nodes = ProcessDroppingAttachedNodes(command, drop_ctx, event->pos());
+    QVector<Node*> select_nodes = ProcessDroppingAttachedNodes(command, drop_ctx, event->position().toPoint());
     Core::instance()->undo_stack()->push(command, tr("Dropped %1 Node(s)").arg(select_nodes.size()));
 
     DeselectAll();
@@ -738,10 +738,10 @@ void NodeView::UpdateSelectionCache()
     deselected = selected_nodes_;
     selected_nodes_.clear();
   } else {
-    foreach (Node* n, selected_nodes_) {
+    for (Node* n : selected_nodes_) {
       bool still_selected = false;
 
-      foreach (NodeViewItem *i, current_selection) {
+      for (NodeViewItem *i : current_selection) {
         if (i->GetNode() == n) {
           still_selected = true;
           break;
@@ -882,7 +882,7 @@ void NodeView::ContextMenuSetDirection(QAction *action)
 void NodeView::OpenSelectedNodeInViewer()
 {
   // Find first viewer in list of selected nodes and open it
-  foreach (Node *n, selected_nodes_) {
+  for (Node *n : selected_nodes_) {
     if (ViewerOutput* viewer = dynamic_cast<ViewerOutput*>(n)) {
       Core::instance()->OpenNodeInViewer(viewer);
       break;
@@ -909,7 +909,7 @@ void NodeView::CenterOnItemsBoundingRect()
 
 void NodeView::CenterOnNode(Node *n)
 {
-  foreach (NodeViewContext *ctx, scene_.context_map()) {
+  for (NodeViewContext *ctx : scene_.context_map()) {
     if (NodeViewItem* item = ctx->GetItemFromMap(n)) {
       centerOn(item);
       break;
@@ -962,7 +962,7 @@ void NodeView::NodeRemovedFromGraph()
 
 void NodeView::DetachItemsFromCursor(bool delete_nodes_too)
 {
-  foreach (const AttachedItem &ai, attached_items_) {
+  for (const AttachedItem &ai : attached_items_) {
     delete ai.item;
 
     if (delete_nodes_too) {
@@ -983,7 +983,7 @@ void NodeView::MoveAttachedNodesToCursor(const QPoint& p)
 {
   QPointF item_pos = mapToScene(p);
 
-  for (const AttachedItem& i : qAsConst(attached_items_)) {
+  for (const AttachedItem& i : std::as_const(attached_items_)) {
     if (i.item) {
       i.item->setPos(item_pos + i.original_pos);
     }
@@ -1009,7 +1009,7 @@ void NodeView::ProcessMovingAttachedNodes(const QPoint &pos)
     NodeViewEdge* new_drop_edge = nullptr;
 
     // See if there is an edge here
-    for (QGraphicsItem* item : qAsConst(items)) {
+    for (QGraphicsItem* item : std::as_const(items)) {
       new_drop_edge = dynamic_cast<NodeViewEdge*>(item);
 
       if (new_drop_edge) {
@@ -1091,7 +1091,7 @@ QVector<Node*> NodeView::ProcessDroppingAttachedNodes(MultiUndoCommand *command,
   {
     MultiUndoCommand *add_command = new MultiUndoCommand();
 
-    foreach (const AttachedItem &ai, attached) {
+    for (const AttachedItem &ai : attached) {
       // Add node to the same graph that the context is in
       if (ai.node->parent() != select_context->parent()) {
         add_command->add_child(new NodeAddCommand(select_context->parent(), ai.node));
@@ -1121,7 +1121,7 @@ QVector<Node*> NodeView::ProcessDroppingAttachedNodes(MultiUndoCommand *command,
     if (attached.size() == 1) {
       Node* dropping_node = nullptr;
 
-      foreach (const AttachedItem &ai, attached) {
+      for (const AttachedItem &ai : attached) {
         if (ai.item && !ai.node->InputsFrom(select_context, true)) {
           dropping_node = ai.node;
           break;
@@ -1155,7 +1155,7 @@ QVector<Node*> NodeView::ProcessDroppingAttachedNodes(MultiUndoCommand *command,
 Node *NodeView::GetContextAtMousePos(const QPoint &p)
 {
   QList<QGraphicsItem*> items_at_cursor = this->items(p);
-  foreach (QGraphicsItem *i, items_at_cursor) {
+  for (QGraphicsItem *i : items_at_cursor) {
     if (NodeViewContext *context_item = dynamic_cast<NodeViewContext*>(i)) {
       return context_item->GetContext();
     }
@@ -1248,7 +1248,7 @@ QPointF NodeView::GetEstimatedPositionForContext(NodeViewItem *item, Node *conte
 NodeViewItem *NodeView::GetAssumedItemForSelectedNode(Node *node)
 {
   // Try to find corresponding selected item
-  foreach (NodeViewContext *ctx, scene_.context_map()) {
+  for (NodeViewContext *ctx : scene_.context_map()) {
     NodeViewItem *item = ctx->GetItemFromMap(node);
     if (item && item->GetNode() == node && item->isSelected()) {
       // Good enough
@@ -1400,7 +1400,7 @@ void NodeView::GroupNodes()
   Node *output_passthrough = nullptr;
   QVector<Node*> nodes_to_group = selected_nodes_;
   DeselectAll();
-  foreach (Node *n, nodes_to_group) {
+  for (Node *n : nodes_to_group) {
     command->add_child(new NodeRemovePositionFromContextCommand(n, context));
     command->add_child(new NodeSetPositionCommand(n, group, context->GetNodePositionDataInContext(n)));
 
@@ -1415,7 +1415,7 @@ void NodeView::GroupNodes()
     if (!output_passthrough) {
       // Default to the first node we find that doesn't output to a node inside the group
       output_passthrough = nodes_to_group.first();
-      foreach (Node *potential_in, nodes_to_group) {
+      for (Node *potential_in : nodes_to_group) {
         if (potential_in != n && !potential_in->InputsFrom(n, false)) {
           output_passthrough = n;
           break;
@@ -1446,7 +1446,7 @@ void NodeView::UngroupNodes()
   }
 
   NodeGroup *group = nullptr;
-  foreach (NodeViewItem *i, items) {
+  for (NodeViewItem *i : items) {
     if ((group = dynamic_cast<NodeGroup*>(i->GetNode()))) {
       group_item = i;
       break;
@@ -1573,7 +1573,7 @@ void NodeView::RemoveContext(Node *n)
 
 bool NodeView::IsItemAttachedToCursor(NodeViewItem *item) const
 {
-  foreach (const AttachedItem &ai, attached_items_) {
+  for (const AttachedItem &ai : attached_items_) {
     if (ai.item == item) {
       return true;
     }

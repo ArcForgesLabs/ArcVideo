@@ -163,8 +163,8 @@ void CurveWidget::SetNodes(const QVector<Node *> &nodes)
   nodes_ = nodes;
 
   // Generate colors
-  foreach (Node *node, nodes_) {
-    foreach (const QString& input, node->inputs()) {
+  for (Node *node : nodes_) {
+    for (const QString& input : node->inputs()) {
       if (node->IsInputKeyframable(input) && !node->IsInputHidden(input)) {
         int arr_sz = node->InputArraySize(input);
         for (int i=-1; i<arr_sz; i++) {
@@ -326,7 +326,7 @@ void CurveWidget::KeyframeTypeButtonTriggered(bool checked)
 
   MultiUndoCommand* command = new MultiUndoCommand();
 
-  foreach (NodeKeyframe* item, selected) {
+  for (NodeKeyframe* item : selected) {
     command->add_child(new KeyframeSetTypeCommand(item, new_type));
   }
 
@@ -337,7 +337,7 @@ void CurveWidget::InputSelectionChanged(const NodeKeyframeTrackReference& ref)
 {
   key_control_->SetInput(ref.input());
 
-  foreach (const NodeKeyframeTrackReference &c, selected_tracks_) {
+  for (const NodeKeyframeTrackReference &c : selected_tracks_) {
     view_->DisconnectInput(c);
   }
 
@@ -352,7 +352,7 @@ void CurveWidget::InputSelectionChanged(const NodeKeyframeTrackReference& ref)
     ConnectInput(ref.input().node(), ref.input().input(), ref.input().element());
   } else if (Node *node = ref.input().node()) {
     // This is a node, add all inputs
-    foreach (const QString &input, node->inputs()) {
+    for (const QString &input : node->inputs()) {
       if (node->IsInputKeyframable(input) && !node->IsInputHidden(input)) {
         ConnectInput(node, input, -1);
       }

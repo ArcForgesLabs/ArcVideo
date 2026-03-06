@@ -75,7 +75,7 @@ signals:
 private:
   virtual void Retranslate() override;
 
-  ProjectExplorer* explorer_;
+  ProjectExplorer* explorer_ = nullptr;
 
 private slots:
   void ItemDoubleClickSlot(Node *item);

@@ -262,9 +262,6 @@ int main(int argc, char *argv[])
   format.setDepthBufferSize(24);
   QSurfaceFormat::setDefaultFormat(format);
 
-  // Enable application automatically using higher resolution images from icons
-  QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-
   QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
   // Create application instance

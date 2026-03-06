@@ -91,17 +91,17 @@ private:
   bool doing_nothing_;
   rational trim_diff_;
 
-  Track* track_;
-  Block* block_;
+  Track* track_ = nullptr;
+  Block* block_ = nullptr;
   rational old_length_;
   rational new_length_;
   Timeline::MovementMode mode_;
 
-  Block* adjacent_;
+  Block* adjacent_ = nullptr;
   bool needs_adjacent_;
   bool we_created_adjacent_;
   bool we_removed_adjacent_;
-  UndoCommand* deleted_adjacent_command_;
+  UndoCommand* deleted_adjacent_command_ = nullptr;
 
   bool trim_is_a_roll_edit_;
   bool remove_block_from_graph_;
@@ -145,18 +145,18 @@ protected:
   virtual void undo() override;
 
 private:
-  Track* track_;
+  Track* track_ = nullptr;
   QList<Block*> blocks_;
   rational movement_;
 
   bool we_created_in_adjacent_;
   bool we_removed_in_adjacent_;
-  Block* in_adjacent_;
-  UndoCommand* in_adjacent_remove_command_;
+  Block* in_adjacent_ = nullptr;
+  UndoCommand* in_adjacent_remove_command_ = nullptr;
   bool we_created_out_adjacent_;
   bool we_removed_out_adjacent_;
-  Block* out_adjacent_;
-  UndoCommand* out_adjacent_remove_command_;
+  Block* out_adjacent_ = nullptr;
+  UndoCommand* out_adjacent_remove_command_ = nullptr;
 
   QObject memory_manager_;
 
@@ -194,14 +194,14 @@ protected:
   virtual void undo() override;
 
 private:
-  TrackList* timeline_;
+  TrackList* timeline_ = nullptr;
   int track_index_;
   rational in_;
-  GapBlock* gap_;
-  Block* insert_;
+  GapBlock* gap_ = nullptr;
+  Block* insert_ = nullptr;
   QVector<TimelineAddTrackCommand*> add_track_commands_;
   QObject memory_manager_;
-  TrackRippleRemoveAreaCommand* ripple_remove_command_;
+  TrackRippleRemoveAreaCommand* ripple_remove_command_ = nullptr;
 
 };
 

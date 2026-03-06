@@ -44,7 +44,7 @@ void RippleTool::InitiateDrag(Block *clicked_item, Timeline::MovementMode trim_m
   // Find the earliest ripple
   rational earliest_ripple = RATIONAL_MAX;
 
-  foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
     rational ghost_ripple_point;
 
     if (trim_mode == Timeline::kTrimIn) {
@@ -57,7 +57,7 @@ void RippleTool::InitiateDrag(Block *clicked_item, Timeline::MovementMode trim_m
   }
 
   // For each track that does NOT have a ghost, we need to make one for Gaps
-  foreach (Track* track, sequence()->GetTracks()) {
+  for (Track* track : sequence()->GetTracks()) {
     if (track->IsLocked()) {
       continue;
     }
@@ -65,7 +65,7 @@ void RippleTool::InitiateDrag(Block *clicked_item, Timeline::MovementMode trim_m
     // Determine if we've already created a ghost on this track
     bool ghost_on_this_track_exists = false;
 
-    foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+    for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
       if (parent()->GetTrackFromReference(ghost->GetTrack()) == track) {
         ghost_on_this_track_exists = true;
         break;
@@ -88,7 +88,7 @@ void RippleTool::InitiateDrag(Block *clicked_item, Timeline::MovementMode trim_m
 
       // If block is null, there will be no blocks after to ripple
       if (block_after_ripple) {
-        TimelineViewGhostItem* ghost;
+        TimelineViewGhostItem* ghost = nullptr;
 
         if (dynamic_cast<GapBlock*>(block_after_ripple)) {
           // If this Block is already a Gap, ghost it now
@@ -119,7 +119,7 @@ void RippleTool::FinishDrag(TimelineViewMouseEvent *event)
   if (parent()->HasGhosts()) {
     QVector< QHash<Track*, TrackListRippleToolCommand::RippleInfo> > info_list(Track::kCount);
 
-    foreach (TimelineViewGhostItem* ghost, parent()->GetGhostItems()) {
+    for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
       if (!ghost->HasBeenAdjusted()) {
         continue;
       }

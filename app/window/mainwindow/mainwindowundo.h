@@ -40,7 +40,7 @@ protected:
   virtual void undo() override;
 
 private:
-  Sequence* sequence_;
+  Sequence* sequence_ = nullptr;
 
 };
 
@@ -59,7 +59,7 @@ protected:
   virtual void undo() override;
 
 private:
-  Sequence* sequence_;
+  Sequence* sequence_ = nullptr;
 
 };
 

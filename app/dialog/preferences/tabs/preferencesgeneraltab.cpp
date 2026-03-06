@@ -51,7 +51,7 @@ PreferencesGeneralTab::PreferencesGeneralTab()
     // Add default language (en-US)
     QDir language_dir(QStringLiteral(":/ts"));
     QStringList languages = language_dir.entryList();
-    foreach (const QString& l, languages) {
+    for (const QString& l : languages) {
       AddLanguage(l);
     }
 

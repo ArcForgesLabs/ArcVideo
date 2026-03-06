@@ -44,9 +44,9 @@ protected:
   virtual void paintEvent(QPaintEvent* event) override;
 
 private:
-  TimelineMarkerList* markers_;
+  TimelineMarkerList* markers_ = nullptr;
 
-  TimelineWorkArea* workarea_;
+  TimelineWorkArea* workarea_ = nullptr;
 
   double scale_;
 

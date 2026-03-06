@@ -46,21 +46,21 @@ public:
 
   static void StartWaveformOnAll(const AudioWaveformCache *waveform, const rational& start, int playback_speed)
   {
-    foreach (AudioMonitor *m, instances_) {
+    for (AudioMonitor *m : instances_) {
       m->StartWaveform(waveform, start, playback_speed);
     }
   }
 
   static void StopOnAll()
   {
-    foreach (AudioMonitor *m, instances_) {
+    for (AudioMonitor *m : instances_) {
       m->Stop();
     }
   }
 
   static void PushSampleBufferOnAll(const SampleBuffer &d)
   {
-    foreach (AudioMonitor *m, instances_) {
+    for (AudioMonitor *m : instances_) {
       m->PushSampleBuffer(d);
     }
   }
@@ -96,7 +96,7 @@ private:
 
   qint64 last_time_;
 
-  const AudioWaveformCache* waveform_;
+  const AudioWaveformCache* waveform_ = nullptr;
   rational waveform_time_;
   rational waveform_length_;
 

@@ -125,7 +125,7 @@ void AddTool::MouseRelease(TimelineViewMouseEvent *event)
 
 Node *AddTool::CreateAddableClip(MultiUndoCommand *command, Sequence *sequence, const Track::Reference &track, const rational &in, const rational &length, const QRectF &rect)
 {
-  ClipBlock* clip;
+  ClipBlock* clip = nullptr;
   if (Core::instance()->GetSelectedAddableObject() == Tool::kAddableSubtitle) {
     clip = new SubtitleBlock();
   } else {

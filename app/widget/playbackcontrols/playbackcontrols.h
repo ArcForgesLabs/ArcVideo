@@ -126,26 +126,26 @@ private:
 
   static void SetButtonRecordingState(QPushButton *btn, bool on);
 
-  QWidget* lower_left_container_;
-  QWidget* lower_right_container_;
+  QWidget* lower_left_container_ = nullptr;
+  QWidget* lower_right_container_ = nullptr;
 
-  RationalSlider* cur_tc_lbl_;
-  QLabel* end_tc_lbl_;
+  RationalSlider* cur_tc_lbl_ = nullptr;
+  QLabel* end_tc_lbl_ = nullptr;
 
   rational end_time_;
 
   rational time_base_;
 
-  QPushButton* go_to_start_btn_;
-  QPushButton* prev_frame_btn_;
-  QPushButton* play_btn_;
-  QPushButton* pause_btn_;
-  QPushButton* next_frame_btn_;
-  QPushButton* go_to_end_btn_;
-  DragButton* video_drag_btn_;
-  DragButton* audio_drag_btn_;
+  QPushButton* go_to_start_btn_ = nullptr;
+  QPushButton* prev_frame_btn_ = nullptr;
+  QPushButton* play_btn_ = nullptr;
+  QPushButton* pause_btn_ = nullptr;
+  QPushButton* next_frame_btn_ = nullptr;
+  QPushButton* go_to_end_btn_ = nullptr;
+  DragButton* video_drag_btn_ = nullptr;
+  DragButton* audio_drag_btn_ = nullptr;
 
-  QStackedWidget* playpause_stack_;
+  QStackedWidget* playpause_stack_ = nullptr;
 
   QTimer *play_blink_timer_;
 

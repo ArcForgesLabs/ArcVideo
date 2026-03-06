@@ -157,7 +157,7 @@ private:
   /**
    * @brief Internal layout used for buttons
    */
-  FlowLayout* layout_;
+  FlowLayout* layout_ = nullptr;
 
   /**
    * @brief Array/list of toolbar buttons
@@ -167,21 +167,21 @@ private:
    */
   QList<ToolbarButton*> toolbar_btns_;
 
-  ToolbarButton* btn_pointer_tool_;
-  ToolbarButton* btn_trackselect_tool_;
-  ToolbarButton* btn_edit_tool_;
-  ToolbarButton* btn_ripple_tool_;
-  ToolbarButton* btn_rolling_tool_;
-  ToolbarButton* btn_razor_tool_;
-  ToolbarButton* btn_slip_tool_;
-  ToolbarButton* btn_slide_tool_;
-  ToolbarButton* btn_hand_tool_;
-  ToolbarButton* btn_transition_tool_;
-  ToolbarButton* btn_zoom_tool_;
-  ToolbarButton* btn_record_;
-  ToolbarButton* btn_add_;
+  ToolbarButton* btn_pointer_tool_ = nullptr;
+  ToolbarButton* btn_trackselect_tool_ = nullptr;
+  ToolbarButton* btn_edit_tool_ = nullptr;
+  ToolbarButton* btn_ripple_tool_ = nullptr;
+  ToolbarButton* btn_rolling_tool_ = nullptr;
+  ToolbarButton* btn_razor_tool_ = nullptr;
+  ToolbarButton* btn_slip_tool_ = nullptr;
+  ToolbarButton* btn_slide_tool_ = nullptr;
+  ToolbarButton* btn_hand_tool_ = nullptr;
+  ToolbarButton* btn_transition_tool_ = nullptr;
+  ToolbarButton* btn_zoom_tool_ = nullptr;
+  ToolbarButton* btn_record_ = nullptr;
+  ToolbarButton* btn_add_ = nullptr;
 
-  ToolbarButton* btn_snapping_toggle_;
+  ToolbarButton* btn_snapping_toggle_ = nullptr;
 
 private slots:
   /**

@@ -8,7 +8,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -79,14 +79,6 @@ jobs:
           "WindowsKitRC=$($rc.DirectoryName)" >> $env:GITHUB_ENV
           $rc.DirectoryName >> $env:GITHUB_PATH
 
-      # ── Qt6 ───────────────────────────────────────────────────
-      - name: Install Qt6
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: '6.10.*'
-          arch: win64_msvc2022_64
-          cache: true
-
       # ── vcpkg ─────────────────────────────────────────────────
       - name: Setup vcpkg binary caching (GitHub Actions)
         uses: actions/github-script@v8
@@ -108,10 +100,10 @@ jobs:
         env:
           VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
         run: |
-          & C:\vcpkg\vcpkg install --triplet x64-windows `
+          & C:\vcpkg\vcpkg.exe install --triplet x64-windows `
             opencolorio openimageio openexr imath `
-            "ffmpeg[avcodec,avdevice,avfilter,avformat,swresample,swscale]" `
-            portaudio crashpad zlib libpng
+            ffmpeg `
+            portaudio crashpad qtbase rapidjson pybind11 kddockwidgets
 
       # ── FASTBuild cache ──────────────────────────────────────
       # The windows-ci preset sets FASTBUILD_CACHE_PATH to $LOCALAPPDATA/FASTBuild/Cache
@@ -147,12 +139,17 @@ jobs:
       # ── Build ─────────────────────────────────────────────────
       - name: Configure (CMake)
         env:
-          CC: cl
-          CXX: cl
-        run: cmake --preset windows-ci
+          CC: clang-cl
+          CXX: clang-cl
+        run: cmake --preset windows-ci -DUSE_WERROR=ON
 
       - name: Build (FASTBuild)
         run: cmake --build --preset ci
+
+      - name: Trim FASTBuild cache
+        if: always()
+        run: FBuild.exe -cachetrim 10240
+        working-directory: ${{ github.workspace }}/build/ci
 
       # ── Artifacts ─────────────────────────────────────────────
       - name: Upload build artifacts

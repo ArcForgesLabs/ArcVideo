@@ -51,7 +51,7 @@ public:
     }
 
     clear();
-    foreach (const SampleFormat &of, formats) {
+    for (const SampleFormat &of : formats) {
       AddFormatItem(of);
     }
 

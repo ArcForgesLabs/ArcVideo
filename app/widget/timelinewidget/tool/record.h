@@ -37,7 +37,7 @@ public:
 protected:
   void MouseMoveInternal(const rational& cursor_frame, bool outwards);
 
-  TimelineViewGhostItem* ghost_;
+  TimelineViewGhostItem* ghost_ = nullptr;
 
   rational drag_start_point_;
 

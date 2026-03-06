@@ -91,9 +91,9 @@ private:
 
   std::list<CommandEntry> undone_commands_;
 
-  QAction* undo_action_;
+  QAction* undo_action_ = nullptr;
 
-  QAction* redo_action_;
+  QAction* redo_action_ = nullptr;
 
 };
 

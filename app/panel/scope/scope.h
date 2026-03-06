@@ -66,13 +66,13 @@ protected:
 private:
   Type type_;
 
-  QStackedWidget* stack_;
+  QStackedWidget* stack_ = nullptr;
 
-  QComboBox* scope_type_combobox_;
+  QComboBox* scope_type_combobox_ = nullptr;
 
-  WaveformScope* waveform_view_;
+  WaveformScope* waveform_view_ = nullptr;
 
-  HistogramScope* histogram_;
+  HistogramScope* histogram_ = nullptr;
 
   ViewerPanelBase *viewer_;
 

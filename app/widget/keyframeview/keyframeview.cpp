@@ -57,7 +57,7 @@ void KeyframeView::DeleteSelected()
   if (!selection_manager_.IsDragging()) {
     MultiUndoCommand* command = new MultiUndoCommand();
 
-    foreach (NodeKeyframe *key, GetSelectedKeyframes()) {
+    for (NodeKeyframe *key : GetSelectedKeyframes()) {
       command->add_child(new NodeParamRemoveKeyframeCommand(key));
     }
 
@@ -69,7 +69,7 @@ KeyframeView::NodeConnections KeyframeView::AddKeyframesOfNode(Node *n)
 {
   NodeConnections map;
 
-  foreach (const QString& i, n->inputs()) {
+  for (const QString& i : n->inputs()) {
     map.insert(i, AddKeyframesOfInput(n, i));
   }
 
@@ -119,7 +119,7 @@ KeyframeViewInputConnection *KeyframeView::AddKeyframesOfTrack(const NodeKeyfram
 void KeyframeView::RemoveKeyframesOfTrack(KeyframeViewInputConnection *connection)
 {
   if (tracks_.removeOne(connection)) {
-    foreach (NodeKeyframe *key, connection->GetKeyframes()) {
+    for (NodeKeyframe *key : connection->GetKeyframes()) {
       selection_manager_.Deselect(key);
     }
     delete connection;
@@ -130,8 +130,8 @@ void KeyframeView::RemoveKeyframesOfTrack(KeyframeViewInputConnection *connectio
 
 void KeyframeView::SelectAll()
 {
-  foreach (KeyframeViewInputConnection *track, tracks_) {
-    foreach (NodeKeyframe *key, track->GetKeyframes()) {
+  for (KeyframeViewInputConnection *track : tracks_) {
+    for (NodeKeyframe *key : track->GetKeyframes()) {
       SelectKeyframe(key);
     }
   }
@@ -160,7 +160,7 @@ void KeyframeView::SelectionManagerSelectEvent(void *obj)
   if (autoselect_siblings_) {
     NodeKeyframe *key = static_cast<NodeKeyframe*>(obj);
     QVector<NodeKeyframe*> keys = key->parent()->GetKeyframesAtTime(key->input(), key->time(), key->element());
-    foreach (NodeKeyframe* k, keys) {
+    for (NodeKeyframe* k : keys) {
       if (k != key) {
         SelectKeyframe(k);
       }
@@ -175,7 +175,7 @@ void KeyframeView::SelectionManagerDeselectEvent(void *obj)
   if (autoselect_siblings_) {
     NodeKeyframe *key = static_cast<NodeKeyframe*>(obj);
     QVector<NodeKeyframe*> keys = key->parent()->GetKeyframesAtTime(key->input(), key->time(), key->element());
-    foreach (NodeKeyframe* k, keys) {
+    for (NodeKeyframe* k : keys) {
       if (k != key) {
         DeselectKeyframe(k);
       }
@@ -263,7 +263,7 @@ void KeyframeView::CatchUpScrollEvent()
 
 void KeyframeView::mousePressEvent(QMouseEvent *event)
 {
-  NodeKeyframe *key_under_cursor = selection_manager_.GetObjectAtPoint(event->pos());
+  NodeKeyframe *key_under_cursor = selection_manager_.GetObjectAtPoint(event->position().toPoint());
 
   if (HandPress(event) || (!key_under_cursor && PlayheadPress(event))) {
     return;
@@ -294,15 +294,15 @@ void KeyframeView::mouseMoveEvent(QMouseEvent *event)
   } else if (selection_manager_.IsDragging()) {
     QString tip;
     KeyframeDragMove(event, tip);
-    selection_manager_.DragMove(event->pos(), tip);
+    selection_manager_.DragMove(event->position().toPoint(), tip);
   } else if (selection_manager_.IsRubberBanding()) {
-    selection_manager_.RubberBandMove(event->pos());
+    selection_manager_.RubberBandMove(event->position().toPoint());
     Redraw();
   }
 
   if (event->buttons()) {
     // Signal cursor pos in case we should scroll to catch up to it
-    emit Dragged(event->pos().x(), event->pos().y());
+    emit Dragged(event->position().toPoint().x(), event->position().toPoint().y());
   }
 }
 
@@ -359,7 +359,7 @@ void KeyframeView::drawForeground(QPainter *painter, const QRectF &rect)
 
   painter->setRenderHint(QPainter::Antialiasing);
 
-  foreach (KeyframeViewInputConnection *track, tracks_) {
+  for (KeyframeViewInputConnection *track : tracks_) {
     const QVector<NodeKeyframe*> &keys = track->GetKeyframes();
 
     if (keys.isEmpty()) {
@@ -609,7 +609,7 @@ void KeyframeView::ShowContextMenu()
       }
 
       MultiUndoCommand* command = new MultiUndoCommand();
-      foreach (NodeKeyframe* item, GetSelectedKeyframes()) {
+      for (NodeKeyframe *item : GetSelectedKeyframes()) {
         command->add_child(new KeyframeSetTypeCommand(item, new_type));
       }
       Core::instance()->undo_stack()->push(command, tr("Set Type of %1 Keyframe(s)").arg(GetSelectedKeyframes().size()));

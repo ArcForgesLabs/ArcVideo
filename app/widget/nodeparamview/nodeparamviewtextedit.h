@@ -70,9 +70,9 @@ signals:
   void RequestEditInViewer();
 
 private:
-  QPlainTextEdit* line_edit_;
+  QPlainTextEdit* line_edit_ = nullptr;
 
-  QPushButton* edit_btn_;
+  QPushButton* edit_btn_ = nullptr;
 
   QPushButton *edit_in_viewer_btn_;
 

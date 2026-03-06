@@ -1,0 +1,30 @@
+services:
+  arc-runner:
+    image: myoung34/github-runner:ubuntu-noble
+    container_name: arcforgeslabs-runner
+    restart: always
+    environment:
+      - RUNNER_SCOPE=org
+      - ORG_NAME=ArcForgesLabs
+      - RUNNER_NAME=Linux-x64
+      - APP_ID=3013102
+      - APP_INSTALLATION_ID=114155036
+      - LABELS=linux,x64,docker,arcforges
+      - DISABLE_AUTO_UPDATE=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/ci_cache/fastbuild:/cache/fastbuild
+      - /opt/ci_cache/vcpkg:/cache/vcpkg
+      - ./private-key.pem:/server_cache/private-key.pem:ro
+      - ./runner_config:/data
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        export APP_PRIVATE_KEY=$$(cat /server_cache/private-key.pem)
+        exec /entrypoint.sh ./bin/Runner.Listener run --startuptype service
+    deploy:
+      resources:
+        limits:
+          cpus: "6.0"
+          memory: 10G

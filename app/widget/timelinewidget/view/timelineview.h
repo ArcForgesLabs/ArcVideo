@@ -142,7 +142,7 @@ private:
 
   TimelineCoordinate cursor_coord_;
 
-  TrackList* connected_track_list_;
+  TrackList* connected_track_list_ = nullptr;
 
   ClipBlock *transition_overlay_out_;
   ClipBlock *transition_overlay_in_;

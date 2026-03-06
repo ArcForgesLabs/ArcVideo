@@ -62,7 +62,7 @@ QVector<NodeKeyframe*> NodeInputImmediate::get_keyframe_at_time(const rational &
 NodeKeyframe* NodeInputImmediate::get_keyframe_at_time_on_track(const rational &time, int track) const
 {
   if (!is_using_standard_value(track)) {
-    foreach (NodeKeyframe* key, keyframe_tracks_.at(track)) {
+    for (NodeKeyframe* key : keyframe_tracks_.at(track)) {
       if (key->time() == time) {
         return key;
       }
@@ -112,8 +112,8 @@ NodeKeyframe *NodeInputImmediate::get_closest_keyframe_before_time(const rationa
 {
   NodeKeyframe* key = nullptr;
 
-  foreach (const NodeKeyframeTrack& track, keyframe_tracks_) {
-    foreach (NodeKeyframe* k, track) {
+  for (const NodeKeyframeTrack& track : keyframe_tracks_) {
+    for (NodeKeyframe* k : track) {
       if (k->time() >= time) {
         break;
       } else if (!key || k->time() > key->time()) {
@@ -129,7 +129,7 @@ NodeKeyframe* NodeInputImmediate::get_closest_keyframe_after_time(const rational
 {
   NodeKeyframe* key = nullptr;
 
-  foreach (const NodeKeyframeTrack& track, keyframe_tracks_) {
+  for (const NodeKeyframeTrack& track : keyframe_tracks_) {
     for (int i=track.size()-1;i>=0;i--) {
       NodeKeyframe* k = track.at(i);
 
@@ -162,8 +162,8 @@ bool NodeInputImmediate::has_keyframe_at_time(const rational &time) const
   }
 
   // Loop through keyframes to see if any match
-  foreach (const NodeKeyframeTrack& track, keyframe_tracks_) {
-    foreach (NodeKeyframe* key, track) {
+  for (const NodeKeyframeTrack& track : keyframe_tracks_) {
+    for (NodeKeyframe* key : track) {
       if (key->time() == time) {
         return true;
       }
@@ -188,7 +188,7 @@ NodeKeyframe *NodeInputImmediate::get_earliest_keyframe() const
 {
   NodeKeyframe* earliest = nullptr;
 
-  foreach (const NodeKeyframeTrack& track, keyframe_tracks_) {
+  for (const NodeKeyframeTrack& track : keyframe_tracks_) {
     if (!track.isEmpty()) {
       NodeKeyframe* earliest_in_track = track.first();
 
@@ -206,7 +206,7 @@ NodeKeyframe *NodeInputImmediate::get_latest_keyframe() const
 {
   NodeKeyframe* latest = nullptr;
 
-  foreach (const NodeKeyframeTrack& track, keyframe_tracks_) {
+  for (const NodeKeyframeTrack& track : keyframe_tracks_) {
     if (!track.isEmpty()) {
       NodeKeyframe* latest_in_track = track.last();
 

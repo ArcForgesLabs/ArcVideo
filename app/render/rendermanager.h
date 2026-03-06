@@ -225,13 +225,13 @@ private:
 
   static RenderManager* instance_;
 
-  Renderer* context_;
+  Renderer* context_ = nullptr;
 
   Backend backend_;
 
-  DecoderCache* decoder_cache_;
+  DecoderCache* decoder_cache_ = nullptr;
 
-  ShaderCache* shader_cache_;
+  ShaderCache* shader_cache_ = nullptr;
 
   static constexpr auto kDecoderMaximumInactivityAggressive = 1000;
   static constexpr auto kDecoderMaximumInactivity = 5000;

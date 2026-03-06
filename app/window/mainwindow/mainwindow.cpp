@@ -134,15 +134,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::LoadLayout(const MainWindowLayoutInfo &info)
 {
-  foreach (Folder* folder, info.open_folders()) {
+  for (Folder *folder : info.open_folders()) {
     OpenFolder(folder, true);
   }
 
-  foreach (Sequence *sequence, info.open_sequences()) {
+  for (Sequence *sequence : info.open_sequences()) {
     OpenSequence(sequence, info.open_sequences().size() == 1);
   }
 
-  foreach (ViewerOutput *viewer, info.open_viewers()) {
+  for (ViewerOutput *viewer : info.open_viewers()) {
     OpenNodeInViewer(viewer);
   }
 
@@ -176,7 +176,7 @@ MainWindowLayoutInfo MainWindow::SaveLayout() const
 
   QByteArray layout = premaximized_state_.isEmpty() ? KDDockWidgets::LayoutSaver().serializeLayout() : premaximized_state_;
 
-  foreach (PanelWidget *panel, PanelManager::instance()->panels()) {
+  for (PanelWidget *panel : PanelManager::instance()->panels()) {
     info.set_panel_data(panel->uniqueName(), panel->SaveData());
   }
 
@@ -206,7 +206,7 @@ MainWindowLayoutInfo MainWindow::SaveLayout() const
 TimelinePanel* MainWindow::OpenSequence(Sequence *sequence, bool enable_focus)
 {
   // See if this sequence is already open, and switch to it if so
-  foreach (TimelinePanel* tl, timeline_panels_) {
+  for (TimelinePanel* tl : timeline_panels_) {
     if (tl->GetConnectedViewer() == sequence) {
       tl->raise();
       return tl;
@@ -214,7 +214,7 @@ TimelinePanel* MainWindow::OpenSequence(Sequence *sequence, bool enable_focus)
   }
 
   // See if we have any sequences open or not
-  TimelinePanel* panel;
+  TimelinePanel* panel = nullptr;
 
   if (!timeline_panels_.first()->GetConnectedViewer()) {
     panel = timeline_panels_.first();
@@ -239,7 +239,7 @@ void MainWindow::CloseSequence(Sequence *sequence)
   // We make a copy so that our array here doesn't get ruined by what RemoveTimelinePanel() does
   QList<TimelinePanel*> copy = timeline_panels_;
 
-  foreach (TimelinePanel* tp, copy) {
+  for (TimelinePanel* tp : copy) {
     if (tp->GetConnectedViewer() == sequence) {
       RemoveTimelinePanel(tp);
     }
@@ -248,7 +248,7 @@ void MainWindow::CloseSequence(Sequence *sequence)
 
 bool MainWindow::IsSequenceOpen(Sequence *sequence) const
 {
-  foreach (TimelinePanel* tp, timeline_panels_) {
+  for (TimelinePanel* tp : timeline_panels_) {
     if (tp->GetConnectedViewer() == sequence) {
       return true;
     }
@@ -338,7 +338,7 @@ void MainWindow::ToggleMaximizedPanel()
     premaximized_state_ = saver.serializeLayout();
 
     // For every other panel that is on the main window, hide it
-    foreach (PanelWidget* panel, PanelManager::instance()->panels()) {
+    for (PanelWidget* panel : PanelManager::instance()->panels()) {
       if (!panel->isFloating() && panel != currently_hovered) {
         panel->close();
       }
@@ -371,7 +371,7 @@ void MainWindow::SetProject(Project *p)
     node_panel_->SetContexts(QVector<Node*>());
 
     // Close any nodes open in TimeBasedWidgets
-    foreach (PanelWidget* panel, PanelManager::instance()->panels()) {
+    for (PanelWidget* panel : PanelManager::instance()->panels()) {
       TimeBasedPanel* tbp = dynamic_cast<TimeBasedPanel*>(panel);
 
       if (tbp && tbp->GetConnectedViewer() && tbp->GetConnectedViewer()->project() == project_) {
@@ -385,12 +385,12 @@ void MainWindow::SetProject(Project *p)
     }
 
     // Close any extra folder panels
-    foreach (ProjectPanel* panel, folder_panels_) {
+    for (ProjectPanel* panel : folder_panels_) {
       panel->close();
     }
 
     // Close any extra viewer panels
-    foreach (ViewerPanel *viewer, viewer_panels_) {
+    for (ViewerPanel *viewer : viewer_panels_) {
       viewer->close();
     }
   }
@@ -519,7 +519,7 @@ void MainWindow::RevealViewerInProject(ViewerOutput *r)
   // Rather than just using the resident ProjectPanel, find the most recently focused one since
   // that's probably the one people will want
   auto panels = PanelManager::instance()->GetPanelsOfType<ProjectPanel>();
-  foreach (ProjectPanel *p, panels) {
+  for (ProjectPanel *p : panels) {
     if (p->SelectItem(r)) {
       break;
     }
@@ -588,7 +588,7 @@ void MainWindow::ViewerWithPanelRemovedFromGraph()
   ViewerOutput* vo = static_cast<ViewerOutput*>(sender());
   ViewerPanel *panel = nullptr;
 
-  foreach (ViewerPanel *p, viewer_panels_) {
+  for (ViewerPanel *p : viewer_panels_) {
     if (p->GetConnectedViewer() == vo) {
       panel = p;
       break;
@@ -664,7 +664,7 @@ void LoadCustomShortcutsInternal(QMenu* menu, const QMap<QString, QString>& shor
 {
   QList<QAction*> actions = menu->actions();
 
-  foreach (QAction* a, actions) {
+  for (QAction* a : actions) {
     if (a->menu()) {
       LoadCustomShortcutsInternal(a->menu(), shortcuts);
     } else if (!a->isSeparator()) {
@@ -687,7 +687,7 @@ void MainWindow::LoadCustomShortcuts()
 
     QStringList shortcut_list = shortcut_str.split(QStringLiteral("\n"));
 
-    foreach (const QString& s, shortcut_list) {
+    for (const QString& s : shortcut_list) {
       QStringList shortcut_line = s.split(QStringLiteral("\t"));
       if (shortcut_line.size() >= 2) {
         shortcuts.insert(shortcut_line.at(0), shortcut_line.at(1));
@@ -699,7 +699,7 @@ void MainWindow::LoadCustomShortcuts()
     if (!shortcuts.isEmpty()) {
       QList<QAction*> menus = menuBar()->actions();
 
-      foreach (QAction* menu, menus) {
+      for (QAction* menu : menus) {
         LoadCustomShortcutsInternal(menu->menu(), shortcuts);
       }
     }
@@ -710,7 +710,7 @@ void SaveCustomShortcutsInternal(QMenu* menu, QMap<QString, QString>* shortcuts)
 {
   QList<QAction*> actions = menu->actions();
 
-  foreach (QAction* a, actions) {
+  for (QAction* a : actions) {
     if (a->menu()) {
       SaveCustomShortcutsInternal(a->menu(), shortcuts);
     } else if (!a->isSeparator()) {
@@ -729,7 +729,7 @@ void MainWindow::SaveCustomShortcuts()
   QMap<QString, QString> shortcuts;
   QList<QAction*> menus = menuBar()->actions();
 
-  foreach (QAction* menu, menus) {
+  for (QAction* menu : menus) {
     SaveCustomShortcutsInternal(menu->menu(), &shortcuts);
   }
 

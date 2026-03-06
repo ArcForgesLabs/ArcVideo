@@ -23,7 +23,7 @@ namespace arcvideo {
     OTIOPropertiesDialog(const QList<Sequence*>& sequences, Project* active_project, QWidget* parent = nullptr);
 
    private:
-    QTreeWidget* table_;
+    QTreeWidget* table_ = nullptr;
 
     const QList<Sequence*> sequences_;
 

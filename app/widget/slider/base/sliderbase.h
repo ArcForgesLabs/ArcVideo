@@ -92,9 +92,9 @@ protected:
 private:
   bool GetLabelSubstitution(const QVariant &v, QString *out) const;
 
-  SliderLabel* label_;
+  SliderLabel* label_ = nullptr;
 
-  FocusableLineEdit* editor_;
+  FocusableLineEdit* editor_ = nullptr;
 
   QVariant value_;
   QVariant default_value_;

@@ -61,7 +61,8 @@ bool HandMovableView::HandPress(QMouseEvent *event)
 
     // Transform mouse event to act like the left button is pressed
     QMouseEvent transformed(event->type(),
-                            event->pos(),
+                            event->position(),
+                            event->globalPosition(),
                             Qt::LeftButton,
                             Qt::LeftButton,
                             event->modifiers());
@@ -83,23 +84,24 @@ bool HandMovableView::HandMove(QMouseEvent *event)
     QPoint adjustment(0, 0);
 
     QMouseEvent transformed(event->type(),
-                            event->pos() - transformed_pos_,
+                            event->position() - QPointF(transformed_pos_),
+                            event->globalPosition(),
                             Qt::LeftButton,
                             Qt::LeftButton,
                             event->modifiers());
 
-    if (event->pos().x() < 0) {
+    if (event->position().toPoint().x() < 0) {
       transformed_pos_.setX(transformed_pos_.x() + width());
       adjustment.setX(width());
-    } else if (event->pos().x() >= width()) {
+    } else if (event->position().toPoint().x() >= width()) {
       transformed_pos_.setX(transformed_pos_.x() - width());
       adjustment.setX(-width());
     }
 
-    if (event->pos().y() < 0) {
+    if (event->position().toPoint().y() < 0) {
       transformed_pos_.setY(transformed_pos_.y() + height());
       adjustment.setY(height());
-    } else if (event->pos().y() >= height()) {
+    } else if (event->position().toPoint().y() >= height()) {
       transformed_pos_.setY(transformed_pos_.y() - height());
       adjustment.setY(-height());
     }
@@ -118,13 +120,12 @@ bool HandMovableView::HandRelease(QMouseEvent *event)
   if (dragging_hand_) {
     // Transform mouse event to act like the left button is pressed
     QMouseEvent transformed(event->type(),
-                            event->localPos(),
-                            event->windowPos(),
-                            event->screenPos(),
+                            event->position(),
+                            event->scenePosition(),
+                            event->globalPosition(),
                             Qt::LeftButton,
                             Qt::LeftButton,
-                            event->modifiers(),
-                            event->source());
+                            event->modifiers());
 
     super::mouseReleaseEvent(&transformed);
 
@@ -194,7 +195,7 @@ void HandMovableView::wheelEvent(QWheelEvent *event)
           event->position(),
           event->globalPosition(),
       #else
-          event->pos(),
+          event->position().toPoint(),
           event->globalPos(),
       #endif
           event->pixelDelta(),
@@ -215,7 +216,7 @@ void HandMovableView::wheelEvent(QWheelEvent *event)
     }
 
     QWheelEvent e(
-          event->pos(),
+          event->position().toPoint(),
           event->globalPos(),
           event->pixelDelta(),
           event->angleDelta(),

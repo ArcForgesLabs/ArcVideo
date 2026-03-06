@@ -96,7 +96,7 @@ private:
     };
 
     Type type;
-    Node* node;
+    Node* node = nullptr;
     NodeInput input;
     Node *output;
 

@@ -204,7 +204,7 @@ protected:
 
   virtual void resizeEvent(QResizeEvent *event) override;
 
-  PlaybackControls* controls_;
+  PlaybackControls* controls_ = nullptr;
 
   ViewerDisplayWidget* display_widget() const
   {
@@ -276,7 +276,7 @@ private:
 
   bool IsVideoVisible() const;
 
-  ViewerSizer* sizer_;
+  ViewerSizer* sizer_ = nullptr;
 
   int playback_speed_;
 
@@ -288,13 +288,13 @@ private:
 
   bool play_in_to_out_only_;
 
-  AudioWaveformView* waveform_view_;
+  AudioWaveformView* waveform_view_ = nullptr;
 
   QHash<QScreen*, ViewerWindow*> windows_;
 
-  ViewerDisplayWidget* display_widget_;
+  ViewerDisplayWidget* display_widget_ = nullptr;
 
-  ViewerDisplayWidget* context_menu_widget_;
+  ViewerDisplayWidget* context_menu_widget_ = nullptr;
 
   QTimer playback_backup_timer_;
 

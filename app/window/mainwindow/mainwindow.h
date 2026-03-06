@@ -145,18 +145,18 @@ private:
 
   // Standard panels
   ProjectPanel *project_panel_;
-  NodePanel* node_panel_;
-  ParamPanel* param_panel_;
-  CurvePanel* curve_panel_;
-  SequenceViewerPanel* sequence_viewer_panel_;
-  FootageViewerPanel* footage_viewer_panel_;
+  NodePanel* node_panel_ = nullptr;
+  ParamPanel* param_panel_ = nullptr;
+  CurvePanel* curve_panel_ = nullptr;
+  SequenceViewerPanel* sequence_viewer_panel_ = nullptr;
+  FootageViewerPanel* footage_viewer_panel_ = nullptr;
   QList<ProjectPanel*> folder_panels_;
-  ToolPanel* tool_panel_;
+  ToolPanel* tool_panel_ = nullptr;
   QList<TimelinePanel*> timeline_panels_;
-  AudioMonitorPanel* audio_monitor_panel_;
-  TaskManagerPanel* task_man_panel_;
-  PixelSamplerPanel* pixel_sampler_panel_;
-  ScopePanel* scope_panel_;
+  AudioMonitorPanel* audio_monitor_panel_ = nullptr;
+  TaskManagerPanel* task_man_panel_ = nullptr;
+  PixelSamplerPanel* pixel_sampler_panel_ = nullptr;
+  ScopePanel* scope_panel_ = nullptr;
   QList<ViewerPanel*> viewer_panels_;
   MulticamPanel *multicam_panel_;
   HistoryPanel *history_panel_;
@@ -164,7 +164,7 @@ private:
 #ifdef Q_OS_WINDOWS
   unsigned int taskbar_btn_id_;
 
-  ITaskbarList3* taskbar_interface_;
+  ITaskbarList3* taskbar_interface_ = nullptr;
 #endif
 
   bool first_show_;

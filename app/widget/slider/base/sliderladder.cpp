@@ -65,7 +65,7 @@ SliderLadder::SliderLadder(double drag_multiplier, int nb_outer_values, QString 
     elements_.append(new SliderLadderElement(qPow(10, -i - 1) * drag_multiplier, width_hint));
   }
 
-  foreach (SliderLadderElement* e, elements_) {
+  for (SliderLadderElement* e : elements_) {
     layout->addWidget(e);
   }
 
@@ -77,7 +77,7 @@ SliderLadder::SliderLadder(double drag_multiplier, int nb_outer_values, QString 
   connect(&drag_timer_, &QTimer::timeout, this, &SliderLadder::TimerUpdate);
 
   screen_ = nullptr;
-  foreach (QScreen *screen, qApp->screens()) {
+  for (QScreen *screen : qApp->screens()) {
     if (screen->geometry().contains(QCursor::pos())) {
       screen_ = screen;
       break;
@@ -120,7 +120,7 @@ SliderLadder::~SliderLadder()
 
 void SliderLadder::SetValue(const QString &s)
 {
-  foreach (SliderLadderElement* e, elements_) {
+  for (SliderLadderElement* e : elements_) {
     e->SetValue(s);
   }
 }

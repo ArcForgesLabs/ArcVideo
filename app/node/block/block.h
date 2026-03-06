@@ -124,15 +124,15 @@ signals:
 protected:
   virtual void InputValueChangedEvent(const QString& input, int element) override;
 
-  Block* previous_;
-  Block* next_;
+  Block* previous_ = nullptr;
+  Block* next_ = nullptr;
 
 private:
   void set_length_internal(const rational &length);
 
   rational in_point_;
   rational out_point_;
-  Track* track_;
+  Track* track_ = nullptr;
 
   rational last_length_;
 

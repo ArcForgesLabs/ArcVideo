@@ -36,13 +36,13 @@ TaskManager::~TaskManager()
 {
   thread_pool_.clear();
 
-  foreach (Task* t, tasks_) {
+  for (Task* t : tasks_) {
     t->Cancel();
   }
 
   thread_pool_.waitForDone();
 
-  foreach (Task* t, tasks_) {
+  for (Task* t : tasks_) {
     t->deleteLater();
   }
 }

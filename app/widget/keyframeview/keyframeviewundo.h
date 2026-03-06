@@ -37,7 +37,7 @@ protected:
   virtual void undo() override;
 
 private:
-  NodeKeyframe* key_;
+  NodeKeyframe* key_ = nullptr;
 
   NodeKeyframe::Type old_type_;
 
@@ -57,7 +57,7 @@ protected:
   virtual void undo() override;
 
 private:
-  NodeKeyframe* key_;
+  NodeKeyframe* key_ = nullptr;
 
   NodeKeyframe::BezierType mode_;
 

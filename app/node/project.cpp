@@ -170,7 +170,7 @@ void Project::Save(QXmlStreamWriter *writer) const
   if (!this->nodes().isEmpty()) {
     writer->writeStartElement(QStringLiteral("nodes"));
 
-    foreach (Node* node, this->nodes()) {
+    for (Node* node : this->nodes()) {
       writer->writeStartElement(QStringLiteral("node"));
 
       node->Save(writer);
@@ -196,7 +196,7 @@ int Project::GetNumberOfContextsNodeIsIn(Node *node, bool except_itself) const
 {
   int count = 0;
 
-  foreach (Node *ctx, node_children_) {
+  for (Node *ctx : node_children_) {
     if (ctx->ContextContainsNode(node) && (!except_itself || ctx != node)) {
       count++;
     }
@@ -267,7 +267,7 @@ void Project::childEvent(QChildEvent *event)
       node->RemovedFromGraphEvent(this);
 
       // Remove from any contexts
-      foreach (Node *context, node_children_) {
+      for (Node *context : node_children_) {
         context->RemoveNodeFromContext(node);
       }
     }

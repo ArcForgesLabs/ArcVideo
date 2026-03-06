@@ -72,7 +72,7 @@ private:
 
   void SetDefaults();
 
-  ViewerOutput* viewer_node_;
+  ViewerOutput* viewer_node_ = nullptr;
 
   ExportFormat::Format previously_selected_format_;
 
@@ -89,29 +89,29 @@ private:
     kPresetLastUsed = -2,
   };
 
-  QTabWidget* preferences_tabs_;
+  QTabWidget* preferences_tabs_ = nullptr;
 
-  QComboBox* preset_combobox_;
-  QComboBox* range_combobox_;
+  QComboBox* preset_combobox_ = nullptr;
+  QComboBox* range_combobox_ = nullptr;
   std::vector<EncodingParams> presets_;
 
-  QCheckBox* video_enabled_;
-  QCheckBox* audio_enabled_;
-  QCheckBox* subtitles_enabled_;
+  QCheckBox* video_enabled_ = nullptr;
+  QCheckBox* audio_enabled_ = nullptr;
+  QCheckBox* subtitles_enabled_ = nullptr;
 
-  ViewerWidget* preview_viewer_;
-  QLineEdit* filename_edit_;
-  ExportFormatComboBox* format_combobox_;
+  ViewerWidget* preview_viewer_ = nullptr;
+  QLineEdit* filename_edit_ = nullptr;
+  ExportFormatComboBox* format_combobox_ = nullptr;
 
-  ExportVideoTab* video_tab_;
-  ExportAudioTab* audio_tab_;
-  ExportSubtitlesTab* subtitle_tab_;
+  ExportVideoTab* video_tab_ = nullptr;
+  ExportAudioTab* audio_tab_ = nullptr;
+  ExportSubtitlesTab* subtitle_tab_ = nullptr;
 
   double video_aspect_ratio_;
 
-  ColorManager* color_manager_;
+  ColorManager* color_manager_ = nullptr;
 
-  QWidget* preferences_area_;
+  QWidget* preferences_area_ = nullptr;
   QCheckBox *export_bkg_box_;
   QCheckBox *import_file_after_export_;
 

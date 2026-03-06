@@ -300,11 +300,11 @@ void Renderer::BlitColorManaged(const ColorTransformJob &color_job, Texture *des
   job.Insert(QStringLiteral("ove_force_opaque"), NodeValue(NodeValue::kBoolean, color_job.GetForceOpaque()));
   job.Insert(color_job.GetValues());
 
-  foreach (const ColorContext::LUT& l, color_ctx.lut3d_textures) {
+  for (const ColorContext::LUT& l : color_ctx.lut3d_textures) {
     job.Insert(l.name, NodeValue(NodeValue::kTexture, QVariant::fromValue(l.texture)));
     job.SetInterpolation(l.name, l.interpolation);
   }
-  foreach (const ColorContext::LUT& l, color_ctx.lut1d_textures) {
+  for (const ColorContext::LUT& l : color_ctx.lut1d_textures) {
     job.Insert(l.name, NodeValue(NodeValue::kTexture, QVariant::fromValue(l.texture)));
     job.SetInterpolation(l.name, l.interpolation);
   }

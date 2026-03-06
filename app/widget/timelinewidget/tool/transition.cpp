@@ -94,7 +94,7 @@ void TransitionTool::MouseRelease(TimelineViewMouseEvent *event)
 
   if (ghost_) {
     if (!ghost_->GetAdjustedLength().isNull()) {
-      TransitionBlock* transition;
+      TransitionBlock* transition = nullptr;
 
       if (Core::instance()->GetSelectedTransition().isEmpty()) {
         // Fallback if the user hasn't selected one yet

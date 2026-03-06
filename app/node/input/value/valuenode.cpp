@@ -56,7 +56,7 @@ void ValueNode::Retranslate()
 
   QStringList type_names;
   type_names.reserve(kSupportedTypes.size());
-  foreach (NodeValue::Type type, kSupportedTypes) {
+  for (NodeValue::Type type : kSupportedTypes) {
     type_names.append(NodeValue::GetPrettyDataTypeName(type));
   }
   SetComboBoxStrings(kTypeInput, type_names);

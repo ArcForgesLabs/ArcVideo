@@ -192,9 +192,9 @@ public:
     }
 
   private:
-    Arena* parent_;
+    Arena* parent_ = nullptr;
 
-    uint8_t* data_;
+    uint8_t* data_ = nullptr;
 
     int64_t timestamp_;
 
@@ -224,7 +224,7 @@ public:
     ~Arena()
     {
       std::list<Element*> copy = lent_elements_;
-      foreach (Element* e, copy) {
+      for (Element* e : copy) {
         e->release();
       }
 
@@ -320,9 +320,9 @@ public:
     }
 
   private:
-    MemoryPool* parent_;
+    MemoryPool* parent_ = nullptr;
 
-    uint8_t* data_;
+    uint8_t* data_ = nullptr;
 
     size_t allocated_sz_;
 
@@ -346,7 +346,7 @@ public:
     QMutexLocker locker(&lock_);
 
     // Attempt to get an element from an arena
-    foreach (Arena* a, arenas_) {
+    for (Arena* a : arenas_) {
       ElementPtr e = a->Get();
 
       if (e) {
