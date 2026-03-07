@@ -52,6 +52,7 @@ if(MSVC)
     /W4
     /EHsc
     "$<$<COMPILE_LANGUAGE:CXX>:/MP>"
+    "$<$<COMPILE_LANGUAGE:CXX>:/std:c++23preview>"
     "$<$<CONFIG:RELEASE>:/O2>"
   )
   if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
