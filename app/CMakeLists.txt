@@ -63,6 +63,7 @@ add_library(arcvideo-version-obj
   version.cpp
   version.h
 )
+set_target_properties(arcvideo-version-obj PROPERTIES AUTOMOC OFF)
 target_link_libraries(arcvideo-version-obj PRIVATE Qt6::Core)
 target_compile_options(arcvideo-version-obj PRIVATE -DAPPVERSION="${PROJECT_VERSION}" -DAPPVERSIONLONG="${PROJECT_LONG_VERSION}" )
 
@@ -82,6 +83,7 @@ add_executable(arcvideo-editor
   $<TARGET_OBJECTS:arcvideo-version-obj>
   ${ARCVIDEO_RESOURCES}
 )
+set_target_properties(arcvideo-editor PROPERTIES AUTOMOC OFF)
 
 # Create docs if doxygen was found
 if(DOXYGEN_FOUND)
