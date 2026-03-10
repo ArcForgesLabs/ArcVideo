@@ -26,7 +26,6 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository
     timeout-minutes: 120
     env:
-      VCPKG_DEFAULT_BINARY_CACHE: /cache/vcpkg
       VCPKG_DEFAULT_HOST_TRIPLET: x64-linux-dynamic
       FASTBUILD_CACHE_PATH: /cache/fastbuild
       GLOBAL_VCPKG_PATH: /tmp/vcpkg
@@ -93,8 +92,20 @@ jobs:
           echo "vcpkg:    $(vcpkg version 2>&1 | head -2 | tail -1)"
 
       # ── vcpkg ─────────────────────────────────────────────────
-      - name: Ensure vcpkg binary cache dir
-        run: mkdir -p "$VCPKG_DEFAULT_BINARY_CACHE"
+      - name: Setup vcpkg binary caching (GitHub Actions)
+        uses: actions/github-script@v8
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Restore vcpkg installed packages
+        id: vcpkg-cache
+        uses: actions/cache@v5
+        with:
+          path: /tmp/vcpkg/installed
+          key: vcpkg-x64-linux-dynamic-${{ hashFiles('.github/workflows/linux-ci.yml') }}-v1
+          restore-keys: vcpkg-x64-linux-dynamic-
 
       - name: Clone ArcVideoRegistry (overlay ports)
         run: |
@@ -102,6 +113,9 @@ jobs:
           git clone --depth 1 https://github.com/ArcForgesLabs/ArcVideoRegistry.git /tmp/ArcVideoRegistry
 
       - name: Install base vcpkg packages
+        if: steps.vcpkg-cache.outputs.cache-hit != 'true'
+        env:
+          VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
         run: |
           vcpkg install \
             --triplet x64-linux-dynamic \
@@ -110,6 +124,8 @@ jobs:
             portaudio crashpad qtbase rapidjson pybind11 kddockwidgets
 
       - name: Install overlay-port packages (always fresh)
+        env:
+          VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
         run: |
           vcpkg remove --triplet x64-linux-dynamic \
             opentimelineio arcvideo-foundation --recurse 2>/dev/null || true
