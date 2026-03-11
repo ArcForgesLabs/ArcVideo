@@ -4805,7 +4805,7 @@ What would you like to do with these clips?</source>
         <translation>No hay puntos de entrada o salida
 definidos en la línea de tiempo
 para agregar a la caché.
-Haga uso de las opciones del menú 
+Haga uso de las opciones del menú
 Editar para agregar puntos de entrada
 y salida.</translation>
     </message>

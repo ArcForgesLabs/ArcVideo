@@ -26,42 +26,40 @@
 
 namespace arcvideo {
 
-class CurvePanel : public TimeBasedPanel
-{
-  Q_OBJECT
+class CurvePanel : public TimeBasedPanel {
+    Q_OBJECT
+
 public:
-  CurvePanel();
+    CurvePanel();
 
-  virtual void DeleteSelected() override;
+    void DeleteSelected() override;
 
-  virtual void SelectAll() override;
+    void SelectAll() override;
 
-  virtual void DeselectAll() override;
+    void DeselectAll() override;
 
 public slots:
-  void SetNode(Node *node)
-  {
-    // Convert single pointer to either an empty vector or a vector of one
-    QVector<Node *> nodes;
+    void SetNode(Node* node) {
+        // Convert single pointer to either an empty vector or a vector of one
+        QVector<Node*> nodes;
 
-    if (node) {
-      nodes.append(node);
+        if (node) {
+            nodes.append(node);
+        }
+
+        SetNodes(nodes);
     }
 
-    SetNodes(nodes);
-  }
+    void SetNodes(const QVector<Node*>& nodes);
 
-  void SetNodes(const QVector<Node *> &nodes);
+    void IncreaseTrackHeight() override;
 
-  virtual void IncreaseTrackHeight() override;
-
-  virtual void DecreaseTrackHeight() override;
+    void DecreaseTrackHeight() override;
 
 protected:
-  virtual void Retranslate() override;
-
+    void Retranslate() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CURVEPANEL_H
+#endif  // CURVEPANEL_H

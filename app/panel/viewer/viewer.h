@@ -31,15 +31,15 @@ namespace arcvideo {
  * @brief Dockable wrapper around a ViewerWidget
  */
 class ViewerPanel : public ViewerPanelBase {
-  Q_OBJECT
+    Q_OBJECT
+
 public:
-  ViewerPanel(const QString& object_name);
+    ViewerPanel(const QString& object_name);
 
 protected:
-  virtual void Retranslate() override;
-
+    void Retranslate() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // VIEWER_PANEL_H
+#endif  // VIEWER_PANEL_H

@@ -27,29 +27,28 @@
 
 namespace arcvideo {
 
-class ColorPreviewBox : public QWidget
-{
-  Q_OBJECT
-public:
-  ColorPreviewBox(QWidget* parent = nullptr);
+class ColorPreviewBox : public QWidget {
+    Q_OBJECT
 
-  void SetColorProcessor(ColorProcessorPtr to_ref, ColorProcessorPtr to_display);
+public:
+    ColorPreviewBox(QWidget* parent = nullptr);
+
+    void SetColorProcessor(ColorProcessorPtr to_ref, ColorProcessorPtr to_display);
 
 public slots:
-  void SetColor(const Color& c);
+    void SetColor(const Color& c);
 
 protected:
-  virtual void paintEvent(QPaintEvent* e) override;
+    void paintEvent(QPaintEvent* e) override;
 
 private:
-  Color color_;
+    Color color_;
 
-  ColorProcessorPtr to_ref_processor_;
+    ColorProcessorPtr to_ref_processor_;
 
-  ColorProcessorPtr to_display_processor_;
-
+    ColorProcessorPtr to_display_processor_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORPREVIEWBOX_H
+#endif  // COLORPREVIEWBOX_H

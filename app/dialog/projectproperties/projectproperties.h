@@ -33,44 +33,43 @@
 
 namespace arcvideo {
 
-class ProjectPropertiesDialog : public QDialog
-{
-  Q_OBJECT
+class ProjectPropertiesDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  ProjectPropertiesDialog(Project *p, QWidget* parent);
+    ProjectPropertiesDialog(Project* p, QWidget* parent);
 
 public slots:
-  virtual void accept() override;
+    void accept() override;
 
 private:
-  bool VerifyPathAndWarnIfBad(const QString &path);
+    bool VerifyPathAndWarnIfBad(const QString& path);
 
-  Project* working_project_ = nullptr;
+    Project* working_project_ = nullptr;
 
-  QLineEdit* ocio_filename_ = nullptr;
+    QLineEdit* ocio_filename_ = nullptr;
 
-  QComboBox* default_input_colorspace_ = nullptr;
+    QComboBox* default_input_colorspace_ = nullptr;
 
-  QComboBox *reference_space_;
+    QComboBox* reference_space_;
 
-  bool ocio_config_is_valid_;
+    bool ocio_config_is_valid_;
 
-  QString ocio_config_error_;
+    QString ocio_config_error_;
 
-  PathWidget* custom_cache_path_ = nullptr;
+    PathWidget* custom_cache_path_ = nullptr;
 
-  static const int kDiskCacheRadioCount = 3;
-  QRadioButton *disk_cache_radios_[kDiskCacheRadioCount];
+    static const int kDiskCacheRadioCount = 3;
+    QRadioButton* disk_cache_radios_[kDiskCacheRadioCount];
 
 private slots:
-  void BrowseForOCIOConfig();
+    void BrowseForOCIOConfig();
 
-  void OCIOFilenameUpdated();
+    void OCIOFilenameUpdated();
 
-  void OpenDiskCacheSettings();
-
+    void OpenDiskCacheSettings();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTPROPERTIESDIALOG_H
+#endif  // PROJECTPROPERTIESDIALOG_H

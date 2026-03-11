@@ -25,41 +25,40 @@
 
 namespace arcvideo {
 
-class TrigonometryNode : public Node
-{
-  Q_OBJECT
+class TrigonometryNode : public Node {
+    Q_OBJECT
+
 public:
-  TrigonometryNode();
+    TrigonometryNode();
 
-  NODE_DEFAULT_FUNCTIONS(TrigonometryNode)
+    NODE_DEFAULT_FUNCTIONS(TrigonometryNode)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kMethodIn;
-  static const QString kXIn;
+    static const QString kMethodIn;
+    static const QString kXIn;
 
 private:
-  enum Operation {
-    kOpSine,
-    kOpCosine,
-    kOpTangent,
-    kOpArcSine,
-    kOpArcCosine,
-    kOpArcTangent,
-    kOpHypSine,
-    kOpHypCosine,
-    kOpHypTangent
-  };
-
+    enum Operation {
+        kOpSine,
+        kOpCosine,
+        kOpTangent,
+        kOpArcSine,
+        kOpArcCosine,
+        kOpArcTangent,
+        kOpHypSine,
+        kOpHypCosine,
+        kOpHypTangent
+    };
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TRIGNODE_H
+#endif  // TRIGNODE_H

@@ -25,19 +25,18 @@
 
 namespace arcvideo {
 
-class RazorTool : public BeamTool
-{
+class RazorTool : public BeamTool {
 public:
-  RazorTool(TimelineWidget* parent);
+    RazorTool(TimelineWidget* parent);
 
-  virtual void MousePress(TimelineViewMouseEvent *event) override;
-  virtual void MouseMove(TimelineViewMouseEvent *event) override;
-  virtual void MouseRelease(TimelineViewMouseEvent *event) override;
+    void MousePress(TimelineViewMouseEvent* event) override;
+    void MouseMove(TimelineViewMouseEvent* event) override;
+    void MouseRelease(TimelineViewMouseEvent* event) override;
 
 private:
-  QVector<Track::Reference> split_tracks_;
+    QVector<Track::Reference> split_tracks_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // RAZORTIMELINETOOL_H
+#endif  // RAZORTIMELINETOOL_H

@@ -30,4 +30,4 @@
 #include "sampleratecombobox.h"
 #include "videodividercombobox.h"
 
-#endif // STANDARDCOMBOS_H
+#endif  // STANDARDCOMBOS_H

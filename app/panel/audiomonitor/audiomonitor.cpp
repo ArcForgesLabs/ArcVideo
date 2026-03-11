@@ -26,19 +26,16 @@ namespace arcvideo {
 
 #define super PanelWidget
 
-AudioMonitorPanel::AudioMonitorPanel() :
-  super(QStringLiteral("AudioMonitor"))
-{
-  audio_monitor_ = new AudioMonitor(this);
+AudioMonitorPanel::AudioMonitorPanel() : super(QStringLiteral("AudioMonitor")) {
+    audio_monitor_ = new AudioMonitor(this);
 
-  SetWidgetWithPadding(audio_monitor_);
+    SetWidgetWithPadding(audio_monitor_);
 
-  Retranslate();
+    Retranslate();
 }
 
-void AudioMonitorPanel::Retranslate()
-{
-  SetTitle(tr("Audio Monitor"));
+void AudioMonitorPanel::Retranslate() {
+    SetTitle(tr("Audio Monitor"));
 }
 
-}
+}  // namespace arcvideo

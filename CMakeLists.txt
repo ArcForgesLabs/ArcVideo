@@ -46,6 +46,19 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Copy compile_commands.json to ${sourceDir}/build/ so clangd and lint tools
+# find it regardless of which preset was configured.
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+  add_custom_target(sync-compile-commands ALL
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_SOURCE_DIR}/build"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${CMAKE_BINARY_DIR}/compile_commands.json"
+      "${CMAKE_SOURCE_DIR}/build/compile_commands.json"
+    COMMENT "Syncing compile_commands.json -> build/"
+    VERBATIM
+  )
+endif()
+
 # Sanitizers
 add_library(arcvideo-sanitizers INTERFACE)
 include(cmake/Sanitizers.cmake)
@@ -94,7 +107,7 @@ else()
   endif()
 endif()
 
-set(ARCVIDEO_DEFINITIONS -DQT_DISABLE_DEPRECATED_BEFORE=0x060000)
+set(ARCVIDEO_DEFINITIONS -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 -D__STDC_CONSTANT_MACROS)
 if (WIN32)
   list(APPEND ARCVIDEO_DEFINITIONS -DUNICODE -D_UNICODE)
 endif()
@@ -228,4 +241,3 @@ if (BUILD_TESTS)
   enable_testing()
   add_subdirectory(tests)
 endif()
-

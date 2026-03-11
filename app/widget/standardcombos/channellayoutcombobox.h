@@ -22,6 +22,7 @@
 #define CHANNELLAYOUTCOMBOBOX_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QComboBox>
 
 #include "ui/humanstrings.h"
@@ -30,36 +31,28 @@ namespace arcvideo {
 
 using namespace foundation;
 
-class ChannelLayoutComboBox : public QComboBox
-{
-  Q_OBJECT
+class ChannelLayoutComboBox : public QComboBox {
+    Q_OBJECT
+
 public:
-  ChannelLayoutComboBox(QWidget* parent = nullptr) :
-    QComboBox(parent)
-  {
-    for (const uint64_t &ch_layout : AudioParams::kSupportedChannelLayouts) {
-      this->addItem(HumanStrings::ChannelLayoutToString(ch_layout),
-                    QVariant::fromValue(ch_layout));
+    ChannelLayoutComboBox(QWidget* parent = nullptr) : QComboBox(parent) {
+        for (const uint64_t& ch_layout : AudioParams::kSupportedChannelLayouts) {
+            this->addItem(HumanStrings::ChannelLayoutToString(ch_layout), QVariant::fromValue(ch_layout));
+        }
     }
-  }
 
-  uint64_t GetChannelLayout() const
-  {
-    return this->currentData().toULongLong();
-  }
+    [[nodiscard]] uint64_t GetChannelLayout() const { return this->currentData().toULongLong(); }
 
-  void SetChannelLayout(uint64_t ch)
-  {
-    for (int i=0; i<this->count(); i++) {
-      if (this->itemData(i).toULongLong() == ch) {
-        this->setCurrentIndex(i);
-        break;
-      }
+    void SetChannelLayout(uint64_t ch) {
+        for (int i = 0; i < this->count(); i++) {
+            if (this->itemData(i).toULongLong() == ch) {
+                this->setCurrentIndex(i);
+                break;
+            }
+        }
     }
-  }
-
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CHANNELLAYOUTCOMBOBOX_H
+#endif  // CHANNELLAYOUTCOMBOBOX_H

@@ -21,144 +21,121 @@
 #ifndef NODEGROUP_H
 #define NODEGROUP_H
 
+#include <utility>
+
 #include "node/node.h"
 
 namespace arcvideo {
 
-class NodeGroup : public Node
-{
-  Q_OBJECT
+class NodeGroup : public Node {
+    Q_OBJECT
+
 public:
-  NodeGroup();
+    NodeGroup();
 
-  NODE_DEFAULT_FUNCTIONS(NodeGroup)
+    NODE_DEFAULT_FUNCTIONS(NodeGroup)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual bool LoadCustom(QXmlStreamReader *reader, SerializedData *data) override;
-  virtual void SaveCustom(QXmlStreamWriter *writer) const override;
-  virtual void PostLoadEvent(SerializedData *data) override;
+    bool LoadCustom(QXmlStreamReader* reader, SerializedData* data) override;
+    void SaveCustom(QXmlStreamWriter* writer) const override;
+    void PostLoadEvent(SerializedData* data) override;
 
-  QString AddInputPassthrough(const NodeInput &input, const QString &force_id = QString());
+    QString AddInputPassthrough(const NodeInput& input, const QString& force_id = QString());
 
-  void RemoveInputPassthrough(const NodeInput &input);
+    void RemoveInputPassthrough(const NodeInput& input);
 
-  Node *GetOutputPassthrough() const
-  {
-    return output_passthrough_;
-  }
+    [[nodiscard]] Node* GetOutputPassthrough() const { return output_passthrough_; }
 
-  void SetOutputPassthrough(Node *node);
+    void SetOutputPassthrough(Node* node);
 
-  using InputPassthrough = QPair<QString, NodeInput>;
-  using InputPassthroughs = QVector<InputPassthrough>;
-  const InputPassthroughs &GetInputPassthroughs() const
-  {
-    return input_passthroughs_;
-  }
+    using InputPassthrough = QPair<QString, NodeInput>;
+    using InputPassthroughs = QVector<InputPassthrough>;
+    [[nodiscard]] const InputPassthroughs& GetInputPassthroughs() const { return input_passthroughs_; }
 
-  bool ContainsInputPassthrough(const NodeInput &input) const;
+    [[nodiscard]] bool ContainsInputPassthrough(const NodeInput& input) const;
 
-  virtual QString GetInputName(const QString& id) const override;
+    [[nodiscard]] QString GetInputName(const QString& id) const override;
 
-  static NodeInput ResolveInput(NodeInput input);
-  static bool GetInner(NodeInput *input);
+    static NodeInput ResolveInput(NodeInput input);
+    static bool GetInner(NodeInput* input);
 
-  QString GetIDOfPassthrough(const NodeInput &input) const
-  {
-    for (auto it=input_passthroughs_.cbegin(); it!=input_passthroughs_.cend(); it++) {
-      if (it->second == input) {
-        return it->first;
-      }
+    [[nodiscard]] QString GetIDOfPassthrough(const NodeInput& input) const {
+        for (auto it = input_passthroughs_.cbegin(); it != input_passthroughs_.cend(); it++) {
+            if (it->second == input) {
+                return it->first;
+            }
+        }
+        return {};
     }
-    return QString();
-  }
 
-  NodeInput GetInputFromID(const QString &id) const
-  {
-    for (auto it=input_passthroughs_.cbegin(); it!=input_passthroughs_.cend(); it++) {
-      if (it->first == id) {
-        return it->second;
-      }
+    [[nodiscard]] NodeInput GetInputFromID(const QString& id) const {
+        for (auto it = input_passthroughs_.cbegin(); it != input_passthroughs_.cend(); it++) {
+            if (it->first == id) {
+                return it->second;
+            }
+        }
+        return {};
     }
-    return NodeInput();
-  }
 
 signals:
-  void InputPassthroughAdded(arcvideo::NodeGroup *group, const arcvideo::NodeInput &input);
+    void InputPassthroughAdded(arcvideo::NodeGroup* group, const arcvideo::NodeInput& input);
 
-  void InputPassthroughRemoved(arcvideo::NodeGroup *group, const arcvideo::NodeInput &input);
+    void InputPassthroughRemoved(arcvideo::NodeGroup* group, const arcvideo::NodeInput& input);
 
-  void OutputPassthroughChanged(arcvideo::NodeGroup *group, arcvideo::Node *output);
+    void OutputPassthroughChanged(arcvideo::NodeGroup* group, arcvideo::Node* output);
 
 private:
-  InputPassthroughs input_passthroughs_;
+    InputPassthroughs input_passthroughs_;
 
-  Node *output_passthrough_;
-
+    Node* output_passthrough_;
 };
 
-class NodeGroupAddInputPassthrough : public UndoCommand
-{
+class NodeGroupAddInputPassthrough : public UndoCommand {
 public:
-  NodeGroupAddInputPassthrough(NodeGroup *group, const NodeInput &input, const QString &force_id = QString()) :
-    group_(group),
-    input_(input),
-    actually_added_(false)
-  {}
+    NodeGroupAddInputPassthrough(NodeGroup* group, NodeInput input, const QString& force_id = QString())
+        : group_(group), input_(std::move(input)), actually_added_(false) {}
 
-  virtual Project * GetRelevantProject() const override
-  {
-    return group_->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return group_->project(); }
 
 protected:
-  virtual void redo() override;
+    void redo() override;
 
-  virtual void undo() override;
+    void undo() override;
 
 private:
-  NodeGroup *group_;
+    NodeGroup* group_;
 
-  NodeInput input_;
+    NodeInput input_;
 
-  QString force_id_;
+    QString force_id_;
 
-  bool actually_added_;
-
+    bool actually_added_;
 };
 
-class NodeGroupSetOutputPassthrough : public UndoCommand
-{
+class NodeGroupSetOutputPassthrough : public UndoCommand {
 public:
-  NodeGroupSetOutputPassthrough(NodeGroup *group, Node *output) :
-    group_(group),
-    new_output_(output)
-  {}
+    NodeGroupSetOutputPassthrough(NodeGroup* group, Node* output) : group_(group), new_output_(output) {}
 
-  virtual Project * GetRelevantProject() const override
-  {
-    return group_->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return group_->project(); }
 
 protected:
-  virtual void redo() override;
+    void redo() override;
 
-  virtual void undo() override;
+    void undo() override;
 
 private:
-  NodeGroup *group_;
+    NodeGroup* group_;
 
-  Node *new_output_;
-  Node *old_output_;
-
+    Node* new_output_;
+    Node* old_output_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEGROUP_H
+#endif  // NODEGROUP_H

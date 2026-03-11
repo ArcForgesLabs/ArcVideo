@@ -24,28 +24,20 @@
 
 namespace arcvideo {
 
-ClickableLabel::ClickableLabel(const QString &text, QWidget *parent) :
-  QLabel(text, parent)
-{
+ClickableLabel::ClickableLabel(const QString& text, QWidget* parent) : QLabel(text, parent) {}
+
+ClickableLabel::ClickableLabel(QWidget* parent) : QLabel(parent) {}
+
+void ClickableLabel::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton && underMouse()) {
+        emit MouseClicked();
+    }
 }
 
-ClickableLabel::ClickableLabel(QWidget *parent) :
-  QLabel(parent)
-{
+void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        emit MouseDoubleClicked();
+    }
 }
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
-{
-  if (event->button() == Qt::LeftButton && underMouse()) {
-    emit MouseClicked();
-  }
-}
-
-void ClickableLabel::mouseDoubleClickEvent(QMouseEvent *event)
-{
-  if (event->button() == Qt::LeftButton) {
-    emit MouseDoubleClicked();
-  }
-}
-
-}
+}  // namespace arcvideo

@@ -28,6 +28,6 @@ namespace arcvideo {
 extern QString kAppVersion;
 extern QString kAppVersionLong;
 
-}
+}  // namespace arcvideo
 
-#endif // GITHASH_H
+#endif  // GITHASH_H

@@ -29,20 +29,19 @@ namespace arcvideo {
 
 class ViewerPlaybackTimer {
 public:
-  void Start(const int64_t& start_timestamp, const int& playback_speed, const double& timebase);
+    void Start(const int64_t& start_timestamp, const int& playback_speed, const double& timebase);
 
-  int64_t GetTimestampNow() const;
+    [[nodiscard]] int64_t GetTimestampNow() const;
 
 private:
-  qint64 start_msec_;
-  int64_t start_timestamp_;
+    qint64 start_msec_;
+    int64_t start_timestamp_;
 
-  int playback_speed_;
+    int playback_speed_;
 
-  double timebase_;
-
+    double timebase_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // VIEWERPLAYBACKTIMER_H
+#endif  // VIEWERPLAYBACKTIMER_H

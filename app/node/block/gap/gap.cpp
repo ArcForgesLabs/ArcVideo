@@ -22,23 +22,18 @@
 
 namespace arcvideo {
 
-GapBlock::GapBlock()
-{
+GapBlock::GapBlock() = default;
+
+QString GapBlock::Name() const {
+    return tr("Gap");
 }
 
-QString GapBlock::Name() const
-{
-  return tr("Gap");
+QString GapBlock::id() const {
+    return QStringLiteral("org.arcvideoeditor.ArcVideo.gap");
 }
 
-QString GapBlock::id() const
-{
-  return QStringLiteral("org.arcvideoeditor.ArcVideo.gap");
+QString GapBlock::Description() const {
+    return tr("A time-based node that represents an empty space.");
 }
 
-QString GapBlock::Description() const
-{
-  return tr("A time-based node that represents an empty space.");
-}
-
-}
+}  // namespace arcvideo

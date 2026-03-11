@@ -27,92 +27,80 @@
 
 namespace arcvideo {
 
-NodeViewScene::NodeViewScene(QObject *parent) :
-  QGraphicsScene(parent),
-  direction_(NodeViewCommon::kLeftToRight),
-  curved_edges_(true)
-{
-}
+NodeViewScene::NodeViewScene(QObject* parent)
+    : QGraphicsScene(parent), direction_(NodeViewCommon::kLeftToRight), curved_edges_(true) {}
 
-void NodeViewScene::SetFlowDirection(NodeViewCommon::FlowDirection direction)
-{
-  direction_ = direction;
+void NodeViewScene::SetFlowDirection(NodeViewCommon::FlowDirection direction) {
+    direction_ = direction;
 
-  for (NodeViewContext *ctx : context_map_) {
-    ctx->SetFlowDirection(direction_);
-  }
-}
-
-void NodeViewScene::SelectAll()
-{
-  for (QGraphicsItem* i : items()) {
-    i->setSelected(true);
-  }
-}
-
-void NodeViewScene::DeselectAll()
-{
-  for (QGraphicsItem* i : items()) {
-    i->setSelected(false);
-  }
-}
-
-QVector<NodeViewItem *> NodeViewScene::GetSelectedItems() const
-{
-  QVector<NodeViewItem *> items;
-
-  for (NodeViewContext *ctx : context_map_) {
-    items.append(ctx->GetSelectedItems());
-  }
-
-  return items;
-}
-
-NodeViewContext *NodeViewScene::AddContext(Node *node)
-{
-  NodeViewContext *context_item = context_map_.value(node);
-
-  if (!context_item) {
-    context_item = new NodeViewContext(node);
-
-    context_item->SetFlowDirection(GetFlowDirection());
-    context_item->SetCurvedEdges(GetEdgesAreCurved());
-
-    QPointF pos(0, 0);
-    QRectF item_rect = context_item->rect();
-    while (!items(item_rect).isEmpty()) {
-      pos.setY(pos.y() + item_rect.height());
-      item_rect = context_item->rect().translated(pos);
+    for (NodeViewContext* ctx : context_map_) {
+        ctx->SetFlowDirection(direction_);
     }
-    context_item->setPos(pos);
-
-    addItem(context_item);
-
-    context_map_.insert(node, context_item);
-  }
-
-  return context_item;
 }
 
-void NodeViewScene::RemoveContext(Node *node)
-{
-  delete context_map_.take(node);
-}
-
-Qt::Orientation NodeViewScene::GetFlowOrientation() const
-{
-  return NodeViewCommon::GetFlowOrientation(direction_);
-}
-
-void NodeViewScene::SetEdgesAreCurved(bool curved)
-{
-  if (curved_edges_ != curved) {
-    curved_edges_ = curved;
-
-    for (NodeViewContext *ctx : context_map_) {
-      ctx->SetCurvedEdges(curved_edges_);
+void NodeViewScene::SelectAll() {
+    for (QGraphicsItem* i : items()) {
+        i->setSelected(true);
     }
-  }
 }
 
+void NodeViewScene::DeselectAll() {
+    for (QGraphicsItem* i : items()) {
+        i->setSelected(false);
+    }
 }
+
+QVector<NodeViewItem*> NodeViewScene::GetSelectedItems() const {
+    QVector<NodeViewItem*> items;
+
+    for (NodeViewContext* ctx : context_map_) {
+        items.append(ctx->GetSelectedItems());
+    }
+
+    return items;
+}
+
+NodeViewContext* NodeViewScene::AddContext(Node* node) {
+    NodeViewContext* context_item = context_map_.value(node);
+
+    if (!context_item) {
+        context_item = new NodeViewContext(node);
+
+        context_item->SetFlowDirection(GetFlowDirection());
+        context_item->SetCurvedEdges(GetEdgesAreCurved());
+
+        QPointF pos(0, 0);
+        QRectF item_rect = context_item->rect();
+        while (!items(item_rect).isEmpty()) {
+            pos.setY(pos.y() + item_rect.height());
+            item_rect = context_item->rect().translated(pos);
+        }
+        context_item->setPos(pos);
+
+        addItem(context_item);
+
+        context_map_.insert(node, context_item);
+    }
+
+    return context_item;
+}
+
+void NodeViewScene::RemoveContext(Node* node) {
+    delete context_map_.take(node);
+}
+
+Qt::Orientation NodeViewScene::GetFlowOrientation() const {
+    return NodeViewCommon::GetFlowOrientation(direction_);
+}
+
+void NodeViewScene::SetEdgesAreCurved(bool curved) {
+    if (curved_edges_ != curved) {
+        curved_edges_ = curved;
+
+        for (NodeViewContext* ctx : context_map_) {
+            ctx->SetCurvedEdges(curved_edges_);
+        }
+    }
+}
+
+}  // namespace arcvideo

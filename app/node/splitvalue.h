@@ -30,4 +30,4 @@ using SplitValue = QVector<QVariant>;
 
 }
 
-#endif // SPLITVALUE_H
+#endif  // SPLITVALUE_H

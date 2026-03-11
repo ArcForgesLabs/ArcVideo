@@ -26,35 +26,34 @@
 
 namespace arcvideo {
 
-class OCIOBaseNode : public Node
-{
-  Q_OBJECT
+class OCIOBaseNode : public Node {
+    Q_OBJECT
+
 public:
-  OCIOBaseNode();
+    OCIOBaseNode();
 
-  virtual void AddedToGraphEvent(Project *p)  override;
-  virtual void RemovedFromGraphEvent(Project *p) override;
+    void AddedToGraphEvent(Project* p) override;
+    void RemovedFromGraphEvent(Project* p) override;
 
-  virtual void Value(const NodeValueRow &value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kTextureInput;
+    static const QString kTextureInput;
 
 protected slots:
-  virtual void ConfigChanged() = 0;
+    virtual void ConfigChanged() = 0;
 
 protected:
-  ColorManager *manager() const { return manager_; }
+    [[nodiscard]] ColorManager* manager() const { return manager_; }
 
-  ColorProcessorPtr processor() const { return processor_; }
-  void set_processor(ColorProcessorPtr p) { processor_ = p; }
+    [[nodiscard]] ColorProcessorPtr processor() const { return processor_; }
+    void set_processor(ColorProcessorPtr p) { processor_ = p; }
 
 private:
-  ColorManager *manager_;
+    ColorManager* manager_;
 
-  ColorProcessorPtr processor_;
-
+    ColorProcessorPtr processor_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // OCIOBASENODE_H
+#endif  // OCIOBASENODE_H

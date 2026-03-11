@@ -29,69 +29,69 @@
 
 namespace arcvideo {
 
-class RenderProcessor : public NodeTraverser
-{
+class RenderProcessor : public NodeTraverser {
 public:
-  virtual NodeValueDatabase GenerateDatabase(const Node *node, const TimeRange &range) override;
+    NodeValueDatabase GenerateDatabase(const Node* node, const TimeRange& range) override;
 
-  static void Process(RenderTicketPtr ticket, Renderer* render_ctx, DecoderCache* decoder_cache, ShaderCache* shader_cache);
+    static void Process(RenderTicketPtr ticket, Renderer* render_ctx, DecoderCache* decoder_cache,
+                        ShaderCache* shader_cache);
 
-  struct RenderedWaveform {
-    const ClipBlock* block = nullptr;
-    AudioVisualWaveform waveform;
-    TimeRange range;
-    bool silence;
-  };
+    struct RenderedWaveform {
+        const ClipBlock* block = nullptr;
+        AudioVisualWaveform waveform;
+        TimeRange range;
+        bool silence;
+    };
 
 protected:
-  virtual void ProcessVideoFootage(TexturePtr destination, const FootageJob *stream, const rational &input_time) override;
+    void ProcessVideoFootage(TexturePtr destination, const FootageJob* stream, const rational& input_time) override;
 
-  virtual void ProcessAudioFootage(SampleBuffer &destination, const FootageJob *stream, const TimeRange &input_time) override;
+    void ProcessAudioFootage(SampleBuffer& destination, const FootageJob* stream, const TimeRange& input_time) override;
 
-  virtual void ProcessShader(TexturePtr destination, const Node *node, const ShaderJob *job) override;
+    void ProcessShader(TexturePtr destination, const Node* node, const ShaderJob* job) override;
 
-  virtual void ProcessSamples(SampleBuffer &destination, const Node *node, const TimeRange &range, const SampleJob &job) override;
+    void ProcessSamples(SampleBuffer& destination, const Node* node, const TimeRange& range,
+                        const SampleJob& job) override;
 
-  virtual void ProcessColorTransform(TexturePtr destination, const Node *node, const ColorTransformJob *job) override;
+    void ProcessColorTransform(TexturePtr destination, const Node* node, const ColorTransformJob* job) override;
 
-  virtual void ProcessFrameGeneration(TexturePtr destination, const Node *node, const GenerateJob *job) override;
+    void ProcessFrameGeneration(TexturePtr destination, const Node* node, const GenerateJob* job) override;
 
-  virtual TexturePtr ProcessVideoCacheJob(const CacheJob *val) override;
+    TexturePtr ProcessVideoCacheJob(const CacheJob* val) override;
 
-  virtual TexturePtr CreateTexture(const VideoParams &p) override;
+    TexturePtr CreateTexture(const VideoParams& p) override;
 
-  virtual SampleBuffer CreateSampleBuffer(const AudioParams &params, int sample_count) override
-  {
-    return SampleBuffer(params, sample_count);
-  }
+    SampleBuffer CreateSampleBuffer(const AudioParams& params, int sample_count) override {
+        return {params, static_cast<size_t>(sample_count)};
+    }
 
-  virtual void ConvertToReferenceSpace(TexturePtr destination, TexturePtr source, const QString &input_cs) override;
+    void ConvertToReferenceSpace(TexturePtr destination, TexturePtr source, const QString& input_cs) override;
 
-  virtual bool UseCache() const override;
+    [[nodiscard]] bool UseCache() const override;
 
 private:
-  RenderProcessor(RenderTicketPtr ticket, Renderer* render_ctx, DecoderCache* decoder_cache, ShaderCache* shader_cache);
+    RenderProcessor(RenderTicketPtr ticket, Renderer* render_ctx, DecoderCache* decoder_cache,
+                    ShaderCache* shader_cache);
 
-  TexturePtr GenerateTexture(const rational& time, const rational& frame_length);
+    TexturePtr GenerateTexture(const rational& time, const rational& frame_length);
 
-  FramePtr GenerateFrame(TexturePtr texture, const rational &time);
+    FramePtr GenerateFrame(TexturePtr texture, const rational& time);
 
-  void Run();
+    void Run();
 
-  DecoderPtr ResolveDecoderFromInput(const QString &decoder_id, const Decoder::CodecStream& stream);
+    DecoderPtr ResolveDecoderFromInput(const QString& decoder_id, const Decoder::CodecStream& stream);
 
-  RenderTicketPtr ticket_;
+    RenderTicketPtr ticket_;
 
-  Renderer* render_ctx_ = nullptr;
+    Renderer* render_ctx_ = nullptr;
 
-  DecoderCache* decoder_cache_ = nullptr;
+    DecoderCache* decoder_cache_ = nullptr;
 
-  ShaderCache* shader_cache_ = nullptr;
-
+    ShaderCache* shader_cache_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::RenderProcessor::RenderedWaveform)
 
-#endif // RENDERPROCESSOR_H
+#endif  // RENDERPROCESSOR_H

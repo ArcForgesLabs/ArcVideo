@@ -25,21 +25,20 @@
 
 namespace arcvideo {
 
-class WaveformScope : public ScopeBase
-{
-  Q_OBJECT
-public:
-  WaveformScope(QWidget* parent = nullptr);
+class WaveformScope : public ScopeBase {
+    Q_OBJECT
 
-  MANAGEDDISPLAYWIDGET_DEFAULT_DESTRUCTOR(WaveformScope)
+public:
+    WaveformScope(QWidget* parent = nullptr);
+
+    MANAGEDDISPLAYWIDGET_DEFAULT_DESTRUCTOR(WaveformScope)
 
 protected:
-  virtual ShaderCode GenerateShaderCode() override;
+    ShaderCode GenerateShaderCode() override;
 
-  virtual void DrawScope(TexturePtr managed_tex, QVariant pipeline) override;
-
+    void DrawScope(TexturePtr managed_tex, QVariant pipeline) override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // WAVEFORMSCOPE_H
+#endif  // WAVEFORMSCOPE_H

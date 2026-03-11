@@ -25,21 +25,20 @@
 
 namespace arcvideo {
 
-class CodecStack : public QStackedWidget
-{
-  Q_OBJECT
-public:
-  explicit CodecStack(QWidget *parent = nullptr);
+class CodecStack : public QStackedWidget {
+    Q_OBJECT
 
-  void addWidget(QWidget *widget);
+public:
+    explicit CodecStack(QWidget* parent = nullptr);
+
+    void addWidget(QWidget* widget);
 
 signals:
 
 private slots:
-  void OnChange(int index);
-
+    void OnChange(int index);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CODECSTACK_H
+#endif  // CODECSTACK_H

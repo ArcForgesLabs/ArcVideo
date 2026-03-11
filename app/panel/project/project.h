@@ -31,63 +31,59 @@ namespace arcvideo {
 /**
  * @brief A PanelWidget wrapper around a ProjectExplorer and a ProjectToolbar
  */
-class ProjectPanel : public PanelWidget, public FootageManagementPanel
-{
-  Q_OBJECT
+class ProjectPanel : public PanelWidget, public FootageManagementPanel {
+    Q_OBJECT
+
 public:
-  ProjectPanel(const QString &unique_name);
+    ProjectPanel(const QString& unique_name);
 
-  Project* project() const;
-  void set_project(Project* p);
+    [[nodiscard]] Project* project() const;
+    void set_project(Project* p);
 
-  Folder *get_root() const;
+    [[nodiscard]] Folder* get_root() const;
 
-  void set_root(Folder* item);
+    void set_root(Folder* item);
 
-  QVector<Node *> SelectedItems() const;
+    [[nodiscard]] QVector<Node*> SelectedItems() const;
 
-  Folder* GetSelectedFolder() const;
+    [[nodiscard]] Folder* GetSelectedFolder() const;
 
-  virtual QVector<ViewerOutput *> GetSelectedFootage() const override;
+    [[nodiscard]] QVector<ViewerOutput*> GetSelectedFootage() const override;
 
-  ProjectViewModel* model() const;
+    [[nodiscard]] ProjectViewModel* model() const;
 
-  bool SelectItem(Node *n, bool deselect_all_first = true)
-  {
-    return explorer_->SelectItem(n, deselect_all_first);
-  }
+    bool SelectItem(Node* n, bool deselect_all_first = true) { return explorer_->SelectItem(n, deselect_all_first); }
 
-  virtual void SelectAll() override;
-  virtual void DeselectAll() override;
+    void SelectAll() override;
+    void DeselectAll() override;
 
-  virtual void DeleteSelected() override;
+    void DeleteSelected() override;
 
-  virtual void RenameSelected() override;
+    void RenameSelected() override;
 
 public slots:
-  void Edit(Node *item);
+    void Edit(Node* item);
 
 signals:
-  void ProjectNameChanged();
+    void ProjectNameChanged();
 
-  void SelectionChanged(const QVector<Node *> &selected);
+    void SelectionChanged(const QVector<Node*>& selected);
 
 private:
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  ProjectExplorer* explorer_ = nullptr;
+    ProjectExplorer* explorer_ = nullptr;
 
 private slots:
-  void ItemDoubleClickSlot(Node *item);
+    static void ItemDoubleClickSlot(Node* item);
 
-  void ShowNewMenu();
+    void ShowNewMenu();
 
-  void UpdateSubtitle();
+    void UpdateSubtitle();
 
-  void SaveConnectedProject();
-
+    static void SaveConnectedProject();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECT_PANEL_H
+#endif  // PROJECT_PANEL_H

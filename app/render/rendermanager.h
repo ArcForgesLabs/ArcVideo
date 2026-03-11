@@ -23,8 +23,8 @@
 
 #include <QtConcurrent/QtConcurrent>
 
-#include "config/config.h"
 #include "colorprocessorcache.h"
+#include "config/config.h"
 #include "dialog/rendercancel/rendercancel.h"
 #include "node/output/viewer/viewer.h"
 #include "node/project.h"
@@ -36,228 +36,200 @@
 
 namespace arcvideo {
 
-class RenderThread : public QThread
-{
-  Q_OBJECT
+class RenderThread : public QThread {
+    Q_OBJECT
+
 public:
-  RenderThread(Renderer *renderer, DecoderCache *decoder_cache, ShaderCache *shader_cache, QObject *parent = nullptr);
+    RenderThread(Renderer* renderer, DecoderCache* decoder_cache, ShaderCache* shader_cache, QObject* parent = nullptr);
 
-  void AddTicket(RenderTicketPtr ticket);
+    void AddTicket(RenderTicketPtr ticket);
 
-  bool RemoveTicket(RenderTicketPtr ticket);
+    bool RemoveTicket(RenderTicketPtr ticket);
 
-  void quit();
+    void quit();
 
 protected:
-  virtual void run() override;
+    void run() override;
 
 private:
-  QMutex mutex_;
+    QMutex mutex_;
 
-  QWaitCondition wait_;
+    QWaitCondition wait_;
 
-  std::list<RenderTicketPtr> queue_;
+    std::list<RenderTicketPtr> queue_;
 
-  bool cancelled_;
+    bool cancelled_;
 
-  Renderer *context_;
+    Renderer* context_;
 
-  DecoderCache *decoder_cache_;
+    DecoderCache* decoder_cache_;
 
-  ShaderCache *shader_cache_;
-
+    ShaderCache* shader_cache_;
 };
 
-class RenderManager : public QObject
-{
-  Q_OBJECT
+class RenderManager : public QObject {
+    Q_OBJECT
+
 public:
-  enum Backend {
-    /// Graphics acceleration provided by OpenGL
-    kOpenGL,
+    enum Backend {
+        /// Graphics acceleration provided by OpenGL
+        kOpenGL,
 
-    /// No graphics rendering - used to test core threading logic
-    kDummy
-  };
+        /// No graphics rendering - used to test core threading logic
+        kDummy
+    };
 
-  static void CreateInstance()
-  {
-    instance_ = new RenderManager();
-  }
+    static void CreateInstance() { instance_ = new RenderManager(); }
 
-  static void DestroyInstance()
-  {
-    delete instance_;
-    instance_ = nullptr;
-  }
-
-  static RenderManager* instance()
-  {
-    return instance_;
-  }
-
-  enum ReturnType {
-    kTexture,
-    kFrame,
-    kNull
-  };
-
-  struct RenderVideoParams {
-    RenderVideoParams(Node *n, const VideoParams &vparam, const AudioParams &aparam, const rational &t,
-                ColorManager *colorman, RenderMode::Mode m)
-    {
-      node = n;
-      video_params = vparam;
-      audio_params = aparam;
-      time = t;
-      color_manager = colorman;
-      use_cache = false;
-      return_type = kFrame;
-      force_format = PixelFormat::INVALID;
-      force_color_output = nullptr;
-      force_size = QSize(0, 0);
-      force_channel_count = 0;
-      mode = m;
-      multicam = nullptr;
+    static void DestroyInstance() {
+        delete instance_;
+        instance_ = nullptr;
     }
 
-    void AddCache(FrameHashCache *cache)
-    {
-      cache_dir = cache->GetCacheDirectory();
-      cache_timebase = cache->GetTimebase();
-      cache_id = cache->GetUuid().toString();
-    }
+    static RenderManager* instance() { return instance_; }
 
-    Node *node;
-    VideoParams video_params;
-    AudioParams audio_params;
-    rational time;
-    ColorManager *color_manager;
-    bool use_cache;
-    ReturnType return_type;
-    RenderMode::Mode mode;
-    MultiCamNode *multicam;
+    enum ReturnType { kTexture, kFrame, kNull };
 
-    QString cache_dir;
-    rational cache_timebase;
-    QString cache_id;
+    struct RenderVideoParams {
+        RenderVideoParams(Node* n, const VideoParams& vparam, const AudioParams& aparam, const rational& t,
+                          ColorManager* colorman, RenderMode::Mode m) {
+            node = n;
+            video_params = vparam;
+            audio_params = aparam;
+            time = t;
+            color_manager = colorman;
+            use_cache = false;
+            return_type = kFrame;
+            force_format = PixelFormat::INVALID;
+            force_color_output = nullptr;
+            force_size = QSize(0, 0);
+            force_channel_count = 0;
+            mode = m;
+            multicam = nullptr;
+        }
 
-    QSize force_size;
-    int force_channel_count;
-    QMatrix4x4 force_matrix;
-    PixelFormat force_format;
-    ColorProcessorPtr force_color_output;
-  };
+        void AddCache(FrameHashCache* cache) {
+            cache_dir = cache->GetCacheDirectory();
+            cache_timebase = cache->GetTimebase();
+            cache_id = cache->GetUuid().toString();
+        }
 
-  static const rational kDryRunInterval;
+        Node* node;
+        VideoParams video_params;
+        AudioParams audio_params;
+        rational time;
+        ColorManager* color_manager;
+        bool use_cache;
+        ReturnType return_type;
+        RenderMode::Mode mode;
+        MultiCamNode* multicam;
 
-  /**
-   * @brief Asynchronously generate a frame at a given time
-   *
-   * The ticket from this function will return a FramePtr - the rendered frame in reference color
-   * space.
-   *
-   * This function is thread-safe.
-   */
-  RenderTicketPtr RenderFrame(const RenderVideoParams &params);
+        QString cache_dir;
+        rational cache_timebase;
+        QString cache_id;
 
-  struct RenderAudioParams {
-    RenderAudioParams(Node *n, const TimeRange &time, const AudioParams &aparam, RenderMode::Mode m)
-    {
-      node = n;
-      range = time;
-      audio_params = aparam;
-      generate_waveforms = false;
-      clamp = true;
-      mode = m;
-    }
+        QSize force_size;
+        int force_channel_count;
+        QMatrix4x4 force_matrix;
+        PixelFormat force_format;
+        ColorProcessorPtr force_color_output;
+    };
 
-    Node *node;
-    TimeRange range;
-    AudioParams audio_params;
-    bool generate_waveforms;
-    bool clamp;
-    RenderMode::Mode mode;
-  };
+    static const rational kDryRunInterval;
 
-  /**
-   * @brief Asynchronously generate a chunk of audio
-   *
-   * The ticket from this function will return a SampleBufferPtr - the rendered audio.
-   *
-   * This function is thread-safe.
-   */
-  RenderTicketPtr RenderAudio(const RenderAudioParams &params);
+    /**
+     * @brief Asynchronously generate a frame at a given time
+     *
+     * The ticket from this function will return a FramePtr - the rendered frame in reference color
+     * space.
+     *
+     * This function is thread-safe.
+     */
+    RenderTicketPtr RenderFrame(const RenderVideoParams& params);
 
-  bool RemoveTicket(RenderTicketPtr ticket);
+    struct RenderAudioParams {
+        RenderAudioParams(Node* n, const TimeRange& time, const AudioParams& aparam, RenderMode::Mode m) {
+            node = n;
+            range = time;
+            audio_params = aparam;
+            generate_waveforms = false;
+            clamp = true;
+            mode = m;
+        }
 
-  enum TicketType {
-    kTypeVideo,
-    kTypeAudio
-  };
+        Node* node;
+        TimeRange range;
+        AudioParams audio_params;
+        bool generate_waveforms;
+        bool clamp;
+        RenderMode::Mode mode;
+    };
 
-  Backend backend() const
-  {
-    return backend_;
-  }
+    /**
+     * @brief Asynchronously generate a chunk of audio
+     *
+     * The ticket from this function will return a SampleBufferPtr - the rendered audio.
+     *
+     * This function is thread-safe.
+     */
+    RenderTicketPtr RenderAudio(const RenderAudioParams& params);
 
-  PreviewAutoCacher *GetCacher() const
-  {
-    return auto_cacher_;
-  }
+    bool RemoveTicket(RenderTicketPtr ticket);
 
-  void SetProject(Project *p)
-  {
-    auto_cacher_->SetProject(p);
-  }
+    enum TicketType { kTypeVideo, kTypeAudio };
+
+    [[nodiscard]] Backend backend() const { return backend_; }
+
+    [[nodiscard]] PreviewAutoCacher* GetCacher() const { return auto_cacher_; }
+
+    void SetProject(Project* p) { auto_cacher_->SetProject(p); }
 
 public slots:
-  void SetAggressiveGarbageCollection(bool enabled);
+    void SetAggressiveGarbageCollection(bool enabled);
 
 signals:
 
 private:
-  RenderManager(QObject* parent = nullptr);
+    RenderManager(QObject* parent = nullptr);
 
-  virtual ~RenderManager() override;
+    ~RenderManager() override;
 
-  RenderThread *CreateThread(Renderer *renderer = nullptr);
+    RenderThread* CreateThread(Renderer* renderer = nullptr);
 
-  static RenderManager* instance_;
+    static RenderManager* instance_;
 
-  Renderer* context_ = nullptr;
+    Renderer* context_ = nullptr;
 
-  Backend backend_;
+    Backend backend_;
 
-  DecoderCache* decoder_cache_ = nullptr;
+    DecoderCache* decoder_cache_ = nullptr;
 
-  ShaderCache* shader_cache_ = nullptr;
+    ShaderCache* shader_cache_ = nullptr;
 
-  static constexpr auto kDecoderMaximumInactivityAggressive = 1000;
-  static constexpr auto kDecoderMaximumInactivity = 5000;
+    static constexpr auto kDecoderMaximumInactivityAggressive = 1000;
+    static constexpr auto kDecoderMaximumInactivity = 5000;
 
-  int aggressive_gc_;
+    int aggressive_gc_;
 
-  QTimer *decoder_clear_timer_;
+    QTimer* decoder_clear_timer_;
 
-  RenderThread *video_thread_;
-  RenderThread *dry_run_thread_;
-  RenderThread *audio_thread_;
+    RenderThread* video_thread_;
+    RenderThread* dry_run_thread_;
+    RenderThread* audio_thread_;
 
-  std::vector<RenderThread *> waveform_threads_;
-  size_t last_waveform_thread_;
+    std::vector<RenderThread*> waveform_threads_;
+    size_t last_waveform_thread_;
 
-  std::list<RenderThread *> render_threads_;
+    std::list<RenderThread*> render_threads_;
 
-  PreviewAutoCacher *auto_cacher_;
+    PreviewAutoCacher* auto_cacher_;
 
 private slots:
-  void ClearOldDecoders();
-
+    void ClearOldDecoders();
 };
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::RenderManager::TicketType)
 
-#endif // RENDERBACKEND_H
+#endif  // RENDERBACKEND_H

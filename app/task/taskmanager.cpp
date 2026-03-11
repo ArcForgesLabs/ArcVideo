@@ -27,117 +27,106 @@ namespace arcvideo {
 
 TaskManager* TaskManager::instance_ = nullptr;
 
-TaskManager::TaskManager()
-{
-  thread_pool_.setMaxThreadCount(1);
+TaskManager::TaskManager() {
+    thread_pool_.setMaxThreadCount(1);
 }
 
-TaskManager::~TaskManager()
-{
-  thread_pool_.clear();
+TaskManager::~TaskManager() {
+    thread_pool_.clear();
 
-  for (Task* t : tasks_) {
+    for (Task* t : tasks_) {
+        t->Cancel();
+    }
+
+    thread_pool_.waitForDone();
+
+    for (Task* t : tasks_) {
+        t->deleteLater();
+    }
+}
+
+void TaskManager::CreateInstance() {
+    instance_ = new TaskManager();
+}
+
+void TaskManager::DestroyInstance() {
+    delete instance_;
+    instance_ = nullptr;
+}
+
+TaskManager* TaskManager::instance() {
+    return instance_;
+}
+
+int TaskManager::GetTaskCount() const {
+    return tasks_.size();
+}
+
+Task* TaskManager::GetFirstTask() const {
+    return tasks_.begin().value();
+}
+
+void TaskManager::CancelTaskAndWait(Task* t) {
     t->Cancel();
-  }
 
-  thread_pool_.waitForDone();
+    QFutureWatcher<bool>* w = tasks_.key(t);
 
-  for (Task* t : tasks_) {
-    t->deleteLater();
-  }
+    if (w) {
+        w->waitForFinished();
+    }
 }
 
-void TaskManager::CreateInstance()
-{
-  instance_ = new TaskManager();
-}
+void TaskManager::AddTask(Task* t) {
+    // Create a watcher for signalling
+    auto* watcher = new QFutureWatcher<bool>();
+    connect(watcher, &QFutureWatcher<bool>::finished, this, &TaskManager::TaskFinished);
 
-void TaskManager::DestroyInstance()
-{
-  delete instance_;
-  instance_ = nullptr;
-}
+    // Add the Task to the queue
+    tasks_.insert(watcher, t);
 
-TaskManager *TaskManager::instance()
-{
-  return instance_;
-}
-
-int TaskManager::GetTaskCount() const
-{
-  return tasks_.size();
-}
-
-Task *TaskManager::GetFirstTask() const
-{
-  return tasks_.begin().value();
-}
-
-void TaskManager::CancelTaskAndWait(Task* t)
-{
-  t->Cancel();
-
-  QFutureWatcher<bool>* w = tasks_.key(t);
-
-  if (w) {
-    w->waitForFinished();
-  }
-}
-
-void TaskManager::AddTask(Task* t)
-{
-  // Create a watcher for signalling
-  QFutureWatcher<bool>* watcher = new QFutureWatcher<bool>();
-  connect(watcher, &QFutureWatcher<bool>::finished, this, &TaskManager::TaskFinished);
-
-  // Add the Task to the queue
-  tasks_.insert(watcher, t);
-
-  // Run task concurrently
-  watcher->setFuture(
+    // Run task concurrently
+    watcher->setFuture(
 #if QT_VERSION_MAJOR >= 6
         QtConcurrent::run(&thread_pool_, &Task::Start, t)
 #else
         QtConcurrent::run(&thread_pool_, t, &Task::Start)
 #endif
-        );
+    );
 
-  // Emit signal that a Task was added
-  emit TaskAdded(t);
-  emit TaskListChanged();
+    // Emit signal that a Task was added
+    emit TaskAdded(t);
+    emit TaskListChanged();
 }
 
-void TaskManager::CancelTask(Task *t)
-{
-  if (std::find(failed_tasks_.begin(), failed_tasks_.end(), t) != failed_tasks_.end()) {
-    failed_tasks_.remove(t);
-    emit TaskRemoved(t);
-    t->deleteLater();
-  } else {
-    t->Cancel();
-  }
+void TaskManager::CancelTask(Task* t) {
+    if (std::find(failed_tasks_.begin(), failed_tasks_.end(), t) != failed_tasks_.end()) {
+        failed_tasks_.remove(t);
+        emit TaskRemoved(t);
+        t->deleteLater();
+    } else {
+        t->Cancel();
+    }
 }
 
-void TaskManager::TaskFinished()
-{
-  QFutureWatcher<bool>* watcher = static_cast<QFutureWatcher<bool>*>(sender());
-  Task* t = tasks_.value(watcher);
+void TaskManager::TaskFinished() {
+    auto* watcher = static_cast<QFutureWatcher<bool>*>(sender());
+    Task* t = tasks_.value(watcher);
 
-  tasks_.remove(watcher);
+    tasks_.remove(watcher);
 
-  if (watcher->result()) {
-    // Task completed successfully
-    emit TaskRemoved(t);
-    t->deleteLater();
-  } else {
-    // Task failed, keep it so the user can see the error message
-    emit TaskFailed(t);
-    failed_tasks_.push_back(t);
-  }
+    if (watcher->result()) {
+        // Task completed successfully
+        emit TaskRemoved(t);
+        t->deleteLater();
+    } else {
+        // Task failed, keep it so the user can see the error message
+        emit TaskFailed(t);
+        failed_tasks_.push_back(t);
+    }
 
-  watcher->deleteLater();
+    watcher->deleteLater();
 
-  emit TaskListChanged();
+    emit TaskListChanged();
 }
 
-}
+}  // namespace arcvideo

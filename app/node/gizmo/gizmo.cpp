@@ -22,15 +22,12 @@
 
 namespace arcvideo {
 
-NodeGizmo::NodeGizmo(QObject *parent) :
-  visible_(true)
-{
-  setParent(parent);
+NodeGizmo::NodeGizmo(QObject* parent) : visible_(true) {
+    setParent(parent);
 }
 
-NodeGizmo::~NodeGizmo()
-{
-  setParent(nullptr);
+NodeGizmo::~NodeGizmo() {
+    setParent(nullptr);
 }
 
-}
+}  // namespace arcvideo

@@ -30,153 +30,138 @@ namespace arcvideo {
 
 class NodeInput;
 
-class NodeInputImmediate
-{
+class NodeInputImmediate {
 public:
-  NodeInputImmediate(NodeValue::Type type, const SplitValue& default_val);
+    NodeInputImmediate(NodeValue::Type type, SplitValue default_val);
 
-  /**
-   * @brief Internal insert function, automatically does an insertion sort based on the keyframe's time
-   */
-  void insert_keyframe(NodeKeyframe* key);
+    /**
+     * @brief Internal insert function, automatically does an insertion sort based on the keyframe's time
+     */
+    void insert_keyframe(NodeKeyframe* key);
 
-  void remove_keyframe(NodeKeyframe* key);
+    void remove_keyframe(NodeKeyframe* key);
 
-  void delete_all_keyframes(QObject *parent = nullptr);
+    void delete_all_keyframes(QObject* parent = nullptr);
 
-  /**
-   * @brief Get non-keyframed value split into components (the way it's stored)
-   */
-  const SplitValue& get_split_standard_value() const
-  {
-    return standard_value_;
-  }
+    /**
+     * @brief Get non-keyframed value split into components (the way it's stored)
+     */
+    [[nodiscard]] const SplitValue& get_split_standard_value() const { return standard_value_; }
 
-  const QVariant& get_split_standard_value_on_track(int track) const
-  {
-    return standard_value_.at(track);
-  }
+    [[nodiscard]] const QVariant& get_split_standard_value_on_track(int track) const {
+        return standard_value_.at(track);
+    }
 
-  void set_standard_value_on_track(const QVariant &value, int track);
+    void set_standard_value_on_track(const QVariant& value, int track);
 
-  void set_split_standard_value(const SplitValue& value);
+    void set_split_standard_value(const SplitValue& value);
 
-  /**
-   * @brief Retrieve a list of keyframe objects for all tracks at a given time
-   *
-   * List may be empty if this input is not keyframing or has no keyframes at this time.
-   */
-  QVector<NodeKeyframe*> get_keyframe_at_time(const rational& time) const;
+    /**
+     * @brief Retrieve a list of keyframe objects for all tracks at a given time
+     *
+     * List may be empty if this input is not keyframing or has no keyframes at this time.
+     */
+    [[nodiscard]] QVector<NodeKeyframe*> get_keyframe_at_time(const rational& time) const;
 
-  /**
-   * @brief Retrieve the keyframe object at a given time for a given track
-   *
-   * @return
-   *
-   * The keyframe object at this time or nullptr if there isn't one or if is_keyframing() is false.
-   */
-  NodeKeyframe* get_keyframe_at_time_on_track(const rational& time, int track) const;
+    /**
+     * @brief Retrieve the keyframe object at a given time for a given track
+     *
+     * @return
+     *
+     * The keyframe object at this time or nullptr if there isn't one or if is_keyframing() is false.
+     */
+    [[nodiscard]] NodeKeyframe* get_keyframe_at_time_on_track(const rational& time, int track) const;
 
-  /**
-   * @brief Gets the closest keyframe to a time
-   *
-   * If is_keyframing() is false or keyframes_ is empty, this will return nullptr.
-   */
-  NodeKeyframe* get_closest_keyframe_to_time_on_track(const rational& time, int track) const;
+    /**
+     * @brief Gets the closest keyframe to a time
+     *
+     * If is_keyframing() is false or keyframes_ is empty, this will return nullptr.
+     */
+    [[nodiscard]] NodeKeyframe* get_closest_keyframe_to_time_on_track(const rational& time, int track) const;
 
-  /**
-   * @brief Get closest keyframe that's before the time on any track
-   *
-   * If no keyframe is before this time, returns nullptr.
-   */
-  NodeKeyframe* get_closest_keyframe_before_time(const rational& time) const;
+    /**
+     * @brief Get closest keyframe that's before the time on any track
+     *
+     * If no keyframe is before this time, returns nullptr.
+     */
+    [[nodiscard]] NodeKeyframe* get_closest_keyframe_before_time(const rational& time) const;
 
-  /**
-   * @brief Get closest keyframe that's before the time on any track
-   *
-   * If no keyframe is before this time, returns nullptr.
-   */
-  NodeKeyframe* get_closest_keyframe_after_time(const rational& time) const;
+    /**
+     * @brief Get closest keyframe that's before the time on any track
+     *
+     * If no keyframe is before this time, returns nullptr.
+     */
+    [[nodiscard]] NodeKeyframe* get_closest_keyframe_after_time(const rational& time) const;
 
-  /**
-   * @brief A heuristic to determine what type a keyframe should be if it's inserted at a certain time (between keyframes)
-   */
-  NodeKeyframe::Type get_best_keyframe_type_for_time(const rational& time, int track) const;
+    /**
+     * @brief A heuristic to determine what type a keyframe should be if it's inserted at a certain time (between
+     * keyframes)
+     */
+    [[nodiscard]] NodeKeyframe::Type get_best_keyframe_type_for_time(const rational& time, int track) const;
 
-  /**
-   * @brief Return list of keyframes in this parameter
-   */
-  const QVector<NodeKeyframeTrack> &keyframe_tracks() const
-  {
-    return keyframe_tracks_;
-  }
+    /**
+     * @brief Return list of keyframes in this parameter
+     */
+    [[nodiscard]] const QVector<NodeKeyframeTrack>& keyframe_tracks() const { return keyframe_tracks_; }
 
-  /**
-   * @brief Return whether keyframing is enabled on this input or not
-   */
-  bool is_keyframing() const
-  {
-    return keyframing_;
-  }
+    /**
+     * @brief Return whether keyframing is enabled on this input or not
+     */
+    [[nodiscard]] bool is_keyframing() const { return keyframing_; }
 
-  /**
-   * @brief Set whether keyframing is enabled on this input or not
-   */
-  void set_is_keyframing(bool k)
-  {
-    keyframing_ = k;
-  }
+    /**
+     * @brief Set whether keyframing is enabled on this input or not
+     */
+    void set_is_keyframing(bool k) { keyframing_ = k; }
 
-  /**
-   * @brief Gets the earliest keyframe on any track
-   */
-  NodeKeyframe* get_earliest_keyframe() const;
+    /**
+     * @brief Gets the earliest keyframe on any track
+     */
+    [[nodiscard]] NodeKeyframe* get_earliest_keyframe() const;
 
-  /**
-   * @brief Gets the latest keyframe on any track
-   */
-  NodeKeyframe* get_latest_keyframe() const;
+    /**
+     * @brief Gets the latest keyframe on any track
+     */
+    [[nodiscard]] NodeKeyframe* get_latest_keyframe() const;
 
-  /**
-   * @brief Return whether a keyframe exists at this time
-   *
-   * If is_keyframing() is false, this will always return false. This checks all tracks and will return true if *any*
-   * track has a keyframe.
-   */
-  bool has_keyframe_at_time(const rational &time) const;
+    /**
+     * @brief Return whether a keyframe exists at this time
+     *
+     * If is_keyframing() is false, this will always return false. This checks all tracks and will return true if *any*
+     * track has a keyframe.
+     */
+    [[nodiscard]] bool has_keyframe_at_time(const rational& time) const;
 
-  bool is_using_standard_value(int track) const
-  {
-    return (!is_keyframing() || keyframe_tracks_.at(track).isEmpty());
-  }
+    [[nodiscard]] bool is_using_standard_value(int track) const {
+        return (!is_keyframing() || keyframe_tracks_.at(track).isEmpty());
+    }
 
-  void set_data_type(NodeValue::Type type);
+    void set_data_type(NodeValue::Type type);
 
 private:
-  /**
-   * @brief Non-keyframed value
-   */
-  SplitValue standard_value_;
+    /**
+     * @brief Non-keyframed value
+     */
+    SplitValue standard_value_;
 
-  /**
-   * @brief Default value
-   */
-  SplitValue default_value_;
+    /**
+     * @brief Default value
+     */
+    SplitValue default_value_;
 
-  /**
-   * @brief Internal keyframe array
-   *
-   * If keyframing is enabled, this data is used instead of standard_value.
-   */
-  QVector<NodeKeyframeTrack> keyframe_tracks_;
+    /**
+     * @brief Internal keyframe array
+     *
+     * If keyframing is enabled, this data is used instead of standard_value.
+     */
+    QVector<NodeKeyframeTrack> keyframe_tracks_;
 
-  /**
-   * @brief Internal keyframing enabled setting
-   */
-  bool keyframing_;
-
+    /**
+     * @brief Internal keyframing enabled setting
+     */
+    bool keyframing_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEINPUTIMMEDIATE_H
+#endif  // NODEINPUTIMMEDIATE_H

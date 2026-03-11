@@ -36,36 +36,35 @@ namespace arcvideo {
  * is necessary since TaskViewItem will automatically delete itself (thus removing itself from the TaskView) when the
  * Task finishes.
  */
-class TaskView : public QScrollArea
-{
-  Q_OBJECT
+class TaskView : public QScrollArea {
+    Q_OBJECT
+
 public:
-  TaskView(QWidget* parent);
+    TaskView(QWidget* parent);
 
 signals:
-  void TaskCancelled(Task* t);
+    void TaskCancelled(Task* t);
 
 public slots:
-  /**
-   * @brief Creates a TaskViewItem, connects it to a Task, and adds it to this widget
-   *
-   * Connect this to TaskManager::TaskAdded().
-   */
-  void AddTask(Task* t);
+    /**
+     * @brief Creates a TaskViewItem, connects it to a Task, and adds it to this widget
+     *
+     * Connect this to TaskManager::TaskAdded().
+     */
+    void AddTask(Task* t);
 
-  void TaskFailed(Task* t);
+    void TaskFailed(Task* t);
 
-  void RemoveTask(Task* t);
+    void RemoveTask(Task* t);
 
 private:
-  QWidget* central_widget_ = nullptr;
+    QWidget* central_widget_ = nullptr;
 
-  QVBoxLayout* layout_ = nullptr;
+    QVBoxLayout* layout_ = nullptr;
 
-  QHash<Task*, TaskViewItem*> items_;
-
+    QHash<Task*, TaskViewItem*> items_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TASKVIEW_H
+#endif  // TASKVIEW_H

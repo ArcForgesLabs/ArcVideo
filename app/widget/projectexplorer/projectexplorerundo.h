@@ -23,8 +23,6 @@
 
 #include "undo/undocommand.h"
 
-namespace arcvideo {
+namespace arcvideo {}
 
-}
-
-#endif // PROJECTEXPLORERUNDO_H
+#endif  // PROJECTEXPLORERUNDO_H

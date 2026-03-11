@@ -18,130 +18,113 @@
 
 ***/
 
-#include "widget/timelinewidget/timelinewidget.h"
-
 #include "node/block/transition/transition.h"
+#include "widget/timelinewidget/timelinewidget.h"
 
 namespace arcvideo {
 
 const int TimelineTool::kDefaultDistanceFromOutput = -4;
 
-TimelineTool::TimelineTool(TimelineWidget *parent) :
-  dragging_(false),
-  parent_(parent)
-{
+TimelineTool::TimelineTool(TimelineWidget* parent) : dragging_(false), parent_(parent) {}
+
+TimelineTool::~TimelineTool() = default;
+
+TimelineWidget* TimelineTool::parent() {
+    return parent_;
 }
 
-TimelineTool::~TimelineTool()
-{
+Sequence* TimelineTool::sequence() {
+    return parent_->sequence();
 }
 
-TimelineWidget *TimelineTool::parent()
-{
-  return parent_;
-}
-
-Sequence *TimelineTool::sequence()
-{
-  return parent_->sequence();
-}
-
-Timeline::MovementMode TimelineTool::FlipTrimMode(const Timeline::MovementMode &trim_mode)
-{
-  if (trim_mode == Timeline::kTrimIn) {
-    return Timeline::kTrimOut;
-  }
-
-  if (trim_mode == Timeline::kTrimOut) {
-    return Timeline::kTrimIn;
-  }
-
-  return trim_mode;
-}
-
-rational TimelineTool::SnapMovementToTimebase(const rational &start, rational movement, const rational &timebase)
-{
-  rational proposed_position = start + movement;
-  rational snapped = Timecode::snap_time_to_timebase(proposed_position, timebase);
-
-  if (proposed_position != snapped) {
-    movement += snapped - proposed_position;
-  }
-
-  return movement;
-}
-
-rational TimelineTool::ValidateTimeMovement(rational movement)
-{
-  bool first_ghost = true;
-
-  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
-    if (ghost->GetMode() != Timeline::kMove) {
-      continue;
+Timeline::MovementMode TimelineTool::FlipTrimMode(const Timeline::MovementMode& trim_mode) {
+    if (trim_mode == Timeline::kTrimIn) {
+        return Timeline::kTrimOut;
     }
 
-    // Prevents any ghosts from going below 0:00:00 time
-    if (ghost->GetIn() + movement < 0) {
-      movement = -ghost->GetIn();
-    } else if (first_ghost) {
-      // Ensure ghost is snapped to a grid
-      movement = SnapMovementToTimebase(ghost->GetIn(), movement, parent()->GetTimebaseForTrackType(ghost->GetTrack().type()));
-
-      first_ghost = false;
-    }
-  }
-
-  return movement;
-}
-
-int TimelineTool::ValidateTrackMovement(int movement, const QVector<TimelineViewGhostItem*>& ghosts)
-{
-  for (TimelineViewGhostItem* ghost : ghosts) {
-    if (ghost->GetMode() != Timeline::kMove) {
-      continue;
+    if (trim_mode == Timeline::kTrimOut) {
+        return Timeline::kTrimIn;
     }
 
-    if (!ghost->GetCanMoveTracks()) {
+    return trim_mode;
+}
 
-      return 0;
+rational TimelineTool::SnapMovementToTimebase(const rational& start, rational movement, const rational& timebase) {
+    rational proposed_position = start + movement;
+    rational snapped = Timecode::snap_time_to_timebase(proposed_position, timebase);
 
-    } else if (ghost->GetTrack().index() + movement < 0) {
-
-      // Prevents any ghosts from going to a non-existent negative track
-      movement = -ghost->GetTrack().index();
-
+    if (proposed_position != snapped) {
+        movement += snapped - proposed_position;
     }
-  }
 
-  return movement;
+    return movement;
 }
 
-void TimelineTool::GetGhostData(rational *earliest_point, rational *latest_point)
-{
-  rational ep = RATIONAL_MAX;
-  rational lp = RATIONAL_MIN;
+rational TimelineTool::ValidateTimeMovement(rational movement) {
+    bool first_ghost = true;
 
-  for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
-    ep = qMin(ep, ghost->GetAdjustedIn());
-    lp = qMax(lp, ghost->GetAdjustedOut());
-  }
+    for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
+        if (ghost->GetMode() != Timeline::kMove) {
+            continue;
+        }
 
-  if (earliest_point) {
-    *earliest_point = ep;
-  }
+        // Prevents any ghosts from going below 0:00:00 time
+        if (ghost->GetIn() + movement < 0) {
+            movement = -ghost->GetIn();
+        } else if (first_ghost) {
+            // Ensure ghost is snapped to a grid
+            movement = SnapMovementToTimebase(ghost->GetIn(), movement,
+                                              parent()->GetTimebaseForTrackType(ghost->GetTrack().type()));
 
-  if (latest_point) {
-    *latest_point = lp;
-  }
+            first_ghost = false;
+        }
+    }
+
+    return movement;
 }
 
-void TimelineTool::InsertGapsAtGhostDestination(arcvideo::MultiUndoCommand *command)
-{
-  rational earliest_point, latest_point;
+int TimelineTool::ValidateTrackMovement(int movement, const QVector<TimelineViewGhostItem*>& ghosts) {
+    for (TimelineViewGhostItem* ghost : ghosts) {
+        if (ghost->GetMode() != Timeline::kMove) {
+            continue;
+        }
 
-  GetGhostData(&earliest_point, &latest_point);
+        if (!ghost->GetCanMoveTracks()) {
+            return 0;
 
-  parent()->InsertGapsAt(earliest_point, latest_point - earliest_point, command);
+        } else if (ghost->GetTrack().index() + movement < 0) {
+            // Prevents any ghosts from going to a non-existent negative track
+            movement = -ghost->GetTrack().index();
+        }
+    }
+
+    return movement;
 }
 
+void TimelineTool::GetGhostData(rational* earliest_point, rational* latest_point) {
+    rational ep = RATIONAL_MAX;
+    rational lp = RATIONAL_MIN;
+
+    for (TimelineViewGhostItem* ghost : parent()->GetGhostItems()) {
+        ep = qMin(ep, ghost->GetAdjustedIn());
+        lp = qMax(lp, ghost->GetAdjustedOut());
+    }
+
+    if (earliest_point) {
+        *earliest_point = ep;
+    }
+
+    if (latest_point) {
+        *latest_point = lp;
+    }
 }
+
+void TimelineTool::InsertGapsAtGhostDestination(arcvideo::MultiUndoCommand* command) {
+    rational earliest_point, latest_point;
+
+    GetGhostData(&earliest_point, &latest_point);
+
+    parent()->InsertGapsAt(earliest_point, latest_point - earliest_point, command);
+}
+
+}  // namespace arcvideo

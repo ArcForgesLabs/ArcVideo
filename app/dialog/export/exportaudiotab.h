@@ -24,74 +24,59 @@
 #include <QComboBox>
 #include <QWidget>
 
-#include "common/define.h"
 #include "codec/exportformat.h"
+#include "common/define.h"
 #include "widget/slider/integerslider.h"
 #include "widget/standardcombos/standardcombos.h"
 
 namespace arcvideo {
 
-class ExportAudioTab : public QWidget
-{
-  Q_OBJECT
+class ExportAudioTab : public QWidget {
+    Q_OBJECT
+
 public:
-  ExportAudioTab(QWidget* parent = nullptr);
+    ExportAudioTab(QWidget* parent = nullptr);
 
-  ExportCodec::Codec GetCodec() const
-  {
-    return static_cast<ExportCodec::Codec>(codec_combobox_->currentData().toInt());
-  }
-
-  void SetCodec(ExportCodec::Codec c)
-  {
-    for (int i=0; i<codec_combobox_->count(); i++) {
-      if (codec_combobox_->itemData(i) == c) {
-        codec_combobox_->setCurrentIndex(i);
-        break;
-      }
+    [[nodiscard]] ExportCodec::Codec GetCodec() const {
+        return static_cast<ExportCodec::Codec>(codec_combobox_->currentData().toInt());
     }
-  }
 
-  SampleRateComboBox* sample_rate_combobox() const
-  {
-    return sample_rate_combobox_;
-  }
+    void SetCodec(ExportCodec::Codec c) {
+        for (int i = 0; i < codec_combobox_->count(); i++) {
+            if (codec_combobox_->itemData(i) == c) {
+                codec_combobox_->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
 
-  SampleFormatComboBox* sample_format_combobox() const
-  {
-    return sample_format_combobox_;
-  }
+    [[nodiscard]] SampleRateComboBox* sample_rate_combobox() const { return sample_rate_combobox_; }
 
-  ChannelLayoutComboBox* channel_layout_combobox() const
-  {
-    return channel_layout_combobox_;
-  }
+    [[nodiscard]] SampleFormatComboBox* sample_format_combobox() const { return sample_format_combobox_; }
 
-  IntegerSlider* bit_rate_slider() const
-  {
-    return bit_rate_slider_;
-  }
+    [[nodiscard]] ChannelLayoutComboBox* channel_layout_combobox() const { return channel_layout_combobox_; }
+
+    [[nodiscard]] IntegerSlider* bit_rate_slider() const { return bit_rate_slider_; }
 
 public slots:
-  int SetFormat(ExportFormat::Format format);
+    int SetFormat(ExportFormat::Format format);
 
 private:
-  ExportFormat::Format fmt_;
-  QComboBox* codec_combobox_ = nullptr;
-  SampleRateComboBox* sample_rate_combobox_ = nullptr;
-  ChannelLayoutComboBox* channel_layout_combobox_ = nullptr;
-  SampleFormatComboBox *sample_format_combobox_;
-  IntegerSlider* bit_rate_slider_ = nullptr;
+    ExportFormat::Format fmt_;
+    QComboBox* codec_combobox_ = nullptr;
+    SampleRateComboBox* sample_rate_combobox_ = nullptr;
+    ChannelLayoutComboBox* channel_layout_combobox_ = nullptr;
+    SampleFormatComboBox* sample_format_combobox_;
+    IntegerSlider* bit_rate_slider_ = nullptr;
 
-  static const int kDefaultBitRate;
+    static const int kDefaultBitRate;
 
 private slots:
-  void UpdateSampleFormats();
+    void UpdateSampleFormats();
 
-  void UpdateBitRateEnabled();
-
+    void UpdateBitRateEnabled();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // EXPORTAUDIOTAB_H
+#endif  // EXPORTAUDIOTAB_H

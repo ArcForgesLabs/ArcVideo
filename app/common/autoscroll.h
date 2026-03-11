@@ -27,13 +27,9 @@ namespace arcvideo {
 
 class AutoScroll {
 public:
-  enum Method {
-    kNone,
-    kPage,
-    kSmooth
-  };
+    enum Method { kNone, kPage, kSmooth };
 };
 
-}
+}  // namespace arcvideo
 
-#endif // AUTOSCROLL_H
+#endif  // AUTOSCROLL_H

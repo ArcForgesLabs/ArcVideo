@@ -22,6 +22,7 @@
 #define CRASHHANDLERDIALOG_H
 
 #include <client/crash_report_database.h>
+
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QNetworkReply>
@@ -32,51 +33,50 @@
 
 namespace arcvideo {
 
-class CrashHandlerDialog : public QDialog
-{
-  Q_OBJECT
+class CrashHandlerDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  CrashHandlerDialog(const QString& report_path);
+    CrashHandlerDialog(const QString& report_path);
 
 private:
-  void SetGUIObjectsEnabled(bool e);
+    void SetGUIObjectsEnabled(bool e);
 
-  void GenerateReport();
+    void GenerateReport();
 
-  static QString GetSymbolPath();
+    static QString GetSymbolPath();
 
-  QTextEdit* summary_edit_ = nullptr;
+    QTextEdit* summary_edit_ = nullptr;
 
-  QTextEdit* crash_report_ = nullptr;
+    QTextEdit* crash_report_ = nullptr;
 
-  QPushButton* send_report_btn_ = nullptr;
+    QPushButton* send_report_btn_ = nullptr;
 
-  QPushButton* dont_send_btn_ = nullptr;
+    QPushButton* dont_send_btn_ = nullptr;
 
-  QString report_filename_;
+    QString report_filename_;
 
-  QByteArray report_data_;
+    QByteArray report_data_;
 
-  bool waiting_for_upload_;
+    bool waiting_for_upload_;
 
 protected:
-  virtual void closeEvent(QCloseEvent* e) override;
+    void closeEvent(QCloseEvent* e) override;
 
 private slots:
-  void ReplyFinished(QNetworkReply *reply);
+    void ReplyFinished(QNetworkReply* reply);
 
-  void HandleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
+    void HandleSslErrors(QNetworkReply* reply, const QList<QSslError>& errors);
 
-  void AttemptToFindReport();
+    void AttemptToFindReport();
 
-  void ReadProcessHasData();
+    void ReadProcessHasData();
 
-  void ReadProcessFinished();
+    void ReadProcessFinished();
 
-  void SendErrorReport();
-
+    void SendErrorReport();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CRASHHANDLERDIALOG_H
+#endif  // CRASHHANDLERDIALOG_H

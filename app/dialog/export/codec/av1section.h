@@ -21,54 +21,53 @@
 #ifndef AV1SECTION_H
 #define AV1SECTION_H
 
+#include <QComboBox>
 #include <QSlider>
 #include <QStackedWidget>
-#include <QComboBox>
 
 #include "codecsection.h"
 #include "widget/slider/floatslider.h"
 
 namespace arcvideo {
 
-class AV1CRFSection : public QWidget
-{
-  Q_OBJECT
+class AV1CRFSection : public QWidget {
+    Q_OBJECT
+
 public:
-  AV1CRFSection(int default_crf, QWidget* parent = nullptr);
+    AV1CRFSection(int default_crf, QWidget* parent = nullptr);
 
-  int GetValue() const;
+    [[nodiscard]] int GetValue() const;
 
-  static const int kDefaultAV1CRF = 30;
+    static const int kDefaultAV1CRF = 30;
 
 private:
-  static const int kMinimumCRF = 0;
-  static const int kMaximumCRF = 63;
+    static const int kMinimumCRF = 0;
+    static const int kMaximumCRF = 63;
 
-  QSlider* crf_slider_ = nullptr;
-
+    QSlider* crf_slider_ = nullptr;
 };
 
-class AV1Section : public CodecSection
-{
-  Q_OBJECT
+class AV1Section : public CodecSection {
+    Q_OBJECT
+
 public:
-  enum CompressionMethod {
-    kConstantRateFactor,
-  };
+    enum CompressionMethod {
+        kConstantRateFactor,
+    };
 
-  AV1Section(QWidget* parent = nullptr);
-  AV1Section(int default_crf, QWidget* parent);
+    AV1Section(QWidget* parent = nullptr);
+    AV1Section(int default_crf, QWidget* parent);
 
-  virtual void AddOpts(EncodingParams* params) override;
+    void AddOpts(EncodingParams* params) override;
 
 private:
-  QStackedWidget* compression_method_stack_ = nullptr;
+    QStackedWidget* compression_method_stack_ = nullptr;
 
-  AV1CRFSection* crf_section_ = nullptr;
+    AV1CRFSection* crf_section_ = nullptr;
 
-  QComboBox *preset_combobox_;
+    QComboBox* preset_combobox_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // AV1SECTION_H
+#endif  // AV1SECTION_H

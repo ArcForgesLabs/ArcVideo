@@ -27,66 +27,64 @@
 
 namespace arcvideo {
 
-class FrameManager : public QObject
-{
-  Q_OBJECT
+class FrameManager : public QObject {
+    Q_OBJECT
+
 public:
-  static void CreateInstance();
+    static void CreateInstance();
 
-  static void DestroyInstance();
+    static void DestroyInstance();
 
-  static FrameManager* instance();
+    static FrameManager* instance();
 
-  static char* Allocate(int size);
+    static char* Allocate(int size);
 
-  static void Deallocate(int size, char* buffer);
+    static void Deallocate(int size, char* buffer);
 
 private:
-  FrameManager();
+    FrameManager();
 
-  virtual ~FrameManager() override;
+    ~FrameManager() override;
 
-  /**
-   * @brief Allocate buffer
-   *
-   * Caller takes ownership of buffer and can delete it if they want. It can also be returned to
-   * the manager with Deallocate and potentially be re-used later.
-   *
-   * Thread-safe.
-   */
-  char* AllocateFromPool(int size);
+    /**
+     * @brief Allocate buffer
+     *
+     * Caller takes ownership of buffer and can delete it if they want. It can also be returned to
+     * the manager with Deallocate and potentially be re-used later.
+     *
+     * Thread-safe.
+     */
+    char* AllocateFromPool(int size);
 
-  /**
-   * @brief Deallocate buffer
-   *
-   * Manager will take ownership and buffer will stay allocated for some time in case it can be
-   * re-used.
-   *
-   * Thread-safe.
-   */
-  void DeallocateToPool(int size, char* buffer);
+    /**
+     * @brief Deallocate buffer
+     *
+     * Manager will take ownership and buffer will stay allocated for some time in case it can be
+     * re-used.
+     *
+     * Thread-safe.
+     */
+    void DeallocateToPool(int size, char* buffer);
 
-  static FrameManager* instance_;
+    static FrameManager* instance_;
 
-  static const int kFrameLifetime;
+    static const int kFrameLifetime;
 
-  struct Buffer
-  {
-    qint64 time;
-    char* data = nullptr;
-  };
+    struct Buffer {
+        qint64 time;
+        char* data = nullptr;
+    };
 
-  std::map< int, std::list<Buffer> > pool_;
+    std::map<int, std::list<Buffer>> pool_;
 
-  QMutex mutex_;
+    QMutex mutex_;
 
-  QTimer clear_timer_;
+    QTimer clear_timer_;
 
 private slots:
-  void GarbageCollection();
-
+    void GarbageCollection();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FRAMEMANAGER_H
+#endif  // FRAMEMANAGER_H

@@ -21,8 +21,8 @@
 #ifndef UNDOCOMMAND_H
 #define UNDOCOMMAND_H
 
-#include <list>
 #include <QString>
+#include <list>
 #include <vector>
 
 #include "common/define.h"
@@ -31,76 +31,60 @@ namespace arcvideo {
 
 class Project;
 
-class UndoCommand
-{
+class UndoCommand {
 public:
-  UndoCommand();
+    UndoCommand();
 
-  virtual ~UndoCommand(){}
+    virtual ~UndoCommand() = default;
 
-  DISABLE_COPY_MOVE(UndoCommand)
+    DISABLE_COPY_MOVE(UndoCommand)
 
-  bool has_prepared() const {return prepared_;}
-  void set_prepared(bool e) {prepared_ = true;}
+    [[nodiscard]] bool has_prepared() const { return prepared_; }
+    void set_prepared(bool e) { prepared_ = true; }
 
-  void redo_now();
-  void undo_now();
+    void redo_now();
+    void undo_now();
 
-  void redo_and_set_modified();
-  void undo_and_set_modified();
+    void redo_and_set_modified();
+    void undo_and_set_modified();
 
-  virtual Project* GetRelevantProject() const = 0;
+    [[nodiscard]] virtual Project* GetRelevantProject() const = 0;
 
 protected:
-  virtual void prepare(){}
-  virtual void redo() = 0;
-  virtual void undo() = 0;
+    virtual void prepare() {}
+    virtual void redo() = 0;
+    virtual void undo() = 0;
 
 private:
-  bool modified_;
+    bool modified_;
 
-  Project* project_ = nullptr;
+    Project* project_ = nullptr;
 
-  bool prepared_;
+    bool prepared_;
 
-  bool done_;
-
+    bool done_;
 };
 
-class MultiUndoCommand : public UndoCommand
-{
+class MultiUndoCommand : public UndoCommand {
 public:
-  MultiUndoCommand() = default;
+    MultiUndoCommand() = default;
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return nullptr;
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return nullptr; }
 
-  void add_child(UndoCommand* command)
-  {
-    children_.push_back(command);
-  }
+    void add_child(UndoCommand* command) { children_.push_back(command); }
 
-  int child_count() const
-  {
-    return children_.size();
-  }
+    [[nodiscard]] int child_count() const { return static_cast<int>(children_.size()); }
 
-  UndoCommand* child(int i) const
-  {
-    return children_[i];
-  }
+    [[nodiscard]] UndoCommand* child(int i) const { return children_[i]; }
 
 protected:
-  virtual void redo() override;
-  virtual void undo() override;
+    void redo() override;
+    void undo() override;
 
 private:
-  std::vector<UndoCommand*> children_;
-
+    std::vector<UndoCommand*> children_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // UNDOCOMMAND_H
+#endif  // UNDOCOMMAND_H

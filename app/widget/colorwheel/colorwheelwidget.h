@@ -27,49 +27,48 @@
 
 namespace arcvideo {
 
-class ColorWheelWidget : public ColorSwatchWidget
-{
-  Q_OBJECT
+class ColorWheelWidget : public ColorSwatchWidget {
+    Q_OBJECT
+
 public:
-  ColorWheelWidget(QWidget* parent = nullptr);
+    ColorWheelWidget(QWidget* parent = nullptr);
 
 signals:
-  void DiameterChanged(int radius);
+    void DiameterChanged(int radius);
 
 protected:
-  virtual Color GetColorFromScreenPos(const QPoint& p) const override;
+    [[nodiscard]] Color GetColorFromScreenPos(const QPoint& p) const override;
 
-  virtual void resizeEvent(QResizeEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
 
-  virtual void paintEvent(QPaintEvent* e) override;
+    void paintEvent(QPaintEvent* e) override;
 
-  virtual void SelectedColorChangedEvent(const Color& c, bool external) override;
+    void SelectedColorChangedEvent(const Color& c, bool external) override;
 
 private:
-  int GetDiameter() const;
+    [[nodiscard]] int GetDiameter() const;
 
-  qreal GetRadius() const;
+    [[nodiscard]] qreal GetRadius() const;
 
-  struct Triangle {
-    qreal opposite;
-    qreal adjacent;
-    qreal hypotenuse;
-  };
+    struct Triangle {
+        qreal opposite;
+        qreal adjacent;
+        qreal hypotenuse;
+    };
 
-  Triangle GetTriangleFromCoords(const QPoint &center, const QPoint& p) const;
-  Triangle GetTriangleFromCoords(const QPoint &center, qreal y, qreal x) const;
+    [[nodiscard]] Triangle GetTriangleFromCoords(const QPoint& center, const QPoint& p) const;
+    [[nodiscard]] static Triangle GetTriangleFromCoords(const QPoint& center, qreal y, qreal x);
 
-  Color GetColorFromTriangle(const Triangle& tri) const;
-  QPoint GetCoordsFromColor(const Color& c) const;
+    [[nodiscard]] Color GetColorFromTriangle(const Triangle& tri) const;
+    [[nodiscard]] QPoint GetCoordsFromColor(const Color& c) const;
 
-  QPixmap cached_wheel_;
+    QPixmap cached_wheel_;
 
-  float val_;
+    float val_;
 
-  bool force_redraw_;
-
+    bool force_redraw_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORWHEELWIDGET_H
+#endif  // COLORWHEELWIDGET_H

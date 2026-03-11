@@ -29,4 +29,4 @@ using ColorProcessorCache = QHash<QString, ColorProcessorPtr>;
 
 }
 
-#endif // COLORPROCESSORCACHE_H
+#endif  // COLORPROCESSORCACHE_H

@@ -24,37 +24,26 @@ namespace arcvideo {
 
 #define super Node
 
-TimeInput::TimeInput()
-{
+TimeInput::TimeInput() = default;
+
+QString TimeInput::Name() const {
+    return tr("Time");
 }
 
-QString TimeInput::Name() const
-{
-  return tr("Time");
+QString TimeInput::id() const {
+    return QStringLiteral("org.arcvideoeditor.ArcVideo.time");
 }
 
-QString TimeInput::id() const
-{
-  return QStringLiteral("org.arcvideoeditor.ArcVideo.time");
+QVector<Node::CategoryID> TimeInput::Category() const {
+    return {kCategoryTime};
 }
 
-QVector<Node::CategoryID> TimeInput::Category() const
-{
-  return {kCategoryTime};
+QString TimeInput::Description() const {
+    return tr("Generates the time (in seconds) at this frame.");
 }
 
-QString TimeInput::Description() const
-{
-  return tr("Generates the time (in seconds) at this frame.");
+void TimeInput::Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const {
+    table->Push(NodeValue::kFloat, globals.time().in().toDouble(), this, false, QStringLiteral("time"));
 }
 
-void TimeInput::Value(const NodeValueRow &value, const NodeGlobals &globals, NodeValueTable *table) const
-{
-  table->Push(NodeValue::kFloat,
-              globals.time().in().toDouble(),
-              this,
-              false,
-              QStringLiteral("time"));
-}
-
-}
+}  // namespace arcvideo

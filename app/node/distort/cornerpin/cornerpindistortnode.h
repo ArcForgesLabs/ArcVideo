@@ -29,67 +29,53 @@
 #include "node/node.h"
 
 namespace arcvideo {
-class CornerPinDistortNode : public Node
-{
-  Q_OBJECT
+class CornerPinDistortNode : public Node {
+    Q_OBJECT
+
 public:
-  CornerPinDistortNode();
+    CornerPinDistortNode();
 
-  NODE_DEFAULT_FUNCTIONS(CornerPinDistortNode)
+    NODE_DEFAULT_FUNCTIONS(CornerPinDistortNode)
 
-  virtual QString Name() const override
-  {
-    return tr("Corner Pin");
-  }
+    [[nodiscard]] QString Name() const override { return tr("Corner Pin"); }
 
-  virtual QString id() const override
-  {
-    return QStringLiteral("org.arcvideoeditor.ArcVideo.cornerpin");
-  }
+    [[nodiscard]] QString id() const override { return QStringLiteral("org.arcvideoeditor.ArcVideo.cornerpin"); }
 
-  virtual QVector<CategoryID> Category() const override
-  {
-    return {kCategoryDistort};
-  }
+    [[nodiscard]] QVector<CategoryID> Category() const override { return {kCategoryDistort}; }
 
-  virtual QString Description() const override
-  {
-    return tr("Distort the image by dragging the corners.");
-  }
+    [[nodiscard]] QString Description() const override { return tr("Distort the image by dragging the corners."); }
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
 
-  virtual void UpdateGizmoPositions(const NodeValueRow &row, const NodeGlobals &globals) override;
+    void UpdateGizmoPositions(const NodeValueRow& row, const NodeGlobals& globals) override;
 
-  /**
-   * @brief Convenience function - converts the 2D slider values from being
-   * an offset to the actual pixel value.
-   */
-  QPointF ValueToPixel(int value, const NodeValueRow &row, const QVector2D &resolution) const;
+    /**
+     * @brief Convenience function - converts the 2D slider values from being
+     * an offset to the actual pixel value.
+     */
+    [[nodiscard]] static QPointF ValueToPixel(int value, const NodeValueRow& row, const QVector2D& resolution);
 
-  static const QString kTextureInput;
-  static const QString kPerspectiveInput;
-  static const QString kTopLeftInput;
-  static const QString kTopRightInput;
-  static const QString kBottomRightInput;
-  static const QString kBottomLeftInput;
+    static const QString kTextureInput;
+    static const QString kPerspectiveInput;
+    static const QString kTopLeftInput;
+    static const QString kTopRightInput;
+    static const QString kBottomRightInput;
+    static const QString kBottomLeftInput;
 
 protected slots:
-  virtual void GizmoDragMove(double x, double y, const Qt::KeyboardModifiers &modifiers) override;
+    void GizmoDragMove(double x, double y, const Qt::KeyboardModifiers& modifiers) override;
 
 private:
-  // Gizmo variables
-  static const int kGizmoCornerCount = 4;
-  PointGizmo *gizmo_resize_handle_[kGizmoCornerCount];
-  PolygonGizmo *gizmo_whole_rect_;
-
+    // Gizmo variables
+    static const int kGizmoCornerCount = 4;
+    PointGizmo* gizmo_resize_handle_[kGizmoCornerCount];
+    PolygonGizmo* gizmo_whole_rect_;
 };
 
-}
+}  // namespace arcvideo
 
-
-#endif // CORNERPINDISTORTNODE_H
+#endif  // CORNERPINDISTORTNODE_H

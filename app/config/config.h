@@ -34,37 +34,37 @@ namespace arcvideo {
 
 class Config {
 public:
-  static Config& Current();
+    static Config& Current();
 
-  void SetDefaults();
+    void SetDefaults();
 
-  static void Load();
+    static void Load();
 
-  static void Save();
+    static void Save();
 
-  QVariant operator[](const QString&) const;
+    QVariant operator[](const QString&) const;
 
-  QVariant& operator[](const QString&);
+    QVariant& operator[](const QString&);
 
-  NodeValue::Type GetConfigEntryType(const QString& key) const;
+    [[nodiscard]] NodeValue::Type GetConfigEntryType(const QString& key) const;
 
 private:
-  Config();
+    Config();
 
-  struct ConfigEntry {
-    NodeValue::Type type;
-    QVariant data;
-  };
+    struct ConfigEntry {
+        NodeValue::Type type;
+        QVariant data;
+    };
 
-  void SetEntryInternal(const QString& key, NodeValue::Type type, const QVariant& data);
+    void SetEntryInternal(const QString& key, NodeValue::Type type, const QVariant& data);
 
-  QMap<QString, ConfigEntry> config_map_;
+    QMap<QString, ConfigEntry> config_map_;
 
-  static Config current_config_;
+    static Config current_config_;
 
-  static QString GetConfigFilePath();
+    static QString GetConfigFilePath();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CONFIG_H
+#endif  // CONFIG_H

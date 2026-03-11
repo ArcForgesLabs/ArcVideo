@@ -46,99 +46,92 @@ namespace arcvideo {
  * latter will be the main undoable action, the parameter editing doesn't have to be undoable since to the user they'll
  * be viewed as one single action (see SetUndoable()).
  */
-class SequenceDialog : public QDialog
-{
-  Q_OBJECT
+class SequenceDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  /**
-   * @brief Used to set the dialog mode of operation (see SequenceDialog())
-   */
-  enum Type {
-    kNew,
-    kExisting
-  };
+    /**
+     * @brief Used to set the dialog mode of operation (see SequenceDialog())
+     */
+    enum Type { kNew, kExisting };
 
-  /**
-   * @brief SequenceDialog Constructor
-   *
-   * @param s
-   * Sequence to edit
-   *
-   * @param t
-   * Mode of operation (changes some UI like the window title to best represent the action being performed)
-   *
-   * @param parent
-   * QWidget parent
-   */
-  SequenceDialog(Sequence* s, Type t = kExisting, QWidget* parent = nullptr);
+    /**
+     * @brief SequenceDialog Constructor
+     *
+     * @param s
+     * Sequence to edit
+     *
+     * @param t
+     * Mode of operation (changes some UI like the window title to best represent the action being performed)
+     *
+     * @param parent
+     * QWidget parent
+     */
+    SequenceDialog(Sequence* s, Type t = kExisting, QWidget* parent = nullptr);
 
-  /**
-   * @brief Set whether the parameter changes should be made into an undo command or not
-   *
-   * Defaults to true.
-   */
-  void SetUndoable(bool u);
+    /**
+     * @brief Set whether the parameter changes should be made into an undo command or not
+     *
+     * Defaults to true.
+     */
+    void SetUndoable(bool u);
 
-  /**
-   * @brief Set whether the name of this Sequence can be edited with this dialog
-   *
-   * Defaults to true.
-   */
-  void SetNameIsEditable(bool e);
+    /**
+     * @brief Set whether the name of this Sequence can be edited with this dialog
+     *
+     * Defaults to true.
+     */
+    void SetNameIsEditable(bool e);
 
 public slots:
-  /**
-   * @brief Function called when the user presses OK
-   */
-  virtual void accept() override;
+    /**
+     * @brief Function called when the user presses OK
+     */
+    void accept() override;
 
 private:
-  Sequence* sequence_ = nullptr;
-
-  SequenceDialogPresetTab* preset_tab_ = nullptr;
-
-  SequenceDialogParameterTab* parameter_tab_ = nullptr;
-
-  bool make_undoable_;
-
-  QLineEdit* name_field_ = nullptr;
-
-  /**
-   * @brief An UndoCommand for setting the parameters on a sequence
-   */
-  class SequenceParamCommand : public UndoCommand {
-  public:
-    SequenceParamCommand(Sequence* s,
-                         const VideoParams& video_params,
-                         const AudioParams& audio_params,
-                         const QString& name,
-                         bool autocache);
-
-    virtual Project* GetRelevantProject() const override;
-
-  protected:
-    virtual void redo() override;
-    virtual void undo() override;
-
-  private:
     Sequence* sequence_ = nullptr;
 
-    VideoParams new_video_params_;
-    AudioParams new_audio_params_;
-    QString new_name_;
-    bool new_autocache_;
+    SequenceDialogPresetTab* preset_tab_ = nullptr;
 
-    VideoParams old_video_params_;
-    AudioParams old_audio_params_;
-    QString old_name_;
-    bool old_autocache_;
-  };
+    SequenceDialogParameterTab* parameter_tab_ = nullptr;
+
+    bool make_undoable_;
+
+    QLineEdit* name_field_ = nullptr;
+
+    /**
+     * @brief An UndoCommand for setting the parameters on a sequence
+     */
+    class SequenceParamCommand : public UndoCommand {
+    public:
+        SequenceParamCommand(Sequence* s, VideoParams video_params, const AudioParams& audio_params, QString name,
+                             bool autocache);
+
+        [[nodiscard]] Project* GetRelevantProject() const override;
+
+    protected:
+        void redo() override;
+        void undo() override;
+
+    private:
+        Sequence* sequence_ = nullptr;
+
+        VideoParams new_video_params_;
+        AudioParams new_audio_params_;
+        QString new_name_;
+        bool new_autocache_;
+
+        VideoParams old_video_params_;
+        AudioParams old_audio_params_;
+        QString old_name_;
+        bool old_autocache_;
+    };
 
 private slots:
-  void SetAsDefaultClicked();
-
+    void SetAsDefaultClicked();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SEQUENCEDIALOG_H
+#endif  // SEQUENCEDIALOG_H

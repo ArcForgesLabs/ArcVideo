@@ -22,53 +22,44 @@
 
 namespace arcvideo {
 
-CurvePanel::CurvePanel() :
-  TimeBasedPanel(QStringLiteral("CurvePanel"))
-{
-  // Create main widget and set it
-  SetTimeBasedWidget(new CurveWidget(this));
+CurvePanel::CurvePanel() : TimeBasedPanel(QStringLiteral("CurvePanel")) {
+    // Create main widget and set it
+    SetTimeBasedWidget(new CurveWidget(this));
 
-  // Set strings
-  Retranslate();
+    // Set strings
+    Retranslate();
 }
 
-void CurvePanel::DeleteSelected()
-{
-  static_cast<CurveWidget*>(GetTimeBasedWidget())->DeleteSelected();
+void CurvePanel::DeleteSelected() {
+    static_cast<CurveWidget*>(GetTimeBasedWidget())->DeleteSelected();
 }
 
-void CurvePanel::SelectAll()
-{
-  static_cast<CurveWidget*>(GetTimeBasedWidget())->SelectAll();
+void CurvePanel::SelectAll() {
+    static_cast<CurveWidget*>(GetTimeBasedWidget())->SelectAll();
 }
 
-void CurvePanel::DeselectAll()
-{
-  static_cast<CurveWidget*>(GetTimeBasedWidget())->DeselectAll();
+void CurvePanel::DeselectAll() {
+    static_cast<CurveWidget*>(GetTimeBasedWidget())->DeselectAll();
 }
 
-void CurvePanel::SetNodes(const QVector<Node *> &nodes)
-{
-  static_cast<CurveWidget*>(GetTimeBasedWidget())->SetNodes(nodes);
+void CurvePanel::SetNodes(const QVector<Node*>& nodes) {
+    static_cast<CurveWidget*>(GetTimeBasedWidget())->SetNodes(nodes);
 }
 
-void CurvePanel::IncreaseTrackHeight()
-{
-  CurveWidget* c = static_cast<CurveWidget*>(GetTimeBasedWidget());
-  c->SetVerticalScale(c->GetVerticalScale() * 2);
+void CurvePanel::IncreaseTrackHeight() {
+    auto* c = static_cast<CurveWidget*>(GetTimeBasedWidget());
+    c->SetVerticalScale(c->GetVerticalScale() * 2);
 }
 
-void CurvePanel::DecreaseTrackHeight()
-{
-  CurveWidget* c = static_cast<CurveWidget*>(GetTimeBasedWidget());
-  c->SetVerticalScale(c->GetVerticalScale() * 0.5);
+void CurvePanel::DecreaseTrackHeight() {
+    auto* c = static_cast<CurveWidget*>(GetTimeBasedWidget());
+    c->SetVerticalScale(c->GetVerticalScale() * 0.5);
 }
 
-void CurvePanel::Retranslate()
-{
-  TimeBasedPanel::Retranslate();
+void CurvePanel::Retranslate() {
+    TimeBasedPanel::Retranslate();
 
-  SetTitle(tr("Curve Editor"));
+    SetTitle(tr("Curve Editor"));
 }
 
-}
+}  // namespace arcvideo

@@ -31,26 +31,25 @@
 
 namespace arcvideo {
 
-class PreferencesAppearanceTab : public ConfigDialogBaseTab
-{
-  Q_OBJECT
-public:
-  PreferencesAppearanceTab();
+class PreferencesAppearanceTab : public ConfigDialogBaseTab {
+    Q_OBJECT
 
-  virtual void Accept(MultiUndoCommand* command) override;
+public:
+    PreferencesAppearanceTab();
+
+    void Accept(MultiUndoCommand* command) override;
 
 private:
-  /**
-   * @brief UI widget for selecting the current UI style
-   */
-  QComboBox* style_combobox_ = nullptr;
+    /**
+     * @brief UI widget for selecting the current UI style
+     */
+    QComboBox* style_combobox_ = nullptr;
 
-  QVector<ColorCodingComboBox*> color_btns_;
+    QVector<ColorCodingComboBox*> color_btns_;
 
-  ColorCodingComboBox* marker_btn_ = nullptr;
-
+    ColorCodingComboBox* marker_btn_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PREFERENCESAPPEARANCETAB_H
+#endif  // PREFERENCESAPPEARANCETAB_H

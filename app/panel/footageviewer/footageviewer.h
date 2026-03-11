@@ -23,8 +23,8 @@
 
 #include <QOpenGLFunctions>
 
-#include "panel/viewer/viewerbase.h"
 #include "panel/project/footagemanagementpanel.h"
+#include "panel/viewer/viewerbase.h"
 #include "widget/viewer/footageviewer.h"
 
 namespace arcvideo {
@@ -33,24 +33,23 @@ namespace arcvideo {
  * @brief Dockable wrapper around a ViewerWidget
  */
 class FootageViewerPanel : public ViewerPanelBase, public FootageManagementPanel {
-  Q_OBJECT
+    Q_OBJECT
+
 public:
-  FootageViewerPanel();
+    FootageViewerPanel();
 
-  void OverrideWorkArea(const TimeRange &r);
+    void OverrideWorkArea(const TimeRange& r) const;
 
-  FootageViewerWidget *GetFootageViewerWidget() const
-  {
-    return static_cast<FootageViewerWidget*>(GetTimeBasedWidget());
-  }
+    [[nodiscard]] FootageViewerWidget* GetFootageViewerWidget() const {
+        return static_cast<FootageViewerWidget*>(GetTimeBasedWidget());
+    }
 
-  virtual QVector<ViewerOutput *> GetSelectedFootage() const override;
+    [[nodiscard]] QVector<ViewerOutput*> GetSelectedFootage() const override;
 
 protected:
-  virtual void Retranslate() override;
-
+    void Retranslate() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FOOTAGE_VIEWER_PANEL_H
+#endif  // FOOTAGE_VIEWER_PANEL_H

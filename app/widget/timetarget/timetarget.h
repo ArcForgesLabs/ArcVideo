@@ -25,33 +25,31 @@
 
 namespace arcvideo {
 
-class TimeTargetObject
-{
+class TimeTargetObject {
 public:
-  TimeTargetObject();
+    TimeTargetObject();
 
-  ViewerOutput* GetTimeTarget() const;
-  void SetTimeTarget(ViewerOutput* target);
+    [[nodiscard]] ViewerOutput* GetTimeTarget() const;
+    void SetTimeTarget(ViewerOutput* target);
 
-  void SetPathIndex(int index);
+    void SetPathIndex(int index);
 
-  rational GetAdjustedTime(Node* from, Node* to, const rational& r, Node::TransformTimeDirection dir) const;
-  TimeRange GetAdjustedTime(Node* from, Node* to, const TimeRange& r, Node::TransformTimeDirection dir) const;
+    rational GetAdjustedTime(Node* from, Node* to, const rational& r, Node::TransformTimeDirection dir) const;
+    TimeRange GetAdjustedTime(Node* from, Node* to, const TimeRange& r, Node::TransformTimeDirection dir) const;
 
-  //int GetNumberOfPathAdjustments(Node* from, NodeParam::Type direction) const;
+    // int GetNumberOfPathAdjustments(Node* from, NodeParam::Type direction) const;
 
 protected:
-  virtual void TimeTargetDisconnectEvent(ViewerOutput *){}
-  virtual void TimeTargetChangedEvent(ViewerOutput *){}
-  virtual void TimeTargetConnectEvent(ViewerOutput *){}
+    virtual void TimeTargetDisconnectEvent(ViewerOutput*) {}
+    virtual void TimeTargetChangedEvent(ViewerOutput*) {}
+    virtual void TimeTargetConnectEvent(ViewerOutput*) {}
 
 private:
-  ViewerOutput* time_target_ = nullptr;
+    ViewerOutput* time_target_ = nullptr;
 
-  int path_index_;
-
+    int path_index_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMETARGETOBJECT_H
+#endif  // TIMETARGETOBJECT_H

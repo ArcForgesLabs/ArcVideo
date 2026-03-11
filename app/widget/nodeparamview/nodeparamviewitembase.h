@@ -23,77 +23,69 @@
 
 #include <QDockWidget>
 
-#include "nodeparamviewitemtitlebar.h"
 #include "node/node.h"
+#include "nodeparamviewitemtitlebar.h"
 
 namespace arcvideo {
 
-class NodeParamViewItemBase : public QDockWidget
-{
-  Q_OBJECT
+class NodeParamViewItemBase : public QDockWidget {
+    Q_OBJECT
+
 public:
-  NodeParamViewItemBase(QWidget* parent = nullptr);
+    NodeParamViewItemBase(QWidget* parent = nullptr);
 
-  void SetHighlighted(bool e)
-  {
-    highlighted_ = e;
+    void SetHighlighted(bool e) {
+        highlighted_ = e;
 
-    update();
-  }
+        update();
+    }
 
-  bool IsHighlighted() const { return highlighted_; }
+    [[nodiscard]] bool IsHighlighted() const { return highlighted_; }
 
-  bool IsExpanded() const;
+    [[nodiscard]] bool IsExpanded() const;
 
-  static QString GetTitleBarTextFromNode(Node *n);
+    static QString GetTitleBarTextFromNode(Node* n);
 
 public slots:
-  void SetExpanded(bool e);
+    void SetExpanded(bool e);
 
-  void ToggleExpanded()
-  {
-    SetExpanded(!IsExpanded());
-  }
+    void ToggleExpanded() { SetExpanded(!IsExpanded()); }
 
 signals:
-  void PinToggled(bool e);
+    void PinToggled(bool e);
 
-  void ExpandedChanged(bool e);
+    void ExpandedChanged(bool e);
 
-  void Moved();
+    void Moved();
 
-  void Clicked();
+    void Clicked();
 
 protected:
-  void SetBody(QWidget *body);
+    void SetBody(QWidget* body);
 
-  virtual void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent* event) override;
 
-  NodeParamViewItemTitleBar* title_bar() const
-  {
-    return title_bar_;
-  }
+    [[nodiscard]] NodeParamViewItemTitleBar* title_bar() const { return title_bar_; }
 
-  virtual void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
-  virtual void moveEvent(QMoveEvent *event) override;
+    void moveEvent(QMoveEvent* event) override;
 
-  virtual void mousePressEvent(QMouseEvent *e) override;
+    void mousePressEvent(QMouseEvent* e) override;
 
 protected slots:
-  virtual void Retranslate(){}
+    virtual void Retranslate() {}
 
 private:
-  NodeParamViewItemTitleBar* title_bar_ = nullptr;
+    NodeParamViewItemTitleBar* title_bar_ = nullptr;
 
-  QWidget *body_;
+    QWidget* body_;
 
-  QWidget *hidden_body_;
+    QWidget* hidden_body_;
 
-  bool highlighted_;
-
+    bool highlighted_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEPARAMVIEWITEMBASE_H
+#endif  // NODEPARAMVIEWITEMBASE_H

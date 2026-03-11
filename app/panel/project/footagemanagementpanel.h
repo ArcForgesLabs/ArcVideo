@@ -29,9 +29,9 @@ namespace arcvideo {
 
 class FootageManagementPanel {
 public:
-  virtual QVector<ViewerOutput *> GetSelectedFootage() const = 0;
+    [[nodiscard]] virtual QVector<ViewerOutput*> GetSelectedFootage() const = 0;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FOOTAGEMANAGEMENTPANEL_H
+#endif  // FOOTAGEMANAGEMENTPANEL_H

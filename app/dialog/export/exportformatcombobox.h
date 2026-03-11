@@ -30,49 +30,38 @@
 
 namespace arcvideo {
 
-class ExportFormatComboBox : public QComboBox
-{
-  Q_OBJECT
+class ExportFormatComboBox : public QComboBox {
+    Q_OBJECT
+
 public:
-  enum Mode {
-    kShowAllFormats,
-    kShowAudioOnly,
-    kShowVideoOnly,
-    kShowSubtitlesOnly
-  };
+    enum Mode { kShowAllFormats, kShowAudioOnly, kShowVideoOnly, kShowSubtitlesOnly };
 
-  ExportFormatComboBox(Mode mode, QWidget *parent = nullptr);
-  ExportFormatComboBox(QWidget *parent = nullptr) :
-    ExportFormatComboBox(kShowAllFormats, parent)
-  {}
+    ExportFormatComboBox(Mode mode, QWidget* parent = nullptr);
+    ExportFormatComboBox(QWidget* parent = nullptr) : ExportFormatComboBox(kShowAllFormats, parent) {}
 
-  ExportFormat::Format GetFormat() const
-  {
-    return current_;
-  }
+    [[nodiscard]] ExportFormat::Format GetFormat() const { return current_; }
 
-  void showPopup();
+    void showPopup() override;
 
 signals:
-  void FormatChanged(ExportFormat::Format fmt);
+    void FormatChanged(ExportFormat::Format fmt);
 
 public slots:
-  void SetFormat(ExportFormat::Format fmt);
+    void SetFormat(ExportFormat::Format fmt);
 
 private slots:
-  void HandleIndexChange(QAction *a);
+    void HandleIndexChange(QAction* a);
 
 private:
-  void PopulateType(Track::Type type);
+    void PopulateType(Track::Type type);
 
-  QWidgetAction *CreateHeader(const QIcon &icon, const QString &title);
+    QWidgetAction* CreateHeader(const QIcon& icon, const QString& title);
 
-  Menu *custom_menu_;
+    Menu* custom_menu_;
 
-  ExportFormat::Format current_;
-
+    ExportFormat::Format current_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // EXPORTFORMATCOMBOBOX_H
+#endif  // EXPORTFORMATCOMBOBOX_H

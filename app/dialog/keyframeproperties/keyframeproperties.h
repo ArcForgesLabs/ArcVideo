@@ -31,41 +31,41 @@
 
 namespace arcvideo {
 
-class KeyframePropertiesDialog : public QDialog
-{
-  Q_OBJECT
+class KeyframePropertiesDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  KeyframePropertiesDialog(const std::vector<NodeKeyframe*>& keys, const rational& timebase, QWidget* parent = nullptr);
+    KeyframePropertiesDialog(const std::vector<NodeKeyframe*>& keys, const rational& timebase,
+                             QWidget* parent = nullptr);
 
 public slots:
-  virtual void accept() override;
+    void accept() override;
 
 private:
-  void SetUpBezierSlider(FloatSlider *slider, bool all_same, double value);
+    static void SetUpBezierSlider(FloatSlider* slider, bool all_same, double value);
 
-  const std::vector<NodeKeyframe*>& keys_;
+    const std::vector<NodeKeyframe*>& keys_;
 
-  rational timebase_;
+    rational timebase_;
 
-  RationalSlider* time_slider_ = nullptr;
+    RationalSlider* time_slider_ = nullptr;
 
-  QComboBox* type_select_ = nullptr;
+    QComboBox* type_select_ = nullptr;
 
-  QGroupBox* bezier_group_ = nullptr;
+    QGroupBox* bezier_group_ = nullptr;
 
-  FloatSlider* bezier_in_x_slider_ = nullptr;
+    FloatSlider* bezier_in_x_slider_ = nullptr;
 
-  FloatSlider* bezier_in_y_slider_ = nullptr;
+    FloatSlider* bezier_in_y_slider_ = nullptr;
 
-  FloatSlider* bezier_out_x_slider_ = nullptr;
+    FloatSlider* bezier_out_x_slider_ = nullptr;
 
-  FloatSlider* bezier_out_y_slider_ = nullptr;
+    FloatSlider* bezier_out_y_slider_ = nullptr;
 
 private slots:
-  void KeyTypeChanged(int index);
-
+    void KeyTypeChanged(int index);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // KEYFRAMEPROPERTIESDIALOG_H
+#endif  // KEYFRAMEPROPERTIESDIALOG_H

@@ -28,8 +28,8 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavfilter/avfilter.h>
 #include <libavformat/avformat.h>
-#include <libswscale/swscale.h>
 #include <libswresample/swresample.h>
+#include <libswscale/swscale.h>
 }
 
 #include <QTimer>
@@ -44,144 +44,130 @@ namespace arcvideo {
 /**
  * @brief A Decoder derivative that wraps FFmpeg functions as on ArcVideo decoder
  */
-class FFmpegDecoder : public Decoder
-{
-  Q_OBJECT
+class FFmpegDecoder : public Decoder {
+    Q_OBJECT
+
 public:
-  // Constructor
-  FFmpegDecoder();
+    // Constructor
+    FFmpegDecoder();
 
-  // Destructor
-  DECODER_DEFAULT_DESTRUCTOR(FFmpegDecoder)
+    // Destructor
+    DECODER_DEFAULT_DESTRUCTOR(FFmpegDecoder)
 
-  virtual QString id() const override;
+    [[nodiscard]] QString id() const override;
 
-  virtual bool SupportsVideo() override{return true;}
-  virtual bool SupportsAudio() override{return true;}
+    bool SupportsVideo() override { return true; }
+    bool SupportsAudio() override { return true; }
 
-  virtual FootageDescription Probe(const QString &filename, CancelAtom *cancelled) const override;
+    FootageDescription Probe(const QString& filename, CancelAtom* cancelled) const override;
 
 protected:
-  virtual bool OpenInternal() override;
-  virtual TexturePtr RetrieveVideoInternal(const RetrieveVideoParams& p) override;
-  virtual bool ConformAudioInternal(const QVector<QString>& filenames, const AudioParams &params, CancelAtom *cancelled) override;
-  virtual void CloseInternal() override;
+    bool OpenInternal() override;
+    TexturePtr RetrieveVideoInternal(const RetrieveVideoParams& p) override;
+    bool ConformAudioInternal(const QVector<QString>& filenames, const AudioParams& params,
+                              CancelAtom* cancelled) override;
+    void CloseInternal() override;
 
-  virtual rational GetAudioStartOffset() const override;
+    [[nodiscard]] rational GetAudioStartOffset() const override;
 
 private:
-  class Instance
-  {
-  public:
-    Instance();
+    class Instance {
+    public:
+        Instance();
 
-    ~Instance()
-    {
-      Close();
-    }
+        ~Instance() { Close(); }
 
-    bool Open(const char* filename, int stream_index);
+        bool Open(const char* filename, int stream_index);
 
-    bool IsOpen() const
-    {
-      return fmt_ctx_;
-    }
+        [[nodiscard]] bool IsOpen() const { return fmt_ctx_; }
 
-    void Close();
+        void Close();
+
+        /**
+         * @brief Uses the FFmpeg API to retrieve a packet (stored in pkt_) and decode it (stored in frame_)
+         *
+         * @return
+         *
+         * An FFmpeg error code, or >= 0 on success
+         */
+        int GetFrame(AVPacket* pkt, AVFrame* frame);
+
+        [[nodiscard]] const char* GetSubtitleHeader() const;
+
+        int GetSubtitle(AVPacket* pkt, AVSubtitle* sub);
+
+        int GetPacket(AVPacket* pkt);
+
+        void Seek(int64_t timestamp);
+
+        [[nodiscard]] AVFormatContext* fmt_ctx() const { return fmt_ctx_; }
+
+        [[nodiscard]] AVStream* avstream() const { return avstream_; }
+
+    private:
+        AVFormatContext* fmt_ctx_ = nullptr;
+        AVCodecContext* codec_ctx_ = nullptr;
+        AVStream* avstream_ = nullptr;
+        AVDictionary* opts_ = nullptr;
+    };
 
     /**
-     * @brief Uses the FFmpeg API to retrieve a packet (stored in pkt_) and decode it (stored in frame_)
+     * @brief Handle an FFmpeg error code
      *
-     * @return
+     * Uses the FFmpeg API to retrieve a descriptive string for this error code and sends it to Error(). As such, this
+     * function also automatically closes the Decoder.
      *
-     * An FFmpeg error code, or >= 0 on success
+     * @param error_code
      */
-    int GetFrame(AVPacket* pkt, AVFrame* frame);
+    static QString FFmpegError(int error_code);
 
-    const char *GetSubtitleHeader() const;
+    void FreeScaler();
 
-    int GetSubtitle(AVPacket* pkt, AVSubtitle* sub);
+    static PixelFormat GetNativePixelFormat(AVPixelFormat pix_fmt);
+    static int GetNativeChannelCount(AVPixelFormat pix_fmt);
 
-    int GetPacket(AVPacket *pkt);
+    static uint64_t ValidateChannelLayout(AVStream* stream);
 
-    void Seek(int64_t timestamp);
+    static const char* GetInterlacingModeInFFmpeg(VideoParams::Interlacing interlacing);
 
-    AVFormatContext* fmt_ctx() const
-    {
-      return fmt_ctx_;
-    }
+    static bool IsPixelFormatGLSLCompatible(AVPixelFormat f);
 
-    AVStream* avstream() const
-    {
-      return avstream_;
-    }
+    [[nodiscard]] AVFramePtr GetFrameFromCache(const int64_t& t) const;
 
-  private:
-    AVFormatContext* fmt_ctx_ = nullptr;
-    AVCodecContext* codec_ctx_ = nullptr;
-    AVStream* avstream_ = nullptr;
-    AVDictionary* opts_ = nullptr;
+    void ClearFrameCache();
 
-  };
+    AVFramePtr PreProcessFrame(AVFramePtr f, const RetrieveVideoParams& p);
 
-  /**
-   * @brief Handle an FFmpeg error code
-   *
-   * Uses the FFmpeg API to retrieve a descriptive string for this error code and sends it to Error(). As such, this
-   * function also automatically closes the Decoder.
-   *
-   * @param error_code
-   */
-  static QString FFmpegError(int error_code);
+    TexturePtr ProcessFrameIntoTexture(AVFramePtr f, const RetrieveVideoParams& p, AVFramePtr original);
 
-  void FreeScaler();
+    AVFramePtr RetrieveFrame(const rational& time, CancelAtom* cancelled);
 
-  static PixelFormat GetNativePixelFormat(AVPixelFormat pix_fmt);
-  static int GetNativeChannelCount(AVPixelFormat pix_fmt);
+    void RemoveFirstFrame();
 
-  static uint64_t ValidateChannelLayout(AVStream *stream);
+    static int MaximumQueueSize();
 
-  static const char* GetInterlacingModeInFFmpeg(VideoParams::Interlacing interlacing);
+    SwsContext* sws_ctx_;
+    int sws_src_width_;
+    int sws_src_height_;
+    AVPixelFormat sws_src_format_;
+    int sws_dst_width_;
+    int sws_dst_height_;
+    AVPixelFormat sws_dst_format_;
+    AVColorRange sws_colrange_;
+    AVColorSpace sws_colspace_;
 
-  static bool IsPixelFormatGLSLCompatible(AVPixelFormat f);
+    AVPacket* working_packet_;
 
-  AVFramePtr GetFrameFromCache(const int64_t &t) const;
+    int64_t second_ts_;
 
-  void ClearFrameCache();
+    std::list<AVFramePtr> cached_frames_;
 
-  AVFramePtr PreProcessFrame(AVFramePtr f, const RetrieveVideoParams &p);
+    bool cache_at_zero_;
+    bool cache_at_eof_;
 
-  TexturePtr ProcessFrameIntoTexture(AVFramePtr f, const RetrieveVideoParams &p, const AVFramePtr original);
-
-  AVFramePtr RetrieveFrame(const rational &time, CancelAtom *cancelled);
-
-  void RemoveFirstFrame();
-
-  static int MaximumQueueSize();
-
-  SwsContext *sws_ctx_;
-  int sws_src_width_;
-  int sws_src_height_;
-  AVPixelFormat sws_src_format_;
-  int sws_dst_width_;
-  int sws_dst_height_;
-  AVPixelFormat sws_dst_format_;
-  AVColorRange sws_colrange_;
-  AVColorSpace sws_colspace_;
-
-  AVPacket *working_packet_;
-
-  int64_t second_ts_;
-
-  std::list<AVFramePtr> cached_frames_;
-
-  bool cache_at_zero_;
-  bool cache_at_eof_;
-
-  Instance instance_;
-
+    Instance instance_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FFMPEGDECODER_H
+#endif  // FFMPEGDECODER_H

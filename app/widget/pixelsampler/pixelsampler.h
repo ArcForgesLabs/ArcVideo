@@ -21,50 +21,48 @@
 #ifndef PIXELSAMPLERWIDGET_H
 #define PIXELSAMPLERWIDGET_H
 
-#include <QLabel>
 #include <QGroupBox>
+#include <QLabel>
 #include <QWidget>
 
 #include "widget/colorwheel/colorpreviewbox.h"
 
 namespace arcvideo {
 
-class PixelSamplerWidget : public QGroupBox
-{
-  Q_OBJECT
+class PixelSamplerWidget : public QGroupBox {
+    Q_OBJECT
+
 public:
-  PixelSamplerWidget(QWidget* parent = nullptr);
+    PixelSamplerWidget(QWidget* parent = nullptr);
 
 public slots:
-  void SetValues(const Color& color);
+    void SetValues(const Color& color);
 
 private:
-  void UpdateLabelInternal();
+    void UpdateLabelInternal();
 
-  Color color_;
+    Color color_;
 
-  ColorPreviewBox *box_;
+    ColorPreviewBox* box_;
 
-  QLabel* label_ = nullptr;
-
+    QLabel* label_ = nullptr;
 };
 
-class ManagedPixelSamplerWidget : public QWidget
-{
-  Q_OBJECT
+class ManagedPixelSamplerWidget : public QWidget {
+    Q_OBJECT
+
 public:
-  ManagedPixelSamplerWidget(QWidget* parent = nullptr);
+    ManagedPixelSamplerWidget(QWidget* parent = nullptr);
 
 public slots:
-  void SetValues(const Color& reference, const Color& display);
+    void SetValues(const Color& reference, const Color& display);
 
 private:
-  PixelSamplerWidget* reference_view_ = nullptr;
+    PixelSamplerWidget* reference_view_ = nullptr;
 
-  PixelSamplerWidget* display_view_ = nullptr;
-
+    PixelSamplerWidget* display_view_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PIXELSAMPLERWIDGET_H
+#endif  // PIXELSAMPLERWIDGET_H

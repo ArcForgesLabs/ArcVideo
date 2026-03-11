@@ -25,44 +25,38 @@
 
 namespace arcvideo {
 
-class MathNode : public MathNodeBase
-{
-  Q_OBJECT
+class MathNode : public MathNodeBase {
+    Q_OBJECT
+
 public:
-  MathNode();
+    MathNode();
 
-  NODE_DEFAULT_FUNCTIONS(MathNode)
+    NODE_DEFAULT_FUNCTIONS(MathNode)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
 
-  Operation GetOperation() const
-  {
-    return static_cast<Operation>(GetStandardValue(kMethodIn).toInt());
-  }
+    [[nodiscard]] Operation GetOperation() const { return static_cast<Operation>(GetStandardValue(kMethodIn).toInt()); }
 
-  void SetOperation(Operation o)
-  {
-    SetStandardValue(kMethodIn, o);
-  }
+    void SetOperation(Operation o) { SetStandardValue(kMethodIn, o); }
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  virtual void ProcessSamples(const NodeValueRow &values, const SampleBuffer &input, SampleBuffer &output, int index) const override;
+    void ProcessSamples(const NodeValueRow& values, const SampleBuffer& input, SampleBuffer& output,
+                        int index) const override;
 
-  static const QString kMethodIn;
-  static const QString kParamAIn;
-  static const QString kParamBIn;
-  static const QString kParamCIn;
-
+    static const QString kMethodIn;
+    static const QString kParamAIn;
+    static const QString kParamBIn;
+    static const QString kParamCIn;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // MATHNODE_H
+#endif  // MATHNODE_H

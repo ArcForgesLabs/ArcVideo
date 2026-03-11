@@ -25,17 +25,16 @@
 
 namespace arcvideo {
 
-class HistoryPanel : public PanelWidget
-{
-  Q_OBJECT
+class HistoryPanel : public PanelWidget {
+    Q_OBJECT
+
 public:
-  HistoryPanel();
+    HistoryPanel();
 
 protected:
-  virtual void Retranslate() override;
-
+    void Retranslate() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // HISTORYPANEL_H
+#endif  // HISTORYPANEL_H

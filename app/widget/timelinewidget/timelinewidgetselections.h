@@ -27,30 +27,27 @@
 
 namespace arcvideo {
 
-class TimelineWidgetSelections : public QHash<Track::Reference, TimeRangeList>
-{
+class TimelineWidgetSelections : public QHash<Track::Reference, TimeRangeList> {
 public:
-  TimelineWidgetSelections() = default;
+    TimelineWidgetSelections() = default;
 
-  void ShiftTime(const rational& diff);
+    void ShiftTime(const rational& diff);
 
-  void ShiftTracks(Track::Type type, int diff);
+    void ShiftTracks(Track::Type type, int diff);
 
-  void TrimIn(const rational& diff);
+    void TrimIn(const rational& diff);
 
-  void TrimOut(const rational& diff);
+    void TrimOut(const rational& diff);
 
-  void Subtract(const TimelineWidgetSelections &selections);
+    void Subtract(const TimelineWidgetSelections& selections);
 
-  TimelineWidgetSelections Subtracted(const TimelineWidgetSelections &selections) const
-  {
-    TimelineWidgetSelections copy = *this;
-    copy.Subtract(selections);
-    return copy;
-  }
-
+    [[nodiscard]] TimelineWidgetSelections Subtracted(const TimelineWidgetSelections& selections) const {
+        TimelineWidgetSelections copy = *this;
+        copy.Subtract(selections);
+        return copy;
+    }
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINEWIDGETSELECTIONS_H
+#endif  // TIMELINEWIDGETSELECTIONS_H

@@ -21,32 +21,31 @@
 #ifndef AUDIOWAVEFORMVIEW_H
 #define AUDIOWAVEFORMVIEW_H
 
-#include <QtConcurrent/QtConcurrent>
 #include <QWidget>
+#include <QtConcurrent/QtConcurrent>
 
 #include "render/audioplaybackcache.h"
 #include "widget/timeruler/seekablewidget.h"
 
 namespace arcvideo {
 
-class AudioWaveformView : public SeekableWidget
-{
-  Q_OBJECT
-public:
-  AudioWaveformView(QWidget* parent = nullptr);
+class AudioWaveformView : public SeekableWidget {
+    Q_OBJECT
 
-  void SetViewer(ViewerOutput *playback);
+public:
+    AudioWaveformView(QWidget* parent = nullptr);
+
+    void SetViewer(ViewerOutput* playback);
 
 protected:
-  virtual void drawForeground(QPainter *painter, const QRectF &rect) override;
+    void drawForeground(QPainter* painter, const QRectF& rect) override;
 
 private:
-  QThreadPool pool_;
+    QThreadPool pool_;
 
-  ViewerOutput *playback_;
-
+    ViewerOutput* playback_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // AUDIOWAVEFORMVIEW_H
+#endif  // AUDIOWAVEFORMVIEW_H

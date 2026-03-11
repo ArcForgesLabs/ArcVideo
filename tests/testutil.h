@@ -22,8 +22,14 @@
 
 #define ARCVIDEO_TEST_SUCCESS -1
 
-#define ARCVIDEO_ASSERT(x) if (!(x)) return __LINE__
-#define ARCVIDEO_ASSERT_EQUAL(x, y) if (x != y) {std::cout << " - Equal assert failed: " << x << " != " << y; return __LINE__;}void()
+#define ARCVIDEO_ASSERT(x) \
+    if (!(x)) return __LINE__
+#define ARCVIDEO_ASSERT_EQUAL(x, y)                                  \
+    if (x != y) {                                                    \
+        std::cout << " - Equal assert failed: " << x << " != " << y; \
+        return __LINE__;                                             \
+    }                                                                \
+    void()
 #define ARCVIDEO_TEST_END return ARCVIDEO_TEST_SUCCESS
 
 #define ARCVIDEO_ADD_TEST(x) int Test##x()

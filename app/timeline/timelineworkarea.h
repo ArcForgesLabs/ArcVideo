@@ -22,6 +22,7 @@
 #define TIMELINEWORKAREA_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QObject>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
@@ -30,39 +31,38 @@ namespace arcvideo {
 
 using namespace foundation;
 
-class TimelineWorkArea : public QObject
-{
-  Q_OBJECT
+class TimelineWorkArea : public QObject {
+    Q_OBJECT
+
 public:
-  TimelineWorkArea(QObject* parent = nullptr);
+    TimelineWorkArea(QObject* parent = nullptr);
 
-  bool enabled() const;
-  void set_enabled(bool e);
+    [[nodiscard]] bool enabled() const;
+    void set_enabled(bool e);
 
-  const rational& in() const;
-  const rational& out() const;
-  const rational& length() const;
-  const TimeRange& range() const;
-  void set_range(const TimeRange& range);
+    [[nodiscard]] const rational& in() const;
+    [[nodiscard]] const rational& out() const;
+    [[nodiscard]] const rational& length() const;
+    [[nodiscard]] const TimeRange& range() const;
+    void set_range(const TimeRange& range);
 
-  bool load(QXmlStreamReader *reader);
-  void save(QXmlStreamWriter *writer) const;
+    bool load(QXmlStreamReader* reader);
+    void save(QXmlStreamWriter* writer) const;
 
-  static const rational kResetIn;
-  static const rational kResetOut;
+    static const rational kResetIn;
+    static const rational kResetOut;
 
 signals:
-  void EnabledChanged(bool e);
+    void EnabledChanged(bool e);
 
-  void RangeChanged(const TimeRange& r);
+    void RangeChanged(const TimeRange& r);
 
 private:
-  bool workarea_enabled_;
+    bool workarea_enabled_;
 
-  TimeRange workarea_range_;
-
+    TimeRange workarea_range_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINEWORKAREA_H
+#endif  // TIMELINEWORKAREA_H

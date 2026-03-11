@@ -27,40 +27,39 @@
 
 namespace arcvideo {
 
-class SliderLabel : public QLabel
-{
-  Q_OBJECT
-public:
-  SliderLabel(QWidget* parent);
+class SliderLabel : public QLabel {
+    Q_OBJECT
 
-  void SetColor(const QColor &c);
+public:
+    SliderLabel(QWidget* parent);
+
+    void SetColor(const QColor& c);
 
 protected:
-  virtual void mousePressEvent(QMouseEvent *e) override;
+    void mousePressEvent(QMouseEvent* e) override;
 
-  virtual void mouseReleaseEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
 
-  virtual void focusInEvent(QFocusEvent *event) override;
+    void focusInEvent(QFocusEvent* event) override;
 
-  virtual void changeEvent(QEvent *event) override;
+    void changeEvent(QEvent* event) override;
 
 signals:
-  void LabelPressed();
+    void LabelPressed();
 
-  void LabelReleased();
+    void LabelReleased();
 
-  void focused();
+    void focused();
 
-  void RequestReset();
+    void RequestReset();
 
-  void ChangeSliderType();
+    void ChangeSliderType();
 
 private:
-  bool override_color_enabled_;
-  QColor override_color_;
-
+    bool override_color_enabled_;
+    QColor override_color_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SLIDERLABEL_H
+#endif  // SLIDERLABEL_H

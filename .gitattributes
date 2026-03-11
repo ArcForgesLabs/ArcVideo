@@ -1,8 +1,33 @@
-# Default behavior
-* text=auto
+# 1. Language Detection: Ensure GitHub treats .h as C++
+*.h linguist-language=C++
+*.hpp linguist-language=C++
+*.inc linguist-language=C++
 
-# Enforce LF line endings on source files
-*.h        text eol=lf
-*.cpp      text eol=lf
-*.sh       text eol=lf
-*.desktop  text eol=lf
+# If you have third-party libraries, uncomment and modify the path below
+# vendor/* linguist-vendored
+
+# 2. Line Ending Normalization: Force LF across all platforms
+* text=auto eol=lf
+
+# Keep CRLF for Windows-specific files
+*.bat eol=crlf
+*.sln eol=crlf
+*.vcxproj eol=crlf
+*.filters eol=crlf
+
+# 3. Binary Files: Prevent corruption during transfers
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+
+# Common compiled library files
+*.a binary
+*.lib binary
+*.dll binary
+*.so binary

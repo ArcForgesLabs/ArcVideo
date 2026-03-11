@@ -30,63 +30,53 @@
 
 namespace arcvideo {
 
-class ProjectImportTask : public Task
-{
-  Q_OBJECT
+class ProjectImportTask : public Task {
+    Q_OBJECT
+
 public:
-  ProjectImportTask(Folder* folder, const QStringList& filenames);
+    ProjectImportTask(Folder* folder, const QStringList& filenames);
 
-  const int& GetFileCount() const;
+    [[nodiscard]] const int& GetFileCount() const;
 
-  MultiUndoCommand* GetCommand() const
-  {
-    return command_;
-  }
+    [[nodiscard]] MultiUndoCommand* GetCommand() const { return command_; }
 
-  const QStringList& GetInvalidFiles() const
-  {
-    return invalid_files_;
-  }
+    [[nodiscard]] const QStringList& GetInvalidFiles() const { return invalid_files_; }
 
-  bool HasInvalidFiles() const
-  {
-    return !invalid_files_.isEmpty();
-  }
+    [[nodiscard]] bool HasInvalidFiles() const { return !invalid_files_.isEmpty(); }
 
-  const QVector<Footage*> &GetImportedFootage() const { return imported_footage_; }
+    [[nodiscard]] const QVector<Footage*>& GetImportedFootage() const { return imported_footage_; }
 
 protected:
-  virtual bool Run() override;
+    bool Run() override;
 
 private:
-  void Import(Folder* folder, QFileInfoList import, int& counter, MultiUndoCommand *parent_command);
+    void Import(Folder* folder, QFileInfoList import, int& counter, MultiUndoCommand* parent_command);
 
-  void ValidateImageSequence(Footage *footage, QFileInfoList &info_list, int index);
+    void ValidateImageSequence(Footage* footage, QFileInfoList& info_list, int index);
 
-  void AddItemToFolder(Folder* folder, Node* item, MultiUndoCommand* command);
+    void AddItemToFolder(Folder* folder, Node* item, MultiUndoCommand* command);
 
-  static bool ItemIsStillImageFootageOnly(Footage *footage);
+    static bool ItemIsStillImageFootageOnly(Footage* footage);
 
-  static bool CompareStillImageSize(Footage *footage, const QSize& sz);
+    static bool CompareStillImageSize(Footage* footage, const QSize& sz);
 
-  static int64_t GetImageSequenceLimit(const QString &start_fn, int64_t start, bool up);
+    static int64_t GetImageSequenceLimit(const QString& start_fn, int64_t start, bool up);
 
-  MultiUndoCommand* command_ = nullptr;
+    MultiUndoCommand* command_ = nullptr;
 
-  Folder* folder_ = nullptr;
+    Folder* folder_ = nullptr;
 
-  QFileInfoList filenames_;
+    QFileInfoList filenames_;
 
-  int file_count_;
+    int file_count_;
 
-  QStringList invalid_files_;
+    QStringList invalid_files_;
 
-  QList<QString> image_sequence_ignore_files_;
+    QList<QString> image_sequence_ignore_files_;
 
-  QVector<Footage*> imported_footage_;
-
+    QVector<Footage*> imported_footage_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTIMPORTMANAGER_H
+#endif  // PROJECTIMPORTMANAGER_H

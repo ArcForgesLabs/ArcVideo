@@ -20,6 +20,4 @@
 
 #include "acceleratedjob.h"
 
-namespace arcvideo {
-
-}
+namespace arcvideo {}

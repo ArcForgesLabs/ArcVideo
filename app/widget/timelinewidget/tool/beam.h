@@ -25,18 +25,16 @@
 
 namespace arcvideo {
 
-class BeamTool : public TimelineTool
-{
+class BeamTool : public TimelineTool {
 public:
-  BeamTool(TimelineWidget *parent);
+    BeamTool(TimelineWidget* parent);
 
-  virtual void HoverMove(TimelineViewMouseEvent *event) override;
+    void HoverMove(TimelineViewMouseEvent* event) override;
 
 protected:
-  TimelineCoordinate ValidatedCoordinate(TimelineCoordinate coord);
-
+    TimelineCoordinate ValidatedCoordinate(TimelineCoordinate coord);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // BEAMTIMELINETOOL_H
+#endif  // BEAMTIMELINETOOL_H

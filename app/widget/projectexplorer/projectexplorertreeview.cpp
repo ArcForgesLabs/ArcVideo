@@ -24,34 +24,31 @@
 
 namespace arcvideo {
 
-ProjectExplorerTreeView::ProjectExplorerTreeView(QWidget *parent) :
-  QTreeView(parent)
-{
-  // Set selection mode (allows multiple item selection)
-  setSelectionMode(QAbstractItemView::ExtendedSelection);
+ProjectExplorerTreeView::ProjectExplorerTreeView(QWidget* parent) : QTreeView(parent) {
+    // Set selection mode (allows multiple item selection)
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  // Allow dragging and dropping
-  setDragDropMode(QAbstractItemView::DragDrop);
+    // Allow dragging and dropping
+    setDragDropMode(QAbstractItemView::DragDrop);
 
-  // Enable dragging
-  setDragEnabled(true);
+    // Enable dragging
+    setDragEnabled(true);
 
-  // Allow dropping from external sources
-  setAcceptDrops(true);
+    // Allow dropping from external sources
+    setAcceptDrops(true);
 
-  // Set context menu to emit a signal
-  setContextMenuPolicy(Qt::CustomContextMenu);
+    // Set context menu to emit a signal
+    setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
-void ProjectExplorerTreeView::mouseDoubleClickEvent(QMouseEvent *event)
-{
-  // Perform default double click functions
-  QTreeView::mouseDoubleClickEvent(event);
+void ProjectExplorerTreeView::mouseDoubleClickEvent(QMouseEvent* event) {
+    // Perform default double click functions
+    QTreeView::mouseDoubleClickEvent(event);
 
-  // QAbstractItemView already has a doubleClicked() signal, but we emit another here for double clicking empty space
-  if (!indexAt(event->position().toPoint()).isValid()) {
-    emit DoubleClickedEmptyArea();
-  }
+    // QAbstractItemView already has a doubleClicked() signal, but we emit another here for double clicking empty space
+    if (!indexAt(event->position().toPoint()).isValid()) {
+        emit DoubleClickedEmptyArea();
+    }
 }
 
-}
+}  // namespace arcvideo

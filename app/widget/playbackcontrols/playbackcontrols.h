@@ -21,10 +21,10 @@
 #ifndef PLAYBACKCONTROLS_H
 #define PLAYBACKCONTROLS_H
 
-#include <QWidget>
 #include <QLabel>
 #include <QPushButton>
 #include <QStackedWidget>
+#include <QWidget>
 
 #include "dragbutton.h"
 #include "widget/slider/rationalslider.h"
@@ -36,126 +36,120 @@ namespace arcvideo {
  *
  * This widget optionally features timecode displays for the current timecode and end timecode.
  */
-class PlaybackControls : public QWidget
-{
-  Q_OBJECT
+class PlaybackControls : public QWidget {
+    Q_OBJECT
+
 public:
-  PlaybackControls(QWidget* parent = nullptr);
+    PlaybackControls(QWidget* parent = nullptr);
 
-  /**
-   * @brief Set whether the timecodes should be shown or not
-   */
-  void SetTimecodeEnabled(bool enabled);
+    /**
+     * @brief Set whether the timecodes should be shown or not
+     */
+    void SetTimecodeEnabled(bool enabled);
 
-  void SetTimebase(const rational& r);
+    void SetTimebase(const rational& r);
 
-  void SetAudioVideoDragButtonsVisible(bool e);
+    void SetAudioVideoDragButtonsVisible(bool e);
 
 public slots:
-  void SetTime(const rational &r);
+    void SetTime(const rational& r);
 
-  void SetEndTime(const rational &r);
+    void SetEndTime(const rational& r);
 
-  void ShowPauseButton();
+    void ShowPauseButton();
 
-  void ShowPlayButton();
+    void ShowPlayButton();
 
-  void StartPlayBlink()
-  {
-    play_blink_timer_->start();
-    SetButtonRecordingState(play_btn_, true);
-  }
+    void StartPlayBlink() {
+        play_blink_timer_->start();
+        SetButtonRecordingState(play_btn_, true);
+    }
 
-  void StopPlayBlink()
-  {
-    play_blink_timer_->stop();
-    SetButtonRecordingState(play_btn_, false);
-  }
+    void StopPlayBlink() {
+        play_blink_timer_->stop();
+        SetButtonRecordingState(play_btn_, false);
+    }
 
-  void SetPauseButtonRecordingState(bool on)
-  {
-    SetButtonRecordingState(pause_btn_, on);
-  }
+    void SetPauseButtonRecordingState(bool on) { SetButtonRecordingState(pause_btn_, on); }
 
 signals:
-  /**
-   * @brief Signal emitted when "Go to Start" is clicked
-   */
-  void BeginClicked();
+    /**
+     * @brief Signal emitted when "Go to Start" is clicked
+     */
+    void BeginClicked();
 
-  /**
-   * @brief Signal emitted when "Previous Frame" is clicked
-   */
-  void PrevFrameClicked();
+    /**
+     * @brief Signal emitted when "Previous Frame" is clicked
+     */
+    void PrevFrameClicked();
 
-  /**
-   * @brief Signal emitted when "Play" is clicked
-   */
-  void PlayClicked();
+    /**
+     * @brief Signal emitted when "Play" is clicked
+     */
+    void PlayClicked();
 
-  /**
-   * @brief Signal emitted when "Pause" is clicked
-   */
-  void PauseClicked();
+    /**
+     * @brief Signal emitted when "Pause" is clicked
+     */
+    void PauseClicked();
 
-  /**
-   * @brief Signal emitted when "Next Frame" is clicked
-   */
-  void NextFrameClicked();
+    /**
+     * @brief Signal emitted when "Next Frame" is clicked
+     */
+    void NextFrameClicked();
 
-  /**
-   * @brief Signal emitted when "Go to End" is clicked
-   */
-  void EndClicked();
+    /**
+     * @brief Signal emitted when "Go to End" is clicked
+     */
+    void EndClicked();
 
-  void AudioClicked();
+    void AudioClicked();
 
-  void VideoClicked();
+    void VideoClicked();
 
-  void AudioDragged();
+    void AudioDragged();
 
-  void VideoDragged();
+    void VideoDragged();
 
-  void TimeChanged(const rational& t);
+    void TimeChanged(const rational& t);
 
 protected:
-  virtual void changeEvent(QEvent *) override;
+    void changeEvent(QEvent*) override;
 
 private:
-  void UpdateIcons();
+    void UpdateIcons();
 
-  static void SetButtonRecordingState(QPushButton *btn, bool on);
+    static void SetButtonRecordingState(QPushButton* btn, bool on);
 
-  QWidget* lower_left_container_ = nullptr;
-  QWidget* lower_right_container_ = nullptr;
+    QWidget* lower_left_container_ = nullptr;
+    QWidget* lower_right_container_ = nullptr;
 
-  RationalSlider* cur_tc_lbl_ = nullptr;
-  QLabel* end_tc_lbl_ = nullptr;
+    RationalSlider* cur_tc_lbl_ = nullptr;
+    QLabel* end_tc_lbl_ = nullptr;
 
-  rational end_time_;
+    rational end_time_;
 
-  rational time_base_;
+    rational time_base_;
 
-  QPushButton* go_to_start_btn_ = nullptr;
-  QPushButton* prev_frame_btn_ = nullptr;
-  QPushButton* play_btn_ = nullptr;
-  QPushButton* pause_btn_ = nullptr;
-  QPushButton* next_frame_btn_ = nullptr;
-  QPushButton* go_to_end_btn_ = nullptr;
-  DragButton* video_drag_btn_ = nullptr;
-  DragButton* audio_drag_btn_ = nullptr;
+    QPushButton* go_to_start_btn_ = nullptr;
+    QPushButton* prev_frame_btn_ = nullptr;
+    QPushButton* play_btn_ = nullptr;
+    QPushButton* pause_btn_ = nullptr;
+    QPushButton* next_frame_btn_ = nullptr;
+    QPushButton* go_to_end_btn_ = nullptr;
+    DragButton* video_drag_btn_ = nullptr;
+    DragButton* audio_drag_btn_ = nullptr;
 
-  QStackedWidget* playpause_stack_ = nullptr;
+    QStackedWidget* playpause_stack_ = nullptr;
 
-  QTimer *play_blink_timer_;
+    QTimer* play_blink_timer_;
 
 private slots:
-  void TimecodeChanged();
+    void TimecodeChanged();
 
-  void PlayBlink();
-
+    void PlayBlink();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PLAYBACKCONTROLS_H
+#endif  // PLAYBACKCONTROLS_H

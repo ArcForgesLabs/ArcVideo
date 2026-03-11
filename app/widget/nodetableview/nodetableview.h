@@ -27,25 +27,24 @@
 
 namespace arcvideo {
 
-class NodeTableView : public QTreeWidget
-{
-  Q_OBJECT
+class NodeTableView : public QTreeWidget {
+    Q_OBJECT
+
 public:
-  NodeTableView(QWidget* parent = nullptr);
+    NodeTableView(QWidget* parent = nullptr);
 
-  void SelectNodes(const QVector<Node *> &nodes);
+    void SelectNodes(const QVector<Node*>& nodes);
 
-  void DeselectNodes(const QVector<Node*>& nodes);
+    void DeselectNodes(const QVector<Node*>& nodes);
 
-  void SetTime(const rational& time);
+    void SetTime(const rational& time);
 
 private:
-  QMap<Node*, QTreeWidgetItem*> top_level_item_map_;
+    QMap<Node*, QTreeWidgetItem*> top_level_item_map_;
 
-  rational last_time_;
-
+    rational last_time_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODETABLEVIEW_H
+#endif  // NODETABLEVIEW_H

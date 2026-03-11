@@ -28,25 +28,23 @@
 
 namespace arcvideo {
 
-class CLIProgressDialog : public QObject
-{
+class CLIProgressDialog : public QObject {
 public:
-  CLIProgressDialog(const QString &title, QObject* parent = nullptr);
+    CLIProgressDialog(QString title, QObject* parent = nullptr);
 
 public slots:
-  void SetProgress(double p);
+    void SetProgress(double p);
 
 private:
-  void Update();
+    void Update();
 
-  QString title_;
+    QString title_;
 
-  double progress_;
+    double progress_;
 
-  bool drawn_;
-
+    bool drawn_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CLIPROGRESSDIALOG_H
+#endif  // CLIPROGRESSDIALOG_H

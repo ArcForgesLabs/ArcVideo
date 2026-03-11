@@ -34,8 +34,8 @@ class Node;
 class NodeInput;
 class NodeGroup;
 
-#define XMLAttributeLoop(reader, item) \
-  for (const QXmlStreamAttribute& item : reader->attributes())
+// NOLINTNEXTLINE(bugprone-macro-parentheses)
+#define XMLAttributeLoop(reader, item) for (const QXmlStreamAttribute& item : (reader)->attributes())
 
 /**
  * @brief Workaround for QXmlStreamReader::readNextStartElement not detecting the end of a document
@@ -44,10 +44,11 @@ class NodeGroup;
  * throwing a "premature end of document" error. We have our own function here that does essentially
  * the same thing but fixes that issue.
  *
- * See also: https://stackoverflow.com/questions/46346450/qt-qxmlstreamreader-always-returns-premature-end-of-document-error
+ * See also:
+ * https://stackoverflow.com/questions/46346450/qt-qxmlstreamreader-always-returns-premature-end-of-document-error
  */
-bool XMLReadNextStartElement(QXmlStreamReader* reader, CancelAtom *cancel_atom = nullptr);
+bool XMLReadNextStartElement(QXmlStreamReader* reader, CancelAtom* cancel_atom = nullptr);
 
-}
+}  // namespace arcvideo
 
-#endif // XMLREADLOOP_H
+#endif  // XMLREADLOOP_H

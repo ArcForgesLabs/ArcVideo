@@ -22,6 +22,7 @@
 #define BEZIERWIDGET_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QCheckBox>
 #include <QWidget>
 
@@ -31,46 +32,45 @@ namespace arcvideo {
 
 using namespace foundation;
 
-class BezierWidget : public QWidget
-{
-  Q_OBJECT
+class BezierWidget : public QWidget {
+    Q_OBJECT
+
 public:
-  explicit BezierWidget(QWidget *parent = nullptr);
+    explicit BezierWidget(QWidget* parent = nullptr);
 
-  Bezier GetValue() const;
+    [[nodiscard]] Bezier GetValue() const;
 
-  void SetValue(const Bezier &b);
+    void SetValue(const Bezier& b);
 
-  FloatSlider *x_slider() const { return x_slider_; }
+    [[nodiscard]] FloatSlider* x_slider() const { return x_slider_; }
 
-  FloatSlider *y_slider() const { return y_slider_; }
+    [[nodiscard]] FloatSlider* y_slider() const { return y_slider_; }
 
-  FloatSlider *cp1_x_slider() const { return cp1_x_slider_; }
+    [[nodiscard]] FloatSlider* cp1_x_slider() const { return cp1_x_slider_; }
 
-  FloatSlider *cp1_y_slider() const { return cp1_y_slider_; }
+    [[nodiscard]] FloatSlider* cp1_y_slider() const { return cp1_y_slider_; }
 
-  FloatSlider *cp2_x_slider() const { return cp2_x_slider_; }
+    [[nodiscard]] FloatSlider* cp2_x_slider() const { return cp2_x_slider_; }
 
-  FloatSlider *cp2_y_slider() const { return cp2_y_slider_; }
+    [[nodiscard]] FloatSlider* cp2_y_slider() const { return cp2_y_slider_; }
 
 signals:
-  void ValueChanged();
+    void ValueChanged();
 
 private:
-  FloatSlider *x_slider_;
+    FloatSlider* x_slider_;
 
-  FloatSlider *y_slider_;
+    FloatSlider* y_slider_;
 
-  FloatSlider *cp1_x_slider_;
+    FloatSlider* cp1_x_slider_;
 
-  FloatSlider *cp1_y_slider_;
+    FloatSlider* cp1_y_slider_;
 
-  FloatSlider *cp2_x_slider_;
+    FloatSlider* cp2_x_slider_;
 
-  FloatSlider *cp2_y_slider_;
-
+    FloatSlider* cp2_y_slider_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // BEZIERWIDGET_H
+#endif  // BEZIERWIDGET_H

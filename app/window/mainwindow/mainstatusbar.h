@@ -31,36 +31,35 @@ namespace arcvideo {
 /**
  * @brief Shows abbreviated information from a TaskManager object
  */
-class MainStatusBar : public QStatusBar
-{
-  Q_OBJECT
-public:
-  MainStatusBar(QWidget* parent = nullptr);
+class MainStatusBar : public QStatusBar {
+    Q_OBJECT
 
-  void ConnectTaskManager(TaskManager* manager);
+public:
+    MainStatusBar(QWidget* parent = nullptr);
+
+    void ConnectTaskManager(TaskManager* manager);
 
 signals:
-  void DoubleClicked();
+    void DoubleClicked();
 
 protected:
-  virtual void mouseDoubleClickEvent(QMouseEvent* e) override;
+    void mouseDoubleClickEvent(QMouseEvent* e) override;
 
 private slots:
-  void UpdateStatus();
+    void UpdateStatus();
 
-  void SetProgressBarValue(double d);
+    void SetProgressBarValue(double d);
 
-  void ConnectedTaskDeleted();
+    void ConnectedTaskDeleted();
 
 private:
-  TaskManager* manager_ = nullptr;
+    TaskManager* manager_ = nullptr;
 
-  QProgressBar* bar_ = nullptr;
+    QProgressBar* bar_ = nullptr;
 
-  Task* connected_task_ = nullptr;
-
+    Task* connected_task_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // MAINSTATUSBAR_H
+#endif  // MAINSTATUSBAR_H

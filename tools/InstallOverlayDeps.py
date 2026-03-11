@@ -69,6 +69,7 @@ def banner() -> None:
 
 # ── System detection ─────────────────────────────────────────────
 
+
 def detect_system() -> str:
     s = platform.system()
     if s == "Windows":
@@ -96,6 +97,7 @@ def default_triplet() -> str:
 
 # ── Resolve vcpkg ────────────────────────────────────────────────
 
+
 def resolve_vcpkg() -> tuple[Path, Path]:
     """Return (vcpkg_root, vcpkg_executable)."""
     exe_name = "vcpkg.exe" if detect_system() == "Windows" else "vcpkg"
@@ -121,11 +123,20 @@ def resolve_vcpkg() -> tuple[Path, Path]:
 
 # ── Git helpers ──────────────────────────────────────────────────
 
-def run(cmd: list[str], *, cwd: Path | None = None, capture: bool = False,
-        check: bool = True) -> subprocess.CompletedProcess[str]:
+
+def run(
+    cmd: list[str],
+    *,
+    cwd: Path | None = None,
+    capture: bool = False,
+    check: bool = True,
+) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        cmd, cwd=cwd, text=True,
-        capture_output=capture, check=check,
+        cmd,
+        cwd=cwd,
+        text=True,
+        capture_output=capture,
+        check=check,
     )
 
 
@@ -144,8 +155,11 @@ def clone_or_update_registry() -> Path:
 
 # ── Port discovery ───────────────────────────────────────────────
 
+
 class Port:
-    def __init__(self, name: str, version: str, directory: Path, installed: bool = False):
+    def __init__(
+        self, name: str, version: str, directory: Path, installed: bool = False
+    ):
         self.name = name
         self.version = version
         self.directory = directory
@@ -169,8 +183,7 @@ def discover_ports(ports_dir: Path) -> list[Port]:
 
 
 def detect_installed(vcpkg_exe: Path, ports: list[Port]) -> None:
-    result = run([str(vcpkg_exe), "list", "--x-full-desc"],
-                 capture=True, check=False)
+    result = run([str(vcpkg_exe), "list", "--x-full-desc"], capture=True, check=False)
     installed_names: set[str] = set()
     for line in result.stdout.splitlines():
         m = re.match(r"^([a-z0-9\-]+):", line)
@@ -182,11 +195,17 @@ def detect_installed(vcpkg_exe: Path, ports: list[Port]) -> None:
 
 # ── Display & selection ──────────────────────────────────────────
 
+
 def display_ports(ports: list[Port]) -> None:
     print()
     hdr = f"  {'#':>3}  {'Package':<24} {'Version':<10} {'Installed'}"
     print(c(WHITE, hdr))
-    print(c(DIM, f"  {'---':>3}  {'------------------------':<24} {'----------':<10} {'---------'}"))
+    print(
+        c(
+            DIM,
+            f"  {'---':>3}  {'------------------------':<24} {'----------':<10} {'---------'}",
+        )
+    )
     for i, p in enumerate(ports, 1):
         idx = f"{i:>3}"
         name = f"{p.name:<24}"
@@ -215,8 +234,10 @@ def select_ports(ports: list[Port], action: str) -> list[Port]:
 
 # ── Execute install / uninstall ──────────────────────────────────
 
-def execute(vcpkg_exe: Path, ports: list[Port], ports_dir: Path,
-            triplet: str, action: str) -> None:
+
+def execute(
+    vcpkg_exe: Path, ports: list[Port], ports_dir: Path, triplet: str, action: str
+) -> None:
     overlay_arg = f"--overlay-ports={ports_dir}"
     specs = [f"{p.name}:{triplet}" for p in ports]
 
@@ -246,13 +267,19 @@ def execute(vcpkg_exe: Path, ports: list[Port], ports_dir: Path,
 
 # ── Main ─────────────────────────────────────────────────────────
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Install/uninstall ArcVideoRegistry overlay-port packages via vcpkg.")
-    parser.add_argument("--uninstall", action="store_true",
-                        help="Uninstall selected ports instead of installing")
-    parser.add_argument("--all", "-a", action="store_true",
-                        help="Process all ports without prompting")
+        description="Install/uninstall ArcVideoRegistry overlay-port packages via vcpkg."
+    )
+    parser.add_argument(
+        "--uninstall",
+        action="store_true",
+        help="Uninstall selected ports instead of installing",
+    )
+    parser.add_argument(
+        "--all", "-a", action="store_true", help="Process all ports without prompting"
+    )
     args = parser.parse_args()
 
     action = "uninstall" if args.uninstall else "install"

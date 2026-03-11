@@ -25,20 +25,18 @@
 
 namespace arcvideo {
 
-class ZoomTool : public TimelineTool
-{
+class ZoomTool : public TimelineTool {
 public:
-  ZoomTool(TimelineWidget* parent);
+    ZoomTool(TimelineWidget* parent);
 
-  virtual void MousePress(TimelineViewMouseEvent *event) override;
-  virtual void MouseMove(TimelineViewMouseEvent *event) override;
-  virtual void MouseRelease(TimelineViewMouseEvent *event) override;
+    void MousePress(TimelineViewMouseEvent* event) override;
+    void MouseMove(TimelineViewMouseEvent* event) override;
+    void MouseRelease(TimelineViewMouseEvent* event) override;
 
 private:
-  QPoint drag_global_start_;
-
+    QPoint drag_global_start_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // ZOOMTIMELINETOOL_H
+#endif  // ZOOMTIMELINETOOL_H

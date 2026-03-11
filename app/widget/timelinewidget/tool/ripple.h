@@ -25,16 +25,16 @@
 
 namespace arcvideo {
 
-class RippleTool : public PointerTool
-{
+class RippleTool : public PointerTool {
 public:
-  RippleTool(TimelineWidget* parent);
-protected:
-  virtual void FinishDrag(TimelineViewMouseEvent *event) override;
+    RippleTool(TimelineWidget* parent);
 
-  virtual void InitiateDrag(Block* clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers) override;
+protected:
+    void FinishDrag(TimelineViewMouseEvent* event) override;
+
+    void InitiateDrag(Block* clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers) override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // RIPPLETIMELINETOOL_H
+#endif  // RIPPLETIMELINETOOL_H

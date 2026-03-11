@@ -24,17 +24,14 @@
 
 namespace arcvideo {
 
-HistoryPanel::HistoryPanel() :
-  PanelWidget(QStringLiteral("HistoryPanel"))
-{
-  SetWidgetWithPadding(new HistoryWidget(this));
+HistoryPanel::HistoryPanel() : PanelWidget(QStringLiteral("HistoryPanel")) {
+    SetWidgetWithPadding(new HistoryWidget(this));
 
-  Retranslate();
+    Retranslate();
 }
 
-void HistoryPanel::Retranslate()
-{
-  SetTitle(tr("History"));
+void HistoryPanel::Retranslate() {
+    SetTitle(tr("History"));
 }
 
-}
+}  // namespace arcvideo

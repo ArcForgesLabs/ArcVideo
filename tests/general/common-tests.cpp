@@ -18,32 +18,30 @@
 
 ***/
 
-#include "testutil.h"
-
 #include "common/digit.h"
+#include "testutil.h"
 
 namespace arcvideo {
 
-ARCVIDEO_ADD_TEST(DigitTest)
-{
-  ARCVIDEO_ASSERT(GetDigitCount(1) == 1);
-  ARCVIDEO_ASSERT(GetDigitCount(69) == 2);
-  ARCVIDEO_ASSERT(GetDigitCount(420) == 3);
-  ARCVIDEO_ASSERT(GetDigitCount(1337) == 4);
-  ARCVIDEO_ASSERT(GetDigitCount(80085) == 5);
-  ARCVIDEO_ASSERT(GetDigitCount(555555) == 6);
-  ARCVIDEO_ASSERT(GetDigitCount(8675309) == 7);
-  ARCVIDEO_ASSERT(GetDigitCount(78956423) == 8);
-  ARCVIDEO_ASSERT(GetDigitCount(148497523) == 9);
-  ARCVIDEO_ASSERT(GetDigitCount(4845821233) == 10);
-  ARCVIDEO_ASSERT(GetDigitCount(18002738255) == 11);
-  ARCVIDEO_ASSERT(GetDigitCount(180027382556) == 12);
-  ARCVIDEO_ASSERT(GetDigitCount(1800273825568) == 13);
-  ARCVIDEO_ASSERT(GetDigitCount(18002738255685) == 14);
-  ARCVIDEO_ASSERT(GetDigitCount(180027382556857) == 15);
-  ARCVIDEO_ASSERT(GetDigitCount(1800273825564857) == 16);
+ARCVIDEO_ADD_TEST(DigitTest) {
+    ARCVIDEO_ASSERT(GetDigitCount(1) == 1);
+    ARCVIDEO_ASSERT(GetDigitCount(69) == 2);
+    ARCVIDEO_ASSERT(GetDigitCount(420) == 3);
+    ARCVIDEO_ASSERT(GetDigitCount(1337) == 4);
+    ARCVIDEO_ASSERT(GetDigitCount(80085) == 5);
+    ARCVIDEO_ASSERT(GetDigitCount(555555) == 6);
+    ARCVIDEO_ASSERT(GetDigitCount(8675309) == 7);
+    ARCVIDEO_ASSERT(GetDigitCount(78956423) == 8);
+    ARCVIDEO_ASSERT(GetDigitCount(148497523) == 9);
+    ARCVIDEO_ASSERT(GetDigitCount(4845821233) == 10);
+    ARCVIDEO_ASSERT(GetDigitCount(18002738255) == 11);
+    ARCVIDEO_ASSERT(GetDigitCount(180027382556) == 12);
+    ARCVIDEO_ASSERT(GetDigitCount(1800273825568) == 13);
+    ARCVIDEO_ASSERT(GetDigitCount(18002738255685) == 14);
+    ARCVIDEO_ASSERT(GetDigitCount(180027382556857) == 15);
+    ARCVIDEO_ASSERT(GetDigitCount(1800273825564857) == 16);
 
-  ARCVIDEO_TEST_END;
+    ARCVIDEO_TEST_END;
 }
 
-}
+}  // namespace arcvideo

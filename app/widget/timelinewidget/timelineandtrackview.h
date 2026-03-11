@@ -24,37 +24,34 @@
 #include <QSplitter>
 #include <QWidget>
 
-#include "view/timelineview.h"
 #include "trackview/trackview.h"
+#include "view/timelineview.h"
 
 namespace arcvideo {
 
-class TimelineAndTrackView : public QWidget
-{
+class TimelineAndTrackView : public QWidget {
 public:
-  TimelineAndTrackView(Qt::Alignment vertical_alignment = Qt::AlignTop,
-                       QWidget* parent = nullptr);
+    TimelineAndTrackView(Qt::Alignment vertical_alignment = Qt::AlignTop, QWidget* parent = nullptr);
 
-  QSplitter* splitter() const;
+    [[nodiscard]] QSplitter* splitter() const;
 
-  TimelineView* view() const;
+    [[nodiscard]] TimelineView* view() const;
 
-  TrackView* track_view() const;
+    [[nodiscard]] TrackView* track_view() const;
 
 private:
-  QSplitter* splitter_ = nullptr;
+    QSplitter* splitter_ = nullptr;
 
-  TimelineView* view_ = nullptr;
+    TimelineView* view_ = nullptr;
 
-  TrackView* track_view_ = nullptr;
+    TrackView* track_view_ = nullptr;
 
 private slots:
-  void ViewValueChanged(int v);
+    void ViewValueChanged(int v);
 
-  void TracksValueChanged(int v);
-
+    void TracksValueChanged(int v);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINEANDTRACKVIEW_H
+#endif  // TIMELINEANDTRACKVIEW_H

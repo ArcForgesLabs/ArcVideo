@@ -22,84 +22,73 @@
 #define SUBTITLEPARAMS_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QRect>
 #include <QString>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
+#include <utility>
 
 using namespace arcvideo::foundation;
 
 namespace arcvideo {
 
-class Subtitle
-{
+class Subtitle {
 public:
-  Subtitle() = default;
+    Subtitle() = default;
 
-  Subtitle(const TimeRange &time, const QString &text) :
-    range_(time),
-    text_(text)
-  {
-  }
+    Subtitle(const TimeRange& time, QString text) : range_(time), text_(std::move(text)) {}
 
-  const TimeRange &time() const { return range_; }
-  void set_time(const TimeRange &t) { range_ = t; }
+    [[nodiscard]] const TimeRange& time() const { return range_; }
+    void set_time(const TimeRange& t) { range_ = t; }
 
-  const QString &text() const { return text_; }
-  void set_text(const QString &t) { text_ = t; }
+    [[nodiscard]] const QString& text() const { return text_; }
+    void set_text(const QString& t) { text_ = t; }
 
 private:
-  TimeRange range_;
+    TimeRange range_;
 
-  QString text_;
-
+    QString text_;
 };
 
-class SubtitleParams : public std::vector<Subtitle>
-{
+class SubtitleParams : public std::vector<Subtitle> {
 public:
-  SubtitleParams()
-  {
-    stream_index_ = 0;
-    enabled_ = true;
-  }
-
-  static QString GenerateASSHeader();
-
-  void Load(QXmlStreamReader* reader);
-
-  void Save(QXmlStreamWriter* writer) const;
-
-  bool is_valid() const
-  {
-    return !this->empty();
-  }
-
-  rational duration() const
-  {
-    if (this->empty()) {
-      return 0;
-    } else {
-      return back().time().out();
+    SubtitleParams() {
+        stream_index_ = 0;
+        enabled_ = true;
     }
-  }
 
-  int stream_index() const { return stream_index_; }
-  void set_stream_index(int i) { stream_index_ = i; }
+    static QString GenerateASSHeader();
 
-  bool enabled() const { return enabled_; }
-  void set_enabled(bool e) { enabled_ = e; }
+    void Load(QXmlStreamReader* reader);
+
+    void Save(QXmlStreamWriter* writer) const;
+
+    [[nodiscard]] bool is_valid() const { return !this->empty(); }
+
+    [[nodiscard]] rational duration() const {
+        if (this->empty()) {
+            return 0;
+        } else {
+            return back().time().out();
+        }
+    }
+
+    [[nodiscard]] int stream_index() const { return stream_index_; }
+    void set_stream_index(int i) { stream_index_ = i; }
+
+    [[nodiscard]] bool enabled() const { return enabled_; }
+    void set_enabled(bool e) { enabled_ = e; }
 
 private:
-  int stream_index_;
+    int stream_index_;
 
-  bool enabled_;
-
+    bool enabled_;
 };
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::Subtitle)
 Q_DECLARE_METATYPE(arcvideo::SubtitleParams)
 
-#endif // SUBTITLEPARAMS_H
+#endif  // SUBTITLEPARAMS_H

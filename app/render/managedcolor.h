@@ -27,27 +27,25 @@
 
 namespace arcvideo {
 
-class ManagedColor : public Color
-{
+class ManagedColor : public Color {
 public:
-  ManagedColor();
-  ManagedColor(const double& r, const double& g, const double& b, const double& a = 1.0);
-  ManagedColor(const char *data, const PixelFormat &format, int channel_layout);
-  ManagedColor(const Color& c);
+    ManagedColor();
+    ManagedColor(const double& r, const double& g, const double& b, const double& a = 1.0);
+    ManagedColor(const char* data, const PixelFormat& format, int channel_layout);
+    ManagedColor(const Color& c);
 
-  const QString& color_input() const;
-  void set_color_input(const QString &color_input);
+    [[nodiscard]] const QString& color_input() const;
+    void set_color_input(const QString& color_input);
 
-  const ColorTransform& color_output() const;
-  void set_color_output(const ColorTransform &color_output);
+    [[nodiscard]] const ColorTransform& color_output() const;
+    void set_color_output(const ColorTransform& color_output);
 
 private:
-  QString color_input_;
+    QString color_input_;
 
-  ColorTransform color_transform_;
-
+    ColorTransform color_transform_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // MANAGEDCOLOR_H
+#endif  // MANAGEDCOLOR_H

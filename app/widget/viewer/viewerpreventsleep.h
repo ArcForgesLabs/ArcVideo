@@ -7,4 +7,4 @@ void PreventSleep(bool on);
 
 }
 
-#endif // VIEWERPREVENTSLEEP_H
+#endif  // VIEWERPREVENTSLEEP_H

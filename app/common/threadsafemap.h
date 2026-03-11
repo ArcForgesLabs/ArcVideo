@@ -5,23 +5,20 @@
 #include <QMutex>
 
 template <typename K, typename V>
-class ThreadSafeMap
-{
+class ThreadSafeMap {
 public:
-  ThreadSafeMap() = default;
+    ThreadSafeMap() = default;
 
-  void insert(K key, V value)
-  {
-    mutex_.lock();
-    map_.insert(key, value);
-    mutex_.unlock();
-  }
+    void insert(K key, V value) {
+        mutex_.lock();
+        map_.insert(key, value);
+        mutex_.unlock();
+    }
 
 private:
-  QMutex mutex_;
+    QMutex mutex_;
 
-  QMap<K, V> map_;
-
+    QMap<K, V> map_;
 };
 
-#endif // THREADSAFEMAP_H
+#endif  // THREADSAFEMAP_H

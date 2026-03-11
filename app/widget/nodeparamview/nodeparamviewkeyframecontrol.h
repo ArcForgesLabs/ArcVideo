@@ -29,60 +29,53 @@
 
 namespace arcvideo {
 
-class NodeParamViewKeyframeControl : public QWidget, public TimeTargetObject
-{
-  Q_OBJECT
+class NodeParamViewKeyframeControl : public QWidget, public TimeTargetObject {
+    Q_OBJECT
+
 public:
-  NodeParamViewKeyframeControl(bool right_align, QWidget* parent = nullptr);
-  NodeParamViewKeyframeControl(QWidget* parent = nullptr) :
-    NodeParamViewKeyframeControl(true, parent)
-  {
-  }
+    NodeParamViewKeyframeControl(bool right_align, QWidget* parent = nullptr);
+    NodeParamViewKeyframeControl(QWidget* parent = nullptr) : NodeParamViewKeyframeControl(true, parent) {}
 
-  const NodeInput& GetConnectedInput() const
-  {
-    return input_;
-  }
+    [[nodiscard]] const NodeInput& GetConnectedInput() const { return input_; }
 
-  void SetInput(const NodeInput& input);
+    void SetInput(const NodeInput& input);
 
 protected:
-  virtual void TimeTargetDisconnectEvent(ViewerOutput *v) override;
-  virtual void TimeTargetConnectEvent(ViewerOutput *v) override;
+    void TimeTargetDisconnectEvent(ViewerOutput* v) override;
+    void TimeTargetConnectEvent(ViewerOutput* v) override;
 
 private:
-  QPushButton* CreateNewToolButton(const QIcon &icon) const;
+    [[nodiscard]] static QPushButton* CreateNewToolButton(const QIcon& icon);
 
-  void SetButtonsEnabled(bool e);
+    void SetButtonsEnabled(bool e);
 
-  rational GetCurrentTimeAsNodeTime() const;
+    [[nodiscard]] rational GetCurrentTimeAsNodeTime() const;
 
-  rational ConvertToViewerTime(const rational& r) const;
+    [[nodiscard]] rational ConvertToViewerTime(const rational& r) const;
 
-  QPushButton* prev_key_btn_ = nullptr;
-  QPushButton* toggle_key_btn_ = nullptr;
-  QPushButton* next_key_btn_ = nullptr;
-  QPushButton* enable_key_btn_ = nullptr;
+    QPushButton* prev_key_btn_ = nullptr;
+    QPushButton* toggle_key_btn_ = nullptr;
+    QPushButton* next_key_btn_ = nullptr;
+    QPushButton* enable_key_btn_ = nullptr;
 
-  NodeInput input_;
+    NodeInput input_;
 
 private slots:
-  void ShowButtonsFromKeyframeEnable(bool e);
+    void ShowButtonsFromKeyframeEnable(bool e);
 
-  void ToggleKeyframe(bool e);
+    void ToggleKeyframe(bool e);
 
-  void UpdateState();
+    void UpdateState();
 
-  void GoToPreviousKey();
+    void GoToPreviousKey();
 
-  void GoToNextKey();
+    void GoToNextKey();
 
-  void KeyframeEnableBtnClicked(bool e);
+    void KeyframeEnableBtnClicked(bool e);
 
-  void KeyframeEnableChanged(const NodeInput& input, bool e);
-
+    void KeyframeEnableChanged(const NodeInput& input, bool e);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEPARAMVIEWKEYFRAMECONTROL_H
+#endif  // NODEPARAMVIEWKEYFRAMECONTROL_H

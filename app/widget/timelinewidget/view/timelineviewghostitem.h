@@ -33,244 +33,145 @@ namespace arcvideo {
 /**
  * @brief A graphical representation of changes the user is making before they apply it
  */
-class TimelineViewGhostItem
-{
+class TimelineViewGhostItem {
 public:
-  enum DataType {
-    kAttachedBlock,
-    kReferenceBlock,
-    kAttachedFootage,
-    kGhostIsSliding,
-    kTrimIsARollEdit,
-    kTrimShouldBeIgnored
-  };
+    enum DataType {
+        kAttachedBlock,
+        kReferenceBlock,
+        kAttachedFootage,
+        kGhostIsSliding,
+        kTrimIsARollEdit,
+        kTrimShouldBeIgnored
+    };
 
-  struct AttachedFootage {
-    ViewerOutput* footage = nullptr;
-    QString output;
-  };
+    struct AttachedFootage {
+        ViewerOutput* footage = nullptr;
+        QString output;
+    };
 
-  TimelineViewGhostItem() :
-    track_adj_(0),
-    mode_(Timeline::kNone),
-    can_have_zero_length_(true),
-    can_move_tracks_(true),
-    invisible_(false)
-  {
-  }
+    TimelineViewGhostItem()
+        : track_adj_(0),
+          mode_(Timeline::kNone),
+          can_have_zero_length_(true),
+          can_move_tracks_(true),
+          invisible_(false) {}
 
-  static TimelineViewGhostItem* FromBlock(Block *block)
-  {
-    TimelineViewGhostItem* ghost = new TimelineViewGhostItem();
+    static TimelineViewGhostItem* FromBlock(Block* block) {
+        auto* ghost = new TimelineViewGhostItem();
 
-    ghost->SetIn(block->in());
-    ghost->SetOut(block->out());
-    if (dynamic_cast<ClipBlock*>(block)) {
-      ghost->SetMediaIn(static_cast<ClipBlock*>(block)->media_in());
+        ghost->SetIn(block->in());
+        ghost->SetOut(block->out());
+        if (dynamic_cast<ClipBlock*>(block)) {
+            ghost->SetMediaIn(static_cast<ClipBlock*>(block)->media_in());
+        }
+        ghost->SetTrack(block->track()->ToReference());
+        ghost->SetData(kAttachedBlock, QtUtils::PtrToValue(block));
+
+        if (dynamic_cast<ClipBlock*>(block)) {
+            ghost->can_have_zero_length_ = false;
+        } else if (dynamic_cast<TransitionBlock*>(block)) {
+            ghost->can_have_zero_length_ = false;
+        }
+
+        return ghost;
     }
-    ghost->SetTrack(block->track()->ToReference());
-    ghost->SetData(kAttachedBlock, QtUtils::PtrToValue(block));
 
-    if (dynamic_cast<ClipBlock*>(block)) {
-      ghost->can_have_zero_length_ = false;
-    } else if (dynamic_cast<TransitionBlock*>(block)) {
-      ghost->can_have_zero_length_ = false;
+    [[nodiscard]] bool CanHaveZeroLength() const { return can_have_zero_length_; }
+
+    [[nodiscard]] bool GetCanMoveTracks() const { return can_move_tracks_; }
+
+    void SetCanMoveTracks(bool e) { can_move_tracks_ = e; }
+
+    [[nodiscard]] const rational& GetIn() const { return in_; }
+
+    [[nodiscard]] const rational& GetOut() const { return out_; }
+
+    [[nodiscard]] const rational& GetMediaIn() const { return media_in_; }
+
+    [[nodiscard]] rational GetLength() const { return out_ - in_; }
+
+    [[nodiscard]] rational GetAdjustedLength() const { return GetAdjustedOut() - GetAdjustedIn(); }
+
+    void SetIn(const rational& in) { in_ = in; }
+
+    void SetOut(const rational& out) { out_ = out; }
+
+    void SetMediaIn(const rational& media_in) { media_in_ = media_in; }
+
+    void SetInAdjustment(const rational& in_adj) { in_adj_ = in_adj; }
+
+    void SetOutAdjustment(const rational& out_adj) { out_adj_ = out_adj; }
+
+    void SetTrackAdjustment(const int& track_adj) { track_adj_ = track_adj; }
+
+    void SetMediaInAdjustment(const rational& media_in_adj) { media_in_adj_ = media_in_adj; }
+
+    [[nodiscard]] const rational& GetInAdjustment() const { return in_adj_; }
+
+    [[nodiscard]] const rational& GetOutAdjustment() const { return out_adj_; }
+
+    [[nodiscard]] const rational& GetMediaInAdjustment() const { return media_in_adj_; }
+
+    [[nodiscard]] const int& GetTrackAdjustment() const { return track_adj_; }
+
+    [[nodiscard]] rational GetAdjustedIn() const { return in_ + in_adj_; }
+
+    [[nodiscard]] rational GetAdjustedOut() const { return out_ + out_adj_; }
+
+    [[nodiscard]] rational GetAdjustedMediaIn() const { return media_in_ + media_in_adj_; }
+
+    [[nodiscard]] Track::Reference GetAdjustedTrack() const {
+        return Track::Reference(track_.type(), track_.index() + track_adj_);
     }
 
-    return ghost;
-  }
+    [[nodiscard]] const Timeline::MovementMode& GetMode() const { return mode_; }
 
-  bool CanHaveZeroLength() const
-  {
-    return can_have_zero_length_;
-  }
+    void SetMode(const Timeline::MovementMode& mode) { mode_ = mode; }
 
-  bool GetCanMoveTracks() const
-  {
-    return can_move_tracks_;
-  }
+    [[nodiscard]] bool HasBeenAdjusted() const {
+        return GetInAdjustment() != 0 || GetOutAdjustment() != 0 || GetMediaInAdjustment() != 0 ||
+               GetTrackAdjustment() != 0;
+    }
 
-  void SetCanMoveTracks(bool e)
-  {
-    can_move_tracks_ = e;
-  }
+    [[nodiscard]] QVariant GetData(int key) const { return data_.value(key); }
 
-  const rational& GetIn() const
-  {
-    return in_;
-  }
+    void SetData(int key, const QVariant& value) { data_.insert(key, value); }
 
-  const rational& GetOut() const
-  {
-    return out_;
-  }
+    [[nodiscard]] const Track::Reference& GetTrack() const { return track_; }
 
-  const rational& GetMediaIn() const
-  {
-    return media_in_;
-  }
+    void SetTrack(const Track::Reference& track) { track_ = track; }
 
-  rational GetLength() const
-  {
-    return out_ - in_;
-  }
+    [[nodiscard]] bool IsInvisible() const { return invisible_; }
 
-  rational GetAdjustedLength() const
-  {
-    return GetAdjustedOut() - GetAdjustedIn();
-  }
-
-  void SetIn(const rational& in)
-  {
-    in_ = in;
-  }
-
-  void SetOut(const rational& out)
-  {
-    out_ = out;
-  }
-
-  void SetMediaIn(const rational& media_in)
-  {
-    media_in_ = media_in;
-  }
-
-  void SetInAdjustment(const rational& in_adj)
-  {
-    in_adj_ = in_adj;
-  }
-
-  void SetOutAdjustment(const rational& out_adj)
-  {
-    out_adj_ = out_adj;
-  }
-
-  void SetTrackAdjustment(const int& track_adj)
-  {
-    track_adj_ = track_adj;
-  }
-
-  void SetMediaInAdjustment(const rational& media_in_adj)
-  {
-    media_in_adj_ = media_in_adj;
-  }
-
-  const rational& GetInAdjustment() const
-  {
-    return in_adj_;
-  }
-
-  const rational& GetOutAdjustment() const
-  {
-    return out_adj_;
-  }
-
-  const rational& GetMediaInAdjustment() const
-  {
-    return media_in_adj_;
-  }
-
-  const int& GetTrackAdjustment() const
-  {
-    return track_adj_;
-  }
-
-  rational GetAdjustedIn() const
-  {
-    return in_ + in_adj_;
-  }
-
-  rational GetAdjustedOut() const
-  {
-    return out_ + out_adj_;
-  }
-
-  rational GetAdjustedMediaIn() const
-  {
-    return media_in_ + media_in_adj_;
-  }
-
-  Track::Reference GetAdjustedTrack() const
-  {
-    return Track::Reference(track_.type(), track_.index() + track_adj_);
-  }
-
-  const Timeline::MovementMode& GetMode() const
-  {
-    return mode_;
-  }
-
-  void SetMode(const Timeline::MovementMode& mode)
-  {
-    mode_ = mode;
-  }
-
-  bool HasBeenAdjusted() const
-  {
-    return GetInAdjustment() != 0
-        || GetOutAdjustment() != 0
-        || GetMediaInAdjustment() != 0
-        || GetTrackAdjustment() != 0;
-  }
-
-  QVariant GetData(int key) const
-  {
-    return data_.value(key);
-  }
-
-  void SetData(int key, const QVariant& value)
-  {
-    data_.insert(key, value);
-  }
-
-  const Track::Reference& GetTrack() const
-  {
-    return track_;
-  }
-
-  void SetTrack(const Track::Reference& track)
-  {
-    track_ = track;
-  }
-
-  bool IsInvisible() const
-  {
-    return invisible_;
-  }
-
-  void SetInvisible(bool e)
-  {
-    invisible_ = e;
-  }
+    void SetInvisible(bool e) { invisible_ = e; }
 
 protected:
 
 private:
-  rational in_;
-  rational out_;
-  rational media_in_;
+    rational in_;
+    rational out_;
+    rational media_in_;
 
-  rational in_adj_;
-  rational out_adj_;
-  rational media_in_adj_;
+    rational in_adj_;
+    rational out_adj_;
+    rational media_in_adj_;
 
-  int track_adj_;
+    int track_adj_;
 
-  Timeline::MovementMode mode_;
+    Timeline::MovementMode mode_;
 
-  bool can_have_zero_length_;
-  bool can_move_tracks_;
+    bool can_have_zero_length_;
+    bool can_move_tracks_;
 
-  Track::Reference track_;
+    Track::Reference track_;
 
-  QHash<int, QVariant> data_;
+    QHash<int, QVariant> data_;
 
-  bool invisible_;
-
+    bool invisible_;
 };
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::TimelineViewGhostItem::AttachedFootage)
 
-#endif // TIMELINEVIEWGHOSTITEM_H
+#endif  // TIMELINEVIEWGHOSTITEM_H

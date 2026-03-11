@@ -33,94 +33,91 @@
 
 namespace arcvideo {
 
-class OpenGLRenderer : public Renderer
-{
-  Q_OBJECT
+class OpenGLRenderer : public Renderer {
+    Q_OBJECT
+
 public:
-  OpenGLRenderer(QObject* parent = nullptr);
+    OpenGLRenderer(QObject* parent = nullptr);
 
-  virtual ~OpenGLRenderer() override;
+    ~OpenGLRenderer() override;
 
-  void Init(QOpenGLContext* existing_ctx);
+    void Init(QOpenGLContext* existing_ctx);
 
-  virtual bool Init() override;
+    bool Init() override;
 
-  virtual void PostDestroy() override;
+    void PostDestroy() override;
 
-  virtual void PostInit() override;
+    void PostInit() override;
 
-  virtual void ClearDestination(arcvideo::Texture *texture = nullptr, double r = 0.0, double g = 0.0, double b = 0.0, double a = 0.0) override;
+    void ClearDestination(arcvideo::Texture* texture = nullptr, double r = 0.0, double g = 0.0, double b = 0.0,
+                          double a = 0.0) override;
 
-  virtual QVariant CreateNativeShader(arcvideo::ShaderCode code) override;
+    QVariant CreateNativeShader(arcvideo::ShaderCode code) override;
 
-  virtual void DestroyNativeShader(QVariant shader) override;
+    void DestroyNativeShader(QVariant shader) override;
 
-  virtual void UploadToTexture(const QVariant &handle, const VideoParams &params, const void* data, int linesize) override;
+    void UploadToTexture(const QVariant& handle, const VideoParams& params, const void* data, int linesize) override;
 
-  virtual void DownloadFromTexture(const QVariant &handle, const VideoParams &params, void* data, int linesize) override;
+    void DownloadFromTexture(const QVariant& handle, const VideoParams& params, void* data, int linesize) override;
 
-  virtual void Flush() override;
+    void Flush() override;
 
-  virtual Color GetPixelFromTexture(arcvideo::Texture *texture, const QPointF &pt) override;
+    Color GetPixelFromTexture(arcvideo::Texture* texture, const QPointF& pt) override;
 
 protected:
-  virtual void Blit(QVariant shader,
-                    arcvideo::ShaderJob job,
-                    arcvideo::Texture* destination,
-                    arcvideo::VideoParams destination_params,
-                    bool clear_destination) override;
+    void Blit(QVariant shader, arcvideo::ShaderJob job, arcvideo::Texture* destination,
+              arcvideo::VideoParams destination_params, bool clear_destination) override;
 
-  virtual QVariant CreateNativeTexture(int width, int height, int depth, PixelFormat format, int channel_count, const void* data = nullptr, int linesize = 0) override;
+    QVariant CreateNativeTexture(int width, int height, int depth, PixelFormat format, int channel_count,
+                                 const void* data = nullptr, int linesize = 0) override;
 
-  virtual void DestroyNativeTexture(QVariant texture) override;
+    void DestroyNativeTexture(QVariant texture) override;
 
-  virtual void DestroyInternal() override;
+    void DestroyInternal() override;
 
 private:
-  static GLint GetInternalFormat(PixelFormat format, int channel_layout);
+    static GLint GetInternalFormat(PixelFormat format, int channel_layout);
 
-  static GLenum GetPixelType(PixelFormat format);
+    static GLenum GetPixelType(PixelFormat format);
 
-  static GLenum GetPixelFormat(int channel_count);
+    static GLenum GetPixelFormat(int channel_count);
 
-  void AttachTextureAsDestination(const QVariant &texture);
+    void AttachTextureAsDestination(const QVariant& texture);
 
-  void DetachTextureAsDestination();
+    void DetachTextureAsDestination();
 
-  void PrepareInputTexture(GLenum target, Texture::Interpolation interp);
+    void PrepareInputTexture(GLenum target, Texture::Interpolation interp);
 
-  void ClearDestinationInternal(double r = 0.0, double g = 0.0, double b = 0.0, double a = 0.0);
+    void ClearDestinationInternal(double r = 0.0, double g = 0.0, double b = 0.0, double a = 0.0);
 
-  GLuint CompileShader(GLenum type, const QString &code);
+    GLuint CompileShader(GLenum type, const QString& code);
 
-  QOpenGLContext* context_ = nullptr;
+    QOpenGLContext* context_ = nullptr;
 
-  QOpenGLFunctions* functions_ = nullptr;
+    QOpenGLFunctions* functions_ = nullptr;
 
-  QOffscreenSurface surface_;
+    QOffscreenSurface surface_;
 
-  GLuint framebuffer_;
+    GLuint framebuffer_;
 
-  struct TextureCacheKey {
-    int width;
-    int height;
-    int depth;
-    PixelFormat format;
-    int channel_count;
+    struct TextureCacheKey {
+        int width;
+        int height;
+        int depth;
+        PixelFormat format;
+        int channel_count;
 
-    bool operator==(const TextureCacheKey &rhs) const
-    {
-      return width == rhs.width && height == rhs.height && depth == rhs.depth
-          && format == rhs.format && channel_count == rhs.channel_count;
-    }
-  };
+        bool operator==(const TextureCacheKey& rhs) const {
+            return width == rhs.width && height == rhs.height && depth == rhs.depth && format == rhs.format &&
+                   channel_count == rhs.channel_count;
+        }
+    };
 
-  QMap<GLuint, TextureCacheKey> texture_params_;
+    QMap<GLuint, TextureCacheKey> texture_params_;
 
-  static const int kTextureCacheMaxSize;
-
+    static const int kTextureCacheMaxSize;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // OPENGLCONTEXT_H
+#endif  // OPENGLCONTEXT_H

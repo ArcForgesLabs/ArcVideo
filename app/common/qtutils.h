@@ -22,6 +22,7 @@
 #define QTVERSIONABSTRACTION_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QComboBox>
 #include <QDateTime>
 #include <QFileInfo>
@@ -33,66 +34,61 @@ namespace arcvideo {
 
 class QtUtils {
 public:
-  /**
-   * @brief Retrieves the width of a string according to certain QFontMetrics
-   *
-   * QFontMetrics::width() has been deprecatd in favor of QFontMetrics::horizontalAdvance(), but the
-   * latter was only introduced in 5.11+. This function wraps the latter for 5.11+ and the former for
-   * earlier.
-   */
-  static int QFontMetricsWidth(QFontMetrics fm, const QString& s);
+    /**
+     * @brief Retrieves the width of a string according to certain QFontMetrics
+     *
+     * QFontMetrics::width() has been deprecated in favor of QFontMetrics::horizontalAdvance(), but the
+     * latter was only introduced in 5.11+. This function wraps the latter for 5.11+ and the former for
+     * earlier.
+     */
+    static int QFontMetricsWidth(QFontMetrics fm, const QString& s);
 
-  static QFrame* CreateHorizontalLine();
+    static QFrame* CreateHorizontalLine();
 
-  static QFrame* CreateVerticalLine();
+    static QFrame* CreateVerticalLine();
 
-  static int MsgBox(QWidget *parent, QMessageBox::Icon icon, const QString& title, const QString& message, QMessageBox::StandardButtons buttons = QMessageBox::Ok);
+    static int MsgBox(QWidget* parent, QMessageBox::Icon icon, const QString& title, const QString& message,
+                      QMessageBox::StandardButtons buttons = QMessageBox::Ok);
 
-  static QDateTime GetCreationDate(const QFileInfo &info);
+    static QDateTime GetCreationDate(const QFileInfo& info);
 
-  static QString GetFormattedDateTime(const QDateTime &dt);
+    static QString GetFormattedDateTime(const QDateTime& dt);
 
-  static QStringList WordWrapString(const QString &s, const QFontMetrics &fm, int bounding_width);
+    static QStringList WordWrapString(const QString& s, const QFontMetrics& fm, int bounding_width);
 
-  static Qt::KeyboardModifiers FlipControlAndShiftModifiers(Qt::KeyboardModifiers e);
+    static Qt::KeyboardModifiers FlipControlAndShiftModifiers(Qt::KeyboardModifiers e);
 
-  static void SetComboBoxData(QComboBox *cb, int data);
-  static void SetComboBoxData(QComboBox *cb, const QString &data);
+    static void SetComboBoxData(QComboBox* cb, int data);
+    static void SetComboBoxData(QComboBox* cb, const QString& data);
 
-  template <typename T>
-  static T *GetParentOfType(const QObject *child)
-  {
-    QObject *t = child->parent();
+    template <typename T>
+    static T* GetParentOfType(const QObject* child) {
+        QObject* t = child->parent();
 
-    while (t) {
-      if (T *p = dynamic_cast<T*>(t)) {
-        return p;
-      }
-      t = t->parent();
+        while (t) {
+            if (T* p = dynamic_cast<T*>(t)) {
+                return p;
+            }
+            t = t->parent();
+        }
+
+        return nullptr;
     }
 
-    return nullptr;
-  }
+    static QColor toQColor(const foundation::Color& c);
 
-  static QColor toQColor(const foundation::Color &c);
+    /**
+     * @brief Convert a pointer to a value that can be sent between NodeParams
+     */
+    static QVariant PtrToValue(void* ptr) { return reinterpret_cast<quintptr>(ptr); }
 
-  /**
-   * @brief Convert a pointer to a value that can be sent between NodeParams
-   */
-  static QVariant PtrToValue(void* ptr)
-  {
-    return reinterpret_cast<quintptr>(ptr);
-  }
-
-  /**
-   * @brief Convert a NodeParam value to a pointer of any kind
-   */
-  template<class T>
-  static T* ValueToPtr(const QVariant &ptr)
-  {
-    return reinterpret_cast<T*>(ptr.value<quintptr>());
-  }
-
+    /**
+     * @brief Convert a NodeParam value to a pointer of any kind
+     */
+    template <class T>
+    static T* ValueToPtr(const QVariant& ptr) {
+        return reinterpret_cast<T*>(ptr.value<quintptr>());
+    }
 };
 
 namespace foundation {
@@ -100,9 +96,9 @@ namespace foundation {
 uint qHash(const foundation::rational& r, uint seed = 0);
 uint qHash(const foundation::TimeRange& r, uint seed = 0);
 
-}
+}  // namespace foundation
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::foundation::rational)
 Q_DECLARE_METATYPE(arcvideo::foundation::Color)
@@ -111,4 +107,4 @@ Q_DECLARE_METATYPE(arcvideo::foundation::Bezier)
 Q_DECLARE_METATYPE(arcvideo::foundation::AudioParams)
 Q_DECLARE_METATYPE(arcvideo::foundation::SampleBuffer)
 
-#endif // QTVERSIONABSTRACTION_H
+#endif  // QTVERSIONABSTRACTION_H

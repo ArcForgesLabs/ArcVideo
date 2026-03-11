@@ -26,29 +26,24 @@ namespace arcvideo {
 
 const Texture::Interpolation Texture::kDefaultInterpolation = Texture::kMipmappedLinear;
 
-Texture::~Texture()
-{
-  if (renderer_) {
-    renderer_->DestroyTexture(this);
-  }
+Texture::~Texture() {
+    if (renderer_) {
+        renderer_->DestroyTexture(this);
+    }
 
-  if (job_) {
     delete job_;
-  }
 }
 
-void Texture::Upload(void *data, int linesize)
-{
-  if (renderer_) {
-    renderer_->UploadToTexture(this->id(), this->params(), data, linesize);
-  }
+void Texture::Upload(void* data, int linesize) {
+    if (renderer_) {
+        renderer_->UploadToTexture(this->id(), this->params(), data, linesize);
+    }
 }
 
-void Texture::Download(void *data, int linesize)
-{
-  if (renderer_) {
-    renderer_->DownloadFromTexture(this->id(), this->params(), data, linesize);
-  }
+void Texture::Download(void* data, int linesize) {
+    if (renderer_) {
+        renderer_->DownloadFromTexture(this->id(), this->params(), data, linesize);
+    }
 }
 
-}
+}  // namespace arcvideo

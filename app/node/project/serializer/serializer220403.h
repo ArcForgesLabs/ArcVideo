@@ -25,83 +25,78 @@
 
 namespace arcvideo {
 
-class ProjectSerializer220403 : public ProjectSerializer
-{
+class ProjectSerializer220403 : public ProjectSerializer {
 public:
-  ProjectSerializer220403() = default;
+    ProjectSerializer220403() = default;
 
 protected:
-  virtual LoadData Load(Project *project, QXmlStreamReader *reader, LoadType load_type, void *reserved) const override;
+    LoadData Load(Project* project, QXmlStreamReader* reader, LoadType load_type, void* reserved) const override;
 
-  virtual uint Version() const override
-  {
-    return 220403;
-  }
+    [[nodiscard]] uint Version() const override { return 220403; }
 
 private:
-  struct XMLNodeData {
-    struct SerializedConnection {
-      NodeInput input;
-      quintptr output_node;
+    struct XMLNodeData {
+        struct SerializedConnection {
+            NodeInput input;
+            quintptr output_node;
+        };
+
+        struct BlockLink {
+            Node* block = nullptr;
+            quintptr link;
+        };
+
+        struct GroupLink {
+            NodeGroup* group;
+            QString passthrough_id;
+            quintptr input_node;
+            QString input_id;
+            int input_element;
+            QString custom_name;
+            InputFlags custom_flags;
+            NodeValue::Type data_type;
+            QVariant default_val;
+            QHash<QString, QVariant> custom_properties;
+        };
+
+        QHash<quintptr, Node*> node_ptrs;
+        QList<SerializedConnection> desired_connections;
+        QList<BlockLink> block_links;
+        QVector<GroupLink> group_input_links;
+        QHash<NodeGroup*, quintptr> group_output_links;
+        QHash<Node*, QUuid> node_uuids;
     };
 
-    struct BlockLink {
-      Node* block = nullptr;
-      quintptr link;
-    };
+    void LoadNode(Node* node, XMLNodeData& xml_node_data, QXmlStreamReader* reader) const;
 
-    struct GroupLink {
-      NodeGroup *group;
-      QString passthrough_id;
-      quintptr input_node;
-      QString input_id;
-      int input_element;
-      QString custom_name;
-      InputFlags custom_flags;
-      NodeValue::Type data_type;
-      QVariant default_val;
-      QHash<QString, QVariant> custom_properties;
-    };
+    static void LoadColorManager(QXmlStreamReader* reader, Project* project);
 
-    QHash<quintptr, Node*> node_ptrs;
-    QList<SerializedConnection> desired_connections;
-    QList<BlockLink> block_links;
-    QVector<GroupLink> group_input_links;
-    QHash<NodeGroup*, quintptr> group_output_links;
-    QHash<Node*, QUuid> node_uuids;
+    static void LoadProjectSettings(QXmlStreamReader* reader, Project* project);
 
-  };
+    void LoadInput(Node* node, QXmlStreamReader* reader, XMLNodeData& xml_node_data) const;
 
-  void LoadNode(Node *node, XMLNodeData &xml_node_data, QXmlStreamReader *reader) const;
+    void LoadImmediate(QXmlStreamReader* reader, Node* node, const QString& input, int element,
+                       XMLNodeData& xml_node_data) const;
 
-  void LoadColorManager(QXmlStreamReader* reader, Project *project) const;
+    void LoadKeyframe(QXmlStreamReader* reader, NodeKeyframe* key, NodeValue::Type data_type) const;
 
-  void LoadProjectSettings(QXmlStreamReader* reader, Project *project) const;
+    static bool LoadPosition(QXmlStreamReader* reader, quintptr* node_ptr, Node::Position* pos);
 
-  void LoadInput(Node *node, QXmlStreamReader* reader, XMLNodeData &xml_node_data) const;
+    static void PostConnect(const XMLNodeData& xml_node_data);
 
-  void LoadImmediate(QXmlStreamReader *reader, Node *node, const QString& input, int element, XMLNodeData& xml_node_data) const;
+    void LoadNodeCustom(QXmlStreamReader* reader, Node* node, XMLNodeData& xml_node_data) const;
 
-  void LoadKeyframe(QXmlStreamReader *reader, NodeKeyframe *key, NodeValue::Type data_type) const;
+    void LoadTimelinePoints(QXmlStreamReader* reader, ViewerOutput* viewer) const;
 
-  bool LoadPosition(QXmlStreamReader *reader, quintptr *node_ptr, Node::Position *pos) const;
+    static void LoadMarker(QXmlStreamReader* reader, TimelineMarker* marker);
 
-  void PostConnect(const XMLNodeData &xml_node_data) const;
+    static void LoadWorkArea(QXmlStreamReader* reader, TimelineWorkArea* workarea);
 
-  void LoadNodeCustom(QXmlStreamReader *reader, Node *node, XMLNodeData &xml_node_data) const;
+    void LoadMarkerList(QXmlStreamReader* reader, TimelineMarkerList* markers) const;
 
-  void LoadTimelinePoints(QXmlStreamReader *reader, ViewerOutput *viewer) const;
-
-  void LoadMarker(QXmlStreamReader *reader, TimelineMarker *marker) const;
-
-  void LoadWorkArea(QXmlStreamReader *reader, TimelineWorkArea *workarea) const;
-
-  void LoadMarkerList(QXmlStreamReader *reader, TimelineMarkerList *markers) const;
-
-  void LoadValueHint(Node::ValueHint *hint, QXmlStreamReader *reader) const;
-
+    static void LoadValueHint(Node::ValueHint* hint, QXmlStreamReader* reader);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SERIALIZER220403_H
+#endif  // SERIALIZER220403_H

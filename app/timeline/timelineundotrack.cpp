@@ -20,6 +20,4 @@
 
 #include "timelineundotrack.h"
 
-namespace arcvideo {
-
-}
+namespace arcvideo {}

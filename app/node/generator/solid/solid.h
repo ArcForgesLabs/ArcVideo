@@ -25,28 +25,27 @@
 
 namespace arcvideo {
 
-class SolidGenerator : public Node
-{
-  Q_OBJECT
+class SolidGenerator : public Node {
+    Q_OBJECT
+
 public:
-  SolidGenerator();
+    SolidGenerator();
 
-  NODE_DEFAULT_FUNCTIONS(SolidGenerator)
+    NODE_DEFAULT_FUNCTIONS(SolidGenerator)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
 
-  static const QString kColorInput;
-
+    static const QString kColorInput;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SOLIDGENERATOR_H
+#endif  // SOLIDGENERATOR_H

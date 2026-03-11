@@ -26,75 +26,68 @@ const QString DespillNode::kPreserveLuminanceInput = QStringLiteral("preserve_lu
 
 #define super Node
 
-DespillNode::DespillNode()
-{
-  AddInput(kTextureInput, NodeValue::kTexture, InputFlags(kInputFlagNotKeyframable));
+DespillNode::DespillNode() {
+    AddInput(kTextureInput, NodeValue::kTexture, InputFlags(kInputFlagNotKeyframable));
 
-  AddInput(kColorInput, NodeValue::kCombo, 0);
+    AddInput(kColorInput, NodeValue::kCombo, 0);
 
-  AddInput(kMethodInput, NodeValue::kCombo, 0);
+    AddInput(kMethodInput, NodeValue::kCombo, 0);
 
-  AddInput(kPreserveLuminanceInput, NodeValue::kBoolean, false);
+    AddInput(kPreserveLuminanceInput, NodeValue::kBoolean, false);
 
-  SetFlag(kVideoEffect);
-  SetEffectInput(kTextureInput);
+    SetFlag(kVideoEffect);
+    SetEffectInput(kTextureInput);
 }
 
-QString DespillNode::Name() const
-{
-  return tr("Despill");
+QString DespillNode::Name() const {
+    return tr("Despill");
 }
 
-QString DespillNode::id() const
-{
-  return QStringLiteral("org.arcvideoeditor.ArcVideo.despill");
+QString DespillNode::id() const {
+    return QStringLiteral("org.arcvideoeditor.ArcVideo.despill");
 }
 
-QVector<Node::CategoryID> DespillNode::Category() const
-{
-  return {kCategoryKeying};
+QVector<Node::CategoryID> DespillNode::Category() const {
+    return {kCategoryKeying};
 }
 
-QString DespillNode::Description() const
-{
-  return tr("Selection of simple depsill operations");
+QString DespillNode::Description() const {
+    return tr("Selection of simple depsill operations");
 }
 
-void DespillNode::Retranslate()
-{
-  super::Retranslate();
+void DespillNode::Retranslate() {
+    super::Retranslate();
 
-  SetInputName(kTextureInput, tr("Input"));
+    SetInputName(kTextureInput, tr("Input"));
 
-  SetInputName(kColorInput, tr("Key Color"));
-  SetComboBoxStrings(kColorInput, {tr("Green"), tr("Blue")});
+    SetInputName(kColorInput, tr("Key Color"));
+    SetComboBoxStrings(kColorInput, {tr("Green"), tr("Blue")});
 
-  SetInputName(kMethodInput, tr("Method"));
-  SetComboBoxStrings(kMethodInput, {tr("Average"), tr("Double Red Average"), tr("Double Average"), tr("Limit")});
+    SetInputName(kMethodInput, tr("Method"));
+    SetComboBoxStrings(kMethodInput, {tr("Average"), tr("Double Red Average"), tr("Double Average"), tr("Limit")});
 
-  SetInputName(kPreserveLuminanceInput, tr("Preserve Luminance"));
+    SetInputName(kPreserveLuminanceInput, tr("Preserve Luminance"));
 }
 
-ShaderCode DespillNode::GetShaderCode(const ShaderRequest &request) const {
-  Q_UNUSED(request)
-  return ShaderCode(FileFunctions::ReadFileAsString(":/shaders/despill.frag"));
+ShaderCode DespillNode::GetShaderCode(const ShaderRequest& request) const {
+    Q_UNUSED(request)
+    return {FileFunctions::ReadFileAsString(":/shaders/despill.frag")};
 }
 
-void DespillNode::Value(const NodeValueRow &value, const NodeGlobals &globals, NodeValueTable *table) const {
-  ShaderJob job;
-  job.Insert(value);
+void DespillNode::Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const {
+    ShaderJob job;
+    job.Insert(value);
 
-  // Set luma coefficients
-  double luma_coeffs[3] = {0.0f, 0.0f, 0.0f};
-  project()->color_manager()->GetDefaultLumaCoefs(luma_coeffs);
-  job.Insert(QStringLiteral("luma_coeffs"),
-                  NodeValue(NodeValue::kVec3, QVector3D(luma_coeffs[0], luma_coeffs[1], luma_coeffs[2])));
+    // Set luma coefficients
+    double luma_coeffs[3] = {0.0f, 0.0f, 0.0f};
+    project()->color_manager()->GetDefaultLumaCoefs(luma_coeffs);
+    job.Insert(QStringLiteral("luma_coeffs"),
+               NodeValue(NodeValue::kVec3, QVector3D(luma_coeffs[0], luma_coeffs[1], luma_coeffs[2])));
 
-  // If there's no texture, no need to run an operation
-  if (TexturePtr tex = job.Get(kTextureInput).toTexture()) {
-    table->Push(NodeValue::kTexture, tex->toJob(job), this);
-  }
+    // If there's no texture, no need to run an operation
+    if (TexturePtr tex = job.Get(kTextureInput).toTexture()) {
+        table->Push(NodeValue::kTexture, tex->toJob(job), this);
+    }
 }
 
-
-} // namespace arcvideo
+}  // namespace arcvideo

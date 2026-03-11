@@ -25,16 +25,15 @@
 
 namespace arcvideo {
 
-class SlipTool : public PointerTool
-{
+class SlipTool : public PointerTool {
 public:
-  SlipTool(TimelineWidget* parent);
+    SlipTool(TimelineWidget* parent);
 
 protected:
-  virtual void ProcessDrag(const TimelineCoordinate &mouse_pos) override;
-  virtual void FinishDrag(TimelineViewMouseEvent *event) override;
+    void ProcessDrag(const TimelineCoordinate& mouse_pos) override;
+    void FinishDrag(TimelineViewMouseEvent* event) override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SLIPTIMELINETOOL_H
+#endif  // SLIPTIMELINETOOL_H

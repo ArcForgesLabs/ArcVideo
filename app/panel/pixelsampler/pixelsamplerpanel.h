@@ -26,22 +26,21 @@
 
 namespace arcvideo {
 
-class PixelSamplerPanel : public PanelWidget
-{
-  Q_OBJECT
+class PixelSamplerPanel : public PanelWidget {
+    Q_OBJECT
+
 public:
-  PixelSamplerPanel();
+    PixelSamplerPanel();
 
 public slots:
-  void SetValues(const Color& reference, const Color& display);
+    void SetValues(const Color& reference, const Color& display);
 
 private:
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  ManagedPixelSamplerWidget* sampler_widget_ = nullptr;
-
+    ManagedPixelSamplerWidget* sampler_widget_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PIXELSAMPLERPANEL_H
+#endif  // PIXELSAMPLERPANEL_H

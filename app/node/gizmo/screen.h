@@ -25,14 +25,13 @@
 
 namespace arcvideo {
 
-class ScreenGizmo : public DraggableGizmo
-{
-  Q_OBJECT
-public:
-  explicit ScreenGizmo(QObject *parent = nullptr);
+class ScreenGizmo : public DraggableGizmo {
+    Q_OBJECT
 
+public:
+    explicit ScreenGizmo(QObject* parent = nullptr);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SCREENGIZMO_H
+#endif  // SCREENGIZMO_H

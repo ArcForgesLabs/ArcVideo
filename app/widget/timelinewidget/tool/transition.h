@@ -25,24 +25,23 @@
 
 namespace arcvideo {
 
-class TransitionTool : public AddTool
-{
+class TransitionTool : public AddTool {
 public:
-  TransitionTool(TimelineWidget* parent);
+    TransitionTool(TimelineWidget* parent);
 
-  virtual void HoverMove(TimelineViewMouseEvent *event) override;
+    void HoverMove(TimelineViewMouseEvent* event) override;
 
-  virtual void MousePress(TimelineViewMouseEvent *event) override;
-  virtual void MouseMove(TimelineViewMouseEvent *event) override;
-  virtual void MouseRelease(TimelineViewMouseEvent *event) override;
+    void MousePress(TimelineViewMouseEvent* event) override;
+    void MouseMove(TimelineViewMouseEvent* event) override;
+    void MouseRelease(TimelineViewMouseEvent* event) override;
 
 private:
-  bool GetBlocksAtCoord(const TimelineCoordinate &coord, ClipBlock **primary, ClipBlock **secondary, Timeline::MovementMode *trim_mode, rational *start_point);
+    bool GetBlocksAtCoord(const TimelineCoordinate& coord, ClipBlock** primary, ClipBlock** secondary,
+                          Timeline::MovementMode* trim_mode, rational* start_point);
 
-  bool dual_transition_;
-
+    bool dual_transition_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TRANSITIONTIMELINETOOL_H
+#endif  // TRANSITIONTIMELINETOOL_H

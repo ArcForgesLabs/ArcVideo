@@ -22,6 +22,7 @@
 #define TIMELINESCALEDOBJECT_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QWidget>
 
 #include "node/block/block.h"
@@ -31,64 +32,62 @@ namespace arcvideo {
 /**
  * @brief Provides base functionality for any object that uses time and scale
  */
-class TimeScaledObject
-{
+class TimeScaledObject {
 public:
-  TimeScaledObject();
-  virtual ~TimeScaledObject() = default;
+    TimeScaledObject();
+    virtual ~TimeScaledObject() = default;
 
-  void SetTimebase(const rational &timebase);
+    void SetTimebase(const rational& timebase);
 
-  const rational& timebase() const;
-  const double& timebase_dbl() const;
+    [[nodiscard]] const rational& timebase() const;
+    [[nodiscard]] const double& timebase_dbl() const;
 
-  static rational SceneToTime(const double &x, const double& x_scale, const rational& timebase, bool round = false);
-  static rational SceneToTimeNoGrid(const double &x, const double& x_scale);
+    static rational SceneToTime(const double& x, const double& x_scale, const rational& timebase, bool round = false);
+    static rational SceneToTimeNoGrid(const double& x, const double& x_scale);
 
-  const double& GetScale() const;
-  const double &GetMaximumScale() const { return max_scale_; }
+    [[nodiscard]] const double& GetScale() const;
+    [[nodiscard]] const double& GetMaximumScale() const { return max_scale_; }
 
-  void SetScale(const double& scale);
+    void SetScale(const double& scale);
 
-  void SetScaleFromDimensions(double viewport_width, double content_width);
-  static double CalculateScaleFromDimensions(double viewport_sz, double content_sz);
-  static double CalculatePaddingFromDimensionScale(double viewport_sz);
+    void SetScaleFromDimensions(double viewport_width, double content_width);
+    static double CalculateScaleFromDimensions(double viewport_sz, double content_sz);
+    static double CalculatePaddingFromDimensionScale(double viewport_sz);
 
-  double TimeToScene(const rational& time) const;
-  rational SceneToTime(const double &x, bool round = false) const;
-  rational SceneToTimeNoGrid(const double &x) const;
+    [[nodiscard]] double TimeToScene(const rational& time) const;
+    [[nodiscard]] rational SceneToTime(const double& x, bool round = false) const;
+    [[nodiscard]] rational SceneToTimeNoGrid(const double& x) const;
 
 protected:
-  virtual void TimebaseChangedEvent(const rational&){}
+    virtual void TimebaseChangedEvent(const rational&) {}
 
-  virtual void ScaleChangedEvent(const double&){}
+    virtual void ScaleChangedEvent(const double&) {}
 
-  void SetMaximumScale(const double& max);
+    void SetMaximumScale(const double& max);
 
-  void SetMinimumScale(const double& min);
+    void SetMinimumScale(const double& min);
 
 private:
-  rational timebase_;
+    rational timebase_;
 
-  double timebase_dbl_;
+    double timebase_dbl_;
 
-  double scale_;
+    double scale_;
 
-  double min_scale_;
+    double min_scale_;
 
-  double max_scale_;
+    double max_scale_;
 
-  static const int kCalculateDimensionsPadding;
-
+    static const int kCalculateDimensionsPadding;
 };
 
-class TimelineScaledWidget : public QWidget, public TimeScaledObject
-{
-  Q_OBJECT
+class TimelineScaledWidget : public QWidget, public TimeScaledObject {
+    Q_OBJECT
+
 public:
-  TimelineScaledWidget(QWidget* parent = nullptr);
+    TimelineScaledWidget(QWidget* parent = nullptr);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINESCALEDOBJECT_H
+#endif  // TIMELINESCALEDOBJECT_H

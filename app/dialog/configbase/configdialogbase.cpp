@@ -28,64 +28,57 @@
 
 namespace arcvideo {
 
-ConfigDialogBase::ConfigDialogBase(QWidget* parent) :
-  QDialog(parent)
-{
-  QVBoxLayout* layout = new QVBoxLayout(this);
+ConfigDialogBase::ConfigDialogBase(QWidget* parent) : QDialog(parent) {
+    auto* layout = new QVBoxLayout(this);
 
-  QSplitter* splitter = new QSplitter();
-  splitter->setChildrenCollapsible(false);
-  layout->addWidget(splitter);
+    auto* splitter = new QSplitter();
+    splitter->setChildrenCollapsible(false);
+    layout->addWidget(splitter);
 
-  list_widget_ = new QListWidget();
+    list_widget_ = new QListWidget();
 
-  preference_pane_stack_ = new QStackedWidget(this);
+    preference_pane_stack_ = new QStackedWidget(this);
 
-  splitter->addWidget(list_widget_);
-  splitter->addWidget(preference_pane_stack_);
+    splitter->addWidget(list_widget_);
+    splitter->addWidget(preference_pane_stack_);
 
-  QDialogButtonBox* button_box = new QDialogButtonBox(this);
-  button_box->setOrientation(Qt::Horizontal);
-  button_box->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+    auto* button_box = new QDialogButtonBox(this);
+    button_box->setOrientation(Qt::Horizontal);
+    button_box->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
 
-  layout->addWidget(button_box);
+    layout->addWidget(button_box);
 
-  connect(button_box, &QDialogButtonBox::accepted, this, &ConfigDialogBase::accept);
-  connect(button_box, &QDialogButtonBox::rejected, this, &ConfigDialogBase::reject);
+    connect(button_box, &QDialogButtonBox::accepted, this, &ConfigDialogBase::accept);
+    connect(button_box, &QDialogButtonBox::rejected, this, &ConfigDialogBase::reject);
 
-  connect(list_widget_,
-          &QListWidget::currentRowChanged,
-          preference_pane_stack_,
-          &QStackedWidget::setCurrentIndex);
+    connect(list_widget_, &QListWidget::currentRowChanged, preference_pane_stack_, &QStackedWidget::setCurrentIndex);
 }
 
-void ConfigDialogBase::accept()
-{
-  for (ConfigDialogBaseTab* tab : tabs_) {
-    if (!tab->Validate()) {
-      return;
+void ConfigDialogBase::accept() {
+    for (ConfigDialogBaseTab* tab : tabs_) {
+        if (!tab->Validate()) {
+            return;
+        }
     }
-  }
 
-  MultiUndoCommand* command = new MultiUndoCommand();
+    auto* command = new MultiUndoCommand();
 
-  for (ConfigDialogBaseTab* tab : tabs_) {
-    tab->Accept(command);
-  }
+    for (ConfigDialogBaseTab* tab : tabs_) {
+        tab->Accept(command);
+    }
 
-  Core::instance()->undo_stack()->push(command, tr("Set Configuration"));
+    Core::instance()->undo_stack()->push(command, tr("Set Configuration"));
 
-  AcceptEvent();
+    AcceptEvent();
 
-  QDialog::accept();
+    QDialog::accept();
 }
 
-void ConfigDialogBase::AddTab(ConfigDialogBaseTab *tab, const QString &title)
-{
-  list_widget_->addItem(title);
-  preference_pane_stack_->addWidget(tab);
+void ConfigDialogBase::AddTab(ConfigDialogBaseTab* tab, const QString& title) {
+    list_widget_->addItem(title);
+    preference_pane_stack_->addWidget(tab);
 
-  tabs_.append(tab);
+    tabs_.append(tab);
 }
 
-}
+}  // namespace arcvideo

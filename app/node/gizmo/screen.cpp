@@ -22,10 +22,6 @@
 
 namespace arcvideo {
 
-ScreenGizmo::ScreenGizmo(QObject *parent)
-  : DraggableGizmo{parent}
-{
+ScreenGizmo::ScreenGizmo(QObject* parent) : DraggableGizmo{parent} {}
 
-}
-
-}
+}  // namespace arcvideo

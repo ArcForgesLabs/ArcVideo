@@ -41,76 +41,74 @@ namespace arcvideo {
  * a valid Media object.
  */
 class FootagePropertiesDialog : public QDialog {
-  Q_OBJECT
+    Q_OBJECT
+
 public:
-  /**
-   * @brief MediaPropertiesDialog Constructor
-   *
-   * @param parent
-   *
-   * QWidget parent. Usually MainWindow or Project panel.
-   *
-   * @param i
-   *
-   * Media object to set properties for.
-   */
-  FootagePropertiesDialog(QWidget *parent, Footage* footage);
+    /**
+     * @brief MediaPropertiesDialog Constructor
+     *
+     * @param parent
+     *
+     * QWidget parent. Usually MainWindow or Project panel.
+     *
+     * @param i
+     *
+     * Media object to set properties for.
+     */
+    FootagePropertiesDialog(QWidget* parent, Footage* footage);
+
 private:
-  class StreamEnableChangeCommand : public UndoCommand {
-  public:
-    StreamEnableChangeCommand(Footage *footage,
-                              Track::Type type,
-                              int index_in_type,
-                              bool enabled);
+    class StreamEnableChangeCommand : public UndoCommand {
+    public:
+        StreamEnableChangeCommand(Footage* footage, Track::Type type, int index_in_type, bool enabled);
 
-    virtual Project* GetRelevantProject() const override;
+        [[nodiscard]] Project* GetRelevantProject() const override;
 
-  protected:
-    virtual void redo() override;
-    virtual void undo() override;
+    protected:
+        void redo() override;
+        void undo() override;
 
-  private:
-    Footage *footage_;
-    Track::Type type_;
-    int index_;
+    private:
+        Footage* footage_;
+        Track::Type type_;
+        int index_;
 
-    bool old_enabled_;
-    bool new_enabled_;
-  };
+        bool old_enabled_;
+        bool new_enabled_;
+    };
 
-  /**
-   * @brief Stack of widgets that changes based on whether the stream is a video or audio stream
-   */
-  QStackedWidget* stacked_widget_ = nullptr;
+    /**
+     * @brief Stack of widgets that changes based on whether the stream is a video or audio stream
+     */
+    QStackedWidget* stacked_widget_ = nullptr;
 
-  /**
-   * @brief Media name text field
-   */
-  QLineEdit* footage_name_field_ = nullptr;
+    /**
+     * @brief Media name text field
+     */
+    QLineEdit* footage_name_field_ = nullptr;
 
-  /**
-   * @brief Internal pointer to Media object (set in constructor)
-   */
-  Footage* footage_ = nullptr;
+    /**
+     * @brief Internal pointer to Media object (set in constructor)
+     */
+    Footage* footage_ = nullptr;
 
-  /**
-   * @brief A list widget for listing the tracks in Media
-   */
-  QListWidget* track_list = nullptr;
+    /**
+     * @brief A list widget for listing the tracks in Media
+     */
+    QListWidget* track_list = nullptr;
 
-  /**
-   * @brief Frame rate to conform to
-   */
-  QDoubleSpinBox* conform_fr = nullptr;
+    /**
+     * @brief Frame rate to conform to
+     */
+    QDoubleSpinBox* conform_fr = nullptr;
 
 private slots:
-  /**
-   * @brief Overridden accept function for saving the properties back to the Media class
-   */
-  void accept();
-
+    /**
+     * @brief Overridden accept function for saving the properties back to the Media class
+     */
+    void accept() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // MEDIAPROPERTIESDIALOG_H
+#endif  // MEDIAPROPERTIESDIALOG_H

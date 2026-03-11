@@ -32,4 +32,4 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 }
 
-#endif // CHANNELLAYOUT_H
+#endif  // CHANNELLAYOUT_H

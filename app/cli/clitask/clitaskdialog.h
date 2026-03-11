@@ -26,19 +26,18 @@
 
 namespace arcvideo {
 
-class CLITaskDialog : public CLIProgressDialog
-{
-  Q_OBJECT
-public:
-  CLITaskDialog(Task *task, QObject* parent = nullptr);
+class CLITaskDialog : public CLIProgressDialog {
+    Q_OBJECT
 
-  bool Run();
+public:
+    CLITaskDialog(Task* task, QObject* parent = nullptr);
+
+    bool Run();
 
 private:
-  Task* task_ = nullptr;
-
+    Task* task_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CLITASKDIALOG_H
+#endif  // CLITASKDIALOG_H

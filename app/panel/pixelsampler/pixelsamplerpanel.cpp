@@ -24,26 +24,23 @@
 
 namespace arcvideo {
 
-PixelSamplerPanel::PixelSamplerPanel() :
-  PanelWidget(QStringLiteral("PixelSamplerPanel"))
-{
-  sampler_widget_ = new ManagedPixelSamplerWidget(this);
-  SetWidgetWithPadding(sampler_widget_);
+PixelSamplerPanel::PixelSamplerPanel() : PanelWidget(QStringLiteral("PixelSamplerPanel")) {
+    sampler_widget_ = new ManagedPixelSamplerWidget(this);
+    SetWidgetWithPadding(sampler_widget_);
 
-  connect(this, &PixelSamplerPanel::isOpenChanged, Core::instance(), [](bool open){Core::instance()->RequestPixelSamplingInViewers(open);});
-  connect(Core::instance(), &Core::ColorPickerColorEmitted, this, &PixelSamplerPanel::SetValues);
+    connect(this, &PixelSamplerPanel::isOpenChanged, Core::instance(),
+            [](bool open) { Core::instance()->RequestPixelSamplingInViewers(open); });
+    connect(Core::instance(), &Core::ColorPickerColorEmitted, this, &PixelSamplerPanel::SetValues);
 
-  Retranslate();
+    Retranslate();
 }
 
-void PixelSamplerPanel::SetValues(const Color &reference, const Color &display)
-{
-  sampler_widget_->SetValues(reference, display);
+void PixelSamplerPanel::SetValues(const Color& reference, const Color& display) {
+    sampler_widget_->SetValues(reference, display);
 }
 
-void PixelSamplerPanel::Retranslate()
-{
-  SetTitle(tr("Pixel Sampler"));
+void PixelSamplerPanel::Retranslate() {
+    SetTitle(tr("Pixel Sampler"));
 }
 
-}
+}  // namespace arcvideo

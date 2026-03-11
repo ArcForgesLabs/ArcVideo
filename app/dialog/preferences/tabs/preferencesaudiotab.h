@@ -30,56 +30,55 @@
 
 namespace arcvideo {
 
-class PreferencesAudioTab : public ConfigDialogBaseTab
-{
-  Q_OBJECT
-public:
-  PreferencesAudioTab();
+class PreferencesAudioTab : public ConfigDialogBaseTab {
+    Q_OBJECT
 
-  virtual void Accept(MultiUndoCommand* command) override;
+public:
+    PreferencesAudioTab();
+
+    void Accept(MultiUndoCommand* command) override;
 
 private:
-  QComboBox* audio_backend_combobox_ = nullptr;
+    QComboBox* audio_backend_combobox_ = nullptr;
 
-  /**
-   * @brief UI widget for selecting the output audio device
-   */
-  QComboBox* audio_output_devices_ = nullptr;
+    /**
+     * @brief UI widget for selecting the output audio device
+     */
+    QComboBox* audio_output_devices_ = nullptr;
 
-  /**
-   * @brief UI widget for selecting the input audio device
-   */
-  QComboBox* audio_input_devices_ = nullptr;
+    /**
+     * @brief UI widget for selecting the input audio device
+     */
+    QComboBox* audio_input_devices_ = nullptr;
 
-  /**
-   * @brief UI widget for editing the recording channels
-   */
-  QComboBox* recording_combobox_ = nullptr;
+    /**
+     * @brief UI widget for editing the recording channels
+     */
+    QComboBox* recording_combobox_ = nullptr;
 
-  /**
-   * @brief Button that triggers a refresh of the available audio devices
-   */
-  QPushButton* refresh_devices_btn_ = nullptr;
+    /**
+     * @brief Button that triggers a refresh of the available audio devices
+     */
+    QPushButton* refresh_devices_btn_ = nullptr;
 
-  SampleRateComboBox *output_rate_combo_;
-  ChannelLayoutComboBox *output_ch_layout_combo_;
-  SampleFormatComboBox *output_fmt_combo_;
+    SampleRateComboBox* output_rate_combo_;
+    ChannelLayoutComboBox* output_ch_layout_combo_;
+    SampleFormatComboBox* output_fmt_combo_;
 
-  ExportFormatComboBox *record_format_combo_;
+    ExportFormatComboBox* record_format_combo_;
 
-  ExportAudioTab *record_options_;
+    ExportAudioTab* record_options_;
 
 private slots:
-  void RefreshBackends();
+    void RefreshBackends();
 
-  void RefreshDevices();
+    void RefreshDevices();
 
-  void HardRefreshBackends();
+    void HardRefreshBackends();
 
-  void AttemptToSetDevicesFromConfig();
-
+    void AttemptToSetDevicesFromConfig();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PREFERENCESAUDIOTAB_H
+#endif  // PREFERENCESAUDIOTAB_H

@@ -27,18 +27,17 @@ namespace arcvideo {
 
 // This may look weird, but QMainWindow is just a QWidget with a fancy layout that allows
 // for docking QDockWidgets
-class NodeParamViewDockArea : public QMainWindow
-{
-  Q_OBJECT
+class NodeParamViewDockArea : public QMainWindow {
+    Q_OBJECT
+
 public:
-  explicit NodeParamViewDockArea(QWidget *parent = nullptr);
+    explicit NodeParamViewDockArea(QWidget* parent = nullptr);
 
-  virtual QMenu *createPopupMenu() override;
+    QMenu* createPopupMenu() override;
 
-  void AddItem(QDockWidget *item);
-
+    void AddItem(QDockWidget* item);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEPARAMVIEWDOCKAREA_H
+#endif  // NODEPARAMVIEWDOCKAREA_H

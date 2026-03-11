@@ -1,0 +1,70 @@
+default_language_version:
+  python: python3
+
+exclude: |
+  (?x)^(
+    .*thirdparty/.*|
+    .*build/.*|
+    .*out/.*|
+    .*\.bin$
+  )$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-added-large-files
+        args: [--maxkb=2048]
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.5
+    hooks:
+      - id: ruff
+        name: "Python Linting (Ruff)"
+        args: [--fix, --exit-non-zero-on-fix]
+        files: (\.py|SConstruct|SCsub)$
+      - id: ruff-format
+        name: "Python Formatting (Ruff)"
+        files: (\.py|SConstruct|SCsub)$
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.19.1
+    hooks:
+      - id: mypy
+        name: "Python Type Check (Mypy)"
+        files: \.py$
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.2
+    hooks:
+      - id: codespell
+        exclude: (sse2neon\.h$|\.ts$|\.nsi$|appdata\.xml)
+        additional_dependencies: [tomli]
+        args: [-I, .codespell-ignore]
+
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v22.1.0
+    hooks:
+      - id: clang-format
+        files: \.(c|h|cpp|hpp|cc|hh|cxx|hxx|inc)$
+        exclude: sse2neon\.h$
+        types_or: [c++, c]
+
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+      - id: clang-tidy
+        files: \.(cpp|hpp|cc|hh|cxx|hxx)$
+        exclude: (sse2neon\.h$|tests/)
+        args: [--quiet, --use-color, -p=build, --extra-arg=-D__STDC_CONSTANT_MACROS]
+        types_or: [c++, c]
+        require_serial: false
+        additional_dependencies: [clang-tidy==22.1.0]

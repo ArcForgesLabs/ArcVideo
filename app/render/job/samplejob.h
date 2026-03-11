@@ -25,46 +25,34 @@
 
 namespace arcvideo {
 
-class SampleJob : public AcceleratedJob
-{
+class SampleJob : public AcceleratedJob {
 public:
-  SampleJob()
-  {
-  }
+    SampleJob() = default;
 
-  SampleJob(const TimeRange &time, const NodeValue& value)
-  {
-    samples_ = value.toSamples();
-    time_ = time;
-  }
+    SampleJob(const TimeRange& time, const NodeValue& value) {
+        samples_ = value.toSamples();
+        time_ = time;
+    }
 
-  SampleJob(const TimeRange &time, const QString& from, const NodeValueRow& row)
-  {
-    samples_ = row[from].toSamples();
-    time_ = time;
-  }
+    SampleJob(const TimeRange& time, const QString& from, const NodeValueRow& row) {
+        samples_ = row[from].toSamples();
+        time_ = time;
+    }
 
-  const SampleBuffer &samples() const
-  {
-    return samples_;
-  }
+    [[nodiscard]] const SampleBuffer& samples() const { return samples_; }
 
-  bool HasSamples() const
-  {
-    return samples_.is_allocated();
-  }
+    [[nodiscard]] bool HasSamples() const { return samples_.is_allocated(); }
 
-  const TimeRange &time() const { return time_; }
+    [[nodiscard]] const TimeRange& time() const { return time_; }
 
 private:
-  SampleBuffer samples_;
+    SampleBuffer samples_;
 
-  TimeRange time_;
-
+    TimeRange time_;
 };
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::SampleJob)
 
-#endif // SAMPLEJOB_H
+#endif  // SAMPLEJOB_H

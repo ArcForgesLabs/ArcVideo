@@ -28,44 +28,44 @@
 
 namespace arcvideo {
 
-class ColorSpaceChooser : public QGroupBox
-{
-  Q_OBJECT
+class ColorSpaceChooser : public QGroupBox {
+    Q_OBJECT
+
 public:
-  ColorSpaceChooser(ColorManager* color_manager, bool enable_input_field = true, bool enable_display_fields = true, QWidget* parent = nullptr);
+    ColorSpaceChooser(ColorManager* color_manager, bool enable_input_field = true, bool enable_display_fields = true,
+                      QWidget* parent = nullptr);
 
-  QString input() const;
-  ColorTransform output() const;
+    [[nodiscard]] QString input() const;
+    [[nodiscard]] ColorTransform output() const;
 
-  void set_input(const QString& s);
-  void set_output(const ColorTransform& out);
+    void set_input(const QString& s);
+    void set_output(const ColorTransform& out);
 
 signals:
-  void InputColorSpaceChanged(const QString& input);
+    void InputColorSpaceChanged(const QString& input);
 
-  void OutputColorSpaceChanged(const ColorTransform& out);
+    void OutputColorSpaceChanged(const ColorTransform& out);
 
-  void ColorSpaceChanged(const QString& input, const ColorTransform& out);
+    void ColorSpaceChanged(const QString& input, const ColorTransform& out);
 
 private slots:
-  void UpdateViews(const QString &display);
+    void UpdateViews(const QString& display);
 
 private:
-  ColorManager* color_manager_ = nullptr;
+    ColorManager* color_manager_ = nullptr;
 
-  QComboBox* input_combobox_ = nullptr;
+    QComboBox* input_combobox_ = nullptr;
 
-  QComboBox* display_combobox_ = nullptr;
+    QComboBox* display_combobox_ = nullptr;
 
-  QComboBox* view_combobox_ = nullptr;
+    QComboBox* view_combobox_ = nullptr;
 
-  QComboBox* look_combobox_ = nullptr;
+    QComboBox* look_combobox_ = nullptr;
 
 private slots:
-  void ComboBoxChanged();
-
+    void ComboBoxChanged();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORSPACECHOOSER_H
+#endif  // COLORSPACECHOOSER_H

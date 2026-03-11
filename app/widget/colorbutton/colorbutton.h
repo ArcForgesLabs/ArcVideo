@@ -28,42 +28,38 @@
 
 namespace arcvideo {
 
-class ColorButton : public QPushButton
-{
-  Q_OBJECT
-public:
-  ColorButton(ColorManager* color_manager, bool show_dialog_on_click, QWidget* parent = nullptr);
-  ColorButton(ColorManager* color_manager, QWidget* parent = nullptr) :
-    ColorButton(color_manager, true, parent)
-  {
-  }
+class ColorButton : public QPushButton {
+    Q_OBJECT
 
-  const ManagedColor& GetColor() const;
+public:
+    ColorButton(ColorManager* color_manager, bool show_dialog_on_click, QWidget* parent = nullptr);
+    ColorButton(ColorManager* color_manager, QWidget* parent = nullptr) : ColorButton(color_manager, true, parent) {}
+
+    [[nodiscard]] const ManagedColor& GetColor() const;
 
 public slots:
-  void SetColor(const ManagedColor& c);
+    void SetColor(const ManagedColor& c);
 
 signals:
-  void ColorChanged(const ManagedColor& c);
+    void ColorChanged(const ManagedColor& c);
 
 private slots:
-  void ShowColorDialog();
+    void ShowColorDialog();
 
-  void ColorDialogFinished(int e);
+    void ColorDialogFinished(int e);
 
 private:
-  void UpdateColor();
+    void UpdateColor();
 
-  ColorManager* color_manager_ = nullptr;
+    ColorManager* color_manager_ = nullptr;
 
-  ManagedColor color_;
+    ManagedColor color_;
 
-  ColorProcessorPtr color_processor_;
+    ColorProcessorPtr color_processor_;
 
-  bool dialog_open_;
-
+    bool dialog_open_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORBUTTON_H
+#endif  // COLORBUTTON_H

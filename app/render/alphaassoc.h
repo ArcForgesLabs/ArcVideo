@@ -23,12 +23,8 @@
 
 namespace arcvideo {
 
-enum AlphaAssociated {
-  kAlphaNone,
-  kAlphaUnassociated,
-  kAlphaAssociated
-};
+enum AlphaAssociated { kAlphaNone, kAlphaUnassociated, kAlphaAssociated };
 
 }
 
-#endif // ALPHAASSOC_H
+#endif  // ALPHAASSOC_H

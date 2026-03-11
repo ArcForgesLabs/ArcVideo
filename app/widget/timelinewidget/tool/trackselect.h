@@ -25,18 +25,16 @@
 
 namespace arcvideo {
 
-class TrackSelectTool : public PointerTool
-{
+class TrackSelectTool : public PointerTool {
 public:
-  TrackSelectTool(TimelineWidget *parent);
+    TrackSelectTool(TimelineWidget* parent);
 
-  virtual void MousePress(TimelineViewMouseEvent *event) override;
+    void MousePress(TimelineViewMouseEvent* event) override;
 
 private:
-  void SelectBlocksOnTrack(Track *track, TimelineViewMouseEvent *event, QVector<Block *> *blocks, bool forward);
-
+    void SelectBlocksOnTrack(Track* track, TimelineViewMouseEvent* event, QVector<Block*>* blocks, bool forward);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TRACKSELECTTOOL_H
+#endif  // TRACKSELECTTOOL_H

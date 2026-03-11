@@ -25,26 +25,24 @@
 
 namespace arcvideo {
 
-class DecimalSliderBase : public NumericSliderBase
-{
+class DecimalSliderBase : public NumericSliderBase {
 public:
-  DecimalSliderBase(QWidget* parent = nullptr);
+    DecimalSliderBase(QWidget* parent = nullptr);
 
-  int GetDecimalPlaces() const { return decimal_places_; }
-  void SetDecimalPlaces(int i);
+    [[nodiscard]] int GetDecimalPlaces() const { return decimal_places_; }
+    void SetDecimalPlaces(int i);
 
-  bool GetAutoTrimDecimalPlaces() const { return autotrim_decimal_places_; };
-  void SetAutoTrimDecimalPlaces(bool e);
+    [[nodiscard]] bool GetAutoTrimDecimalPlaces() const { return autotrim_decimal_places_; };
+    void SetAutoTrimDecimalPlaces(bool e);
 
-  static QString FloatToString(double val, int decimal_places, bool autotrim_decimal_places);
+    static QString FloatToString(double val, int decimal_places, bool autotrim_decimal_places);
 
 private:
-  int decimal_places_;
+    int decimal_places_;
 
-  bool autotrim_decimal_places_;
-
+    bool autotrim_decimal_places_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // DECIMALSLIDERBASE_H
+#endif  // DECIMALSLIDERBASE_H

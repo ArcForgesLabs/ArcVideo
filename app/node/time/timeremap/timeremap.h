@@ -25,34 +25,35 @@
 
 namespace arcvideo {
 
-class TimeRemapNode : public Node
-{
-  Q_OBJECT
+class TimeRemapNode : public Node {
+    Q_OBJECT
+
 public:
-  TimeRemapNode();
+    TimeRemapNode();
 
-  NODE_DEFAULT_FUNCTIONS(TimeRemapNode)
+    NODE_DEFAULT_FUNCTIONS(TimeRemapNode)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual TimeRange InputTimeAdjustment(const QString& input, int element, const TimeRange& input_time, bool clamp) const override;
-  virtual TimeRange OutputTimeAdjustment(const QString& input, int element, const TimeRange& input_time) const override;
+    [[nodiscard]] TimeRange InputTimeAdjustment(const QString& input, int element, const TimeRange& input_time,
+                                                bool clamp) const override;
+    [[nodiscard]] TimeRange OutputTimeAdjustment(const QString& input, int element,
+                                                 const TimeRange& input_time) const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kTimeInput;
-  static const QString kInputInput;
+    static const QString kTimeInput;
+    static const QString kInputInput;
 
 private:
-  rational GetRemappedTime(const rational& input) const;
-
+    [[nodiscard]] rational GetRemappedTime(const rational& input) const;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMEREMAPNODE_H
+#endif  // TIMEREMAPNODE_H

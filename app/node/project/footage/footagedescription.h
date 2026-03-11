@@ -21,134 +21,106 @@
 #ifndef FOOTAGEDESCRIPTION_H
 #define FOOTAGEDESCRIPTION_H
 
+#include <algorithm>
+#include <utility>
+
 #include "node/output/track/track.h"
 #include "render/subtitleparams.h"
 #include "render/videoparams.h"
 
 namespace arcvideo {
 
-class FootageDescription
-{
+class FootageDescription {
 public:
-  FootageDescription(const QString& decoder = QString()) :
-    decoder_(decoder),
-    total_stream_count_(0)
-  {
-  }
+    // NOLINTNEXTLINE(performance-unnecessary-value-param) - intentional move
+    FootageDescription(QString decoder = QString()) : decoder_(std::move(decoder)), total_stream_count_(0) {}
 
-  bool IsValid() const
-  {
-    return !decoder_.isEmpty() && (!video_streams_.isEmpty() || !audio_streams_.isEmpty() || !subtitle_streams_.isEmpty());
-  }
-
-  const QString& decoder() const
-  {
-    return decoder_;
-  }
-
-  void AddVideoStream(const VideoParams& video_params)
-  {
-    Q_ASSERT(!HasStreamIndex(video_params.stream_index()));
-
-    video_streams_.append(video_params);
-  }
-
-  void AddAudioStream(const AudioParams& audio_params)
-  {
-    Q_ASSERT(!HasStreamIndex(audio_params.stream_index()));
-
-    audio_streams_.append(audio_params);
-  }
-
-  void AddSubtitleStream(const SubtitleParams& sub_params)
-  {
-    Q_ASSERT(!HasStreamIndex(sub_params.stream_index()));
-
-    subtitle_streams_.append(sub_params);
-  }
-
-  Track::Type GetTypeOfStream(int index)
-  {
-    if (StreamIsVideo(index)) {
-      return Track::kVideo;
-    } else if (StreamIsAudio(index)) {
-      return Track::kAudio;
-    } else if (StreamIsSubtitle(index)) {
-      return Track::kSubtitle;
-    } else {
-      return Track::kNone;
-    }
-  }
-
-  bool StreamIsVideo(int index) const
-  {
-    for (const VideoParams& vp : video_streams_) {
-      if (vp.stream_index() == index) {
-        return true;
-      }
+    [[nodiscard]] bool IsValid() const {
+        return !decoder_.isEmpty() &&
+               (!video_streams_.isEmpty() || !audio_streams_.isEmpty() || !subtitle_streams_.isEmpty());
     }
 
-    return false;
-  }
+    [[nodiscard]] const QString& decoder() const { return decoder_; }
 
-  bool StreamIsAudio(int index) const
-  {
-    for (const AudioParams& ap : audio_streams_) {
-      if (ap.stream_index() == index) {
-        return true;
-      }
+    void AddVideoStream(const VideoParams& video_params) {
+        Q_ASSERT(!HasStreamIndex(video_params.stream_index()));
+
+        video_streams_.append(video_params);
     }
 
-    return false;
-  }
+    void AddAudioStream(const AudioParams& audio_params) {
+        Q_ASSERT(!HasStreamIndex(audio_params.stream_index()));
 
-  bool StreamIsSubtitle(int index) const
-  {
-    for (const SubtitleParams& sp : subtitle_streams_) {
-      if (sp.stream_index() == index) {
-        return true;
-      }
+        audio_streams_.append(audio_params);
     }
 
-    return false;
-  }
+    void AddSubtitleStream(const SubtitleParams& sub_params) {
+        Q_ASSERT(!HasStreamIndex(sub_params.stream_index()));
 
-  bool HasStreamIndex(int index) const
-  {
-    return StreamIsVideo(index) || StreamIsAudio(index) || StreamIsSubtitle(index);
-  }
+        subtitle_streams_.append(sub_params);
+    }
 
-  int GetStreamCount() const { return total_stream_count_; }
-  void SetStreamCount(int s) { total_stream_count_ = s; }
+    [[nodiscard]] Track::Type GetTypeOfStream(int index) const {
+        if (StreamIsVideo(index)) {
+            return Track::kVideo;
+        } else if (StreamIsAudio(index)) {
+            return Track::kAudio;
+        } else if (StreamIsSubtitle(index)) {
+            return Track::kSubtitle;
+        } else {
+            return Track::kNone;
+        }
+    }
 
-  bool Load(const QString& filename);
+    [[nodiscard]] bool StreamIsVideo(int index) const {
+        return std::ranges::any_of(video_streams_,
+                                   [index](const VideoParams& vp) { return vp.stream_index() == index; });
+    }
 
-  bool Save(const QString& filename) const;
+    [[nodiscard]] bool StreamIsAudio(int index) const {
+        return std::ranges::any_of(audio_streams_,
+                                   [index](const AudioParams& ap) { return ap.stream_index() == index; });
+    }
 
-  const QVector<VideoParams>& GetVideoStreams() const { return video_streams_; }
-  QVector<VideoParams>& GetVideoStreams() { return video_streams_; }
+    [[nodiscard]] bool StreamIsSubtitle(int index) const {
+        return std::ranges::any_of(subtitle_streams_,
+                                   [index](const SubtitleParams& sp) { return sp.stream_index() == index; });
+    }
 
-  const QVector<AudioParams>& GetAudioStreams() const { return audio_streams_; }
-  QVector<AudioParams>& GetAudioStreams() { return audio_streams_; }
+    [[nodiscard]] bool HasStreamIndex(int index) const {
+        return StreamIsVideo(index) || StreamIsAudio(index) || StreamIsSubtitle(index);
+    }
 
-  const QVector<SubtitleParams>& GetSubtitleStreams() const { return subtitle_streams_; }
-  QVector<SubtitleParams>& GetSubtitleStreams() { return subtitle_streams_; }
+    [[nodiscard]] int GetStreamCount() const { return total_stream_count_; }
+    void SetStreamCount(int s) { total_stream_count_ = s; }
+
+    bool Load(const QString& filename);
+
+    [[nodiscard]] bool Save(const QString& filename) const;
+
+    [[nodiscard]] const QVector<VideoParams>& GetVideoStreams() const { return video_streams_; }
+    QVector<VideoParams>& GetVideoStreams() { return video_streams_; }
+
+    [[nodiscard]] const QVector<AudioParams>& GetAudioStreams() const { return audio_streams_; }
+    QVector<AudioParams>& GetAudioStreams() { return audio_streams_; }
+
+    [[nodiscard]] const QVector<SubtitleParams>& GetSubtitleStreams() const { return subtitle_streams_; }
+    QVector<SubtitleParams>& GetSubtitleStreams() { return subtitle_streams_; }
 
 private:
-  static constexpr unsigned kFootageMetaVersion = 6;
+    static constexpr unsigned kFootageMetaVersion = 6;
 
-  QString decoder_;
+    QString decoder_;
 
-  QVector<VideoParams> video_streams_;
+    QVector<VideoParams> video_streams_;
 
-  QVector<AudioParams> audio_streams_;
+    QVector<AudioParams> audio_streams_;
 
-  QVector<SubtitleParams> subtitle_streams_;
+    QVector<SubtitleParams> subtitle_streams_;
 
-  int total_stream_count_;
-
+    int total_stream_count_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FOOTAGEDESCRIPTION_H
+#endif  // FOOTAGEDESCRIPTION_H

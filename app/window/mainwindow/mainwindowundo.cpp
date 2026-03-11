@@ -25,24 +25,20 @@
 
 namespace arcvideo {
 
-void OpenSequenceCommand::redo()
-{
-  Core::instance()->main_window()->OpenSequence(sequence_);
+void OpenSequenceCommand::redo() {
+    Core::instance()->main_window()->OpenSequence(sequence_);
 }
 
-void OpenSequenceCommand::undo()
-{
-  Core::instance()->main_window()->CloseSequence(sequence_);
+void OpenSequenceCommand::undo() {
+    Core::instance()->main_window()->CloseSequence(sequence_);
 }
 
-void CloseSequenceCommand::redo()
-{
-  Core::instance()->main_window()->CloseSequence(sequence_);
+void CloseSequenceCommand::redo() {
+    Core::instance()->main_window()->CloseSequence(sequence_);
 }
 
-void CloseSequenceCommand::undo()
-{
-  Core::instance()->main_window()->OpenSequence(sequence_);
+void CloseSequenceCommand::undo() {
+    Core::instance()->main_window()->OpenSequence(sequence_);
 }
 
-}
+}  // namespace arcvideo

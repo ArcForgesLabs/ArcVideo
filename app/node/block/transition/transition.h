@@ -27,83 +27,79 @@ namespace arcvideo {
 
 class ClipBlock;
 
-class TransitionBlock : public Block
-{
-  Q_OBJECT
+class TransitionBlock : public Block {
+    Q_OBJECT
+
 public:
-  TransitionBlock();
+    TransitionBlock();
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  rational in_offset() const;
-  rational out_offset() const;
+    [[nodiscard]] rational in_offset() const;
+    [[nodiscard]] rational out_offset() const;
 
-  /**
-   * @brief Return the "middle point" of the transition, relative to the transition
-   *
-   * Used to calculate in/out offsets.
-   *
-   * 0 means the center of the transition is right in the middle and the in and out offsets will
-   * be equal.
-   */
-  rational offset_center() const;
-  void set_offset_center(const rational &r);
+    /**
+     * @brief Return the "middle point" of the transition, relative to the transition
+     *
+     * Used to calculate in/out offsets.
+     *
+     * 0 means the center of the transition is right in the middle and the in and out offsets will
+     * be equal.
+     */
+    [[nodiscard]] rational offset_center() const;
+    void set_offset_center(const rational& r);
 
-  void set_offsets_and_length(const rational &in_offset, const rational &out_offset);
+    void set_offsets_and_length(const rational& in_offset, const rational& out_offset);
 
-  bool is_dual_transition() const
-  {
-    return connected_out_block() && connected_in_block();
-  }
+    [[nodiscard]] bool is_dual_transition() const { return connected_out_block() && connected_in_block(); }
 
-  Block* connected_out_block() const;
-  Block* connected_in_block() const;
+    [[nodiscard]] Block* connected_out_block() const;
+    [[nodiscard]] Block* connected_in_block() const;
 
-  double GetTotalProgress(const double &time) const;
-  double GetOutProgress(const double &time) const;
-  double GetInProgress(const double &time) const;
+    [[nodiscard]] double GetTotalProgress(const double& time) const;
+    [[nodiscard]] double GetOutProgress(const double& time) const;
+    [[nodiscard]] double GetInProgress(const double& time) const;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  virtual void InvalidateCache(const TimeRange& range, const QString& from, int element = -1, InvalidateCacheOptions options = InvalidateCacheOptions()) override;
+    void InvalidateCache(const TimeRange& range, const QString& from, int element = -1,
+                         InvalidateCacheOptions options = InvalidateCacheOptions()) override;
 
-  static const QString kOutBlockInput;
-  static const QString kInBlockInput;
-  static const QString kCurveInput;
-  static const QString kCenterInput;
+    static const QString kOutBlockInput;
+    static const QString kInBlockInput;
+    static const QString kCurveInput;
+    static const QString kCenterInput;
 
 protected:
-  virtual void ShaderJobEvent(const NodeValueRow &value, ShaderJob *job) const {}
+    virtual void ShaderJobEvent(const NodeValueRow& value, ShaderJob* job) const {}
 
-  virtual void SampleJobEvent(const SampleBuffer &from_samples, const SampleBuffer &to_samples, SampleBuffer &out_samples, double time_in) const {}
+    virtual void SampleJobEvent(const SampleBuffer& from_samples, const SampleBuffer& to_samples,
+                                SampleBuffer& out_samples, double time_in) const {}
 
-  double TransformCurve(double linear) const;
+    [[nodiscard]] double TransformCurve(double linear) const;
 
-  virtual void InputConnectedEvent(const QString& input, int element, Node *output) override;
+    void InputConnectedEvent(const QString& input, int element, Node* output) override;
 
-  virtual void InputDisconnectedEvent(const QString& input, int element, Node *output) override;
+    void InputDisconnectedEvent(const QString& input, int element, Node* output) override;
 
-  virtual TimeRange InputTimeAdjustment(const QString& input, int element, const TimeRange& input_time, bool clamp) const override;
+    [[nodiscard]] TimeRange InputTimeAdjustment(const QString& input, int element, const TimeRange& input_time,
+                                                bool clamp) const override;
 
-  virtual TimeRange OutputTimeAdjustment(const QString& input, int element, const TimeRange& input_time) const override;
+    [[nodiscard]] TimeRange OutputTimeAdjustment(const QString& input, int element,
+                                                 const TimeRange& input_time) const override;
 
 private:
-  enum CurveType {
-    kLinear,
-    kExponential,
-    kLogarithmic
-  };
+    enum CurveType { kLinear, kExponential, kLogarithmic };
 
-  double GetInternalTransitionTime(const double &time) const;
+    [[nodiscard]] static double GetInternalTransitionTime(const double& time);
 
-  void InsertTransitionTimes(AcceleratedJob* job, const double& time) const;
+    void InsertTransitionTimes(AcceleratedJob* job, const double& time) const;
 
-  ClipBlock* connected_out_block_ = nullptr;
+    ClipBlock* connected_out_block_ = nullptr;
 
-  ClipBlock* connected_in_block_ = nullptr;
-
+    ClipBlock* connected_in_block_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TRANSITIONBLOCK_H
+#endif  // TRANSITIONBLOCK_H

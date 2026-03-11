@@ -29,37 +29,36 @@
 
 namespace arcvideo {
 
-class ElapsedCounterWidget : public QWidget
-{
-  Q_OBJECT
+class ElapsedCounterWidget : public QWidget {
+    Q_OBJECT
+
 public:
-  ElapsedCounterWidget(QWidget* parent = nullptr);
+    ElapsedCounterWidget(QWidget* parent = nullptr);
 
-  void SetProgress(double d);
-
-public slots:
-  void Start(qint64 start_time);
-  void Start();
+    void SetProgress(double d);
 
 public slots:
-  void Stop();
+    void Start(qint64 start_time);
+    void Start();
+
+public slots:
+    void Stop();
 
 private:
-  QLabel* elapsed_lbl_ = nullptr;
+    QLabel* elapsed_lbl_ = nullptr;
 
-  QLabel* remaining_lbl_ = nullptr;
+    QLabel* remaining_lbl_ = nullptr;
 
-  double last_progress_;
+    double last_progress_;
 
-  QTimer elapsed_timer_;
+    QTimer elapsed_timer_;
 
-  qint64 start_time_;
+    qint64 start_time_;
 
 private slots:
-  void UpdateTimers();
-
+    void UpdateTimers();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // ELAPSEDCOUNTERWIDGET_H
+#endif  // ELAPSEDCOUNTERWIDGET_H

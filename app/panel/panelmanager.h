@@ -21,8 +21,8 @@
 #ifndef PANELFOCUSMANAGER_H
 #define PANELFOCUSMANAGER_H
 
-#include <QObject>
 #include <QList>
+#include <QObject>
 
 #include "panel/panel.h"
 
@@ -42,151 +42,145 @@ namespace arcvideo {
  * PanelFocusManager's SLOT(FocusChanged()) connects to the QApplication instance's SIGNAL(focusChanged()) so that
  * it always knows when focus has changed within the application.
  */
-class PanelManager : public QObject
-{
-  Q_OBJECT
+class PanelManager : public QObject {
+    Q_OBJECT
+
 public:
-  PanelManager(QObject* parent = nullptr);
+    PanelManager(QObject* parent = nullptr);
 
-  /**
-   * @brief Destroy all panels
-   *
-   * Should only be used on application exit to cleanly free all panels.
-   */
-  void DeleteAllPanels();
+    /**
+     * @brief Destroy all panels
+     *
+     * Should only be used on application exit to cleanly free all panels.
+     */
+    void DeleteAllPanels();
 
-  /**
-   * @brief Get a list of all existing panels
-   *
-   * Panels are ordered from most recently focused to least recently focused.
-   */
-  const QList<PanelWidget*>& panels();
+    /**
+     * @brief Get a list of all existing panels
+     *
+     * Panels are ordered from most recently focused to least recently focused.
+     */
+    const QList<PanelWidget*>& panels();
 
-  /**
-   * @brief Return the currently focused widget, or nullptr if nothing is focused
-   *
-   * This result == CurrentlyFocused() if HoverFocus is true and panel is hovered
-   */
-  PanelWidget* CurrentlyFocused(bool enable_hover = true) const;
+    /**
+     * @brief Return the currently focused widget, or nullptr if nothing is focused
+     *
+     * This result == CurrentlyFocused() if HoverFocus is true and panel is hovered
+     */
+    [[nodiscard]] PanelWidget* CurrentlyFocused(bool enable_hover = true) const;
 
-  /**
-   * @brief Return the widget that the mouse is currently hovering over, or nullptr if nothing is hovered over
-   */
-  PanelWidget* CurrentlyHovered() const;
+    /**
+     * @brief Return the widget that the mouse is currently hovering over, or nullptr if nothing is hovered over
+     */
+    [[nodiscard]] PanelWidget* CurrentlyHovered() const;
 
-  PanelWidget *GetPanelWithName(const QString &name) const;
+    [[nodiscard]] PanelWidget* GetPanelWithName(const QString& name) const;
 
-  template<class T>
-  /**
-   * @brief Get most recently focused panel of a certain type
-   *
-   * @return
-   *
-   * The most recently focused panel of the specified type, or nullptr if none exists
-   */
-  T* MostRecentlyFocused();
+    template <class T>
+    /**
+     * @brief Get most recently focused panel of a certain type
+     *
+     * @return
+     *
+     * The most recently focused panel of the specified type, or nullptr if none exists
+     */
+    T* MostRecentlyFocused();
 
-  /**
-   * @brief Create PanelManager singleton instance
-   */
-  static void CreateInstance();
+    /**
+     * @brief Create PanelManager singleton instance
+     */
+    static void CreateInstance();
 
-  /**
-   * @brief Destroy PanelManager singleton instance
-   *
-   * If no PanelManager was created, this is a no-op.
-   */
-  static void DestroyInstance();
+    /**
+     * @brief Destroy PanelManager singleton instance
+     *
+     * If no PanelManager was created, this is a no-op.
+     */
+    static void DestroyInstance();
 
-  /**
-   * @brief Access to PanelManager singleton instance
-   */
-  static PanelManager* instance();
+    /**
+     * @brief Access to PanelManager singleton instance
+     */
+    static PanelManager* instance();
 
-  template<class T>
-  /**
-   * @brief Get a list of panels of a certain type
-   */
-  QList<T*> GetPanelsOfType();
+    template <class T>
+    /**
+     * @brief Get a list of panels of a certain type
+     */
+    QList<T*> GetPanelsOfType();
 
-  /**
-   * @brief Panel should call this upon construction so it can be kept track of
-   */
-  void RegisterPanel(PanelWidget *panel);
+    /**
+     * @brief Panel should call this upon construction so it can be kept track of
+     */
+    void RegisterPanel(PanelWidget* panel);
 
-  /**
-   * @brief Panel should call this upon destruction so no invalid pointers will be kept for it
-   */
-  void UnregisterPanel(PanelWidget *panel);
+    /**
+     * @brief Panel should call this upon destruction so no invalid pointers will be kept for it
+     */
+    void UnregisterPanel(PanelWidget* panel);
 
-  void SetSuppressChangedSignal(bool e)
-  {
-    suppress_changed_signal_ = e;
-  }
+    void SetSuppressChangedSignal(bool e) { suppress_changed_signal_ = e; }
 
 public slots:
-  /**
-   * @brief Connect this to a QApplication's SIGNAL(focusChanged())
-   *
-   * Interprets focus information to determine the currently focused panel
-   */
-  void FocusChanged(QWidget* old, QWidget* now);
+    /**
+     * @brief Connect this to a QApplication's SIGNAL(focusChanged())
+     *
+     * Interprets focus information to determine the currently focused panel
+     */
+    void FocusChanged(QWidget* old, QWidget* now);
 
 signals:
-  /**
-   * @brief Signal emitted when the currently focused panel changes
-   */
-  void FocusedPanelChanged(PanelWidget* panel);
+    /**
+     * @brief Signal emitted when the currently focused panel changes
+     */
+    void FocusedPanelChanged(PanelWidget* panel);
 
 private:
-  /**
-   * @brief History array for traversing through (see MostRecentlyFocused())
-   */
-  QList<PanelWidget*> focus_history_;
+    /**
+     * @brief History array for traversing through (see MostRecentlyFocused())
+     */
+    QList<PanelWidget*> focus_history_;
 
-  /**
-   * @brief PanelManager singleton instance
-   */
-  static PanelManager* instance_;
+    /**
+     * @brief PanelManager singleton instance
+     */
+    static PanelManager* instance_;
 
-  bool suppress_changed_signal_;
-
+    bool suppress_changed_signal_;
 };
 
-template<class T>
-T* PanelManager::MostRecentlyFocused()
-{
-  T* cast_test = nullptr;
+template <class T>
+T* PanelManager::MostRecentlyFocused() {
+    T* cast_test = nullptr;
 
-  for (int i=0;i<focus_history_.size();i++) {
-    cast_test = dynamic_cast<T*>(focus_history_.at(i));
+    for (auto i : focus_history_) {
+        cast_test = dynamic_cast<T*>(i);
 
-    if (cast_test != nullptr) {
-      return cast_test;
+        if (cast_test != nullptr) {
+            return cast_test;
+        }
     }
-  }
 
-  return nullptr;
+    return nullptr;
 }
 
-template<class T>
-QList<T*> PanelManager::GetPanelsOfType()
-{
-  QList<T*> panels;
+template <class T>
+QList<T*> PanelManager::GetPanelsOfType() {
+    QList<T*> panels;
 
-  T* cast_test = nullptr;
+    T* cast_test = nullptr;
 
-  for (PanelWidget* panel : focus_history_) {
-    cast_test = dynamic_cast<T*>(panel);
+    for (PanelWidget* panel : focus_history_) {
+        cast_test = dynamic_cast<T*>(panel);
 
-    if (cast_test) {
-      panels.append(cast_test);
+        if (cast_test) {
+            panels.append(cast_test);
+        }
     }
-  }
 
-  return panels;
+    return panels;
 }
 
-}
+}  // namespace arcvideo
 
-#endif // PANELFOCUSMANAGER_H
+#endif  // PANELFOCUSMANAGER_H

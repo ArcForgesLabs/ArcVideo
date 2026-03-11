@@ -31,341 +31,251 @@ class Node;
 class NodeKeyframe;
 
 enum InputFlag : uint64_t {
-  /// By default, inputs are keyframable, connectable, and NOT arrays
-  kInputFlagNormal = 0x0,
-  kInputFlagArray = 0x1,
-  kInputFlagNotKeyframable = 0x2,
-  kInputFlagNotConnectable = 0x4,
-  kInputFlagHidden = 0x8,
-  kInputFlagIgnoreInvalidations = 0x10,
+    /// By default, inputs are keyframable, connectable, and NOT arrays
+    kInputFlagNormal = 0x0,
+    kInputFlagArray = 0x1,
+    kInputFlagNotKeyframable = 0x2,
+    kInputFlagNotConnectable = 0x4,
+    kInputFlagHidden = 0x8,
+    kInputFlagIgnoreInvalidations = 0x10,
 
-  kInputFlagStatic = kInputFlagNotKeyframable | kInputFlagNotConnectable
+    kInputFlagStatic = kInputFlagNotKeyframable | kInputFlagNotConnectable
 };
 
 class InputFlags {
 public:
-  explicit InputFlags()
-  {
-    f_ = kInputFlagNormal;
-  }
+    explicit InputFlags() { f_ = kInputFlagNormal; }
 
-  explicit InputFlags(uint64_t flags)
-  {
-    f_ = flags;
-  }
+    explicit InputFlags(uint64_t flags) { f_ = flags; }
 
-  InputFlags operator|(const InputFlags &f) const
-  {
-    InputFlags i = *this;
-    i |= f;
-    return i;
-  }
+    InputFlags operator|(const InputFlags& f) const {
+        InputFlags i = *this;
+        i |= f;
+        return i;
+    }
 
-  InputFlags operator|(const InputFlag &f) const
-  {
-    InputFlags i = *this;
-    i |= f;
-    return i;
-  }
+    InputFlags operator|(const InputFlag& f) const {
+        InputFlags i = *this;
+        i |= f;
+        return i;
+    }
 
-  InputFlags operator|(const uint64_t &f) const
-  {
-    InputFlags i = *this;
-    i |= f;
-    return i;
-  }
+    InputFlags operator|(const uint64_t& f) const {
+        InputFlags i = *this;
+        i |= f;
+        return i;
+    }
 
-  InputFlags &operator|=(const InputFlags &f)
-  {
-    f_ |= f.f_;
-    return *this;
-  }
+    InputFlags& operator|=(const InputFlags& f) {
+        f_ |= f.f_;
+        return *this;
+    }
 
-  InputFlags &operator|=(const InputFlag &f)
-  {
-    f_ |= f;
-    return *this;
-  }
+    InputFlags& operator|=(const InputFlag& f) {
+        f_ |= f;
+        return *this;
+    }
 
-  InputFlags &operator|=(const uint64_t &f)
-  {
-    f_ |= f;
-    return *this;
-  }
+    InputFlags& operator|=(const uint64_t& f) {
+        f_ |= f;
+        return *this;
+    }
 
-  InputFlags operator&(const InputFlags &f) const
-  {
-    InputFlags i = *this;
-    i &= f;
-    return i;
-  }
+    InputFlags operator&(const InputFlags& f) const {
+        InputFlags i = *this;
+        i &= f;
+        return i;
+    }
 
-  InputFlags operator&(const InputFlag &f) const
-  {
-    InputFlags i = *this;
-    i &= f;
-    return i;
-  }
+    InputFlags operator&(const InputFlag& f) const {
+        InputFlags i = *this;
+        i &= f;
+        return i;
+    }
 
-  InputFlags operator&(const uint64_t &f) const
-  {
-    InputFlags i = *this;
-    i &= f;
-    return i;
-  }
+    InputFlags operator&(const uint64_t& f) const {
+        InputFlags i = *this;
+        i &= f;
+        return i;
+    }
 
-  InputFlags &operator&=(const InputFlags &f)
-  {
-    f_ &= f.f_;
-    return *this;
-  }
+    InputFlags& operator&=(const InputFlags& f) {
+        f_ &= f.f_;
+        return *this;
+    }
 
-  InputFlags &operator&=(const InputFlag &f)
-  {
-    f_ &= f;
-    return *this;
-  }
+    InputFlags& operator&=(const InputFlag& f) {
+        f_ &= f;
+        return *this;
+    }
 
-  InputFlags &operator&=(const uint64_t &f)
-  {
-    f_ &= f;
-    return *this;
-  }
+    InputFlags& operator&=(const uint64_t& f) {
+        f_ &= f;
+        return *this;
+    }
 
-  InputFlags operator~() const
-  {
-    InputFlags i = *this;
-    i.f_ = ~i.f_;
-    return i;
-  }
+    InputFlags operator~() const {
+        InputFlags i = *this;
+        i.f_ = ~i.f_;
+        return i;
+    }
 
-  inline operator bool() const
-  {
-    return f_;
-  }
+    inline operator bool() const { return f_; }
 
-  inline const uint64_t &value() const
-  {
-    return f_;
-  }
+    [[nodiscard]] inline const uint64_t& value() const { return f_; }
 
 private:
-  uint64_t f_;
-
+    uint64_t f_;
 };
 
 struct NodeInputPair {
-  bool operator==(const NodeInputPair& rhs) const
-  {
-    return node == rhs.node && input == rhs.input;
-  }
+    bool operator==(const NodeInputPair& rhs) const { return node == rhs.node && input == rhs.input; }
 
-  Node* node = nullptr;
-  QString input;
+    Node* node = nullptr;
+    QString input;
 };
 
 /**
  * @brief Defines a Node input
  */
-class NodeInput
-{
+class NodeInput {
 public:
-  NodeInput()
-  {
-    node_ = nullptr;
-    element_ = -1;
-  }
-
-  NodeInput(Node* n, const QString& i, int e = -1)
-  {
-    node_ = n;
-    input_ = i;
-    element_ = e;
-  }
-
-  bool operator==(const NodeInput& rhs) const
-  {
-    return node_ == rhs.node_ && input_ == rhs.input_ && element_ == rhs.element_;
-  }
-
-  bool operator!=(const NodeInput& rhs) const
-  {
-    return !(*this == rhs);
-  }
-
-  bool operator<(const NodeInput& rhs) const
-  {
-    if (node_ != rhs.node_) {
-      return node_ < rhs.node_;
+    NodeInput() {
+        node_ = nullptr;
+        element_ = -1;
     }
 
-    if (input_ != rhs.input_) {
-      return input_ < rhs.input_;
+    NodeInput(Node* n, const QString& i, int e = -1) {
+        node_ = n;
+        input_ = i;
+        element_ = e;
     }
 
-    return element_ < rhs.element_;
-  }
+    bool operator==(const NodeInput& rhs) const {
+        return node_ == rhs.node_ && input_ == rhs.input_ && element_ == rhs.element_;
+    }
 
-  Node* node() const
-  {
-    return node_;
-  }
+    bool operator!=(const NodeInput& rhs) const { return !(*this == rhs); }
 
-  NodeInputPair input_pair() const
-  {
-    return {node_, input_};
-  }
+    bool operator<(const NodeInput& rhs) const {
+        if (node_ != rhs.node_) {
+            return node_ < rhs.node_;
+        }
 
-  const QString& input() const
-  {
-    return input_;
-  }
+        if (input_ != rhs.input_) {
+            return input_ < rhs.input_;
+        }
 
-  const int &element() const
-  {
-    return element_;
-  }
+        return element_ < rhs.element_;
+    }
 
-  void set_node(Node *node)
-  {
-    node_ = node;
-  }
+    [[nodiscard]] Node* node() const { return node_; }
 
-  void set_input(const QString &input)
-  {
-    input_ = input;
-  }
+    [[nodiscard]] NodeInputPair input_pair() const { return {node_, input_}; }
 
-  void set_element(int e)
-  {
-    element_ = e;
-  }
+    [[nodiscard]] const QString& input() const { return input_; }
 
-  QString name() const;
+    [[nodiscard]] const int& element() const { return element_; }
 
-  bool IsValid() const
-  {
-    return node_ && !input_.isEmpty() && element_ >= -1;
-  }
+    void set_node(Node* node) { node_ = node; }
 
-  bool IsHidden() const;
+    void set_input(const QString& input) { input_ = input; }
 
-  bool IsConnected() const;
+    void set_element(int e) { element_ = e; }
 
-  bool IsKeyframing() const;
+    [[nodiscard]] QString name() const;
 
-  bool IsArray() const;
+    [[nodiscard]] bool IsValid() const { return node_ && !input_.isEmpty() && element_ >= -1; }
 
-  InputFlags GetFlags() const;
+    [[nodiscard]] bool IsHidden() const;
 
-  QString GetInputName() const;
+    [[nodiscard]] bool IsConnected() const;
 
-  Node *GetConnectedOutput() const;
+    [[nodiscard]] bool IsKeyframing() const;
 
-  NodeValue::Type GetDataType() const;
+    [[nodiscard]] bool IsArray() const;
 
-  QVariant GetDefaultValue() const;
+    [[nodiscard]] InputFlags GetFlags() const;
 
-  QStringList GetComboBoxStrings() const;
+    [[nodiscard]] QString GetInputName() const;
 
-  QVariant GetProperty(const QString& key) const;
-  QHash<QString, QVariant> GetProperties() const;
+    [[nodiscard]] Node* GetConnectedOutput() const;
 
-  QVariant GetValueAtTime(const rational& time) const;
+    [[nodiscard]] NodeValue::Type GetDataType() const;
 
-  NodeKeyframe *GetKeyframeAtTimeOnTrack(const rational& time, int track) const;
+    [[nodiscard]] QVariant GetDefaultValue() const;
 
-  QVariant GetSplitDefaultValueForTrack(int track) const;
+    [[nodiscard]] QStringList GetComboBoxStrings() const;
 
-  int GetArraySize() const;
+    [[nodiscard]] QVariant GetProperty(const QString& key) const;
+    [[nodiscard]] QHash<QString, QVariant> GetProperties() const;
 
-  void Reset()
-  {
-    *this = NodeInput();
-  }
+    [[nodiscard]] QVariant GetValueAtTime(const rational& time) const;
+
+    [[nodiscard]] NodeKeyframe* GetKeyframeAtTimeOnTrack(const rational& time, int track) const;
+
+    [[nodiscard]] QVariant GetSplitDefaultValueForTrack(int track) const;
+
+    [[nodiscard]] int GetArraySize() const;
+
+    void Reset() { *this = NodeInput(); }
 
 private:
-  Node* node_ = nullptr;
-  QString input_;
-  int element_;
-
+    Node* node_ = nullptr;
+    QString input_;
+    int element_;
 };
 
 struct InputElementPair {
-  QString input;
-  int element;
+    QString input;
+    int element;
 
-  bool operator<(const InputElementPair &rhs) const
-  {
-    if (input != rhs.input) {
-      return input < rhs.input;
+    bool operator<(const InputElementPair& rhs) const {
+        if (input != rhs.input) {
+            return input < rhs.input;
+        }
+
+        return element < rhs.element;
     }
 
-    return element < rhs.element;
-  }
+    bool operator==(const InputElementPair& rhs) const { return input == rhs.input && element == rhs.element; }
 
-  bool operator==(const InputElementPair &rhs) const
-  {
-    return input == rhs.input && element == rhs.element;
-  }
-
-  bool operator!=(const InputElementPair &rhs) const
-  {
-    return !(*this == rhs);
-  }
+    bool operator!=(const InputElementPair& rhs) const { return !(*this == rhs); }
 };
 
 class NodeKeyframeTrackReference {
 public:
-  NodeKeyframeTrackReference()
-  {
-    track_ = -1;
-  }
+    NodeKeyframeTrackReference() { track_ = -1; }
 
-  NodeKeyframeTrackReference(const NodeInput& input, int track = 0)
-  {
-    input_ = input;
-    track_ = track;
-  }
+    NodeKeyframeTrackReference(const NodeInput& input, int track = 0) {
+        input_ = input;
+        track_ = track;
+    }
 
-  bool operator==(const NodeKeyframeTrackReference& rhs) const
-  {
-    return input_ == rhs.input_ && track_ == rhs.track_;
-  }
+    bool operator==(const NodeKeyframeTrackReference& rhs) const {
+        return input_ == rhs.input_ && track_ == rhs.track_;
+    }
 
-  const NodeInput& input() const
-  {
-    return input_;
-  }
+    [[nodiscard]] const NodeInput& input() const { return input_; }
 
-  int track() const
-  {
-    return track_;
-  }
+    [[nodiscard]] int track() const { return track_; }
 
-  bool IsValid() const
-  {
-    return input_.IsValid() && track_ >= 0;
-  }
+    [[nodiscard]] bool IsValid() const { return input_.IsValid() && track_ >= 0; }
 
-  void Reset()
-  {
-    *this = NodeKeyframeTrackReference();
-  }
+    void Reset() { *this = NodeKeyframeTrackReference(); }
 
 private:
-  NodeInput input_;
-  int track_;
-
+    NodeInput input_;
+    int track_;
 };
 
 uint qHash(const NodeInputPair& i);
 uint qHash(const NodeInput& i);
 uint qHash(const NodeKeyframeTrackReference& i);
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::NodeInput)
 Q_DECLARE_METATYPE(arcvideo::NodeKeyframeTrackReference)
 
-#endif // NODEPARAM_H
+#endif  // NODEPARAM_H

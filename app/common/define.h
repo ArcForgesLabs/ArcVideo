@@ -34,7 +34,7 @@ const int kProjectIconSizeDefault = 64;
 
 const int kBytesInGigabyte = 1073741824;
 
-}
+}  // namespace arcvideo
 
 #define MACRO_NAME_AS_STR(s) #s
 #define MACRO_VAL_AS_STR(s) MACRO_NAME_AS_STR(s)
@@ -48,16 +48,18 @@ const int kBytesInGigabyte = 1073741824;
  * use our own functions for portability.
  */
 
-#define DISABLE_COPY(Class) \
-  Class(const Class &) = delete;\
-  Class &operator=(const Class &) = delete;
+// NOLINTNEXTLINE(bugprone-macro-parentheses)
+#define DISABLE_COPY(Class)       \
+    Class(const Class&) = delete; \
+    Class& operator=(const Class&) = delete;
 
-#define DISABLE_MOVE(Class) \
-  Class(Class &&) = delete; \
-  Class &operator=(Class &&) = delete;
+// NOLINTNEXTLINE(bugprone-macro-parentheses)
+#define DISABLE_MOVE(Class)  \
+    Class(Class&&) = delete; \
+    Class& operator=(Class&&) = delete;
 
 #define DISABLE_COPY_MOVE(Class) \
-  DISABLE_COPY(Class) \
-  DISABLE_MOVE(Class)
+    DISABLE_COPY(Class)          \
+    DISABLE_MOVE(Class)
 
-#endif // ARCVIDEOCOMMONDEFINE_H
+#endif  // ARCVIDEOCOMMONDEFINE_H

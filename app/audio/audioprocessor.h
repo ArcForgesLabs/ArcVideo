@@ -21,8 +21,9 @@
 #ifndef AUDIOPROCESSOR_H
 #define AUDIOPROCESSOR_H
 
-#include <inttypes.h>
 #include <arcvideo/foundation/foundation.h>
+#include <inttypes.h>
+
 #include <QByteArray>
 
 extern "C" {
@@ -35,50 +36,48 @@ namespace arcvideo {
 
 using namespace foundation;
 
-class AudioProcessor
-{
+class AudioProcessor {
 public:
-  AudioProcessor();
+    AudioProcessor();
 
-  ~AudioProcessor();
+    ~AudioProcessor();
 
-  DISABLE_COPY_MOVE(AudioProcessor)
+    DISABLE_COPY_MOVE(AudioProcessor)
 
-  bool Open(const AudioParams &from, const AudioParams &to, double tempo = 1.0);
+    bool Open(const AudioParams& from, const AudioParams& to, double tempo = 1.0);
 
-  void Close();
+    void Close();
 
-  bool IsOpen() const { return filter_graph_; }
+    [[nodiscard]] bool IsOpen() const { return filter_graph_; }
 
-  using Buffer = QVector<QByteArray>;
-  int Convert(float **in, int nb_in_samples, AudioProcessor::Buffer *output);
+    using Buffer = QVector<QByteArray>;
+    int Convert(float** in, int nb_in_samples, AudioProcessor::Buffer* output);
 
-  void Flush();
+    void Flush();
 
-  const AudioParams &from() const { return from_; }
-  const AudioParams &to() const { return to_; }
+    [[nodiscard]] const AudioParams& from() const { return from_; }
+    [[nodiscard]] const AudioParams& to() const { return to_; }
 
 private:
-  static AVFilterContext* CreateTempoFilter(AVFilterGraph *graph, AVFilterContext *link, const double& tempo);
+    static AVFilterContext* CreateTempoFilter(AVFilterGraph* graph, AVFilterContext* link, const double& tempo);
 
-  AVFilterGraph* filter_graph_ = nullptr;
+    AVFilterGraph* filter_graph_ = nullptr;
 
-  AVFilterContext* buffersrc_ctx_ = nullptr;
+    AVFilterContext* buffersrc_ctx_ = nullptr;
 
-  AVFilterContext* buffersink_ctx_ = nullptr;
+    AVFilterContext* buffersink_ctx_ = nullptr;
 
-  AudioParams from_;
-  AVSampleFormat from_fmt_;
+    AudioParams from_;
+    AVSampleFormat from_fmt_;
 
-  AudioParams to_;
-  AVSampleFormat to_fmt_;
+    AudioParams to_;
+    AVSampleFormat to_fmt_;
 
-  AVFrame *in_frame_;
+    AVFrame* in_frame_;
 
-  AVFrame *out_frame_;
-
+    AVFrame* out_frame_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // AUDIOPROCESSOR_H
+#endif  // AUDIOPROCESSOR_H

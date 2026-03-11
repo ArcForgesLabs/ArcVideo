@@ -31,126 +31,116 @@
 
 namespace arcvideo {
 
-class VideoStreamProperties : public StreamProperties
-{
-  Q_OBJECT
+class VideoStreamProperties : public StreamProperties {
+    Q_OBJECT
+
 public:
-  VideoStreamProperties(Footage *footage, int video_index);
+    VideoStreamProperties(Footage* footage, int video_index);
 
-  virtual void Accept(MultiUndoCommand *parent) override;
+    void Accept(MultiUndoCommand* parent) override;
 
-  virtual bool SanityCheck() override;
+    bool SanityCheck() override;
 
 private:
-  Footage *footage_;
+    Footage* footage_;
 
-  int video_index_;
-
-  /**
-   * @brief Setting for associated/premultiplied alpha
-   */
-  QCheckBox* video_premultiply_alpha_ = nullptr;
-
-  /**
-   * @brief Setting for this media's color space
-   */
-  QComboBox* video_color_space_ = nullptr;
-
-  /**
-   * @brief Setting for this streams's color range
-   */
-  QComboBox *color_range_combo_;
-
-  /**
-   * @brief Setting for video interlacing
-   */
-  InterlacedComboBox* video_interlace_combo_ = nullptr;
-
-  /**
-   * @brief Sets the start index for image sequences
-   */
-  IntegerSlider* imgseq_start_time_ = nullptr;
-
-  /**
-   * @brief Sets the end index for image sequences
-   */
-  IntegerSlider* imgseq_end_time_ = nullptr;
-
-  /**
-   * @brief Sets the frame rate for image sequences
-   */
-  FrameRateComboBox* imgseq_frame_rate_ = nullptr;
-
-  /**
-   * @brief Sets the pixel aspect ratio of the stream
-   */
-  PixelAspectRatioComboBox* pixel_aspect_combo_ = nullptr;
-
-  class VideoStreamChangeCommand : public UndoCommand {
-  public:
-    VideoStreamChangeCommand(Footage *footage,
-                             int video_index,
-                             bool premultiplied,
-                             QString colorspace,
-                             VideoParams::Interlacing interlacing,
-                             const rational& pixel_ar,
-                             VideoParams::ColorRange range);
-
-    virtual Project* GetRelevantProject() const override;
-
-  protected:
-    virtual void redo() override;
-    virtual void undo() override;
-
-  private:
-    Footage *footage_;
     int video_index_;
 
-    bool new_premultiplied_;
-    QString new_colorspace_;
-    VideoParams::Interlacing new_interlacing_;
-    rational new_pixel_ar_;
-    VideoParams::ColorRange new_range_;
+    /**
+     * @brief Setting for associated/premultiplied alpha
+     */
+    QCheckBox* video_premultiply_alpha_ = nullptr;
 
-    bool old_premultiplied_;
-    QString old_colorspace_;
-    VideoParams::Interlacing old_interlacing_;
-    rational old_pixel_ar_;
-    VideoParams::ColorRange old_range_;
+    /**
+     * @brief Setting for this media's color space
+     */
+    QComboBox* video_color_space_ = nullptr;
 
-  };
+    /**
+     * @brief Setting for this streams's color range
+     */
+    QComboBox* color_range_combo_;
 
-  class ImageSequenceChangeCommand : public UndoCommand {
-  public:
-    ImageSequenceChangeCommand(Footage *footage,
-                               int video_index,
-                               int64_t start_index,
-                               int64_t duration,
-                               const rational& frame_rate);
+    /**
+     * @brief Setting for video interlacing
+     */
+    InterlacedComboBox* video_interlace_combo_ = nullptr;
 
-    virtual Project* GetRelevantProject() const override;
+    /**
+     * @brief Sets the start index for image sequences
+     */
+    IntegerSlider* imgseq_start_time_ = nullptr;
 
-  protected:
-    virtual void redo() override;
-    virtual void undo() override;
+    /**
+     * @brief Sets the end index for image sequences
+     */
+    IntegerSlider* imgseq_end_time_ = nullptr;
 
-  private:
-    Footage *footage_;
-    int video_index_;
+    /**
+     * @brief Sets the frame rate for image sequences
+     */
+    FrameRateComboBox* imgseq_frame_rate_ = nullptr;
 
-    int64_t new_start_index_;
-    int64_t old_start_index_;
+    /**
+     * @brief Sets the pixel aspect ratio of the stream
+     */
+    PixelAspectRatioComboBox* pixel_aspect_combo_ = nullptr;
 
-    int64_t new_duration_;
-    int64_t old_duration_;
+    class VideoStreamChangeCommand : public UndoCommand {
+    public:
+        VideoStreamChangeCommand(Footage* footage, int video_index, bool premultiplied, QString colorspace,
+                                 VideoParams::Interlacing interlacing, const rational& pixel_ar,
+                                 VideoParams::ColorRange range);
 
-    rational new_frame_rate_;
-    rational old_frame_rate_;
+        [[nodiscard]] Project* GetRelevantProject() const override;
 
-  };
+    protected:
+        void redo() override;
+        void undo() override;
 
+    private:
+        Footage* footage_;
+        int video_index_;
+
+        bool new_premultiplied_;
+        QString new_colorspace_;
+        VideoParams::Interlacing new_interlacing_;
+        rational new_pixel_ar_;
+        VideoParams::ColorRange new_range_;
+
+        bool old_premultiplied_;
+        QString old_colorspace_;
+        VideoParams::Interlacing old_interlacing_;
+        rational old_pixel_ar_;
+        VideoParams::ColorRange old_range_;
+    };
+
+    class ImageSequenceChangeCommand : public UndoCommand {
+    public:
+        ImageSequenceChangeCommand(Footage* footage, int video_index, int64_t start_index, int64_t duration,
+                                   const rational& frame_rate);
+
+        [[nodiscard]] Project* GetRelevantProject() const override;
+
+    protected:
+        void redo() override;
+        void undo() override;
+
+    private:
+        Footage* footage_;
+        int video_index_;
+
+        int64_t new_start_index_;
+        int64_t old_start_index_;
+
+        int64_t new_duration_;
+        int64_t old_duration_;
+
+        rational new_frame_rate_;
+        rational old_frame_rate_;
+    };
 };
 
-}
+}  // namespace arcvideo
 
-#endif // VIDEOSTREAMPROPERTIES_H
+#endif  // VIDEOSTREAMPROPERTIES_H

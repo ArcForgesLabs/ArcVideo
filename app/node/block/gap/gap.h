@@ -28,20 +28,19 @@ namespace arcvideo {
 /**
  * @brief Node that represents nothing in its respective track for a certain period of time
  */
-class GapBlock : public Block
-{
-  Q_OBJECT
+class GapBlock : public Block {
+    Q_OBJECT
+
 public:
-  GapBlock();
+    GapBlock();
 
-  NODE_DEFAULT_FUNCTIONS(GapBlock)
+    NODE_DEFAULT_FUNCTIONS(GapBlock)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QString Description() const override;
-
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QString Description() const override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINEBLOCK_H
+#endif  // TIMELINEBLOCK_H

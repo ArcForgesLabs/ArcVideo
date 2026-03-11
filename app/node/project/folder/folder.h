@@ -31,195 +31,152 @@ namespace arcvideo {
  * The Item base class already has support for children, but this functionality is disabled by default
  * (see CanHaveChildren() override). The Folder is a specific type that enables this functionality.
  */
-class Folder : public Node
-{
-  Q_OBJECT
+class Folder : public Node {
+    Q_OBJECT
+
 public:
-  Folder();
+    Folder();
 
-  NODE_DEFAULT_FUNCTIONS(Folder)
+    NODE_DEFAULT_FUNCTIONS(Folder)
 
-  virtual QString Name() const override
-  {
-    return tr("Folder");
-  }
+    [[nodiscard]] QString Name() const override { return tr("Folder"); }
 
-  virtual QString id() const override
-  {
-    return QStringLiteral("org.arcvideoeditor.ArcVideo.folder");
-  }
+    [[nodiscard]] QString id() const override { return QStringLiteral("org.arcvideoeditor.ArcVideo.folder"); }
 
-  virtual QVector<CategoryID> Category() const override
-  {
-    return {kCategoryProject};
-  }
+    [[nodiscard]] QVector<CategoryID> Category() const override { return {kCategoryProject}; }
 
-  virtual QString Description() const override
-  {
-    return tr("Organize several items into a single collection.");
-  }
-
-  virtual QVariant data(const DataType &d) const override;
-
-  virtual void Retranslate() override;
-
-  Node *GetChildWithName(const QString& s) const;
-  bool ChildExistsWithName(const QString& s) const
-  {
-    return GetChildWithName(s);
-  }
-
-  bool HasChildRecursive(Node *child) const;
-
-  int item_child_count() const
-  {
-    return item_children_.size();
-  }
-
-  Node* item_child(int i) const
-  {
-    return item_children_.at(i);
-  }
-
-  const QVector<Node*>& children() const
-  {
-    return item_children_;
-  }
-
-  int index_of_child(Node* item) const
-  {
-    return item_children_.indexOf(item);
-  }
-
-  int index_of_child_in_array(Node* item) const;
-
-  template <typename T>
-  QVector<T*> ListChildrenOfType() const
-  {
-    QVector<T*> list;
-
-    for (Node* node : item_children_) {
-      T* cast_test = dynamic_cast<T*>(node);
-      if (cast_test) {
-        list.append(cast_test);
-      }
-
-      Folder *folder_test = dynamic_cast<Folder*>(node);
-      if (folder_test) {
-        list.append(folder_test->ListChildrenOfType<T>());
-      }
+    [[nodiscard]] QString Description() const override {
+        return tr("Organize several items into a single collection.");
     }
 
-    return list;
-  }
+    [[nodiscard]] QVariant data(const DataType& d) const override;
 
-  static const QString kChildInput;
+    void Retranslate() override;
 
-  class RemoveElementCommand : public UndoCommand
-  {
-  public:
-    RemoveElementCommand(Folder *folder, Node *child) :
-      folder_(folder),
-      child_(child),
-      subcommand_(nullptr)
-    {
+    [[nodiscard]] Node* GetChildWithName(const QString& s) const;
+    [[nodiscard]] bool ChildExistsWithName(const QString& s) const { return GetChildWithName(s); }
+
+    bool HasChildRecursive(Node* child) const;
+
+    [[nodiscard]] int item_child_count() const { return static_cast<int>(item_children_.size()); }
+
+    [[nodiscard]] Node* item_child(int i) const { return item_children_.at(i); }
+
+    [[nodiscard]] const QVector<Node*>& children() const { return item_children_; }
+
+    [[nodiscard]] int index_of_child(Node* item) const { return static_cast<int>(item_children_.indexOf(item)); }
+
+    int index_of_child_in_array(Node* item) const;
+
+    template <typename T>
+    [[nodiscard]] QVector<T*> ListChildrenOfType() const {
+        QVector<T*> list;
+
+        for (Node* node : item_children_) {
+            T* cast_test = dynamic_cast<T*>(node);
+            if (cast_test) {
+                list.append(cast_test);
+            }
+
+            auto* folder_test = dynamic_cast<Folder*>(node);
+            if (folder_test) {
+                list.append(folder_test->ListChildrenOfType<T>());
+            }
+        }
+
+        return list;
     }
 
-    virtual ~RemoveElementCommand() override
-    {
-      delete subcommand_;
-    }
+    static const QString kChildInput;
 
-    virtual Project *GetRelevantProject() const override
-    {
-      return folder_->project();
-    }
+    class RemoveElementCommand : public UndoCommand {
+    public:
+        RemoveElementCommand(Folder* folder, Node* child)
+            : folder_(folder), child_(child), remove_index_(-1), subcommand_(nullptr) {}
 
-  protected:
-    virtual void redo() override;
+        ~RemoveElementCommand() override { delete subcommand_; }
 
-    virtual void undo() override
-    {
-      if (subcommand_) {
-        subcommand_->undo_now();
-      }
-    }
+        [[nodiscard]] Project* GetRelevantProject() const override { return folder_->project(); }
 
-  private:
-    Folder *folder_;
+    protected:
+        void redo() override;
 
-    Node *child_;
+        void undo() override {
+            if (subcommand_) {
+                subcommand_->undo_now();
+            }
+        }
 
-    int remove_index_;
+    private:
+        Folder* folder_;
 
-    MultiUndoCommand *subcommand_;
+        Node* child_;
 
-  };
+        int remove_index_;
+
+        MultiUndoCommand* subcommand_;
+    };
 
 signals:
-  void BeginInsertItem(Node* n, int index);
+    void BeginInsertItem(Node* n, int index);
 
-  void EndInsertItem();
+    void EndInsertItem();
 
-  void BeginRemoveItem(Node* n, int index);
+    void BeginRemoveItem(Node* n, int index);
 
-  void EndRemoveItem();
+    void EndRemoveItem();
 
 protected:
-  virtual void InputConnectedEvent(const QString& input, int element, Node *output) override;
+    void InputConnectedEvent(const QString& input, int element, Node* output) override;
 
-  virtual void InputDisconnectedEvent(const QString& input, int element, Node *output) override;
+    void InputDisconnectedEvent(const QString& input, int element, Node* output) override;
 
 private:
-  template<typename T>
-  static void ListOutputsOfTypeInternal(const Folder* n, QVector<T*>& list, bool recursive)
-  {
-    for (const Node::OutputConnection &c : n->output_connections()) {
-      Node* connected = c.second.node();
+    template <typename T>
+    static void ListOutputsOfTypeInternal(const Folder* n, QVector<T*>& list, bool recursive) {
+        for (const Node::OutputConnection& c : n->output_connections()) {
+            Node* connected = c.second.node();
 
-      T* cast_test = dynamic_cast<T*>(connected);
+            T* cast_test = dynamic_cast<T*>(connected);
 
-      if (cast_test) {
-        // Avoid duplicates
-        if (!list.contains(cast_test)) {
-          list.append(cast_test);
+            if (cast_test) {
+                // Avoid duplicates
+                if (!list.contains(cast_test)) {
+                    list.append(cast_test);
+                }
+            }
+
+            if (recursive) {
+                auto* subfolder = dynamic_cast<Folder*>(connected);
+
+                if (subfolder) {
+                    ListOutputsOfTypeInternal(subfolder, list, recursive);
+                }
+            }
         }
-      }
-
-      if (recursive) {
-        Folder* subfolder = dynamic_cast<Folder*>(connected);
-
-        if (subfolder) {
-          ListOutputsOfTypeInternal(subfolder, list, recursive);
-        }
-      }
     }
-  }
 
-  QVector<Node*> item_children_;
-  QVector<int> item_element_index_;
-
+    QVector<Node*> item_children_;
+    QVector<int> item_element_index_;
 };
 
-class FolderAddChild : public UndoCommand
-{
+class FolderAddChild : public UndoCommand {
 public:
-  FolderAddChild(Folder* folder, Node* child);
+    FolderAddChild(Folder* folder, Node* child);
 
-  virtual Project * GetRelevantProject() const override;
+    [[nodiscard]] Project* GetRelevantProject() const override;
 
 protected:
-  virtual void redo() override;
+    void redo() override;
 
-  virtual void undo() override;
+    void undo() override;
 
 private:
-  Folder* folder_ = nullptr;
+    Folder* folder_ = nullptr;
 
-  Node* child_ = nullptr;
-
+    Node* child_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FOLDER_H
+#endif  // FOLDER_H

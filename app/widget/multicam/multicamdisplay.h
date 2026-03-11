@@ -26,32 +26,31 @@
 
 namespace arcvideo {
 
-class MulticamDisplay : public ViewerDisplayWidget
-{
-  Q_OBJECT
-public:
-  explicit MulticamDisplay(QWidget *parent = nullptr);
+class MulticamDisplay : public ViewerDisplayWidget {
+    Q_OBJECT
 
-  void SetMulticamNode(MultiCamNode *n);
+public:
+    explicit MulticamDisplay(QWidget* parent = nullptr);
+
+    void SetMulticamNode(MultiCamNode* n);
 
 protected:
-  virtual void OnPaint() override;
+    void OnPaint() override;
 
-  virtual void OnDestroy() override;
+    void OnDestroy() override;
 
-  virtual TexturePtr LoadCustomTextureFromFrame(const QVariant &v) override;
+    TexturePtr LoadCustomTextureFromFrame(const QVariant& v) override;
 
 private:
-  static QString GenerateShaderCode(int rows, int cols);
+    static QString GenerateShaderCode(int rows, int cols);
 
-  MultiCamNode *node_;
+    MultiCamNode* node_;
 
-  QVariant shader_;
-  int rows_;
-  int cols_;
-
+    QVariant shader_;
+    int rows_;
+    int cols_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // MULTICAMDISPLAY_H
+#endif  // MULTICAMDISPLAY_H

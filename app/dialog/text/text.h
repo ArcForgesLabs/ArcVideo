@@ -30,22 +30,18 @@
 
 namespace arcvideo {
 
-class TextDialog : public QDialog
-{
-  Q_OBJECT
-public:
-  TextDialog(const QString &start, QWidget* parent = nullptr);
+class TextDialog : public QDialog {
+    Q_OBJECT
 
-  QString text() const
-  {
-    return text_edit_->toPlainText();
-  }
+public:
+    TextDialog(const QString& start, QWidget* parent = nullptr);
+
+    [[nodiscard]] QString text() const { return text_edit_->toPlainText(); }
 
 private:
-  QPlainTextEdit* text_edit_ = nullptr;
-
+    QPlainTextEdit* text_edit_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // RICHTEXTDIALOG_H
+#endif  // RICHTEXTDIALOG_H

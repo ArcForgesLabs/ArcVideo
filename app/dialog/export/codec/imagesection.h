@@ -28,50 +28,34 @@
 
 namespace arcvideo {
 
-class ImageSection : public CodecSection
-{
-  Q_OBJECT
+class ImageSection : public CodecSection {
+    Q_OBJECT
+
 public:
-  ImageSection(QWidget* parent = nullptr);
+    ImageSection(QWidget* parent = nullptr);
 
-  bool IsImageSequenceChecked() const
-  {
-    return image_sequence_checkbox_->isChecked();
-  }
+    [[nodiscard]] bool IsImageSequenceChecked() const { return image_sequence_checkbox_->isChecked(); }
 
-  void SetImageSequenceChecked(bool e)
-  {
-    image_sequence_checkbox_->setChecked(e);
-  }
+    void SetImageSequenceChecked(bool e) { image_sequence_checkbox_->setChecked(e); }
 
-  void SetTimebase(const rational& r)
-  {
-    frame_slider_->SetTimebase(r);
-  }
+    void SetTimebase(const rational& r) { frame_slider_->SetTimebase(r); }
 
-  rational GetTime() const
-  {
-    return frame_slider_->GetValue();
-  }
+    [[nodiscard]] rational GetTime() const { return frame_slider_->GetValue(); }
 
-  void SetTime(const rational &t)
-  {
-    frame_slider_->SetValue(t);
-  }
+    void SetTime(const rational& t) { frame_slider_->SetValue(t); }
 
 signals:
-  void TimeChanged(const rational &t);
+    void TimeChanged(const rational& t);
 
 private:
-  QCheckBox* image_sequence_checkbox_ = nullptr;
+    QCheckBox* image_sequence_checkbox_ = nullptr;
 
-  RationalSlider* frame_slider_ = nullptr;
+    RationalSlider* frame_slider_ = nullptr;
 
 private slots:
-  void ImageSequenceCheckBoxToggled(bool e);
-
+    void ImageSequenceCheckBoxToggled(bool e);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // IMAGESECTION_H
+#endif  // IMAGESECTION_H

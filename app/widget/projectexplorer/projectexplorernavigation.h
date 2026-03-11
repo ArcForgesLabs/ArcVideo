@@ -49,69 +49,69 @@ namespace arcvideo {
  * By default, the directory up button is disabled (assuming root folder), the text is empty, and the icon size slider
  * is set to kProjectIconSizeDefault.
  */
-class ProjectExplorerNavigation : public QWidget
-{
-  Q_OBJECT
+class ProjectExplorerNavigation : public QWidget {
+    Q_OBJECT
+
 public:
-  ProjectExplorerNavigation(QWidget* parent);
+    ProjectExplorerNavigation(QWidget* parent);
 
-  /**
-   * @brief Sets the text string
-   *
-   * This text is intended to be set to the current Folder's name
-   *
-   * @param s
-   */
-  void set_text(const QString& s);
+    /**
+     * @brief Sets the text string
+     *
+     * This text is intended to be set to the current Folder's name
+     *
+     * @param s
+     */
+    void set_text(const QString& s);
 
-  /**
-   * @brief Set whether the "directory up" button is enabled or not
-   *
-   * @param e
-   */
-  void set_dir_up_enabled(bool e);
+    /**
+     * @brief Set whether the "directory up" button is enabled or not
+     *
+     * @param e
+     */
+    void set_dir_up_enabled(bool e);
 
-  /**
-   * @brief Set the current value of the size slider
-   *
-   * NOTE: Does NOT emit SizeChanged().
-   *
-   * @param s
-   *
-   * New size value to set to
-   */
-  void set_size_value(int s);
+    /**
+     * @brief Set the current value of the size slider
+     *
+     * NOTE: Does NOT emit SizeChanged().
+     *
+     * @param s
+     *
+     * New size value to set to
+     */
+    void set_size_value(int s);
 
 signals:
-  /**
-   * @brief Signal emitted when the directory up button is clicked
-   */
-  void DirectoryUpClicked();
+    /**
+     * @brief Signal emitted when the directory up button is clicked
+     */
+    void DirectoryUpClicked();
 
-  /**
-   * @brief Signal emitted when the icon size slider changes value
-   *
-   * @param size
-   *
-   * New size set in the slider
-   */
-  void SizeChanged(int size);
+    /**
+     * @brief Signal emitted when the icon size slider changes value
+     *
+     * @param size
+     *
+     * New size set in the slider
+     */
+    void SizeChanged(int size);
 
 protected:
-  virtual void changeEvent(QEvent *) override;
+    void changeEvent(QEvent*) override;
 
 private:
-  void Retranslate();
+    void Retranslate();
 
-  void UpdateIcons();
+    void UpdateIcons();
 
-  QPushButton* dir_up_btn_ = nullptr;
+    QPushButton* dir_up_btn_ = nullptr;
 
-  QLabel* dir_lbl_ = nullptr;
+    QLabel* dir_lbl_ = nullptr;
 
-  QSlider* size_slider_ = nullptr;
+    QSlider* size_slider_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTEXPLORERLISTVIEWTOOLBAR_H
+#endif  // PROJECTEXPLORERLISTVIEWTOOLBAR_H

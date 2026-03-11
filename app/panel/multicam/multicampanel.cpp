@@ -4,19 +4,16 @@ namespace arcvideo {
 
 #define super TimeBasedPanel
 
-MulticamPanel::MulticamPanel() :
-  super(QStringLiteral("MultiCamPanel"))
-{
-  SetTimeBasedWidget(new MulticamWidget(this));
+MulticamPanel::MulticamPanel() : super(QStringLiteral("MultiCamPanel")) {
+    SetTimeBasedWidget(new MulticamWidget(this));
 
-  Retranslate();
+    Retranslate();
 }
 
-void MulticamPanel::Retranslate()
-{
-  super::Retranslate();
+void MulticamPanel::Retranslate() {
+    super::Retranslate();
 
-  SetTitle(tr("Multi-Cam"));
+    SetTitle(tr("Multi-Cam"));
 }
 
-}
+}  // namespace arcvideo

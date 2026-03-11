@@ -29,51 +29,46 @@
 
 namespace arcvideo {
 
-class NodeParamViewArrayButton : public QPushButton
-{
-  Q_OBJECT
-public:
-  enum Type {
-    kAdd,
-    kRemove
-  };
+class NodeParamViewArrayButton : public QPushButton {
+    Q_OBJECT
 
-  NodeParamViewArrayButton(Type type, QWidget* parent = nullptr);
+public:
+    enum Type { kAdd, kRemove };
+
+    NodeParamViewArrayButton(Type type, QWidget* parent = nullptr);
 
 protected:
-  virtual void changeEvent(QEvent* event) override;
+    void changeEvent(QEvent* event) override;
 
 private:
-  void Retranslate();
+    void Retranslate();
 
-  Type type_;
-
+    Type type_;
 };
 
-class NodeParamViewArrayWidget : public QWidget
-{
-  Q_OBJECT
+class NodeParamViewArrayWidget : public QWidget {
+    Q_OBJECT
+
 public:
-  NodeParamViewArrayWidget(Node* node, const QString& input, QWidget* parent = nullptr);
+    NodeParamViewArrayWidget(Node* node, QString input, QWidget* parent = nullptr);
 
 signals:
-  void DoubleClicked();
+    void DoubleClicked();
 
 protected:
-  virtual void mouseDoubleClickEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 
 private:
-  Node* node_ = nullptr;
+    Node* node_ = nullptr;
 
-  QString input_;
+    QString input_;
 
-  QLabel* count_lbl_ = nullptr;
+    QLabel* count_lbl_ = nullptr;
 
 private slots:
-  void UpdateCounter(const QString &input, int old_size, int new_size);
-
+    void UpdateCounter(const QString& input, int old_size, int new_size);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEPARAMVIEWARRAYWIDGET_H
+#endif  // NODEPARAMVIEWARRAYWIDGET_H

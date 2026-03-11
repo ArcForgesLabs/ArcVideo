@@ -27,22 +27,21 @@
 
 namespace arcvideo {
 
-class LineGizmo : public NodeGizmo
-{
-  Q_OBJECT
+class LineGizmo : public NodeGizmo {
+    Q_OBJECT
+
 public:
-  LineGizmo(QObject *parent = nullptr);
+    LineGizmo(QObject* parent = nullptr);
 
-  const QLineF &GetLine() const { return line_; }
-  void SetLine(const QLineF &line) { line_ = line; }
+    [[nodiscard]] const QLineF& GetLine() const { return line_; }
+    void SetLine(const QLineF& line) { line_ = line; }
 
-  virtual void Draw(QPainter *p) const override;
+    void Draw(QPainter* p) const override;
 
 private:
-  QLineF line_;
-
+    QLineF line_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // LINEGIZMO_H
+#endif  // LINEGIZMO_H

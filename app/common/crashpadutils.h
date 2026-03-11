@@ -37,4 +37,4 @@
 #define BASE_STRING_TO_QSTRING(x) QString::fromStdWString(x)
 #endif  // BUILDFLAG(IS_WIN)
 
-#endif // CRASHPADUTILS_H
+#endif  // CRASHPADUTILS_H
