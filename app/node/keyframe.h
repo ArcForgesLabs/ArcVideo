@@ -21,9 +21,9 @@
 #ifndef NODEKEYFRAME_H
 #define NODEKEYFRAME_H
 
-#include <memory>
 #include <QPointF>
 #include <QVariant>
+#include <memory>
 
 #include "node/param.h"
 
@@ -34,193 +34,172 @@ class Node;
 /**
  * @brief A point of data to be used at a certain time and interpolated with other data
  */
-class NodeKeyframe : public QObject
-{
-  Q_OBJECT
+class NodeKeyframe : public QObject {
+    Q_OBJECT
+
 public:
-  /**
-   * @brief Methods of interpolation to use with this keyframe
-   */
-  enum Type {
-    kInvalid = -1,
-    kLinear,
-    kHold,
-    kBezier
-  };
+    /**
+     * @brief Methods of interpolation to use with this keyframe
+     */
+    enum Type { kInvalid = -1, kLinear, kHold, kBezier };
 
-  /**
-   * @brief The two types of bezier handles that are available on bezier keyframes
-   */
-  enum BezierType {
-    kInHandle,
-    kOutHandle
-  };
+    /**
+     * @brief The two types of bezier handles that are available on bezier keyframes
+     */
+    enum BezierType { kInHandle, kOutHandle };
 
-  static const Type kDefaultType;
+    static const Type kDefaultType;
 
-  /**
-   * @brief NodeKeyframe Constructor
-   */
-  NodeKeyframe(const rational& time, const QVariant& value, Type type, int track, int element, const QString& input, QObject* parent = nullptr);
-  NodeKeyframe();
+    /**
+     * @brief NodeKeyframe Constructor
+     */
+    NodeKeyframe(const rational& time, QVariant value, Type type, int track, int element, QString input,
+                 QObject* parent = nullptr);
+    NodeKeyframe();
 
-  virtual ~NodeKeyframe() override;
+    ~NodeKeyframe() override;
 
-  NodeKeyframe* copy(int element, QObject* parent = nullptr) const;
-  NodeKeyframe* copy(QObject* parent = nullptr) const;
+    NodeKeyframe* copy(int element, QObject* parent = nullptr) const;
+    NodeKeyframe* copy(QObject* parent = nullptr) const;
 
-  Node* parent() const;
+    [[nodiscard]] Node* parent() const;
 
-  const QString& input() const { return input_; }
-  void set_input(const QString& input) { input_ = input; }
+    [[nodiscard]] const QString& input() const { return input_; }
+    void set_input(const QString& input) { input_ = input; }
 
-  NodeKeyframeTrackReference key_track_ref() const
-  {
-    return NodeKeyframeTrackReference(NodeInput(parent(), input(), element()), track());
-  }
+    [[nodiscard]] NodeKeyframeTrackReference key_track_ref() const {
+        return {NodeInput(parent(), input(), element()), track()};
+    }
 
-  /**
-   * @brief The time this keyframe is set at
-   */
-  const rational& time() const;
-  void set_time(const rational& time);
+    /**
+     * @brief The time this keyframe is set at
+     */
+    [[nodiscard]] const rational& time() const;
+    void set_time(const rational& time);
 
-  /**
-   * @brief The value of this keyframe (i.e. the value to use at this keyframe's time)
-   */
-  const QVariant& value() const;
-  void set_value(const QVariant &value);
+    /**
+     * @brief The value of this keyframe (i.e. the value to use at this keyframe's time)
+     */
+    [[nodiscard]] const QVariant& value() const;
+    void set_value(const QVariant& value);
 
-  /**
-   * @brief The method of interpolation to use with this keyframe
-   */
-  const Type& type() const;
-  void set_type(const Type& type);
-  void set_type_no_bezier_adj(const Type& type);
+    /**
+     * @brief The method of interpolation to use with this keyframe
+     */
+    [[nodiscard]] const Type& type() const;
+    void set_type(const Type& type);
+    void set_type_no_bezier_adj(const Type& type);
 
-  /**
-   * @brief For bezier interpolation, the control point leading into this keyframe
-   */
-  const QPointF &bezier_control_in() const;
-  void set_bezier_control_in(const QPointF& control);
+    /**
+     * @brief For bezier interpolation, the control point leading into this keyframe
+     */
+    [[nodiscard]] const QPointF& bezier_control_in() const;
+    void set_bezier_control_in(const QPointF& control);
 
-  /**
-   * @brief For bezier interpolation, the control point leading out of this keyframe
-   */
-  const QPointF& bezier_control_out() const;
-  void set_bezier_control_out(const QPointF& control);
+    /**
+     * @brief For bezier interpolation, the control point leading out of this keyframe
+     */
+    [[nodiscard]] const QPointF& bezier_control_out() const;
+    void set_bezier_control_out(const QPointF& control);
 
-  /**
-  * @brief Returns a known good bezier that should be used in actual animation
-  *
-  * While users can move the bezier controls wherever they want, we have to limit their usage
-  * internally to prevent a situation where the animation overlaps (i.e. there can only be one Y
-  * value for any given X in the bezier line). This returns a value that is known good.
-  */
-  QPointF valid_bezier_control_in() const;
-  QPointF valid_bezier_control_out() const;
+    /**
+     * @brief Returns a known good bezier that should be used in actual animation
+     *
+     * While users can move the bezier controls wherever they want, we have to limit their usage
+     * internally to prevent a situation where the animation overlaps (i.e. there can only be one Y
+     * value for any given X in the bezier line). This returns a value that is known good.
+     */
+    [[nodiscard]] QPointF valid_bezier_control_in() const;
+    [[nodiscard]] QPointF valid_bezier_control_out() const;
 
-  /**
-   * @brief Convenience functions for retrieving/setting bezier handle information with a BezierType
-   */
-  const QPointF& bezier_control(BezierType type) const;
-  void set_bezier_control(BezierType type, const QPointF& control);
+    /**
+     * @brief Convenience functions for retrieving/setting bezier handle information with a BezierType
+     */
+    [[nodiscard]] const QPointF& bezier_control(BezierType type) const;
+    void set_bezier_control(BezierType type, const QPointF& control);
 
-  /**
-   * @brief The track that this keyframe belongs to
-   *
-   * For the majority of keyfreames, this will be 0, but for some types, such as kVec2, this will be 0 for X keyframes
-   * and 1 for Y keyframes, etc.
-   */
-  int track() const { return track_; }
-  void set_track(int t) { track_ = t; }
+    /**
+     * @brief The track that this keyframe belongs to
+     *
+     * For the majority of keyfreames, this will be 0, but for some types, such as kVec2, this will be 0 for X keyframes
+     * and 1 for Y keyframes, etc.
+     */
+    [[nodiscard]] int track() const { return track_; }
+    void set_track(int t) { track_ = t; }
 
-  int element() const { return element_; }
-  void set_element(int e) { element_ = e; }
+    [[nodiscard]] int element() const { return element_; }
+    void set_element(int e) { element_ = e; }
 
-  /**
-   * @brief Convenience function for getting the opposite handle type (e.g. kInHandle <-> kOutHandle)
-   */
-  static BezierType get_opposing_bezier_type(BezierType type);
+    /**
+     * @brief Convenience function for getting the opposite handle type (e.g. kInHandle <-> kOutHandle)
+     */
+    static BezierType get_opposing_bezier_type(BezierType type);
 
-  NodeKeyframe* previous() const
-  {
-    return previous_;
-  }
+    [[nodiscard]] NodeKeyframe* previous() const { return previous_; }
 
-  void set_previous(NodeKeyframe* keyframe)
-  {
-    previous_ = keyframe;
-  }
+    void set_previous(NodeKeyframe* keyframe) { previous_ = keyframe; }
 
-  NodeKeyframe* next() const
-  {
-    return next_;
-  }
+    [[nodiscard]] NodeKeyframe* next() const { return next_; }
 
-  void set_next(NodeKeyframe* keyframe)
-  {
-    next_ = keyframe;
-  }
+    void set_next(NodeKeyframe* keyframe) { next_ = keyframe; }
 
-  bool has_sibling_at_time(const rational &t) const;
+    [[nodiscard]] bool has_sibling_at_time(const rational& t) const;
 
-  bool load(QXmlStreamReader *reader, NodeValue::Type data_type);
-  void save(QXmlStreamWriter *writer, NodeValue::Type data_type) const;
+    bool load(QXmlStreamReader* reader, NodeValue::Type data_type);
+    void save(QXmlStreamWriter* writer, NodeValue::Type data_type) const;
 
 signals:
-  /**
-   * @brief Signal emitted when this keyframe's time is changed
-   */
-  void TimeChanged(const rational& time);
+    /**
+     * @brief Signal emitted when this keyframe's time is changed
+     */
+    void TimeChanged(const rational& time);
 
-  /**
-   * @brief Signal emitted when this keyframe's value is changed
-   */
-  void ValueChanged(const QVariant& value);
+    /**
+     * @brief Signal emitted when this keyframe's value is changed
+     */
+    void ValueChanged(const QVariant& value);
 
-  /**
-   * @brief Signal emitted when this keyframe's value is changed
-   */
-  void TypeChanged(const Type& type);
+    /**
+     * @brief Signal emitted when this keyframe's value is changed
+     */
+    void TypeChanged(const Type& type);
 
-  /**
-   * @brief Signal emitted when this keyframe's bezier in control point is changed
-   */
-  void BezierControlInChanged(const QPointF& d);
+    /**
+     * @brief Signal emitted when this keyframe's bezier in control point is changed
+     */
+    void BezierControlInChanged(const QPointF& d);
 
-  /**
-   * @brief Signal emitted when this keyframe's bezier out control point is changed
-   */
-  void BezierControlOutChanged(const QPointF& d);
+    /**
+     * @brief Signal emitted when this keyframe's bezier out control point is changed
+     */
+    void BezierControlOutChanged(const QPointF& d);
 
 private:
-  rational time_;
+    rational time_;
 
-  QVariant value_;
+    QVariant value_;
 
-  Type type_;
+    Type type_;
 
-  QPointF bezier_control_in_;
+    QPointF bezier_control_in_;
 
-  QPointF bezier_control_out_;
+    QPointF bezier_control_out_;
 
-  QString input_;
+    QString input_;
 
-  int track_;
+    int track_;
 
-  int element_;
+    int element_;
 
-  NodeKeyframe* previous_ = nullptr;
+    NodeKeyframe* previous_ = nullptr;
 
-  NodeKeyframe* next_ = nullptr;
-
+    NodeKeyframe* next_ = nullptr;
 };
 
 using NodeKeyframeTrack = QVector<NodeKeyframe*>;
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::NodeKeyframe::Type)
 
-#endif // NODEKEYFRAME_H
+#endif  // NODEKEYFRAME_H

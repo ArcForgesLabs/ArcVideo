@@ -26,28 +26,22 @@
 namespace arcvideo {
 
 template <typename K, typename V>
-class RenderCache : public QHash<K, V>
-{
+class RenderCache : public QHash<K, V> {
 public:
-  QMutex *mutex()
-  {
-    return &mutex_;
-  }
+    QMutex* mutex() { return &mutex_; }
 
 private:
-  QMutex mutex_;
-
+    QMutex mutex_;
 };
 
-struct DecoderPair
-{
-  DecoderPtr decoder = nullptr;
-  qint64 last_modified = 0;
+struct DecoderPair {
+    DecoderPtr decoder = nullptr;
+    qint64 last_modified = 0;
 };
 
 using DecoderCache = RenderCache<Decoder::CodecStream, DecoderPair>;
 using ShaderCache = RenderCache<QString, QVariant>;
 
-}
+}  // namespace arcvideo
 
-#endif // RENDERCACHE_H
+#endif  // RENDERCACHE_H

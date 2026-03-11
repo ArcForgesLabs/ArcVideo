@@ -39,107 +39,101 @@
 
 namespace arcvideo {
 
-class ExportDialog : public QDialog
-{
-  Q_OBJECT
+class ExportDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  ExportDialog(ViewerOutput* viewer_node, bool stills_only_mode, QWidget* parent = nullptr);
-  ExportDialog(ViewerOutput* viewer_node, QWidget* parent = nullptr) :
-    ExportDialog(viewer_node, false, parent)
-  {}
+    ExportDialog(ViewerOutput* viewer_node, bool stills_only_mode, QWidget* parent = nullptr);
+    ExportDialog(ViewerOutput* viewer_node, QWidget* parent = nullptr) : ExportDialog(viewer_node, false, parent) {}
 
-  rational GetSelectedTimebase() const;
-  void SetSelectedTimebase(const rational &r);
+    [[nodiscard]] rational GetSelectedTimebase() const;
+    void SetSelectedTimebase(const rational& r);
 
-  EncodingParams GenerateParams() const;
-  void SetParams(const EncodingParams &e);
+    [[nodiscard]] EncodingParams GenerateParams() const;
+    void SetParams(const EncodingParams& e);
 
-  virtual bool eventFilter(QObject *o, QEvent *e) override;
+    bool eventFilter(QObject* o, QEvent* e) override;
 
 public slots:
-  virtual void done(int r) override;
+    void done(int r) override;
 
 signals:
-  void RequestImportFile(const QString &s);
+    void RequestImportFile(const QString& s);
 
 private:
-  void AddPreferencesTab(QWidget *inner_widget, const QString &title);
+    void AddPreferencesTab(QWidget* inner_widget, const QString& title);
 
-  void LoadPresets();
-  void SetDefaultFilename();
+    void LoadPresets();
+    void SetDefaultFilename();
 
-  bool SequenceHasSubtitles() const;
+    [[nodiscard]] bool SequenceHasSubtitles() const;
 
-  void SetDefaults();
+    void SetDefaults();
 
-  ViewerOutput* viewer_node_ = nullptr;
+    ViewerOutput* viewer_node_ = nullptr;
 
-  ExportFormat::Format previously_selected_format_;
+    ExportFormat::Format previously_selected_format_;
 
-  rational GetExportLength() const;
-  int64_t GetExportLengthInTimebaseUnits() const;
+    [[nodiscard]] rational GetExportLength() const;
+    [[nodiscard]] int64_t GetExportLengthInTimebaseUnits() const;
 
-  enum RangeSelection {
-    kRangeEntireSequence,
-    kRangeInToOut
-  };
+    enum RangeSelection { kRangeEntireSequence, kRangeInToOut };
 
-  enum AutoPreset {
-    kPresetDefault = -1,
-    kPresetLastUsed = -2,
-  };
+    enum AutoPreset {
+        kPresetDefault = -1,
+        kPresetLastUsed = -2,
+    };
 
-  QTabWidget* preferences_tabs_ = nullptr;
+    QTabWidget* preferences_tabs_ = nullptr;
 
-  QComboBox* preset_combobox_ = nullptr;
-  QComboBox* range_combobox_ = nullptr;
-  std::vector<EncodingParams> presets_;
+    QComboBox* preset_combobox_ = nullptr;
+    QComboBox* range_combobox_ = nullptr;
+    std::vector<EncodingParams> presets_;
 
-  QCheckBox* video_enabled_ = nullptr;
-  QCheckBox* audio_enabled_ = nullptr;
-  QCheckBox* subtitles_enabled_ = nullptr;
+    QCheckBox* video_enabled_ = nullptr;
+    QCheckBox* audio_enabled_ = nullptr;
+    QCheckBox* subtitles_enabled_ = nullptr;
 
-  ViewerWidget* preview_viewer_ = nullptr;
-  QLineEdit* filename_edit_ = nullptr;
-  ExportFormatComboBox* format_combobox_ = nullptr;
+    ViewerWidget* preview_viewer_ = nullptr;
+    QLineEdit* filename_edit_ = nullptr;
+    ExportFormatComboBox* format_combobox_ = nullptr;
 
-  ExportVideoTab* video_tab_ = nullptr;
-  ExportAudioTab* audio_tab_ = nullptr;
-  ExportSubtitlesTab* subtitle_tab_ = nullptr;
+    ExportVideoTab* video_tab_ = nullptr;
+    ExportAudioTab* audio_tab_ = nullptr;
+    ExportSubtitlesTab* subtitle_tab_ = nullptr;
 
-  double video_aspect_ratio_;
+    double video_aspect_ratio_;
 
-  ColorManager* color_manager_ = nullptr;
+    ColorManager* color_manager_ = nullptr;
 
-  QWidget* preferences_area_ = nullptr;
-  QCheckBox *export_bkg_box_;
-  QCheckBox *import_file_after_export_;
+    QWidget* preferences_area_ = nullptr;
+    QCheckBox* export_bkg_box_;
+    QCheckBox* import_file_after_export_;
 
-  bool stills_only_mode_;
+    bool stills_only_mode_;
 
-  bool loading_presets_;
+    bool loading_presets_;
 
 private slots:
-  void BrowseFilename();
+    void BrowseFilename();
 
-  void FormatChanged(ExportFormat::Format current_format);
+    void FormatChanged(ExportFormat::Format current_format);
 
-  void ResolutionChanged();
+    void ResolutionChanged();
 
-  void UpdateViewerDimensions();
+    void UpdateViewerDimensions();
 
-  void StartExport();
+    void StartExport();
 
-  void ExportFinished();
+    void ExportFinished();
 
-  void ImageSequenceCheckBoxChanged(bool e);
+    void ImageSequenceCheckBoxChanged(bool e);
 
-  void SavePreset();
+    void SavePreset();
 
-  void PresetComboBoxChanged();
-
+    void PresetComboBoxChanged();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // EXPORTDIALOG_H
+#endif  // EXPORTDIALOG_H

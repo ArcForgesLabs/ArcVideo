@@ -20,6 +20,4 @@
 
 #include "timelineundoworkarea.h"
 
-namespace arcvideo {
-
-}
+namespace arcvideo {}

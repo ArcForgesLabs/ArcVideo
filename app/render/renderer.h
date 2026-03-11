@@ -36,128 +36,115 @@ namespace arcvideo {
 
 class ShaderJob;
 
-class Renderer : public QObject
-{
-  Q_OBJECT
+class Renderer : public QObject {
+    Q_OBJECT
+
 public:
-  Renderer(QObject* parent = nullptr);
+    Renderer(QObject* parent = nullptr);
 
-  virtual bool Init() = 0;
+    virtual bool Init() = 0;
 
-  TexturePtr CreateTexture(const VideoParams& params, const void *data = nullptr, int linesize = 0);
+    TexturePtr CreateTexture(const VideoParams& params, const void* data = nullptr, int linesize = 0);
 
-  void DestroyTexture(Texture *texture);
+    void DestroyTexture(Texture* texture);
 
-  void BlitToTexture(QVariant shader,
-                     arcvideo::ShaderJob job,
-                     arcvideo::Texture* destination,
-                     bool clear_destination = true)
-  {
-    Blit(shader, job, destination, destination->params(), clear_destination);
-  }
+    void BlitToTexture(QVariant shader, arcvideo::ShaderJob job, arcvideo::Texture* destination,
+                       bool clear_destination = true) {
+        Blit(shader, job, destination, destination->params(), clear_destination);
+    }
 
-  void Blit(QVariant shader,
-            arcvideo::ShaderJob job,
-            arcvideo::VideoParams params,
-            bool clear_destination = true)
-  {
-    Blit(shader, job, nullptr, params, clear_destination);
-  }
+    void Blit(QVariant shader, arcvideo::ShaderJob job, arcvideo::VideoParams params, bool clear_destination = true) {
+        Blit(shader, job, nullptr, params, clear_destination);
+    }
 
-  void BlitColorManaged(const ColorTransformJob &color_job, Texture* destination, const VideoParams &params);
-  void BlitColorManaged(const ColorTransformJob &job, Texture* destination)
-  {
-    BlitColorManaged(job, destination, destination->params());
-  }
-  void BlitColorManaged(const ColorTransformJob &job, const VideoParams &params)
-  {
-    BlitColorManaged(job, nullptr, params);
-  }
+    void BlitColorManaged(const ColorTransformJob& color_job, Texture* destination, const VideoParams& params);
+    void BlitColorManaged(const ColorTransformJob& job, Texture* destination) {
+        BlitColorManaged(job, destination, destination->params());
+    }
+    void BlitColorManaged(const ColorTransformJob& job, const VideoParams& params) {
+        BlitColorManaged(job, nullptr, params);
+    }
 
-  TexturePtr InterlaceTexture(TexturePtr top, TexturePtr bottom, const VideoParams &params);
+    TexturePtr InterlaceTexture(TexturePtr top, TexturePtr bottom, const VideoParams& params);
 
-  QVariant GetDefaultShader();
+    QVariant GetDefaultShader();
 
-  void Destroy();
+    void Destroy();
 
-  virtual void PostDestroy() = 0;
+    virtual void PostDestroy() = 0;
 
-  virtual void PostInit() = 0;
+    virtual void PostInit() = 0;
 
-  virtual void ClearDestination(arcvideo::Texture *texture = nullptr, double r = 0.0, double g = 0.0, double b = 0.0, double a = 1.0) = 0;
+    virtual void ClearDestination(arcvideo::Texture* texture = nullptr, double r = 0.0, double g = 0.0, double b = 0.0,
+                                  double a = 1.0) = 0;
 
-  virtual QVariant CreateNativeShader(arcvideo::ShaderCode code) = 0;
+    virtual QVariant CreateNativeShader(arcvideo::ShaderCode code) = 0;
 
-  virtual void DestroyNativeShader(QVariant shader) = 0;
+    virtual void DestroyNativeShader(QVariant shader) = 0;
 
-  virtual void UploadToTexture(const QVariant &handle, const VideoParams &params, const void* data, int linesize) = 0;
+    virtual void UploadToTexture(const QVariant& handle, const VideoParams& params, const void* data, int linesize) = 0;
 
-  virtual void DownloadFromTexture(const QVariant &handle, const VideoParams &params, void* data, int linesize) = 0;
+    virtual void DownloadFromTexture(const QVariant& handle, const VideoParams& params, void* data, int linesize) = 0;
 
-  virtual void Flush() = 0;
+    virtual void Flush() = 0;
 
-  virtual Color GetPixelFromTexture(arcvideo::Texture *texture, const QPointF &pt) = 0;
+    virtual Color GetPixelFromTexture(arcvideo::Texture* texture, const QPointF& pt) = 0;
 
 protected:
-  virtual void Blit(QVariant shader,
-                    arcvideo::ShaderJob job,
-                    arcvideo::Texture* destination,
-                    arcvideo::VideoParams destination_params,
-                    bool clear_destination) = 0;
+    virtual void Blit(QVariant shader, arcvideo::ShaderJob job, arcvideo::Texture* destination,
+                      arcvideo::VideoParams destination_params, bool clear_destination) = 0;
 
-  virtual QVariant CreateNativeTexture(int width, int height, int depth, PixelFormat format, int channel_count, const void* data = nullptr, int linesize = 0) = 0;
+    virtual QVariant CreateNativeTexture(int width, int height, int depth, PixelFormat format, int channel_count,
+                                         const void* data = nullptr, int linesize = 0) = 0;
 
-  virtual void DestroyNativeTexture(QVariant texture) = 0;
+    virtual void DestroyNativeTexture(QVariant texture) = 0;
 
-  virtual void DestroyInternal() = 0;
+    virtual void DestroyInternal() = 0;
 
 private:
-  struct ColorContext {
-    struct LUT {
-      TexturePtr texture;
-      Texture::Interpolation interpolation;
-      QString name;
+    struct ColorContext {
+        struct LUT {
+            TexturePtr texture;
+            Texture::Interpolation interpolation;
+            QString name;
+        };
+
+        QVariant compiled_shader;
+        QVector<LUT> lut3d_textures;
+        QVector<LUT> lut1d_textures;
     };
 
-    QVariant compiled_shader;
-    QVector<LUT> lut3d_textures;
-    QVector<LUT> lut1d_textures;
+    TexturePtr CreateTextureFromNativeHandle(const QVariant& v, const VideoParams& params);
 
-  };
+    bool GetColorContext(const ColorTransformJob& color_job, ColorContext* ctx);
 
-  TexturePtr CreateTextureFromNativeHandle(const QVariant &v, const VideoParams &params);
+    void ClearOldTextures();
 
-  bool GetColorContext(const ColorTransformJob &color_job, ColorContext* ctx);
+    QHash<QString, ColorContext> color_cache_;
 
-  void ClearOldTextures();
+    struct CachedTexture {
+        int width;
+        int height;
+        int depth;
+        PixelFormat format;
+        int channel_count;
+        QVariant handle;
+        qint64 accessed;
+    };
 
-  QHash<QString, ColorContext> color_cache_;
+    static const int MAX_TEXTURE_LIFE = 5000;
+    static const bool USE_TEXTURE_CACHE = true;
+    std::list<CachedTexture> texture_cache_;
 
-  struct CachedTexture
-  {
-    int width;
-    int height;
-    int depth;
-    PixelFormat format;
-    int channel_count;
-    QVariant handle;
-    qint64 accessed;
-  };
+    QMutex color_cache_mutex_;
 
-  static const int MAX_TEXTURE_LIFE = 5000;
-  static const bool USE_TEXTURE_CACHE = true;
-  std::list<CachedTexture> texture_cache_;
+    QVariant default_shader_;
 
-  QMutex color_cache_mutex_;
+    QVariant interlace_texture_;
 
-  QVariant default_shader_;
-
-  QVariant interlace_texture_;
-
-  QMutex texture_cache_lock_;
-
+    QMutex texture_cache_lock_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // RENDERCONTEXT_H
+#endif  // RENDERCONTEXT_H

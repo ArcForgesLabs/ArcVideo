@@ -18,9 +18,9 @@ assignees: ''
 
 **Steps to Reproduce**
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 <details><summary><strong>Crash Report</strong></summary><pre><code>
 

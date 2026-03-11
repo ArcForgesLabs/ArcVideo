@@ -21,9 +21,9 @@
 #ifndef TASKMANAGER_H
 #define TASKMANAGER_H
 
-#include <QtConcurrent/QtConcurrent>
-#include <QVector>
 #include <QUndoCommand>
+#include <QVector>
+#include <QtConcurrent/QtConcurrent>
 
 #include "task/task.h"
 
@@ -37,105 +37,104 @@ namespace arcvideo {
  * for it to run. Currently, TaskManager will run no more Tasks than there are threads on the system (one task per
  * thread). As Tasks finished, TaskManager will start the next in the queue.
  */
-class TaskManager : public QObject
-{
-  Q_OBJECT
+class TaskManager : public QObject {
+    Q_OBJECT
+
 public:
-  /**
-   * @brief TaskManager Constructor
-   */
-  TaskManager();
+    /**
+     * @brief TaskManager Constructor
+     */
+    TaskManager();
 
-  /**
-   * @brief TaskManager Destructor
-   *
-   * Ensures all Tasks are deleted
-   */
-  virtual ~TaskManager();
+    /**
+     * @brief TaskManager Destructor
+     *
+     * Ensures all Tasks are deleted
+     */
+    ~TaskManager() override;
 
-  static void CreateInstance();
+    static void CreateInstance();
 
-  static void DestroyInstance();
+    static void DestroyInstance();
 
-  static TaskManager* instance();
+    static TaskManager* instance();
 
-  int GetTaskCount() const;
+    [[nodiscard]] int GetTaskCount() const;
 
-  Task* GetFirstTask() const;
+    [[nodiscard]] Task* GetFirstTask() const;
 
-  void CancelTaskAndWait(Task* t);
+    void CancelTaskAndWait(Task* t);
 
 public slots:
-  /**
-   * @brief Add a new Task
-   *
-   * Adds a new Task to the queue. If there are available threads to run it, it'll also run immediately. Otherwise,
-   * it'll be placed into the queue and run when resources are available.
-   *
-   * NOTE: This function is NOT thread-safe and is currently intended to only be used from the main/GUI thread.
-   *
-   * NOTE: A Task object should only be added once. Adding the same Task object more than once will result in undefined
-   * behavior.
-   *
-   * @param t
-   *
-   * The task to add and run. TaskManager takes ownership of this Task and will be responsible for freeing it.
-   */
-  void AddTask(Task *t);
+    /**
+     * @brief Add a new Task
+     *
+     * Adds a new Task to the queue. If there are available threads to run it, it'll also run immediately. Otherwise,
+     * it'll be placed into the queue and run when resources are available.
+     *
+     * NOTE: This function is NOT thread-safe and is currently intended to only be used from the main/GUI thread.
+     *
+     * NOTE: A Task object should only be added once. Adding the same Task object more than once will result in
+     * undefined behavior.
+     *
+     * @param t
+     *
+     * The task to add and run. TaskManager takes ownership of this Task and will be responsible for freeing it.
+     */
+    void AddTask(Task* t);
 
-  void CancelTask(Task* t);
+    void CancelTask(Task* t);
 
 signals:
-  /**
-   * @brief Signal emitted when a Task is added by AddTask()
-   *
-   * @param t
-   *
-   * Task that was added
-   */
-  void TaskAdded(Task* t);
+    /**
+     * @brief Signal emitted when a Task is added by AddTask()
+     *
+     * @param t
+     *
+     * Task that was added
+     */
+    void TaskAdded(Task* t);
 
-  /**
-   * @brief Signal emitted when any change to the running task list has been made
-   */
-  void TaskListChanged();
+    /**
+     * @brief Signal emitted when any change to the running task list has been made
+     */
+    void TaskListChanged();
 
-  /**
-   * @brief Signal emitted when a task is deleted
-   */
-  void TaskRemoved(Task* t);
+    /**
+     * @brief Signal emitted when a task is deleted
+     */
+    void TaskRemoved(Task* t);
 
-  /**
-   * @brief Signal emitted when a task fails
-   */
-  void TaskFailed(Task* t);
+    /**
+     * @brief Signal emitted when a task fails
+     */
+    void TaskFailed(Task* t);
 
 private:
-  /**
-   * @brief Internal task array
-   */
-  QHash<QFutureWatcher<bool>*, Task*> tasks_;
+    /**
+     * @brief Internal task array
+     */
+    QHash<QFutureWatcher<bool>*, Task*> tasks_;
 
-  /**
-   * @brief Internal list of failed tasks
-   */
-  std::list<Task*> failed_tasks_;
+    /**
+     * @brief Internal list of failed tasks
+     */
+    std::list<Task*> failed_tasks_;
 
-  /**
-   * @brief Task thread pool
-   */
-  QThreadPool thread_pool_;
+    /**
+     * @brief Task thread pool
+     */
+    QThreadPool thread_pool_;
 
-  /**
-   * @brief TaskManager singleton instance
-   */
-  static TaskManager* instance_;
+    /**
+     * @brief TaskManager singleton instance
+     */
+    static TaskManager* instance_;
 
 private slots:
-  void TaskFinished();
-
+    void TaskFinished();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TASKMANAGER_H
+#endif  // TASKMANAGER_H

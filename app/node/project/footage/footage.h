@@ -22,8 +22,9 @@
 #define FOOTAGE_H
 
 #include <arcvideo/foundation/foundation.h>
-#include <QList>
+
 #include <QDateTime>
+#include <QList>
 
 #include "codec/decoder.h"
 #include "footagedescription.h"
@@ -40,180 +41,163 @@ namespace arcvideo {
  * Footage objects store a list of Stream objects which store the majority of video/audio metadata. These streams
  * are identical to the stream data in the files.
  */
-class Footage : public ViewerOutput
-{
-  Q_OBJECT
+class Footage : public ViewerOutput {
+    Q_OBJECT
+
 public:
-  /**
-   * @brief Footage Constructor
-   */
-  Footage(const QString& filename = QString());
+    /**
+     * @brief Footage Constructor
+     */
+    Footage(const QString& filename = QString());
 
-  NODE_DEFAULT_FUNCTIONS(Footage)
+    NODE_DEFAULT_FUNCTIONS(Footage)
 
-  virtual QString Name() const override
-  {
-    return tr("Media");
-  }
+    [[nodiscard]] QString Name() const override { return tr("Media"); }
 
-  virtual QString id() const override
-  {
-    return QStringLiteral("org.arcvideoeditor.ArcVideo.footage");
-  }
+    [[nodiscard]] QString id() const override { return QStringLiteral("org.arcvideoeditor.ArcVideo.footage"); }
 
-  virtual QVector<CategoryID> Category() const override
-  {
-    return {kCategoryProject};
-  }
+    [[nodiscard]] QVector<CategoryID> Category() const override { return {kCategoryProject}; }
 
-  virtual QString Description() const override
-  {
-    return tr("Import video, audio, or still image files into the composition.");
-  }
+    [[nodiscard]] QString Description() const override {
+        return tr("Import video, audio, or still image files into the composition.");
+    }
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  /**
-   * @brief Reset Footage state ready for running through Probe() again
-   *
-   * If a Footage object needs to be re-probed (e.g. source file changes or Footage is linked to a new file), its
-   * state needs to be reset so the Decoder::Probe() function can accurately mirror the source file. Clear() will
-   * reset the Footage object's state to being freshly created (keeping the filename).
-   *
-   * In most cases, you'll be using arcvideo::ProbeMedia() for re-probing which already runs Clear(), so you won't need
-   * to worry about this.
-   */
-  void Clear();
+    /**
+     * @brief Reset Footage state ready for running through Probe() again
+     *
+     * If a Footage object needs to be re-probed (e.g. source file changes or Footage is linked to a new file), its
+     * state needs to be reset so the Decoder::Probe() function can accurately mirror the source file. Clear() will
+     * reset the Footage object's state to being freshly created (keeping the filename).
+     *
+     * In most cases, you'll be using arcvideo::ProbeMedia() for re-probing which already runs Clear(), so you won't
+     * need to worry about this.
+     */
+    void Clear();
 
-  bool IsValid() const
-  {
-    return valid_;
-  }
+    [[nodiscard]] bool IsValid() const { return valid_; }
 
-  /**
-   * @brief Sets this footage to valid and ready to use
-   */
-  void SetValid();
+    /**
+     * @brief Sets this footage to valid and ready to use
+     */
+    void SetValid();
 
-  /**
-   * @brief Return the current filename of this Footage object
-   */
-  QString filename() const;
+    /**
+     * @brief Return the current filename of this Footage object
+     */
+    [[nodiscard]] QString filename() const;
 
-  /**
-   * @brief Set the filename
-   *
-   * NOTE: This does not automtaically clear the old streams and re-probe for new ones. If the file link has been
-   * changed, this will need to be done manually.
-   *
-   * @param s
-   *
-   * New filename
-   */
-  void set_filename(const QString& s);
+    /**
+     * @brief Set the filename
+     *
+     * NOTE: This does not automtaically clear the old streams and re-probe for new ones. If the file link has been
+     * changed, this will need to be done manually.
+     *
+     * @param s
+     *
+     * New filename
+     */
+    void set_filename(const QString& s);
 
-  /**
-   * @brief Retrieve the last modified time/date
-   *
-   * The file's last modified timestamp is stored for potential organization in the ProjectExplorer. It can be
-   * retrieved here.
-   */
-  const qint64 &timestamp() const;
+    /**
+     * @brief Retrieve the last modified time/date
+     *
+     * The file's last modified timestamp is stored for potential organization in the ProjectExplorer. It can be
+     * retrieved here.
+     */
+    [[nodiscard]] const qint64& timestamp() const;
 
-  /**
-   * @brief Set the last modified time/date
-   *
-   * This should probably only be done on import or replace.
-   *
-   * @param t
-   *
-   * New last modified time/date
-   */
-  void set_timestamp(const qint64 &t);
+    /**
+     * @brief Set the last modified time/date
+     *
+     * This should probably only be done on import or replace.
+     *
+     * @param t
+     *
+     * New last modified time/date
+     */
+    void set_timestamp(const qint64& t);
 
-  void SetCancelPointer(CancelAtom *c)
-  {
-    cancelled_ = c;
-  }
+    void SetCancelPointer(CancelAtom* c) { cancelled_ = c; }
 
-  int GetStreamIndex(Track::Type type, int index) const;
-  int GetStreamIndex(const Track::Reference& ref) const
-  {
-    return GetStreamIndex(ref.type(), ref.index());
-  }
+    [[nodiscard]] int GetStreamIndex(Track::Type type, int index) const;
+    [[nodiscard]] int GetStreamIndex(const Track::Reference& ref) const {
+        return GetStreamIndex(ref.type(), ref.index());
+    }
 
-  Track::Reference GetReferenceFromRealIndex(int real_index) const;
+    [[nodiscard]] Track::Reference GetReferenceFromRealIndex(int real_index) const;
 
-  /**
-   * @brief Get the Decoder ID set when this Footage was probed
-   *
-   * @return
-   *
-   * A decoder ID
-   */
-  const QString& decoder() const;
+    /**
+     * @brief Get the Decoder ID set when this Footage was probed
+     *
+     * @return
+     *
+     * A decoder ID
+     */
+    [[nodiscard]] const QString& decoder() const;
 
-  static QString DescribeVideoStream(const VideoParams& params);
-  static QString DescribeAudioStream(const AudioParams& params);
-  static QString DescribeSubtitleStream(const SubtitleParams& params);
+    static QString DescribeVideoStream(const VideoParams& params);
+    static QString DescribeAudioStream(const AudioParams& params);
+    static QString DescribeSubtitleStream(const SubtitleParams& params);
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static QString GetStreamTypeName(Track::Type type);
+    static QString GetStreamTypeName(Track::Type type);
 
-  virtual Node *GetConnectedTextureOutput() override;
+    Node* GetConnectedTextureOutput() override;
 
-  virtual Node *GetConnectedSampleOutput() override;
+    Node* GetConnectedSampleOutput() override;
 
-  static rational AdjustTimeByLoopMode(rational time, LoopMode loop_mode, const rational& length, VideoParams::Type type, const rational &timebase);
+    static rational AdjustTimeByLoopMode(rational time, LoopMode loop_mode, const rational& length,
+                                         VideoParams::Type type, const rational& timebase);
 
-  virtual QVariant data(const DataType &d) const override;
+    [[nodiscard]] QVariant data(const DataType& d) const override;
 
-  virtual int GetTotalStreamCount() const override { return total_stream_count_; }
+    [[nodiscard]] int GetTotalStreamCount() const override { return total_stream_count_; }
 
-  virtual bool LoadCustom(QXmlStreamReader *reader, SerializedData *data) override;
-  virtual void SaveCustom(QXmlStreamWriter *writer) const override;
+    bool LoadCustom(QXmlStreamReader* reader, SerializedData* data) override;
+    void SaveCustom(QXmlStreamWriter* writer) const override;
 
-  static const QString kFilenameInput;
+    static const QString kFilenameInput;
 
-  virtual void AddedToGraphEvent(Project *p)  override;
-  virtual void RemovedFromGraphEvent(Project *p) override;
+    void AddedToGraphEvent(Project* p) override;
+    void RemovedFromGraphEvent(Project* p) override;
 
 protected:
-  virtual void InputValueChangedEvent(const QString &input, int element) override;
+    void InputValueChangedEvent(const QString& input, int element) override;
 
-  virtual rational VerifyLengthInternal(Track::Type type) const override;
+    [[nodiscard]] rational VerifyLengthInternal(Track::Type type) const override;
 
 private:
-  QString GetColorspaceToUse(const VideoParams& params) const;
+    [[nodiscard]] QString GetColorspaceToUse(const VideoParams& params) const;
 
-  void Reprobe();
+    void Reprobe();
 
-  VideoParams MergeVideoStream(const VideoParams &base, const VideoParams &over);
+    static VideoParams MergeVideoStream(const VideoParams& base, const VideoParams& over);
 
-  /**
-   * @brief Internal timestamp object
-   */
-  qint64 timestamp_;
+    /**
+     * @brief Internal timestamp object
+     */
+    qint64 timestamp_;
 
-  /**
-   * @brief Internal attached decoder ID
-   */
-  QString decoder_;
+    /**
+     * @brief Internal attached decoder ID
+     */
+    QString decoder_;
 
-  bool valid_;
+    bool valid_;
 
-  CancelAtom *cancelled_;
+    CancelAtom* cancelled_;
 
-  int total_stream_count_;
+    int total_stream_count_;
 
 private slots:
-  void CheckFootage();
+    void CheckFootage();
 
-  void DefaultColorSpaceChanged();
-
+    void DefaultColorSpaceChanged();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FOOTAGE_H
+#endif  // FOOTAGE_H

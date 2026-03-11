@@ -34,36 +34,23 @@ class Track;
 
 class Timeline {
 public:
-  enum MovementMode {
-    kNone,
-    kMove,
-    kTrimIn,
-    kTrimOut
-  };
+    enum MovementMode { kNone, kMove, kTrimIn, kTrimOut };
 
-  enum ThumbnailMode {
-    kThumbnailOff,
-    kThumbnailInOut,
-    kThumbnailOn
-  };
+    enum ThumbnailMode { kThumbnailOff, kThumbnailInOut, kThumbnailOn };
 
-  enum WaveformMode {
-    kWaveformsDisabled,
-    kWaveformsEnabled
-  };
+    enum WaveformMode { kWaveformsDisabled, kWaveformsEnabled };
 
-  static bool IsATrimMode(MovementMode mode) {return mode == kTrimIn || mode == kTrimOut;}
+    static bool IsATrimMode(MovementMode mode) { return mode == kTrimIn || mode == kTrimOut; }
 
-  struct EditToInfo {
-    Track* track = nullptr;
-    rational nearest_time;
-    Block* nearest_block = nullptr;
-  };
-
+    struct EditToInfo {
+        Track* track = nullptr;
+        rational nearest_time;
+        Block* nearest_block = nullptr;
+    };
 };
 
 #define PLAYHEAD_COLOR palette().highlight().color()
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINECOMMON_H
+#endif  // TIMELINECOMMON_H

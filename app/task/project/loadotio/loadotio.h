@@ -29,19 +29,18 @@
 
 namespace arcvideo {
 
-class LoadOTIOTask : public ProjectLoadBaseTask
-{
-  Q_OBJECT
+class LoadOTIOTask : public ProjectLoadBaseTask {
+    Q_OBJECT
+
 public:
-  LoadOTIOTask(const QString& filename);
+    LoadOTIOTask(const QString& filename);
 
 protected:
-  virtual bool Run() override;
-
+    bool Run() override;
 };
 
-}
+}  // namespace arcvideo
 
 #endif
 
-#endif // OTIODECODER_H
+#endif  // OTIODECODER_H

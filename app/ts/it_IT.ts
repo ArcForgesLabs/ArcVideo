@@ -422,7 +422,7 @@
     <message>
         <location filename="../dialog/about/about.cpp" line="57"/>
         <source>ArcVideo is a free open source non-linear video editor. This software is licensed under the GNU GPL Version 3.</source>
-        <translation>ArcVideo è un editor video non lineare open source gratuito. 
+        <translation>ArcVideo è un editor video non lineare open source gratuito.
 Questo software è concesso in licenza con GNU GPL Versione 3.</translation>
     </message>
     <message>
@@ -2719,7 +2719,7 @@ Your recoverable projects are still available at: %1</source>
 This driver is known to have stability and performance issues with ArcVideo. It is highly recommended you install the proprietary NVIDIA driver before continuing to use ArcVideo.</source>
         <translation>ArcVideo ha rilevato che il sistema utilizza il driver grafico Nouveau.
 
-Questo driver è noto per avere problemi di stabilità e prestazioni con ArcVideo. 
+Questo driver è noto per avere problemi di stabilità e prestazioni con ArcVideo.
 Prima di continuare a usare ArcVideo ti consigliamo vivamente di installare il driver NVIDIA proprietario.</translation>
     </message>
 </context>
@@ -5047,7 +5047,7 @@ Are you sure you wish to delete this footage?</source>
     <message>
         <location filename="../node/distort/transform/transformdistortnode.h" line="63"/>
         <source>Transform an image in 2D space. Equivalent to multiplying by an orthographic matrix.</source>
-        <translation>Trasforma un&apos;immagine nello spazio 2D. 
+        <translation>Trasforma un&apos;immagine nello spazio 2D.
 Equivale a moltiplicare per una matrice ortografica.</translation>
     </message>
 </context>

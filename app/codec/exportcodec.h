@@ -29,43 +29,42 @@
 
 namespace arcvideo {
 
-class ExportCodec : public QObject
-{
-  Q_OBJECT
+class ExportCodec : public QObject {
+    Q_OBJECT
+
 public:
-  // Only append to this list (never insert) because indexes are used in serialized files
-  enum Codec {
-    kCodecDNxHD,
-    kCodecH264,
-    kCodecH264rgb,
-    kCodecH265,
-    kCodecOpenEXR,
-    kCodecPNG,
-    kCodecProRes,
-    kCodecCineform,
-    kCodecTIFF,
-    kCodecVP9,
-    kCodecMP2,
-    kCodecMP3,
-    kCodecAAC,
-    kCodecPCM,
-    kCodecOpus,
-    kCodecVorbis,
-    kCodecFLAC,
-    kCodecSRT,
-    kCodecAV1,
+    // Only append to this list (never insert) because indexes are used in serialized files
+    enum Codec {
+        kCodecDNxHD,
+        kCodecH264,
+        kCodecH264rgb,
+        kCodecH265,
+        kCodecOpenEXR,
+        kCodecPNG,
+        kCodecProRes,
+        kCodecCineform,
+        kCodecTIFF,
+        kCodecVP9,
+        kCodecMP2,
+        kCodecMP3,
+        kCodecAAC,
+        kCodecPCM,
+        kCodecOpus,
+        kCodecVorbis,
+        kCodecFLAC,
+        kCodecSRT,
+        kCodecAV1,
 
-    kCodecCount
-  };
+        kCodecCount
+    };
 
-  static QString GetCodecName(Codec c);
+    static QString GetCodecName(Codec c);
 
-  static bool IsCodecAStillImage(Codec c);
+    static bool IsCodecAStillImage(Codec c);
 
-  static bool IsCodecLossless(Codec c);
-
+    static bool IsCodecLossless(Codec c);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // EXPORTCODEC_H
+#endif  // EXPORTCODEC_H

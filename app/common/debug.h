@@ -27,8 +27,8 @@
 
 namespace arcvideo {
 
-void DebugHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+void DebugHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg);
 
 }
 
-#endif // DEBUG_H
+#endif  // DEBUG_H

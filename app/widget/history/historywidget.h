@@ -27,24 +27,23 @@
 
 namespace arcvideo {
 
-class HistoryWidget : public QTreeView
-{
-  Q_OBJECT
+class HistoryWidget : public QTreeView {
+    Q_OBJECT
+
 public:
-  HistoryWidget(QWidget *parent = nullptr);
+    HistoryWidget(QWidget* parent = nullptr);
 
 private:
-  UndoStack *stack_;
+    UndoStack* stack_;
 
-  size_t current_row_;
+    size_t current_row_;
 
 private slots:
-  void indexChanged(int i);
+    void indexChanged(int i);
 
-  void currentRowChanged(const QModelIndex &current, const QModelIndex &previous);
-
+    void currentRowChanged(const QModelIndex& current, const QModelIndex& previous);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // HISTORYWIDGET_H
+#endif  // HISTORYWIDGET_H

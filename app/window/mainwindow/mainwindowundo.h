@@ -25,44 +25,36 @@
 
 namespace arcvideo {
 
-class OpenSequenceCommand : public UndoCommand
-{
+class OpenSequenceCommand : public UndoCommand {
 public:
-  OpenSequenceCommand(Sequence* sequence) :
-    sequence_(sequence)
-  {}
+    OpenSequenceCommand(Sequence* sequence) : sequence_(sequence) {}
 
-  virtual Project* GetRelevantProject() const override {return nullptr;}
+    [[nodiscard]] Project* GetRelevantProject() const override { return nullptr; }
 
 protected:
-  virtual void redo() override;
+    void redo() override;
 
-  virtual void undo() override;
+    void undo() override;
 
 private:
-  Sequence* sequence_ = nullptr;
-
+    Sequence* sequence_ = nullptr;
 };
 
-class CloseSequenceCommand : public UndoCommand
-{
+class CloseSequenceCommand : public UndoCommand {
 public:
-  CloseSequenceCommand(Sequence* sequence) :
-    sequence_(sequence)
-  {}
+    CloseSequenceCommand(Sequence* sequence) : sequence_(sequence) {}
 
-  virtual Project* GetRelevantProject() const override {return nullptr;}
+    [[nodiscard]] Project* GetRelevantProject() const override { return nullptr; }
 
 protected:
-  virtual void redo() override;
+    void redo() override;
 
-  virtual void undo() override;
+    void undo() override;
 
 private:
-  Sequence* sequence_ = nullptr;
-
+    Sequence* sequence_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // MAINWINDOWUNDO_H
+#endif  // MAINWINDOWUNDO_H

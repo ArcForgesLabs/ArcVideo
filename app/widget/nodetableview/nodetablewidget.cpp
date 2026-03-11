@@ -24,15 +24,13 @@
 
 namespace arcvideo {
 
-NodeTableWidget::NodeTableWidget(QWidget* parent) :
-  TimeBasedWidget(parent)
-{
-  QVBoxLayout* layout = new QVBoxLayout(this);
-  layout->setSpacing(0);
-  layout->setContentsMargins(0, 0, 0, 0);
+NodeTableWidget::NodeTableWidget(QWidget* parent) : TimeBasedWidget(parent) {
+    auto* layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
-  view_ = new NodeTableView();
-  layout->addWidget(view_);
+    view_ = new NodeTableView();
+    layout->addWidget(view_);
 }
 
-}
+}  // namespace arcvideo

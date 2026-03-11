@@ -24,42 +24,37 @@
 
 namespace arcvideo {
 
-ParamPanel::ParamPanel() :
-  TimeBasedPanel(QStringLiteral("ParamPanel"))
-{
-  NodeParamView* view = new NodeParamView(this);
-  connect(view, &NodeParamView::FocusedNodeChanged, this, &ParamPanel::FocusedNodeChanged);
-  connect(view, &NodeParamView::SelectedNodesChanged, this, &ParamPanel::SelectedNodesChanged);
-  connect(view, &NodeParamView::RequestViewerToStartEditingText, this, &ParamPanel::RequestViewerToStartEditingText);
-  connect(this, &ParamPanel::isOpenChanged, view, [view](bool open){ if (open) view->UpdateElementY(); });
-  SetTimeBasedWidget(view);
+ParamPanel::ParamPanel() : TimeBasedPanel(QStringLiteral("ParamPanel")) {
+    auto* view = new NodeParamView(this);
+    connect(view, &NodeParamView::FocusedNodeChanged, this, &ParamPanel::FocusedNodeChanged);
+    connect(view, &NodeParamView::SelectedNodesChanged, this, &ParamPanel::SelectedNodesChanged);
+    connect(view, &NodeParamView::RequestViewerToStartEditingText, this, &ParamPanel::RequestViewerToStartEditingText);
+    connect(this, &ParamPanel::isOpenChanged, view, [view](bool open) {
+        if (open) view->UpdateElementY();
+    });
+    SetTimeBasedWidget(view);
 
-  Retranslate();
+    Retranslate();
 }
 
-void ParamPanel::DeleteSelected()
-{
-  static_cast<NodeParamView*>(GetTimeBasedWidget())->DeleteSelected();
+void ParamPanel::DeleteSelected() {
+    static_cast<NodeParamView*>(GetTimeBasedWidget())->DeleteSelected();
 }
 
-void ParamPanel::SelectAll()
-{
-  static_cast<NodeParamView*>(GetTimeBasedWidget())->SelectAll();
+void ParamPanel::SelectAll() {
+    static_cast<NodeParamView*>(GetTimeBasedWidget())->SelectAll();
 }
 
-void ParamPanel::DeselectAll()
-{
-  static_cast<NodeParamView*>(GetTimeBasedWidget())->DeselectAll();
+void ParamPanel::DeselectAll() {
+    static_cast<NodeParamView*>(GetTimeBasedWidget())->DeselectAll();
 }
 
-void ParamPanel::SetContexts(const QVector<Node *> &contexts)
-{
-  static_cast<NodeParamView*>(GetTimeBasedWidget())->SetContexts(contexts);
+void ParamPanel::SetContexts(const QVector<Node*>& contexts) {
+    static_cast<NodeParamView*>(GetTimeBasedWidget())->SetContexts(contexts);
 }
 
-void ParamPanel::Retranslate()
-{
-  SetTitle(tr("Parameter Editor"));
+void ParamPanel::Retranslate() {
+    SetTitle(tr("Parameter Editor"));
 }
 
-}
+}  // namespace arcvideo

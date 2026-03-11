@@ -32,76 +32,67 @@ const QString StrokeFilterNode::kInnerInput = QStringLiteral("inner_in");
 
 #define super Node
 
-StrokeFilterNode::StrokeFilterNode()
-{
-  AddInput(kTextureInput, NodeValue::kTexture, InputFlags(kInputFlagNotKeyframable));
+StrokeFilterNode::StrokeFilterNode() {
+    AddInput(kTextureInput, NodeValue::kTexture, InputFlags(kInputFlagNotKeyframable));
 
-  AddInput(kColorInput, NodeValue::kColor, QVariant::fromValue(Color(1.0f, 1.0f, 1.0f, 1.0f)));
+    AddInput(kColorInput, NodeValue::kColor, QVariant::fromValue(Color(1.0f, 1.0f, 1.0f, 1.0f)));
 
-  AddInput(kRadiusInput, NodeValue::kFloat, 10.0);
-  SetInputProperty(kRadiusInput, QStringLiteral("min"), 0.0);
+    AddInput(kRadiusInput, NodeValue::kFloat, 10.0);
+    SetInputProperty(kRadiusInput, QStringLiteral("min"), 0.0);
 
-  AddInput(kOpacityInput, NodeValue::kFloat, 1.0f);
-  SetInputProperty(kOpacityInput, QStringLiteral("view"), FloatSlider::kPercentage);
-  SetInputProperty(kOpacityInput, QStringLiteral("min"), 0.0f);
-  SetInputProperty(kOpacityInput, QStringLiteral("max"), 1.0f);
+    AddInput(kOpacityInput, NodeValue::kFloat, 1.0f);
+    SetInputProperty(kOpacityInput, QStringLiteral("view"), FloatSlider::kPercentage);
+    SetInputProperty(kOpacityInput, QStringLiteral("min"), 0.0f);
+    SetInputProperty(kOpacityInput, QStringLiteral("max"), 1.0f);
 
-  AddInput(kInnerInput, NodeValue::kBoolean, false);
+    AddInput(kInnerInput, NodeValue::kBoolean, false);
 
-  SetFlag(kVideoEffect);
-  SetEffectInput(kTextureInput);
+    SetFlag(kVideoEffect);
+    SetEffectInput(kTextureInput);
 }
 
-QString StrokeFilterNode::Name() const
-{
-  return tr("Stroke");
+QString StrokeFilterNode::Name() const {
+    return tr("Stroke");
 }
 
-QString StrokeFilterNode::id() const
-{
-  return QStringLiteral("org.arcvideoeditor.ArcVideo.stroke");
+QString StrokeFilterNode::id() const {
+    return QStringLiteral("org.arcvideoeditor.ArcVideo.stroke");
 }
 
-QVector<Node::CategoryID> StrokeFilterNode::Category() const
-{
-  return {kCategoryFilter};
+QVector<Node::CategoryID> StrokeFilterNode::Category() const {
+    return {kCategoryFilter};
 }
 
-QString StrokeFilterNode::Description() const
-{
-  return tr("Creates a stroke outline around an image.");
+QString StrokeFilterNode::Description() const {
+    return tr("Creates a stroke outline around an image.");
 }
 
-void StrokeFilterNode::Retranslate()
-{
-  super::Retranslate();
+void StrokeFilterNode::Retranslate() {
+    super::Retranslate();
 
-  SetInputName(kTextureInput, tr("Input"));
-  SetInputName(kColorInput, tr("Color"));
-  SetInputName(kRadiusInput, tr("Radius"));
-  SetInputName(kOpacityInput, tr("Opacity"));
-  SetInputName(kInnerInput, tr("Inner"));
+    SetInputName(kTextureInput, tr("Input"));
+    SetInputName(kColorInput, tr("Color"));
+    SetInputName(kRadiusInput, tr("Radius"));
+    SetInputName(kOpacityInput, tr("Opacity"));
+    SetInputName(kInnerInput, tr("Inner"));
 }
 
-void StrokeFilterNode::Value(const NodeValueRow &value, const NodeGlobals &globals, NodeValueTable *table) const
-{
-  if (TexturePtr tex = value[kTextureInput].toTexture()) {
-    if (value[kRadiusInput].toDouble() > 0.0
-        && value[kOpacityInput].toDouble() > 0.0) {
-      ShaderJob job(value);
-      job.Insert(QStringLiteral("resolution_in"), NodeValue(NodeValue::kVec2, tex->virtual_resolution(), this));
-      table->Push(NodeValue::kTexture, tex->toJob(job), this);
-    } else {
-      table->Push(value[kTextureInput]);
+void StrokeFilterNode::Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const {
+    if (TexturePtr tex = value[kTextureInput].toTexture()) {
+        if (value[kRadiusInput].toDouble() > 0.0 && value[kOpacityInput].toDouble() > 0.0) {
+            ShaderJob job(value);
+            job.Insert(QStringLiteral("resolution_in"), NodeValue(NodeValue::kVec2, tex->virtual_resolution(), this));
+            table->Push(NodeValue::kTexture, tex->toJob(job), this);
+        } else {
+            table->Push(value[kTextureInput]);
+        }
     }
-  }
 }
 
-ShaderCode StrokeFilterNode::GetShaderCode(const ShaderRequest &request) const
-{
-  Q_UNUSED(request)
+ShaderCode StrokeFilterNode::GetShaderCode(const ShaderRequest& request) const {
+    Q_UNUSED(request)
 
-  return ShaderCode(FileFunctions::ReadFileAsString(":/shaders/stroke.frag"));
+    return {FileFunctions::ReadFileAsString(":/shaders/stroke.frag")};
 }
 
-}
+}  // namespace arcvideo

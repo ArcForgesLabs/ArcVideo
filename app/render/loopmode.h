@@ -3,12 +3,8 @@
 
 namespace arcvideo {
 
-enum class LoopMode {
-  kLoopModeOff,
-  kLoopModeLoop,
-  kLoopModeClamp
-};
+enum class LoopMode { kLoopModeOff, kLoopModeLoop, kLoopModeClamp };
 
 }
 
-#endif // LOOPMODE_H
+#endif  // LOOPMODE_H

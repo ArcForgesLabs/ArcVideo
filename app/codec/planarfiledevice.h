@@ -22,6 +22,7 @@
 #define PLANARFILEDEVICE_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QFile>
 #include <QObject>
 
@@ -29,36 +30,32 @@ namespace arcvideo {
 
 using namespace foundation;
 
-class PlanarFileDevice : public QObject
-{
-  Q_OBJECT
+class PlanarFileDevice : public QObject {
+    Q_OBJECT
+
 public:
-  PlanarFileDevice(QObject *parent = nullptr);
+    PlanarFileDevice(QObject* parent = nullptr);
 
-  virtual ~PlanarFileDevice() override;
+    ~PlanarFileDevice() override;
 
-  bool isOpen() const
-  {
-    return !files_.isEmpty();
-  }
+    [[nodiscard]] bool isOpen() const { return !files_.isEmpty(); }
 
-  bool open(const QVector<QString> &filenames, QIODevice::OpenMode mode);
+    bool open(const QVector<QString>& filenames, QIODevice::OpenMode mode);
 
-  qint64 read(char **data, qint64 bytes_per_channel, qint64 offset = 0);
+    qint64 read(char** data, qint64 bytes_per_channel, qint64 offset = 0);
 
-  qint64 write(const char **data, qint64 bytes_per_channel, qint64 offset = 0);
+    qint64 write(const char** data, qint64 bytes_per_channel, qint64 offset = 0);
 
-  qint64 size() const;
+    [[nodiscard]] qint64 size() const;
 
-  bool seek(qint64 pos);
+    bool seek(qint64 pos);
 
-  void close();
+    void close();
 
 private:
-  QVector<QFile*> files_;
-
+    QVector<QFile*> files_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PLANARFILEDEVICE_H
+#endif  // PLANARFILEDEVICE_H

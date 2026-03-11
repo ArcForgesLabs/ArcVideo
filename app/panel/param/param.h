@@ -27,53 +27,42 @@
 
 namespace arcvideo {
 
-class ParamPanel : public TimeBasedPanel
-{
-  Q_OBJECT
+class ParamPanel : public TimeBasedPanel {
+    Q_OBJECT
+
 public:
-  ParamPanel();
+    ParamPanel();
 
-  NodeParamView *GetParamView() const
-  {
-    return static_cast<NodeParamView *>(GetTimeBasedWidget());
-  }
+    [[nodiscard]] NodeParamView* GetParamView() const { return static_cast<NodeParamView*>(GetTimeBasedWidget()); }
 
-  const QVector<Node*> &GetContexts() const
-  {
-    return GetParamView()->GetContexts();
-  }
+    [[nodiscard]] const QVector<Node*>& GetContexts() const { return GetParamView()->GetContexts(); }
 
-  void CloseContextsBelongingToProject(Project *p)
-  {
-    GetParamView()->CloseContextsBelongingToProject(p);
-  }
+    void CloseContextsBelongingToProject(Project* p) const { GetParamView()->CloseContextsBelongingToProject(p); }
 
 public slots:
-  void SetSelectedNodes(const QVector<Node::ContextPair> &nodes)
-  {
-    GetParamView()->SetSelectedNodes(nodes, false);
-  }
+    void SetSelectedNodes(const QVector<Node::ContextPair>& nodes) const {
+        GetParamView()->SetSelectedNodes(nodes, false);
+    }
 
-  virtual void DeleteSelected() override;
+    void DeleteSelected() override;
 
-  virtual void SelectAll() override;
+    void SelectAll() override;
 
-  virtual void DeselectAll() override;
+    void DeselectAll() override;
 
-  void SetContexts(const QVector<Node*> &contexts);
+    void SetContexts(const QVector<Node*>& contexts);
 
 signals:
-  void FocusedNodeChanged(Node* n);
+    void FocusedNodeChanged(Node* n);
 
-  void SelectedNodesChanged(const QVector<Node::ContextPair> &nodes);
+    void SelectedNodesChanged(const QVector<Node::ContextPair>& nodes);
 
-  void RequestViewerToStartEditingText();
+    void RequestViewerToStartEditingText();
 
 protected:
-  virtual void Retranslate() override;
-
+    void Retranslate() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PARAM_H
+#endif  // PARAM_H

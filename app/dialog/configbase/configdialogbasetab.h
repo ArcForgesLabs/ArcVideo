@@ -28,16 +28,15 @@
 
 namespace arcvideo {
 
-class ConfigDialogBaseTab : public QWidget
-{
+class ConfigDialogBaseTab : public QWidget {
 public:
-  ConfigDialogBaseTab() = default;
+    ConfigDialogBaseTab() = default;
 
-  virtual bool Validate();
+    virtual bool Validate();
 
-  virtual void Accept(MultiUndoCommand *parent) = 0;
+    virtual void Accept(MultiUndoCommand* parent) = 0;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PREFERENCESTAB_H
+#endif  // PREFERENCESTAB_H

@@ -27,31 +27,24 @@
 
 namespace arcvideo {
 
-class InterlacedComboBox : public QComboBox
-{
-  Q_OBJECT
+class InterlacedComboBox : public QComboBox {
+    Q_OBJECT
+
 public:
-  InterlacedComboBox(QWidget* parent = nullptr) :
-    QComboBox(parent)
-  {
-    // These must match the Interlacing enum in VideoParams
-    this->addItem(tr("None (Progressive)"));
-    this->addItem(tr("Top-Field First"));
-    this->addItem(tr("Bottom-Field First"));
-  }
+    InterlacedComboBox(QWidget* parent = nullptr) : QComboBox(parent) {
+        // These must match the Interlacing enum in VideoParams
+        this->addItem(tr("None (Progressive)"));
+        this->addItem(tr("Top-Field First"));
+        this->addItem(tr("Bottom-Field First"));
+    }
 
-  VideoParams::Interlacing GetInterlaceMode() const
-  {
-    return static_cast<VideoParams::Interlacing>(this->currentIndex());
-  }
+    [[nodiscard]] VideoParams::Interlacing GetInterlaceMode() const {
+        return static_cast<VideoParams::Interlacing>(this->currentIndex());
+    }
 
-  void SetInterlaceMode(VideoParams::Interlacing mode)
-  {
-    this->setCurrentIndex(mode);
-  }
-
+    void SetInterlaceMode(VideoParams::Interlacing mode) { this->setCurrentIndex(mode); }
 };
 
-}
+}  // namespace arcvideo
 
-#endif // INTERLACEDCOMBOBOX_H
+#endif  // INTERLACEDCOMBOBOX_H

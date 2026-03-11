@@ -8,25 +8,24 @@
 
 namespace arcvideo {
 
-class NodeValueTree : public QTreeWidget
-{
-  Q_OBJECT
-public:
-  NodeValueTree(QWidget *parent = nullptr);
+class NodeValueTree : public QTreeWidget {
+    Q_OBJECT
 
-  void SetNode(const NodeInput &input, const rational &time);
+public:
+    NodeValueTree(QWidget* parent = nullptr);
+
+    void SetNode(const NodeInput& input, const rational& time);
 
 protected:
-  virtual void changeEvent(QEvent *event) override;
+    void changeEvent(QEvent* event) override;
 
 private:
-  void Retranslate();
+    void Retranslate();
 
 private slots:
-  void RadioButtonChecked(bool e);
-
+    void RadioButtonChecked(bool e);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEVALUETREE_H
+#endif  // NODEVALUETREE_H

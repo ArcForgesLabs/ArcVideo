@@ -25,32 +25,31 @@
 
 namespace arcvideo {
 
-class WaveDistortNode : public Node
-{
-  Q_OBJECT
+class WaveDistortNode : public Node {
+    Q_OBJECT
+
 public:
-  WaveDistortNode();
+    WaveDistortNode();
 
-  NODE_DEFAULT_FUNCTIONS(WaveDistortNode)
+    NODE_DEFAULT_FUNCTIONS(WaveDistortNode)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kTextureInput;
-  static const QString kFrequencyInput;
-  static const QString kIntensityInput;
-  static const QString kEvolutionInput;
-  static const QString kVerticalInput;
-
+    static const QString kTextureInput;
+    static const QString kFrequencyInput;
+    static const QString kIntensityInput;
+    static const QString kEvolutionInput;
+    static const QString kVerticalInput;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // WAVEDISTORTNODE_H
+#endif  // WAVEDISTORTNODE_H

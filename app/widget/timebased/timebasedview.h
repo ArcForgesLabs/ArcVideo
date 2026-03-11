@@ -32,106 +32,93 @@ namespace arcvideo {
 
 class TimeBasedWidget;
 
-class TimeBasedView : public HandMovableView, public TimeScaledObject
-{
-  Q_OBJECT
+class TimeBasedView : public HandMovableView, public TimeScaledObject {
+    Q_OBJECT
+
 public:
-  TimeBasedView(QWidget* parent = nullptr);
+    TimeBasedView(QWidget* parent = nullptr);
 
-  void EnableSnap(const std::vector<rational> &points);
-  void DisableSnap();
-  bool IsSnapped() const
-  {
-    return snapped_;
-  }
+    void EnableSnap(const std::vector<rational>& points);
+    void DisableSnap();
+    [[nodiscard]] bool IsSnapped() const { return snapped_; }
 
-  TimeBasedWidget *GetSnapService() const { return snap_service_; }
-  void SetSnapService(TimeBasedWidget* service) { snap_service_ = service; }
+    [[nodiscard]] TimeBasedWidget* GetSnapService() const { return snap_service_; }
+    void SetSnapService(TimeBasedWidget* service) { snap_service_ = service; }
 
-  const double& GetYScale() const;
-  void SetYScale(const double& y_scale);
+    [[nodiscard]] const double& GetYScale() const;
+    void SetYScale(const double& y_scale);
 
-  virtual bool IsDraggingPlayhead() const
-  {
-    return dragging_playhead_;
-  }
+    [[nodiscard]] virtual bool IsDraggingPlayhead() const { return dragging_playhead_; }
 
-  // To be called only by selection managers
-  virtual void SelectionManagerSelectEvent(void *obj){}
-  virtual void SelectionManagerDeselectEvent(void *obj){}
+    // To be called only by selection managers
+    virtual void SelectionManagerSelectEvent(void* obj) {}
+    virtual void SelectionManagerDeselectEvent(void* obj) {}
 
-  ViewerOutput *GetViewerNode() const { return viewer_; }
+    [[nodiscard]] ViewerOutput* GetViewerNode() const { return viewer_; }
 
-  void SetViewerNode(ViewerOutput *v);
+    void SetViewerNode(ViewerOutput* v);
 
-  QPointF ScalePoint(const QPointF &p) const;
-  QPointF UnscalePoint(const QPointF &p) const;
+    [[nodiscard]] QPointF ScalePoint(const QPointF& p) const;
+    [[nodiscard]] QPointF UnscalePoint(const QPointF& p) const;
 
 public slots:
-  void SetEndTime(const rational& length);
+    void SetEndTime(const rational& length);
 
-  /**
-   * @brief Slot called whenever the view resizes or the scene contents change to enforce minimum scene sizes
-   */
-  void UpdateSceneRect();
+    /**
+     * @brief Slot called whenever the view resizes or the scene contents change to enforce minimum scene sizes
+     */
+    void UpdateSceneRect();
 
 signals:
-  void ScaleChanged(double scale);
+    void ScaleChanged(double scale);
 
 protected:
-  virtual void drawForeground(QPainter *painter, const QRectF &rect) override;
+    void drawForeground(QPainter* painter, const QRectF& rect) override;
 
-  virtual void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
-  virtual void ScaleChangedEvent(const double& scale) override;
+    void ScaleChangedEvent(const double& scale) override;
 
-  virtual void SceneRectUpdateEvent(QRectF&){}
+    virtual void SceneRectUpdateEvent(QRectF&) {}
 
-  virtual void VerticalScaleChangedEvent(double scale);
+    virtual void VerticalScaleChangedEvent(double scale);
 
-  virtual void ZoomIntoCursorPosition(QWheelEvent *event, double multiplier, const QPointF &cursor_pos) override;
+    void ZoomIntoCursorPosition(QWheelEvent* event, double multiplier, const QPointF& cursor_pos) override;
 
-  bool PlayheadPress(QMouseEvent* event);
-  bool PlayheadMove(QMouseEvent* event);
-  bool PlayheadRelease(QMouseEvent* event);
+    bool PlayheadPress(QMouseEvent* event);
+    bool PlayheadMove(QMouseEvent* event);
+    bool PlayheadRelease(QMouseEvent* event);
 
-  virtual void TimebaseChangedEvent(const rational &) override;
+    void TimebaseChangedEvent(const rational&) override;
 
-  bool IsYAxisEnabled() const
-  {
-    return y_axis_enabled_;
-  }
+    [[nodiscard]] bool IsYAxisEnabled() const { return y_axis_enabled_; }
 
-  void SetYAxisEnabled(bool e)
-  {
-    y_axis_enabled_ = e;
-  }
+    void SetYAxisEnabled(bool e) { y_axis_enabled_ = e; }
 
 private:
-  qreal GetPlayheadX();
+    qreal GetPlayheadX();
 
-  double playhead_scene_left_;
-  double playhead_scene_right_;
+    double playhead_scene_left_;
+    double playhead_scene_right_;
 
-  bool dragging_playhead_;
+    bool dragging_playhead_;
 
-  QGraphicsScene scene_;
+    QGraphicsScene scene_;
 
-  bool snapped_;
-  std::vector<rational> snap_time_;
+    bool snapped_;
+    std::vector<rational> snap_time_;
 
-  rational end_time_;
+    rational end_time_;
 
-  TimeBasedWidget* snap_service_ = nullptr;
+    TimeBasedWidget* snap_service_ = nullptr;
 
-  bool y_axis_enabled_;
+    bool y_axis_enabled_;
 
-  double y_scale_;
+    double y_scale_;
 
-  ViewerOutput *viewer_;
-
+    ViewerOutput* viewer_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINEVIEWBASE_H
+#endif  // TIMELINEVIEWBASE_H

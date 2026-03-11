@@ -20,6 +20,4 @@
 
 #include "timebasedviewselectionmanager.h"
 
-namespace arcvideo {
-
-}
+namespace arcvideo {}

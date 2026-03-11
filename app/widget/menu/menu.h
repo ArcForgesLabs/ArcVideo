@@ -21,8 +21,8 @@
 #ifndef WIDGETMENU_H
 #define WIDGETMENU_H
 
-#include <QMenuBar>
 #include <QMenu>
+#include <QMenuBar>
 #include <QMetaMethod>
 
 #include "common/define.h"
@@ -32,211 +32,186 @@ namespace arcvideo {
 /**
  * @brief A menu widget for context menus and menu bars
  *
- * A QMenu subclass with functions for creating menus and menu items that conform to ArcVideo's menu and keyboard shortcut
- * system.
+ * A QMenu subclass with functions for creating menus and menu items that conform to ArcVideo's menu and keyboard
+ * shortcut system.
  *
- * In ArcVideo, menu items in the menu bar are also responsible for keyboard shortcuts throughout the application. To allow
- * these to be configurable and these configurations saveable, every item needs a unique ID. This ID gets linked to the
- * keyboard shortcuts in config files. The ID doesn't get translated so it can also persist through language changes.
+ * In ArcVideo, menu items in the menu bar are also responsible for keyboard shortcuts throughout the application. To
+ * allow these to be configurable and these configurations saveable, every item needs a unique ID. This ID gets linked
+ * to the keyboard shortcuts in config files. The ID doesn't get translated so it can also persist through language
+ * changes.
  *
  * The ID gets stored in the QAction's "id" property. If a keyboard shortcut is provided, it gets stored in the
  * QAction's "keydefault" property.
  *
  * It is always recommended to use this over QMenu in any situation.
  */
-class Menu : public QMenu
-{
+class Menu : public QMenu {
 public:
-  Menu(QMenuBar* bar);
+    Menu(QMenuBar* bar);
 
-  template <typename Func>
-  /**
-   * @brief Construct a Menu and add it to a QMenuBar
-   *
-   * This Menu can be connected to a slot that's triggered when the Menu is "about to show". Use `receiver` and
-   * `member` to connect this (same syntax as QObject::connect) or leave as nullptr to not.
-   */
-  Menu(QMenuBar* bar,
-       const typename QtPrivate::FunctionPointer<Func>::Object *receiver,
-       Func member)
-  {
-    bar->addMenu(this);
+    template <typename Func>
+    /**
+     * @brief Construct a Menu and add it to a QMenuBar
+     *
+     * This Menu can be connected to a slot that's triggered when the Menu is "about to show". Use `receiver` and
+     * `member` to connect this (same syntax as QObject::connect) or leave as nullptr to not.
+     */
+    Menu(QMenuBar* bar, const typename QtPrivate::FunctionPointer<Func>::Object* receiver, Func member) {
+        bar->addMenu(this);
 
-    Init();
-    ConnectAboutToShow(receiver, member);
-  }
+        Init();
+        ConnectAboutToShow(receiver, member);
+    }
 
-  Menu(Menu* menu);
+    Menu(Menu* menu);
 
-  template <typename Func>
-  /**
-   * @brief Construct a Menu and add it as a submenu to another Menu
-   *
-   * This Menu can be connected to a slot that's triggered when the Menu is "about to show". Use `receiver` and
-   * `member` to connect this (same syntax as QObject::connect) or leave as nullptr to not.
-   */
-  Menu(Menu* menu,
-       const typename QtPrivate::FunctionPointer<Func>::Object *receiver,
-       Func member)
-  {
-    menu->addMenu(this);
+    template <typename Func>
+    /**
+     * @brief Construct a Menu and add it as a submenu to another Menu
+     *
+     * This Menu can be connected to a slot that's triggered when the Menu is "about to show". Use `receiver` and
+     * `member` to connect this (same syntax as QObject::connect) or leave as nullptr to not.
+     */
+    Menu(Menu* menu, const typename QtPrivate::FunctionPointer<Func>::Object* receiver, Func member) {
+        menu->addMenu(this);
 
-    Init();
-    ConnectAboutToShow(receiver, member);
-  }
+        Init();
+        ConnectAboutToShow(receiver, member);
+    }
 
-  /**
-   * @brief Construct a popup menu
-   */
-  Menu(QWidget* parent = nullptr);
+    /**
+     * @brief Construct a popup menu
+     */
+    Menu(QWidget* parent = nullptr);
 
-  /**
-   * @brief Construct a popup menu
-   */
-  Menu(const QString& s, QWidget* parent = nullptr);
+    /**
+     * @brief Construct a popup menu
+     */
+    Menu(const QString& s, QWidget* parent = nullptr);
 
-  template <typename Func>
-  /**
-   * @brief Create a menu item and add it to this menu
-   *
-   * @param id
-   *
-   * The action's unique ID
-   *
-   * @param receiver
-   *
-   * The QObject to receive the signal when this item is triggered
-   *
-   * @param member
-   *
-   * The QObject slot to connect this action's triggered signal to
-   *
-   * @param key
-   *
-   * Default keyboard sequence
-   *
-   * @return
-   *
-   * The QAction that was created and added to this Menu
-   */
-  QAction* AddItem(const QString& id,
-                   const typename QtPrivate::FunctionPointer<Func>::Object *receiver,
-                   Func member,
-                   const QKeySequence &key = QKeySequence())
-  {
-    QAction* a = CreateItem(this, id, receiver, member, key);
+    template <typename Func>
+    /**
+     * @brief Create a menu item and add it to this menu
+     *
+     * @param id
+     *
+     * The action's unique ID
+     *
+     * @param receiver
+     *
+     * The QObject to receive the signal when this item is triggered
+     *
+     * @param member
+     *
+     * The QObject slot to connect this action's triggered signal to
+     *
+     * @param key
+     *
+     * Default keyboard sequence
+     *
+     * @return
+     *
+     * The QAction that was created and added to this Menu
+     */
+    QAction* AddItem(const QString& id, const typename QtPrivate::FunctionPointer<Func>::Object* receiver, Func member,
+                     const QKeySequence& key = QKeySequence()) {
+        QAction* a = CreateItem(this, id, receiver, member, key);
 
-    addAction(a);
+        addAction(a);
 
-    return a;
-  }
+        return a;
+    }
 
-  QAction* AddActionWithData(const QString& text,
-                             const QVariant& d,
-                             const QVariant& compare);
+    QAction* AddActionWithData(const QString& text, const QVariant& d, const QVariant& compare);
 
-  QAction *InsertAlphabetically(const QString& s);
-  void InsertAlphabetically(QAction* entry);
-  void InsertAlphabetically(Menu* menu);
+    QAction* InsertAlphabetically(const QString& s);
+    void InsertAlphabetically(QAction* entry);
+    void InsertAlphabetically(Menu* menu);
 
-  template <typename Func>
-  /**
-   * @brief Create a menu item
-   *
-   * @param parent
-   *
-   * The QAction's parent
-   *
-   * @param id
-   *
-   * The action's unique ID
-   *
-   * @param receiver
-   *
-   * The QObject to receive the signal when this item is triggered
-   *
-   * @param member
-   *
-   * The QObject slot to connect this action's triggered signal to
-   *
-   * @param key
-   *
-   * Default keyboard sequence
-   *
-   * @return
-   *
-   * The QAction that was created and added to this Menu
-   */
-  static QAction* CreateItem(QObject* parent,
-                             const QString& id,
-                             const typename QtPrivate::FunctionPointer<Func>::Object *receiver,
-                             Func member,
-                             const QKeySequence &key = QKeySequence())
-  {
-    QAction* a = new QAction(parent);
+    template <typename Func>
+    /**
+     * @brief Create a menu item
+     *
+     * @param parent
+     *
+     * The QAction's parent
+     *
+     * @param id
+     *
+     * The action's unique ID
+     *
+     * @param receiver
+     *
+     * The QObject to receive the signal when this item is triggered
+     *
+     * @param member
+     *
+     * The QObject slot to connect this action's triggered signal to
+     *
+     * @param key
+     *
+     * Default keyboard sequence
+     *
+     * @return
+     *
+     * The QAction that was created and added to this Menu
+     */
+    static QAction* CreateItem(QObject* parent, const QString& id,
+                               const typename QtPrivate::FunctionPointer<Func>::Object* receiver, Func member,
+                               const QKeySequence& key = QKeySequence()) {
+        auto* a = new QAction(parent);
 
-    ConformItem(a,
-                id,
-                receiver,
-                member,
-                key);
+        ConformItem(a, id, receiver, member, key);
 
-    return a;
-  }
+        return a;
+    }
 
-  template <typename Func>
-  /**
-   * @brief Conform a QAction to ArcVideo's ID/keydefault system
-   *
-   * If a QAction was created elsewhere (e.g. through QUndoStack::createUndoAction()), this function will give it
-   * properties conforming it to ArcVideo's menu item system
-   *
-   * @param a
-   *
-   * The QAction's to conform
-   *
-   * @param id
-   *
-   * The action's unique ID
-   *
-   * @param receiver
-   *
-   * The QObject to receive the signal when this item is triggered
-   *
-   * @param member
-   *
-   * The QObject slot to connect this action's triggered signal to
-   *
-   * @param key
-   *
-   * Default keyboard sequence
-   */
-  static void ConformItem(QAction *a,
-                          const QString& id,
-                          const typename QtPrivate::FunctionPointer<Func>::Object *receiver,
-                          Func member,
-                          const QKeySequence &key = QKeySequence())
-  {
-    ConformItem(a, id, key);
+    template <typename Func>
+    /**
+     * @brief Conform a QAction to ArcVideo's ID/keydefault system
+     *
+     * If a QAction was created elsewhere (e.g. through QUndoStack::createUndoAction()), this function will give it
+     * properties conforming it to ArcVideo's menu item system
+     *
+     * @param a
+     *
+     * The QAction's to conform
+     *
+     * @param id
+     *
+     * The action's unique ID
+     *
+     * @param receiver
+     *
+     * The QObject to receive the signal when this item is triggered
+     *
+     * @param member
+     *
+     * The QObject slot to connect this action's triggered signal to
+     *
+     * @param key
+     *
+     * Default keyboard sequence
+     */
+    static void ConformItem(QAction* a, const QString& id,
+                            const typename QtPrivate::FunctionPointer<Func>::Object* receiver, Func member,
+                            const QKeySequence& key = QKeySequence()) {
+        ConformItem(a, id, key);
 
-    connect(a, &QAction::triggered, receiver, member);
-  }
+        connect(a, &QAction::triggered, receiver, member);
+    }
 
-  static void ConformItem(QAction *a,
-                          const QString& id,
-                          const QKeySequence &key = QKeySequence());
+    static void ConformItem(QAction* a, const QString& id, const QKeySequence& key = QKeySequence());
 
 private:
-  void Init();
+    void Init();
 
-  template <typename Func>
-  void ConnectAboutToShow(const typename QtPrivate::FunctionPointer<Func>::Object *receiver, Func member)
-  {
-    connect(this, &Menu::aboutToShow, receiver, member);
-  }
-
+    template <typename Func>
+    void ConnectAboutToShow(const typename QtPrivate::FunctionPointer<Func>::Object* receiver, Func member) {
+        connect(this, &Menu::aboutToShow, receiver, member);
+    }
 };
 
-}
+}  // namespace arcvideo
 
-#endif // WIDGETMENU_H
+#endif  // WIDGETMENU_H

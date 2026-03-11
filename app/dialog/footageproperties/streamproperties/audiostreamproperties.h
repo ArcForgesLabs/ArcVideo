@@ -26,20 +26,18 @@
 
 namespace arcvideo {
 
-class AudioStreamProperties : public StreamProperties
-{
+class AudioStreamProperties : public StreamProperties {
 public:
-  AudioStreamProperties(Footage *footage, int audio_index);
+    AudioStreamProperties(Footage* footage, int audio_index);
 
-  virtual void Accept(MultiUndoCommand* parent) override;
+    void Accept(MultiUndoCommand* parent) override;
 
 private:
-  Footage *footage_;
+    Footage* footage_;
 
-  int audio_index_;
-
+    int audio_index_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // AUDIOSTREAMPROPERTIES_H
+#endif  // AUDIOSTREAMPROPERTIES_H

@@ -22,9 +22,8 @@
 #define RANGE_H
 
 template <typename T>
-bool InRange(T a, T b, T range)
-{
-  return (a >= b - range && a <= b + range);
+bool InRange(T a, T b, T range) {
+    return (a >= b - range && a <= b + range);
 }
 
-#endif // RANGE_H
+#endif  // RANGE_H

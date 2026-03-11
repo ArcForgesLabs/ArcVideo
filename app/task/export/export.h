@@ -30,53 +30,49 @@
 
 namespace arcvideo {
 
-class ExportTask : public RenderTask
-{
-  Q_OBJECT
+class ExportTask : public RenderTask {
+    Q_OBJECT
+
 public:
-  ExportTask(ViewerOutput *viewer_node, ColorManager *color_manager, const EncodingParams &params);
+    ExportTask(ViewerOutput* viewer_node, ColorManager* color_manager, const EncodingParams& params);
 
 protected:
-  virtual bool Run() override;
+    bool Run() override;
 
-  virtual bool FrameDownloaded(FramePtr frame, const rational &time) override;
+    bool FrameDownloaded(FramePtr frame, const rational& time) override;
 
-  virtual bool AudioDownloaded(const TimeRange& range, const SampleBuffer &samples) override;
+    bool AudioDownloaded(const TimeRange& range, const SampleBuffer& samples) override;
 
-  virtual bool EncodeSubtitle(const SubtitleBlock *sub) override;
+    bool EncodeSubtitle(const SubtitleBlock* sub) override;
 
-  virtual bool TwoStepFrameRendering() const override
-  {
-    return false;
-  }
+    [[nodiscard]] bool TwoStepFrameRendering() const override { return false; }
 
 private:
-  bool WriteAudioLoop(const TimeRange &time, const SampleBuffer &samples);
+    bool WriteAudioLoop(const TimeRange& time, const SampleBuffer& samples);
 
-  ProjectCopier *copier_;
+    ProjectCopier* copier_;
 
-  QHash<rational, FramePtr> time_map_;
+    QHash<rational, FramePtr> time_map_;
 
-  QHash<TimeRange, SampleBuffer> audio_map_;
+    QHash<TimeRange, SampleBuffer> audio_map_;
 
-  ColorManager* color_manager_ = nullptr;
+    ColorManager* color_manager_ = nullptr;
 
-  EncodingParams params_;
+    EncodingParams params_;
 
-  std::shared_ptr<Encoder> encoder_;
+    std::shared_ptr<Encoder> encoder_;
 
-  std::shared_ptr<Encoder> subtitle_encoder_;
+    std::shared_ptr<Encoder> subtitle_encoder_;
 
-  ColorProcessorPtr color_processor_;
+    ColorProcessorPtr color_processor_;
 
-  int64_t frame_time_;
+    int64_t frame_time_;
 
-  rational audio_time_;
+    rational audio_time_;
 
-  TimeRange export_range_;
-
+    TimeRange export_range_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // EXPORTTASK_H
+#endif  // EXPORTTASK_H

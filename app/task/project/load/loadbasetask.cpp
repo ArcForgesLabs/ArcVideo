@@ -22,11 +22,8 @@
 
 namespace arcvideo {
 
-ProjectLoadBaseTask::ProjectLoadBaseTask(const QString &filename) :
-  project_(nullptr),
-  filename_(filename)
-{
-  SetTitle(tr("Loading '%1'").arg(filename));
+ProjectLoadBaseTask::ProjectLoadBaseTask(const QString& filename) : project_(nullptr), filename_(filename) {
+    SetTitle(tr("Loading '%1'").arg(filename));
 }
 
-}
+}  // namespace arcvideo

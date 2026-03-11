@@ -27,26 +27,21 @@
 
 namespace arcvideo {
 
-class NodeViewItemConnector : public QGraphicsPolygonItem
-{
+class NodeViewItemConnector : public QGraphicsPolygonItem {
 public:
-  NodeViewItemConnector(bool is_output, QGraphicsItem *parent = nullptr);
+    NodeViewItemConnector(bool is_output, QGraphicsItem* parent = nullptr);
 
-  void SetFlowDirection(NodeViewCommon::FlowDirection dir);
+    void SetFlowDirection(NodeViewCommon::FlowDirection dir);
 
-  bool IsOutput() const
-  {
-    return output_;
-  }
+    [[nodiscard]] bool IsOutput() const { return output_; }
 
-  virtual QPainterPath shape() const override;
-  virtual QRectF boundingRect() const override;
+    [[nodiscard]] QPainterPath shape() const override;
+    [[nodiscard]] QRectF boundingRect() const override;
 
 private:
-  bool output_;
-
+    bool output_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEVIEWITEMCONNECTOR_H
+#endif  // NODEVIEWITEMCONNECTOR_H

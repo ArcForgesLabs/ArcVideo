@@ -28,34 +28,24 @@ namespace arcvideo {
 
 class CancelableObject {
 public:
-  CancelableObject()
-  {
-  }
+    CancelableObject() = default;
 
-  void Cancel()
-  {
-    cancel_.Cancel();
-    CancelEvent();
-  }
+    void Cancel() {
+        cancel_.Cancel();
+        CancelEvent();
+    }
 
-  CancelAtom *GetCancelAtom()
-  {
-    return &cancel_;
-  }
+    CancelAtom* GetCancelAtom() { return &cancel_; }
 
-  bool IsCancelled()
-  {
-    return cancel_.IsCancelled();
-  }
+    bool IsCancelled() { return cancel_.IsCancelled(); }
 
 protected:
-  virtual void CancelEvent(){}
+    virtual void CancelEvent() {}
 
 private:
-  CancelAtom cancel_;
-
+    CancelAtom cancel_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CANCELABLEOBJECT_H
+#endif  // CANCELABLEOBJECT_H

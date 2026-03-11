@@ -5,43 +5,32 @@
 
 namespace arcvideo {
 
-class OpacityEffect : public Node
-{
+class OpacityEffect : public Node {
 public:
-  OpacityEffect();
+    OpacityEffect();
 
-  NODE_DEFAULT_FUNCTIONS(OpacityEffect)
+    NODE_DEFAULT_FUNCTIONS(OpacityEffect)
 
-  virtual QString Name() const override
-  {
-    return tr("Opacity");
-  }
+    [[nodiscard]] QString Name() const override { return tr("Opacity"); }
 
-  virtual QString id() const override
-  {
-    return QStringLiteral("org.arcvideoeditor.ArcVideo.opacity");
-  }
+    [[nodiscard]] QString id() const override { return QStringLiteral("org.arcvideoeditor.ArcVideo.opacity"); }
 
-  virtual QVector<CategoryID> Category() const override
-  {
-    return {kCategoryFilter};
-  }
+    [[nodiscard]] QVector<CategoryID> Category() const override { return {kCategoryFilter}; }
 
-  virtual QString Description() const override
-  {
-    return tr("Alter a video's opacity.\n\nThis is equivalent to multiplying a video by a number between 0.0 and 1.0.");
-  }
+    [[nodiscard]] QString Description() const override {
+        return tr(
+            "Alter a video's opacity.\n\nThis is equivalent to multiplying a video by a number between 0.0 and 1.0.");
+    }
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kTextureInput;
-  static const QString kValueInput;
-
+    static const QString kTextureInput;
+    static const QString kValueInput;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // OPACITYEFFECT_H
+#endif  // OPACITYEFFECT_H

@@ -25,12 +25,11 @@
 
 namespace arcvideo {
 
-class CLIExportManager : public QObject
-{
+class CLIExportManager : public QObject {
 public:
-  CLIExportManager();
+    CLIExportManager();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CLIEXPORTMANAGER_H
+#endif  // CLIEXPORTMANAGER_H

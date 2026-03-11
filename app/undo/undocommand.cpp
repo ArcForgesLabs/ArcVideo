@@ -20,70 +20,65 @@
 
 #include "undocommand.h"
 
+#include <ranges>
+
 #include "core.h"
 
 namespace arcvideo {
 
-void MultiUndoCommand::redo()
-{
-  for (auto it=children_.cbegin(); it!=children_.cend(); it++) {
-    (*it)->redo_and_set_modified();
-  }
-}
-
-void MultiUndoCommand::undo()
-{
-  for (auto it=children_.crbegin(); it!=children_.crend(); it++) {
-    (*it)->undo_and_set_modified();
-  }
-}
-
-UndoCommand::UndoCommand()
-{
-  prepared_ = false;
-  done_ = false;
-}
-
-void UndoCommand::redo_and_set_modified()
-{
-  project_ = GetRelevantProject();
-
-  redo_now();
-
-  if (project_) {
-    modified_ = project_->is_modified();
-    project_->set_modified(true);
-  }
-}
-
-void UndoCommand::undo_and_set_modified()
-{
-  undo_now();
-
-  if (project_) {
-    project_->set_modified(modified_);
-  }
-}
-
-void UndoCommand::redo_now()
-{
-  if (!done_) {
-    if (!prepared_) {
-      prepare();
-      prepared_ = true;
+void MultiUndoCommand::redo() {
+    for (auto it : children_) {
+        it->redo_and_set_modified();
     }
-
-    redo();
-    done_ = true;
-  }
 }
 
-void UndoCommand::undo_now()
-{
-  if (done_) {
-    undo();
+void MultiUndoCommand::undo() {
+    for (auto it : std::views::reverse(children_)) {
+        it->undo_and_set_modified();
+    }
+}
+
+UndoCommand::UndoCommand() {
+    prepared_ = false;
     done_ = false;
-  }
 }
 
+void UndoCommand::redo_and_set_modified() {
+    project_ = GetRelevantProject();
+
+    redo_now();
+
+    if (project_) {
+        modified_ = project_->is_modified();
+        project_->set_modified(true);
+    }
 }
+
+void UndoCommand::undo_and_set_modified() {
+    undo_now();
+
+    if (project_) {
+        project_->set_modified(modified_);
+    }
+}
+
+void UndoCommand::redo_now() {
+    if (!done_) {
+        if (!prepared_) {
+            prepare();
+            prepared_ = true;
+        }
+
+        redo();
+        done_ = true;
+    }
+}
+
+void UndoCommand::undo_now() {
+    if (done_) {
+        undo();
+        done_ = false;
+    }
+}
+
+}  // namespace arcvideo

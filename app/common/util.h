@@ -22,9 +22,8 @@
 #define UTIL_H
 
 template <typename T>
-inline T mid(T a, T b)
-{
-  return (a + b) * 0.5;
+inline T mid(T a, T b) {
+    return (a + b) * 0.5;
 }
 
-#endif // UTIL_H
+#endif  // UTIL_H

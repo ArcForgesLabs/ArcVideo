@@ -32,28 +32,27 @@
 
 namespace arcvideo {
 
-class SaveOTIOTask : public Task
-{
-  Q_OBJECT
+class SaveOTIOTask : public Task {
+    Q_OBJECT
+
 public:
-  SaveOTIOTask(Project* project);
+    SaveOTIOTask(Project* project);
 
 protected:
-  virtual bool Run() override;
+    bool Run() override;
 
 private:
-  OTIO::Timeline* SerializeTimeline(Sequence* sequence);
+    OTIO::Timeline* SerializeTimeline(Sequence* sequence);
 
-  OTIO::Track* SerializeTrack(Track* track, double sequence_rate, rational max_track_length);
+    static OTIO::Track* SerializeTrack(Track* track, double sequence_rate, rational max_track_length);
 
-  bool SerializeTrackList(TrackList* list, OTIO::Timeline *otio_timeline, double sequence_rate);
+    bool SerializeTrackList(TrackList* list, OTIO::Timeline* otio_timeline, double sequence_rate);
 
-  Project* project_ = nullptr;
-
+    Project* project_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
 #endif
 
-#endif // PROJECTSAVEASOTIOTASK_H
+#endif  // PROJECTSAVEASOTIOTASK_H

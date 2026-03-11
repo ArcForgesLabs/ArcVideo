@@ -26,41 +26,31 @@
 
 namespace arcvideo {
 
-class ProjectSaveTask : public Task
-{
-  Q_OBJECT
+class ProjectSaveTask : public Task {
+    Q_OBJECT
+
 public:
-  ProjectSaveTask(Project* project, bool use_compression);
+    ProjectSaveTask(Project* project, bool use_compression);
 
-  Project* GetProject() const
-  {
-    return project_;
-  }
+    [[nodiscard]] Project* GetProject() const { return project_; }
 
-  void SetOverrideFilename(const QString& filename)
-  {
-    override_filename_ = filename;
-  }
+    void SetOverrideFilename(const QString& filename) { override_filename_ = filename; }
 
-  void SetLayout(const MainWindowLayoutInfo &layout)
-  {
-    layout_ = layout;
-  }
+    void SetLayout(const MainWindowLayoutInfo& layout) { layout_ = layout; }
 
 protected:
-  virtual bool Run() override;
+    bool Run() override;
 
 private:
-  Project* project_ = nullptr;
+    Project* project_ = nullptr;
 
-  QString override_filename_;
+    QString override_filename_;
 
-  bool use_compression_;
+    bool use_compression_;
 
-  MainWindowLayoutInfo layout_;
-
+    MainWindowLayoutInfo layout_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTSAVEMANAGER_H
+#endif  // PROJECTSAVEMANAGER_H

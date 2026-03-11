@@ -18,25 +18,22 @@
 
 ***/
 
-#include "widget/timelinewidget/timelinewidget.h"
+#include "slide.h"
 
 #include "node/block/gap/gap.h"
 #include "node/nodeundo.h"
-#include "slide.h"
+#include "widget/timelinewidget/timelinewidget.h"
 
 namespace arcvideo {
 
-SlideTool::SlideTool(TimelineWidget* parent) :
-  PointerTool(parent)
-{
-  SetTrimmingAllowed(false);
-  SetTrackMovementAllowed(false);
-  SetGapTrimmingAllowed(true);
+SlideTool::SlideTool(TimelineWidget* parent) : PointerTool(parent) {
+    SetTrimmingAllowed(false);
+    SetTrackMovementAllowed(false);
+    SetGapTrimmingAllowed(true);
 }
 
-void SlideTool::InitiateDrag(Block *clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers)
-{
-  InitiateDragInternal(clicked_item, trim_mode, modifiers, false, true, true);
+void SlideTool::InitiateDrag(Block* clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers) {
+    InitiateDragInternal(clicked_item, trim_mode, modifiers, false, true, true);
 }
 
-}
+}  // namespace arcvideo

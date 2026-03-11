@@ -27,46 +27,45 @@
 
 namespace arcvideo {
 
-class ColorSwatchWidget : public QWidget
-{
-  Q_OBJECT
+class ColorSwatchWidget : public QWidget {
+    Q_OBJECT
+
 public:
-  ColorSwatchWidget(QWidget* parent = nullptr);
+    ColorSwatchWidget(QWidget* parent = nullptr);
 
-  const Color& GetSelectedColor() const;
+    [[nodiscard]] const Color& GetSelectedColor() const;
 
-  void SetColorProcessor(ColorProcessorPtr to_linear, ColorProcessorPtr to_display);
+    void SetColorProcessor(ColorProcessorPtr to_linear, ColorProcessorPtr to_display);
 
 public slots:
-  void SetSelectedColor(const Color& c);
+    void SetSelectedColor(const Color& c);
 
 signals:
-  void SelectedColorChanged(const Color& c);
+    void SelectedColorChanged(const Color& c);
 
 protected:
-  virtual void mousePressEvent(QMouseEvent* e) override;
+    void mousePressEvent(QMouseEvent* e) override;
 
-  virtual void mouseMoveEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
 
-  virtual Color GetColorFromScreenPos(const QPoint& p) const = 0;
+    [[nodiscard]] virtual Color GetColorFromScreenPos(const QPoint& p) const = 0;
 
-  virtual void SelectedColorChangedEvent(const Color& c, bool external);
+    virtual void SelectedColorChangedEvent(const Color& c, bool external);
 
-  Qt::GlobalColor GetUISelectorColor() const;
+    [[nodiscard]] Qt::GlobalColor GetUISelectorColor() const;
 
-  Color GetManagedColor(const Color& input) const;
+    [[nodiscard]] Color GetManagedColor(const Color& input) const;
 
 private:
-  void SetSelectedColorInternal(const Color& c, bool external);
+    void SetSelectedColorInternal(const Color& c, bool external);
 
-  Color selected_color_;
+    Color selected_color_;
 
-  ColorProcessorPtr to_linear_processor_;
+    ColorProcessorPtr to_linear_processor_;
 
-  ColorProcessorPtr to_display_processor_;
-
+    ColorProcessorPtr to_display_processor_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORSWATCHWIDGET_H
+#endif  // COLORSWATCHWIDGET_H

@@ -29,27 +29,23 @@
 
 namespace arcvideo {
 
-class ExportSavePresetDialog : public QDialog
-{
-  Q_OBJECT
-public:
-  ExportSavePresetDialog(const EncodingParams &p, QWidget *parent = nullptr);
+class ExportSavePresetDialog : public QDialog {
+    Q_OBJECT
 
-  QString GetSelectedPresetName() const
-  {
-    return name_edit_->text();
-  }
+public:
+    ExportSavePresetDialog(EncodingParams p, QWidget* parent = nullptr);
+
+    [[nodiscard]] QString GetSelectedPresetName() const { return name_edit_->text(); }
 
 public slots:
-  virtual void accept() override;
+    void accept() override;
 
 private:
-  QLineEdit *name_edit_;
+    QLineEdit* name_edit_;
 
-  EncodingParams params_;
-
+    EncodingParams params_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // EXPORTSAVEPRESETDIALOG_H
+#endif  // EXPORTSAVEPRESETDIALOG_H

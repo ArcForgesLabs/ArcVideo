@@ -20,6 +20,4 @@
 
 #include "globals.h"
 
-namespace arcvideo {
-
-}
+namespace arcvideo {}

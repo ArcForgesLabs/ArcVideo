@@ -28,24 +28,23 @@
 
 namespace arcvideo {
 
-class FootageRelinkDialog : public QDialog
-{
-  Q_OBJECT
+class FootageRelinkDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  FootageRelinkDialog(const QVector<Footage*>& footage, QWidget* parent = nullptr);
+    FootageRelinkDialog(const QVector<Footage*>& footage, QWidget* parent = nullptr);
 
 private:
-  void UpdateFootageItem(int index);
+    void UpdateFootageItem(int index);
 
-  QTreeWidget* table_ = nullptr;
+    QTreeWidget* table_ = nullptr;
 
-  QVector<Footage*> footage_;
+    QVector<Footage*> footage_;
 
 private slots:
-  void BrowseForFootage();
-
+    void BrowseForFootage();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FOOTAGERELINKDIALOG_H
+#endif  // FOOTAGERELINKDIALOG_H

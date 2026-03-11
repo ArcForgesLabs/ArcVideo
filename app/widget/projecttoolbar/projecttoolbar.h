@@ -21,9 +21,9 @@
 #ifndef PROJECTTOOLBAR_H
 #define PROJECTTOOLBAR_H
 
-#include <QWidget>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QWidget>
 
 #include "common/define.h"
 
@@ -37,51 +37,47 @@ namespace arcvideo {
  *
  * This object's signals can be connected to various functions in the application for better user experience.
  */
-class ProjectToolbar : public QWidget
-{
-  Q_OBJECT
-public:
-  ProjectToolbar(QWidget* parent);
+class ProjectToolbar : public QWidget {
+    Q_OBJECT
 
-  enum ViewType {
-    TreeView,
-    ListView,
-    IconView
-  };
+public:
+    ProjectToolbar(QWidget* parent);
+
+    enum ViewType { TreeView, ListView, IconView };
 
 public slots:
-  void SetView(ViewType type);
+    void SetView(ViewType type);
 
 protected:
-  void changeEvent(QEvent *) override;
+    void changeEvent(QEvent*) override;
 
 signals:
-  void NewClicked();
-  void OpenClicked();
-  void SaveClicked();
+    void NewClicked();
+    void OpenClicked();
+    void SaveClicked();
 
-  void SearchChanged(const QString&);
+    void SearchChanged(const QString&);
 
-  void ViewChanged(ViewType type);
+    void ViewChanged(ViewType type);
 
 private:
-  void Retranslate();
-  void UpdateIcons();
+    void Retranslate();
+    void UpdateIcons();
 
-  QPushButton* new_button_ = nullptr;
-  QPushButton* open_button_ = nullptr;
-  QPushButton* save_button_ = nullptr;
+    QPushButton* new_button_ = nullptr;
+    QPushButton* open_button_ = nullptr;
+    QPushButton* save_button_ = nullptr;
 
-  QLineEdit* search_field_ = nullptr;
+    QLineEdit* search_field_ = nullptr;
 
-  QPushButton* tree_button_ = nullptr;
-  QPushButton* list_button_ = nullptr;
-  QPushButton* icon_button_ = nullptr;
+    QPushButton* tree_button_ = nullptr;
+    QPushButton* list_button_ = nullptr;
+    QPushButton* icon_button_ = nullptr;
 
 private slots:
-  void ViewButtonClicked();
+    void ViewButtonClicked();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTTOOLBAR_H
+#endif  // PROJECTTOOLBAR_H

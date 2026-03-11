@@ -27,23 +27,21 @@
 
 namespace arcvideo {
 
-class EditTool : public BeamTool
-{
+class EditTool : public BeamTool {
 public:
-  EditTool(TimelineWidget* parent);
+    EditTool(TimelineWidget* parent);
 
-  virtual void MousePress(TimelineViewMouseEvent *event) override;
-  virtual void MouseMove(TimelineViewMouseEvent *event) override;
-  virtual void MouseRelease(TimelineViewMouseEvent *event) override;
-  virtual void MouseDoubleClick(TimelineViewMouseEvent *event) override;
+    void MousePress(TimelineViewMouseEvent* event) override;
+    void MouseMove(TimelineViewMouseEvent* event) override;
+    void MouseRelease(TimelineViewMouseEvent* event) override;
+    void MouseDoubleClick(TimelineViewMouseEvent* event) override;
 
 private:
-  TimelineWidgetSelections start_selections_;
+    TimelineWidgetSelections start_selections_;
 
-  TimelineCoordinate start_coord_;
-
+    TimelineCoordinate start_coord_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // EDITTIMELINETOOL_H
+#endif  // EDITTIMELINETOOL_H

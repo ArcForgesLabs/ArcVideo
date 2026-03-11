@@ -29,18 +29,18 @@ namespace arcvideo {
 /**
  * @brief A PanelWidget wrapper around a TaskView widget
  */
-class TaskManagerPanel : public PanelWidget
-{
-  Q_OBJECT
+class TaskManagerPanel : public PanelWidget {
+    Q_OBJECT
+
 public:
-  TaskManagerPanel();
+    TaskManagerPanel();
 
 private:
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  TaskView* view_ = nullptr;
+    TaskView* view_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TASKMANAGER_H
+#endif  // TASKMANAGER_H

@@ -27,26 +27,26 @@
 
 namespace arcvideo {
 
-class ConformTask : public Task
-{
-  Q_OBJECT
+class ConformTask : public Task {
+    Q_OBJECT
+
 public:
-  ConformTask(const QString &decoder_id, const Decoder::CodecStream &stream, const AudioParams& params, const QVector<QString> &output_filenames);
+    ConformTask(QString decoder_id, const Decoder::CodecStream& stream, const AudioParams& params,
+                const QVector<QString>& output_filenames);
 
 protected:
-  virtual bool Run() override;
+    bool Run() override;
 
 private:
-  QString decoder_id_;
+    QString decoder_id_;
 
-  Decoder::CodecStream stream_;
+    Decoder::CodecStream stream_;
 
-  AudioParams params_;
+    AudioParams params_;
 
-  QVector<QString> output_filenames_;
-
+    QVector<QString> output_filenames_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CONFORMTASK_H
+#endif  // CONFORMTASK_H

@@ -27,34 +27,33 @@
 
 namespace arcvideo {
 
-class NodeComboBox : public QComboBox
-{
-  Q_OBJECT
+class NodeComboBox : public QComboBox {
+    Q_OBJECT
+
 public:
-  NodeComboBox(QWidget* parent = nullptr);
+    NodeComboBox(QWidget* parent = nullptr);
 
-  virtual void showPopup() override;
+    void showPopup() override;
 
-  const QString& GetSelectedNode() const;
+    [[nodiscard]] const QString& GetSelectedNode() const;
 
 public slots:
-  void SetNode(const QString& id);
+    void SetNode(const QString& id);
 
 protected:
-  virtual void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 signals:
-  void NodeChanged(const QString& id);
+    void NodeChanged(const QString& id);
 
 private:
-  void UpdateText();
+    void UpdateText();
 
-  void SetNodeInternal(const QString& id, bool emit_signal);
+    void SetNodeInternal(const QString& id, bool emit_signal);
 
-  QString selected_id_;
-
+    QString selected_id_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FOOTAGECOMBOBOX_H
+#endif  // FOOTAGECOMBOBOX_H

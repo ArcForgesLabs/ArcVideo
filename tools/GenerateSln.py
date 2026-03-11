@@ -70,6 +70,7 @@ def banner() -> None:
 
 # ── Project root detection ───────────────────────────────────────
 
+
 def find_project_root(explicit: str | None = None) -> Path:
     if explicit:
         p = Path(explicit)
@@ -80,7 +81,9 @@ def find_project_root(explicit: str | None = None) -> Path:
     try:
         result = subprocess.run(
             ["git", "rev-parse", "--show-toplevel"],
-            capture_output=True, text=True, check=True,
+            capture_output=True,
+            text=True,
+            check=True,
         )
         git_root = Path(result.stdout.strip())
         if (git_root / "CMakeLists.txt").is_file():
@@ -106,6 +109,7 @@ def find_project_root(explicit: str | None = None) -> Path:
 
 # ── Build directory resolution ───────────────────────────────────
 
+
 def get_build_dir(root: Path, preset_name: str) -> Path:
     presets_file = root / "CMakePresets.json"
     if presets_file.is_file():
@@ -128,22 +132,42 @@ THIRD_PARTY_TARGETS = ["opentimelineio", "opentime"]
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Generate a Visual Studio solution for ArcVideo.")
-    parser.add_argument("--project-root", default=None,
-                        help="Path to CMake project root (auto-detected)")
-    parser.add_argument("--preset", default="windows-vs",
-                        help="CMake configure preset (default: windows-vs)")
-    parser.add_argument("--configs", nargs="+", default=["Debug", "Release"],
-                        help="Build configurations (default: Debug Release)")
-    parser.add_argument("--skip-configure", action="store_true",
-                        help="Skip cmake configure step")
-    parser.add_argument("--open", action="store_true",
-                        help="Open the solution in Visual Studio after generation")
+        description="Generate a Visual Studio solution for ArcVideo."
+    )
+    parser.add_argument(
+        "--project-root",
+        default=None,
+        help="Path to CMake project root (auto-detected)",
+    )
+    parser.add_argument(
+        "--preset",
+        default="windows-vs",
+        help="CMake configure preset (default: windows-vs)",
+    )
+    parser.add_argument(
+        "--configs",
+        nargs="+",
+        default=["Debug", "Release"],
+        help="Build configurations (default: Debug Release)",
+    )
+    parser.add_argument(
+        "--skip-configure", action="store_true", help="Skip cmake configure step"
+    )
+    parser.add_argument(
+        "--open",
+        action="store_true",
+        help="Open the solution in Visual Studio after generation",
+    )
     args = parser.parse_args()
 
     for cfg in args.configs:
         if cfg not in VALID_CONFIGS:
-            print(c(RED, f"Error: Invalid config '{cfg}'. Choose from: {', '.join(sorted(VALID_CONFIGS))}"))
+            print(
+                c(
+                    RED,
+                    f"Error: Invalid config '{cfg}'. Choose from: {', '.join(sorted(VALID_CONFIGS))}",
+                )
+            )
             sys.exit(1)
 
     root = find_project_root(args.project_root)
@@ -188,8 +212,13 @@ def main() -> None:
         for target in THIRD_PARTY_TARGETS:
             log(f"  Building {target} ({cfg})...", WHITE)
             build_cmd = [
-                "cmake", "--build", str(build_dir),
-                "--config", cfg, "--target", target,
+                "cmake",
+                "--build",
+                str(build_dir),
+                "--config",
+                cfg,
+                "--target",
+                target,
             ]
             if platform.system() == "Windows":
                 build_cmd += ["--", "/v:m", "/nologo"]

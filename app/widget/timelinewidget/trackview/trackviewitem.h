@@ -32,51 +32,49 @@
 
 namespace arcvideo {
 
-class TrackViewItem : public QWidget
-{
-  Q_OBJECT
+class TrackViewItem : public QWidget {
+    Q_OBJECT
+
 public:
-  TrackViewItem(Track* track,
-                QWidget* parent = nullptr);
+    TrackViewItem(Track* track, QWidget* parent = nullptr);
 
 signals:
-  void AboutToDeleteTrack(Track *track);
+    void AboutToDeleteTrack(Track* track);
 
 private:
-  QPushButton* CreateMSLButton(const QColor &checked_color) const;
+    [[nodiscard]] static QPushButton* CreateMSLButton(const QColor& checked_color);
 
-  QStackedWidget* stack_ = nullptr;
+    QStackedWidget* stack_ = nullptr;
 
-  ClickableLabel* label_ = nullptr;
-  FocusableLineEdit* line_edit_ = nullptr;
+    ClickableLabel* label_ = nullptr;
+    FocusableLineEdit* line_edit_ = nullptr;
 
-  QPushButton* mute_button_ = nullptr;
-  QPushButton* solo_button_ = nullptr;
-  QPushButton* lock_button_ = nullptr;
+    QPushButton* mute_button_ = nullptr;
+    QPushButton* solo_button_ = nullptr;
+    QPushButton* lock_button_ = nullptr;
 
-  Track* track_ = nullptr;
+    Track* track_ = nullptr;
 
 private slots:
-  void LabelClicked();
+    void LabelClicked();
 
-  void LineEditConfirmed();
+    void LineEditConfirmed();
 
-  void LineEditCancelled();
+    void LineEditCancelled();
 
-  void UpdateLabel();
+    void UpdateLabel();
 
-  void ShowContextMenu(const QPoint &p);
+    void ShowContextMenu(const QPoint& p);
 
-  void DeleteTrack();
+    void DeleteTrack();
 
-  void DeleteAllEmptyTracks();
+    void DeleteAllEmptyTracks();
 
-  void UpdateMuteButton(bool e);
+    void UpdateMuteButton(bool e);
 
-  void UpdateLockButton(bool e);
-
+    void UpdateLockButton(bool e);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TRACKVIEWITEM_H
+#endif  // TRACKVIEWITEM_H

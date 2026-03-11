@@ -25,45 +25,41 @@
 
 namespace arcvideo {
 
-class ImportTool : public TimelineTool
-{
+class ImportTool : public TimelineTool {
 public:
-  ImportTool(TimelineWidget* parent);
+    ImportTool(TimelineWidget* parent);
 
-  virtual void DragEnter(TimelineViewMouseEvent *event) override;
-  virtual void DragMove(TimelineViewMouseEvent *event) override;
-  virtual void DragLeave(QDragLeaveEvent *event) override;
-  virtual void DragDrop(TimelineViewMouseEvent *event) override;
+    void DragEnter(TimelineViewMouseEvent* event) override;
+    void DragMove(TimelineViewMouseEvent* event) override;
+    void DragLeave(QDragLeaveEvent* event) override;
+    void DragDrop(TimelineViewMouseEvent* event) override;
 
-  using DraggedFootageData = QVector<QPair<ViewerOutput*, QVector<Track::Reference> > >;
+    using DraggedFootageData = QVector<QPair<ViewerOutput*, QVector<Track::Reference>>>;
 
-  void PlaceAt(const QVector<ViewerOutput *> &footage, const rational& start, bool insert, MultiUndoCommand *command, int track_offset = 0, bool jump_to_end = false);
-  void PlaceAt(const DraggedFootageData &footage, const rational& start, bool insert, MultiUndoCommand *command, int track_offset = 0, bool jump_to_end = false);
+    void PlaceAt(const QVector<ViewerOutput*>& footage, const rational& start, bool insert, MultiUndoCommand* command,
+                 int track_offset = 0, bool jump_to_end = false);
+    void PlaceAt(const DraggedFootageData& footage, const rational& start, bool insert, MultiUndoCommand* command,
+                 int track_offset = 0, bool jump_to_end = false);
 
-  enum DropWithoutSequenceBehavior {
-    kDWSAsk,
-    kDWSAuto,
-    kDWSManual,
-    kDWSDisable
-  };
+    enum DropWithoutSequenceBehavior { kDWSAsk, kDWSAuto, kDWSManual, kDWSDisable };
 
 private:
-  void FootageToGhosts(rational ghost_start, const DraggedFootageData &footage, const rational &dest_tb, const int &track_start);
+    void FootageToGhosts(rational ghost_start, const DraggedFootageData& footage, const rational& dest_tb,
+                         const int& track_start);
 
-  void PrepGhosts(const rational &frame, const int &track_index);
+    void PrepGhosts(const rational& frame, const int& track_index);
 
-  void DropGhosts(bool insert, MultiUndoCommand *parent_command);
+    void DropGhosts(bool insert, MultiUndoCommand* parent_command);
 
-  TimelineViewGhostItem* CreateGhost(const TimeRange &range, const rational &media_in, const Track::Reference &track);
+    TimelineViewGhostItem* CreateGhost(const TimeRange& range, const rational& media_in, const Track::Reference& track);
 
-  DraggedFootageData dragged_footage_;
+    DraggedFootageData dragged_footage_;
 
-  int import_pre_buffer_;
+    int import_pre_buffer_;
 
-  rational ghost_offset_;
-
+    rational ghost_offset_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // IMPORTTIMELINETOOL_H
+#endif  // IMPORTTIMELINETOOL_H

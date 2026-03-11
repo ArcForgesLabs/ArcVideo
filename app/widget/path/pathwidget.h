@@ -28,30 +28,25 @@
 
 namespace arcvideo {
 
-class PathWidget : public QWidget
-{
-  Q_OBJECT
-public:
-  PathWidget(const QString& path,
-             QWidget* parent = nullptr);
+class PathWidget : public QWidget {
+    Q_OBJECT
 
-  QString text() const
-  {
-    return path_edit_->text();
-  }
+public:
+    PathWidget(const QString& path, QWidget* parent = nullptr);
+
+    [[nodiscard]] QString text() const { return path_edit_->text(); }
 
 private slots:
-  void BrowseClicked();
+    void BrowseClicked();
 
-  void LineEditChanged();
+    void LineEditChanged();
 
 private:
-  QLineEdit* path_edit_ = nullptr;
+    QLineEdit* path_edit_ = nullptr;
 
-  QPushButton* browse_btn_ = nullptr;
-
+    QPushButton* browse_btn_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PATHWIDGET_H
+#endif  // PATHWIDGET_H

@@ -26,28 +26,25 @@
 
 namespace arcvideo {
 
-class NodeTablePanel : public TimeBasedPanel
-{
-  Q_OBJECT
+class NodeTablePanel : public TimeBasedPanel {
+    Q_OBJECT
+
 public:
-  NodeTablePanel();
+    NodeTablePanel();
 
 public slots:
-  void SelectNodes(const QVector<Node*>& nodes)
-  {
-    static_cast<NodeTableWidget*>(GetTimeBasedWidget())->SelectNodes(nodes);
-  }
+    void SelectNodes(const QVector<Node*>& nodes) {
+        static_cast<NodeTableWidget*>(GetTimeBasedWidget())->SelectNodes(nodes);
+    }
 
-  void DeselectNodes(const QVector<Node*>& nodes)
-  {
-    static_cast<NodeTableWidget*>(GetTimeBasedWidget())->DeselectNodes(nodes);
-  }
+    void DeselectNodes(const QVector<Node*>& nodes) {
+        static_cast<NodeTableWidget*>(GetTimeBasedWidget())->DeselectNodes(nodes);
+    }
 
 private:
-  virtual void Retranslate() override;
-
+    void Retranslate() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODETABLEPANEL_H
+#endif  // NODETABLEPANEL_H

@@ -25,23 +25,22 @@
 
 namespace arcvideo {
 
-class OIIOEncoder : public Encoder
-{
-  Q_OBJECT
+class OIIOEncoder : public Encoder {
+    Q_OBJECT
+
 public:
-  OIIOEncoder(const EncodingParams &params);
+    OIIOEncoder(const EncodingParams& params);
 
 public slots:
-  virtual bool Open() override;
+    bool Open() override;
 
-  virtual bool WriteFrame(arcvideo::FramePtr frame, arcvideo::foundation::rational time) override;
-  virtual bool WriteAudio(const SampleBuffer &audio) override;
-  virtual bool WriteSubtitle(const SubtitleBlock *sub_block) override;
+    bool WriteFrame(arcvideo::FramePtr frame, arcvideo::foundation::rational time) override;
+    bool WriteAudio(const SampleBuffer& audio) override;
+    bool WriteSubtitle(const SubtitleBlock* sub_block) override;
 
-  virtual void Close() override;
-
+    void Close() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // OIIOENCODER_H
+#endif  // OIIOENCODER_H

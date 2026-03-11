@@ -39,18 +39,16 @@ class MainWindow;
  *
  * A dialog for the global application settings. Mostly an interface for Config.
  */
-class PreferencesDialog : public ConfigDialogBase
-{
-  Q_OBJECT
+class PreferencesDialog : public ConfigDialogBase {
+    Q_OBJECT
 
 public:
-  PreferencesDialog(MainWindow *main_window);
+    PreferencesDialog(MainWindow* main_window);
 
 protected:
-  virtual void AcceptEvent() override;
-
+    void AcceptEvent() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PREFERENCESDIALOG_H
+#endif  // PREFERENCESDIALOG_H

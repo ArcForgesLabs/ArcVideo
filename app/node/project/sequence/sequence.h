@@ -29,87 +29,70 @@ namespace arcvideo {
 /**
  * @brief The main timeline object, an graph of edited clips that forms a complete edit
  */
-class Sequence : public ViewerOutput
-{
-  Q_OBJECT
+class Sequence : public ViewerOutput {
+    Q_OBJECT
+
 public:
-  Sequence();
+    Sequence();
 
-  NODE_DEFAULT_FUNCTIONS(Sequence)
+    NODE_DEFAULT_FUNCTIONS(Sequence)
 
-  virtual QString Name() const override
-  {
-    return tr("Sequence");
-  }
+    [[nodiscard]] QString Name() const override { return tr("Sequence"); }
 
-  virtual QString id() const override
-  {
-    return QStringLiteral("org.arcvideoeditor.ArcVideo.sequence");
-  }
+    [[nodiscard]] QString id() const override { return QStringLiteral("org.arcvideoeditor.ArcVideo.sequence"); }
 
-  virtual QVector<CategoryID> Category() const override
-  {
-    return {kCategoryProject};
-  }
+    [[nodiscard]] QVector<CategoryID> Category() const override { return {kCategoryProject}; }
 
-  virtual QString Description() const override
-  {
-    return tr("A series of cuts that result in an edited video. Also called a timeline.");
-  }
+    [[nodiscard]] QString Description() const override {
+        return tr("A series of cuts that result in an edited video. Also called a timeline.");
+    }
 
-  void add_default_nodes(MultiUndoCommand *command = nullptr);
+    void add_default_nodes(MultiUndoCommand* command = nullptr) const;
 
-  virtual QVariant data(const DataType &d) const override;
+    [[nodiscard]] QVariant data(const DataType& d) const override;
 
-  const QVector<Track *> &GetTracks() const
-  {
-    return track_cache_;
-  }
+    [[nodiscard]] const QVector<Track*>& GetTracks() const { return track_cache_; }
 
-  Track* GetTrackFromReference(const Track::Reference& track_ref) const
-  {
-    return track_lists_.at(track_ref.type())->GetTrackAt(track_ref.index());
-  }
+    [[nodiscard]] Track* GetTrackFromReference(const Track::Reference& track_ref) const {
+        return track_lists_.at(track_ref.type())->GetTrackAt(track_ref.index());
+    }
 
-  /**
-   * @brief Same as GetTracks() but omits tracks that are locked.
-   */
-  QVector<Track *> GetUnlockedTracks() const;
+    /**
+     * @brief Same as GetTracks() but omits tracks that are locked.
+     */
+    [[nodiscard]] QVector<Track*> GetUnlockedTracks() const;
 
-  TrackList* track_list(Track::Type type) const
-  {
-    return track_lists_.at(type);
-  }
+    [[nodiscard]] TrackList* track_list(Track::Type type) const { return track_lists_.at(type); }
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual void InvalidateCache(const TimeRange& range, const QString& from, int element, InvalidateCacheOptions options) override;
+    void InvalidateCache(const TimeRange& range, const QString& from, int element,
+                         InvalidateCacheOptions options) override;
 
-  static const QString kTrackInputFormat;
+    static const QString kTrackInputFormat;
 
 protected:
-  virtual void InputConnectedEvent(const QString &input, int element, Node *output) override;
+    void InputConnectedEvent(const QString& input, int element, Node* output) override;
 
-  virtual void InputDisconnectedEvent(const QString &input, int element, Node *output) override;
+    void InputDisconnectedEvent(const QString& input, int element, Node* output) override;
 
-  virtual rational VerifyLengthInternal(Track::Type type) const override;
+    [[nodiscard]] rational VerifyLengthInternal(Track::Type type) const override;
 
 signals:
-  void TrackAdded(Track* track);
-  void TrackRemoved(Track* track);
+    void TrackAdded(Track* track);
+    void TrackRemoved(Track* track);
 
-  void SubtitlesChanged(const TimeRange &range);
+    void SubtitlesChanged(const TimeRange& range);
 
 private:
-  QVector<TrackList*> track_lists_;
+    QVector<TrackList*> track_lists_;
 
-  QVector<Track*> track_cache_;
+    QVector<Track*> track_cache_;
 
 private slots:
-  void UpdateTrackCache();
-
+    void UpdateTrackCache();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SEQUENCE_H
+#endif  // SEQUENCE_H

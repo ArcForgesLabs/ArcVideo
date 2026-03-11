@@ -25,16 +25,14 @@
 
 namespace arcvideo {
 
-class SlideTool : public PointerTool
-{
+class SlideTool : public PointerTool {
 public:
-  SlideTool(TimelineWidget* parent);
+    SlideTool(TimelineWidget* parent);
 
 protected:
-  virtual void InitiateDrag(Block* clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers) override;
-
+    void InitiateDrag(Block* clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers) override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SLIDETIMELINETOOL_H
+#endif  // SLIDETIMELINETOOL_H

@@ -25,30 +25,27 @@
 
 namespace arcvideo {
 
-ToolPanel::ToolPanel() :
-  PanelWidget(QStringLiteral("ToolPanel"))
-{
-  Toolbar* t = new Toolbar(this);
+ToolPanel::ToolPanel() : PanelWidget(QStringLiteral("ToolPanel")) {
+    auto* t = new Toolbar(this);
 
-  t->SetTool(Core::instance()->tool());
-  t->SetSnapping(Core::instance()->snapping());
+    t->SetTool(Core::instance()->tool());
+    t->SetSnapping(Core::instance()->snapping());
 
-  SetWidgetWithPadding(t);
+    SetWidgetWithPadding(t);
 
-  connect(t, &Toolbar::ToolChanged, Core::instance(), &Core::SetTool);
-  connect(Core::instance(), &Core::ToolChanged, t, &Toolbar::SetTool);
+    connect(t, &Toolbar::ToolChanged, Core::instance(), &Core::SetTool);
+    connect(Core::instance(), &Core::ToolChanged, t, &Toolbar::SetTool);
 
-  connect(t, &Toolbar::SnappingChanged, Core::instance(), &Core::SetSnapping);
-  connect(Core::instance(), &Core::SnappingChanged, t, &Toolbar::SetSnapping);
+    connect(t, &Toolbar::SnappingChanged, Core::instance(), &Core::SetSnapping);
+    connect(Core::instance(), &Core::SnappingChanged, t, &Toolbar::SetSnapping);
 
-  connect(t, &Toolbar::SelectedTransitionChanged, Core::instance(), &Core::SetSelectedTransitionObject);
+    connect(t, &Toolbar::SelectedTransitionChanged, Core::instance(), &Core::SetSelectedTransitionObject);
 
-  Retranslate();
+    Retranslate();
 }
 
-void ToolPanel::Retranslate()
-{
-  SetTitle(tr("Tools"));
+void ToolPanel::Retranslate() {
+    SetTitle(tr("Tools"));
 }
 
-}
+}  // namespace arcvideo

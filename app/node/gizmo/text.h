@@ -26,42 +26,41 @@
 
 namespace arcvideo {
 
-class TextGizmo : public NodeGizmo
-{
-  Q_OBJECT
+class TextGizmo : public NodeGizmo {
+    Q_OBJECT
+
 public:
-  explicit TextGizmo(QObject *parent = nullptr);
+    explicit TextGizmo(QObject* parent = nullptr);
 
-  const QRectF &GetRect() const { return rect_; }
-  void SetRect(const QRectF &r);
+    [[nodiscard]] const QRectF& GetRect() const { return rect_; }
+    void SetRect(const QRectF& r);
 
-  const QString &GetHtml() const { return text_; }
-  void SetHtml(const QString &t) { text_ = t; }
+    [[nodiscard]] const QString& GetHtml() const { return text_; }
+    void SetHtml(const QString& t) { text_ = t; }
 
-  void SetInput(const NodeKeyframeTrackReference &input) { input_ = input; }
+    void SetInput(const NodeKeyframeTrackReference& input) { input_ = input; }
 
-  void UpdateInputHtml(const QString &s, const rational &time);
+    void UpdateInputHtml(const QString& s, const rational& time);
 
-  Qt::Alignment GetVerticalAlignment() const { return valign_; }
-  void SetVerticalAlignment(Qt::Alignment va);
+    [[nodiscard]] Qt::Alignment GetVerticalAlignment() const { return valign_; }
+    void SetVerticalAlignment(Qt::Alignment va);
 
 signals:
-  void Activated();
-  void Deactivated();
-  void VerticalAlignmentChanged(Qt::Alignment va);
-  void RectChanged(const QRectF &r);
+    void Activated();
+    void Deactivated();
+    void VerticalAlignmentChanged(Qt::Alignment va);
+    void RectChanged(const QRectF& r);
 
 private:
-  QRectF rect_;
+    QRectF rect_;
 
-  QString text_;
+    QString text_;
 
-  NodeKeyframeTrackReference input_;
+    NodeKeyframeTrackReference input_;
 
-  Qt::Alignment valign_;
-
+    Qt::Alignment valign_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TEXTGIZMO_H
+#endif  // TEXTGIZMO_H

@@ -21,8 +21,9 @@
 #ifndef RENDERTEXTURE_H
 #define RENDERTEXTURE_H
 
-#include <memory>
 #include <QVariant>
+#include <memory>
+#include <utility>
 
 #include "render/videoparams.h"
 
@@ -34,134 +35,83 @@ class Renderer;
 class Texture;
 using TexturePtr = std::shared_ptr<Texture>;
 
-class Texture
-{
+class Texture {
 public:
-  enum Interpolation {
-    kNearest,
-    kLinear,
-    kMipmappedLinear
-  };
+    enum Interpolation { kNearest, kLinear, kMipmappedLinear };
 
-  static const Interpolation kDefaultInterpolation;
+    static const Interpolation kDefaultInterpolation;
 
-  /**
-   * @brief Construct a dummy texture with no renderer backend
-   */
-  Texture(const VideoParams& param) :
-    renderer_(nullptr),
-    params_(param),
-    job_(nullptr)
-  {
-  }
+    /**
+     * @brief Construct a dummy texture with no renderer backend
+     */
+    Texture(VideoParams param) : renderer_(nullptr), params_(std::move(param)), job_(nullptr) {}
 
-  template <typename T>
-  Texture(const VideoParams &p, const T &j) :
-    Texture(p)
-  {
-    job_ = new T(j);
-  }
+    template <typename T>
+    Texture(const VideoParams& p, const T& j) : Texture(p) {
+        job_ = new T(j);
+    }
 
-  /**
-   * @brief Construct a real texture linked to a renderer backend
-   */
-  Texture(Renderer* renderer, const QVariant& native, const VideoParams& param) :
-    renderer_(renderer),
-    params_(param),
-    id_(native),
-    job_(nullptr)
-  {
-  }
+    /**
+     * @brief Construct a real texture linked to a renderer backend
+     */
+    Texture(Renderer* renderer, QVariant native, VideoParams param)
+        : renderer_(renderer), params_(std::move(param)), id_(std::move(native)), job_(nullptr) {}
 
-  ~Texture();
+    ~Texture();
 
-  QVariant id() const
-  {
-    return id_;
-  }
+    [[nodiscard]] QVariant id() const { return id_; }
 
-  const VideoParams& params() const
-  {
-    return params_;
-  }
+    [[nodiscard]] const VideoParams& params() const { return params_; }
 
-  template <typename T>
-  static TexturePtr Job(const VideoParams &p, const T &j)
-  {
-    return std::make_shared<Texture>(p, j);
-  }
+    template <typename T>
+    static TexturePtr Job(const VideoParams& p, const T& j) {
+        return std::make_shared<Texture>(p, j);
+    }
 
-  template <typename T>
-  TexturePtr toJob(const T &job)
-  {
-    return Texture::Job(params_, job);
-  }
+    template <typename T>
+    TexturePtr toJob(const T& job) {
+        return Texture::Job(params_, job);
+    }
 
-  void Upload(void* data, int linesize);
+    void Upload(void* data, int linesize);
 
-  void Download(void* data, int linesize);
+    void Download(void* data, int linesize);
 
-  bool IsDummy() const
-  {
-    return !renderer_;
-  }
+    [[nodiscard]] bool IsDummy() const { return !renderer_; }
 
-  int width() const
-  {
-    return params_.effective_width();
-  }
+    [[nodiscard]] int width() const { return params_.effective_width(); }
 
-  int height() const
-  {
-    return params_.effective_height();
-  }
+    [[nodiscard]] int height() const { return params_.effective_height(); }
 
-  QVector2D virtual_resolution() const
-  {
-    return QVector2D(params_.square_pixel_width(), params_.height());
-  }
+    [[nodiscard]] QVector2D virtual_resolution() const {
+        return {static_cast<float>(params_.square_pixel_width()), static_cast<float>(params_.height())};
+    }
 
-  PixelFormat format() const
-  {
-    return params_.format();
-  }
+    [[nodiscard]] PixelFormat format() const { return params_.format(); }
 
-  int channel_count() const
-  {
-    return params_.channel_count();
-  }
+    [[nodiscard]] int channel_count() const { return params_.channel_count(); }
 
-  int divider() const
-  {
-    return params_.divider();
-  }
+    [[nodiscard]] int divider() const { return params_.divider(); }
 
-  const rational& pixel_aspect_ratio() const
-  {
-    return params_.pixel_aspect_ratio();
-  }
+    [[nodiscard]] const rational& pixel_aspect_ratio() const { return params_.pixel_aspect_ratio(); }
 
-  Renderer* renderer() const
-  {
-    return renderer_;
-  }
+    [[nodiscard]] Renderer* renderer() const { return renderer_; }
 
-  bool IsJob() const { return job_; }
-  AcceleratedJob *job() const { return job_; }
+    [[nodiscard]] bool IsJob() const { return job_; }
+    [[nodiscard]] AcceleratedJob* job() const { return job_; }
 
 private:
-  Renderer* renderer_ = nullptr;
+    Renderer* renderer_ = nullptr;
 
-  VideoParams params_;
+    VideoParams params_;
 
-  QVariant id_;
+    QVariant id_;
 
-  AcceleratedJob *job_;
-
+    AcceleratedJob* job_;
 };
 
-}
+}  // namespace arcvideo
 
 Q_DECLARE_METATYPE(arcvideo::TexturePtr)
 
-#endif // RENDERTEXTURE_H
+#endif  // RENDERTEXTURE_H

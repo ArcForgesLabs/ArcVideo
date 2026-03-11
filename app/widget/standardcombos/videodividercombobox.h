@@ -27,35 +27,28 @@
 
 namespace arcvideo {
 
-class VideoDividerComboBox : public QComboBox
-{
-  Q_OBJECT
+class VideoDividerComboBox : public QComboBox {
+    Q_OBJECT
+
 public:
-  VideoDividerComboBox(QWidget* parent = nullptr) :
-    QComboBox(parent)
-  {
-    for (int d : VideoParams::kSupportedDividers) {
-      this->addItem(VideoParams::GetNameForDivider(d), d);
+    VideoDividerComboBox(QWidget* parent = nullptr) : QComboBox(parent) {
+        for (int d : VideoParams::kSupportedDividers) {
+            this->addItem(VideoParams::GetNameForDivider(d), d);
+        }
     }
-  }
 
-  int GetDivider() const
-  {
-    return this->currentData().toInt();
-  }
+    [[nodiscard]] int GetDivider() const { return this->currentData().toInt(); }
 
-  void SetDivider(int d)
-  {
-    for (int i=0; i<this->count(); i++) {
-      if (this->itemData(i).toInt() == d) {
-        this->setCurrentIndex(i);
-        break;
-      }
+    void SetDivider(int d) {
+        for (int i = 0; i < this->count(); i++) {
+            if (this->itemData(i).toInt() == d) {
+                this->setCurrentIndex(i);
+                break;
+            }
+        }
     }
-  }
-
 };
 
-}
+}  // namespace arcvideo
 
-#endif // VIDEODIVIDERCOMBOBOX_H
+#endif  // VIDEODIVIDERCOMBOBOX_H

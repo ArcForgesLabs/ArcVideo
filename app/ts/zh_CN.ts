@@ -2755,11 +2755,11 @@ To remedy this, please do one of the following:
         <translation>编码速度：</translation>
     </message>
     <message>
-        <source>This setting allows you to tweak the ratio of export speed to compression quality. 
+        <source>This setting allows you to tweak the ratio of export speed to compression quality.
 
-If using Constant Rate Factor, slower speeds will result in smaller file sizes for the same quality. 
+If using Constant Rate Factor, slower speeds will result in smaller file sizes for the same quality.
 
-If using Target Bit Rate or Target File Size, slower speeds will result in higher quality for the same bitrate/filesize. 
+If using Target Bit Rate or Target File Size, slower speeds will result in higher quality for the same bitrate/filesize.
 
 This setting is equivalent to the `preset` setting in libx264.</source>
         <translation>此设置允许您调整导出速度与压缩质量的比率。
@@ -2916,7 +2916,7 @@ This setting is equivalent to the `preset` setting in libx264.</source>
         <translation>无法加载片段</translation>
     </message>
     <message>
-        <source>Failed to load OpenTimelineIO from file &quot;%1&quot; 
+        <source>Failed to load OpenTimelineIO from file &quot;%1&quot;
 
 OpenTimelineIO Error:
 

@@ -5,4 +5,4 @@
 
 QStringList patrons;
 
-#endif // PATREON_H
+#endif  // PATREON_H

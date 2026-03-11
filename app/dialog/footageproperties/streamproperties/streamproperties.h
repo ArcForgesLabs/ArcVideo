@@ -28,17 +28,15 @@
 
 namespace arcvideo {
 
-class StreamProperties : public QWidget
-{
+class StreamProperties : public QWidget {
 public:
-  StreamProperties(QWidget* parent = nullptr);
+    StreamProperties(QWidget* parent = nullptr);
 
-  virtual void Accept(MultiUndoCommand*){}
+    virtual void Accept(MultiUndoCommand*) {}
 
-  virtual bool SanityCheck(){return true;}
-
+    virtual bool SanityCheck() { return true; }
 };
 
-}
+}  // namespace arcvideo
 
-#endif // STREAMPROPERTIES_H
+#endif  // STREAMPROPERTIES_H

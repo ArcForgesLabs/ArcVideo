@@ -25,24 +25,22 @@
 
 namespace arcvideo {
 
-class RecordTool : public BeamTool
-{
+class RecordTool : public BeamTool {
 public:
-  RecordTool(TimelineWidget* parent);
+    RecordTool(TimelineWidget* parent);
 
-  virtual void MousePress(TimelineViewMouseEvent *event) override;
-  virtual void MouseMove(TimelineViewMouseEvent *event) override;
-  virtual void MouseRelease(TimelineViewMouseEvent *event) override;
+    void MousePress(TimelineViewMouseEvent* event) override;
+    void MouseMove(TimelineViewMouseEvent* event) override;
+    void MouseRelease(TimelineViewMouseEvent* event) override;
 
 protected:
-  void MouseMoveInternal(const rational& cursor_frame, bool outwards);
+    void MouseMoveInternal(const rational& cursor_frame, bool outwards);
 
-  TimelineViewGhostItem* ghost_ = nullptr;
+    TimelineViewGhostItem* ghost_ = nullptr;
 
-  rational drag_start_point_;
-
+    rational drag_start_point_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // RECORDTOOL_H
+#endif  // RECORDTOOL_H

@@ -25,49 +25,38 @@
 
 namespace arcvideo {
 
-class ValueNode : public Node
-{
-  Q_OBJECT
+class ValueNode : public Node {
+    Q_OBJECT
+
 public:
-  ValueNode();
+    ValueNode();
 
-  NODE_DEFAULT_FUNCTIONS(ValueNode)
+    NODE_DEFAULT_FUNCTIONS(ValueNode)
 
-  virtual QString Name() const override
-  {
-    return tr("Value");
-  }
+    [[nodiscard]] QString Name() const override { return tr("Value"); }
 
-  virtual QString id() const override
-  {
-    return QStringLiteral("org.arcvideoeditor.ArcVideo.value");
-  }
+    [[nodiscard]] QString id() const override { return QStringLiteral("org.arcvideoeditor.ArcVideo.value"); }
 
-  virtual QVector<CategoryID> Category() const override
-  {
-    return {kCategoryGenerator};
-  }
+    [[nodiscard]] QVector<CategoryID> Category() const override { return {kCategoryGenerator}; }
 
-  virtual QString Description() const override
-  {
-    return tr("Create a single value that can be connected to various other inputs.");
-  }
+    [[nodiscard]] QString Description() const override {
+        return tr("Create a single value that can be connected to various other inputs.");
+    }
 
-  static const QString kTypeInput;
-  static const QString kValueInput;
+    static const QString kTypeInput;
+    static const QString kValueInput;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
 protected:
-  virtual void InputValueChangedEvent(const QString &input, int element) override;
+    void InputValueChangedEvent(const QString& input, int element) override;
 
 private:
-  static const QVector<NodeValue::Type> kSupportedTypes;
-
+    static const QVector<NodeValue::Type> kSupportedTypes;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // VALUENODE_H
+#endif  // VALUENODE_H

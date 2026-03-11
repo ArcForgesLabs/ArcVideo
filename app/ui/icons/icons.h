@@ -25,9 +25,7 @@
 
 #include "common/define.h"
 
-namespace arcvideo {
-
-namespace icon {
+namespace arcvideo::icon {
 
 // Playback Icons
 extern QIcon GoToStart;
@@ -139,7 +137,7 @@ extern QIcon ColorPicker;
  *
  * A QIcon object containing the various icon sizes loaded from resource
  */
-QIcon Create(const QString &theme, const QString& name);
+QIcon Create(const QString& theme, const QString& name);
 
 /**
  * @brief Methodically load all ArcVideo icons into global variables that can be accessed throughout the application
@@ -147,10 +145,8 @@ QIcon Create(const QString &theme, const QString& name);
  * It's recommended to load any UI icons here so they're ready at startup and don't need to be re-loaded upon each
  * use.
  */
-void LoadAll(const QString &theme);
+void LoadAll(const QString& theme);
 
-}
+}  // namespace arcvideo::icon
 
-}
-
-#endif // ICONS_H
+#endif  // ICONS_H

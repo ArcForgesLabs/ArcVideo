@@ -29,60 +29,54 @@
 
 namespace arcvideo {
 
-class NodeParamViewTextEdit : public QWidget
-{
-  Q_OBJECT
+class NodeParamViewTextEdit : public QWidget {
+    Q_OBJECT
+
 public:
-  NodeParamViewTextEdit(QWidget* parent = nullptr);
+    NodeParamViewTextEdit(QWidget* parent = nullptr);
 
-  QString text() const
-  {
-    return line_edit_->toPlainText();
-  }
+    [[nodiscard]] QString text() const { return line_edit_->toPlainText(); }
 
-  void SetEditInViewerOnlyMode(bool on);
+    void SetEditInViewerOnlyMode(bool on);
 
 public slots:
-  void setText(const QString &s)
-  {
-    line_edit_->blockSignals(true);
-    line_edit_->setPlainText(s);
-    line_edit_->blockSignals(false);
-  }
+    void setText(const QString& s) {
+        line_edit_->blockSignals(true);
+        line_edit_->setPlainText(s);
+        line_edit_->blockSignals(false);
+    }
 
-  void setTextPreservingCursor(const QString &s)
-  {
-    // Save cursor position
-    int cursor_pos = line_edit_->textCursor().position();
+    void setTextPreservingCursor(const QString& s) {
+        // Save cursor position
+        int cursor_pos = line_edit_->textCursor().position();
 
-    // Set text
-    this->setText(s);
+        // Set text
+        this->setText(s);
 
-    // Get new text cursor
-    QTextCursor c = line_edit_->textCursor();
-    c.setPosition(cursor_pos);
-    line_edit_->setTextCursor(c);
-  }
+        // Get new text cursor
+        QTextCursor c = line_edit_->textCursor();
+        c.setPosition(cursor_pos);
+        line_edit_->setTextCursor(c);
+    }
 
 signals:
-  void textEdited(const QString &);
+    void textEdited(const QString&);
 
-  void RequestEditInViewer();
+    void RequestEditInViewer();
 
 private:
-  QPlainTextEdit* line_edit_ = nullptr;
+    QPlainTextEdit* line_edit_ = nullptr;
 
-  QPushButton* edit_btn_ = nullptr;
+    QPushButton* edit_btn_ = nullptr;
 
-  QPushButton *edit_in_viewer_btn_;
+    QPushButton* edit_in_viewer_btn_;
 
 private slots:
-  void ShowTextDialog();
+    void ShowTextDialog();
 
-  void InnerWidgetTextChanged();
-
+    void InnerWidgetTextChanged();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEPARAMVIEWTEXTEDIT_H
+#endif  // NODEPARAMVIEWTEXTEDIT_H

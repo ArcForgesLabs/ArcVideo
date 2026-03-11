@@ -27,38 +27,37 @@
 
 #include "dialog/configbase/configdialogbase.h"
 #include "node/project/sequence/sequence.h"
-#include "widget/slider/rationalslider.h"
 #include "widget/slider/integerslider.h"
+#include "widget/slider/rationalslider.h"
 
 namespace arcvideo {
 
-class PreferencesGeneralTab : public ConfigDialogBaseTab
-{
-  Q_OBJECT
-public:
-  PreferencesGeneralTab();
+class PreferencesGeneralTab : public ConfigDialogBaseTab {
+    Q_OBJECT
 
-  virtual void Accept(MultiUndoCommand* command) override;
+public:
+    PreferencesGeneralTab();
+
+    void Accept(MultiUndoCommand* command) override;
 
 private:
-  void AddLanguage(const QString& locale_name);
+    void AddLanguage(const QString& locale_name);
 
-  QComboBox* language_combobox_ = nullptr;
+    QComboBox* language_combobox_ = nullptr;
 
-  QComboBox* autoscroll_method_ = nullptr;
+    QComboBox* autoscroll_method_ = nullptr;
 
-  QCheckBox* rectified_waveforms_ = nullptr;
+    QCheckBox* rectified_waveforms_ = nullptr;
 
-  RationalSlider* default_still_length_ = nullptr;
+    RationalSlider* default_still_length_ = nullptr;
 
-  QCheckBox* autorecovery_enabled_ = nullptr;
+    QCheckBox* autorecovery_enabled_ = nullptr;
 
-  IntegerSlider* autorecovery_interval_ = nullptr;
+    IntegerSlider* autorecovery_interval_ = nullptr;
 
-  IntegerSlider* autorecovery_maximum_ = nullptr;
-
+    IntegerSlider* autorecovery_maximum_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PREFERENCESGENERALTAB_H
+#endif  // PREFERENCESGENERALTAB_H

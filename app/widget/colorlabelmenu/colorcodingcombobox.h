@@ -27,26 +27,22 @@
 
 namespace arcvideo {
 
-class ColorCodingComboBox : public QComboBox
-{
-  Q_OBJECT
+class ColorCodingComboBox : public QComboBox {
+    Q_OBJECT
+
 public:
-  ColorCodingComboBox(QWidget* parent = nullptr);
+    ColorCodingComboBox(QWidget* parent = nullptr);
 
-  virtual void showPopup() override;
+    void showPopup() override;
 
-  void SetColor(int index);
+    void SetColor(int index);
 
-  int GetSelectedColor() const
-  {
-    return index_;
-  }
+    [[nodiscard]] int GetSelectedColor() const { return index_; }
 
 private:
-  int index_;
-
+    int index_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORCODINGCOMBOBOX_H
+#endif  // COLORCODINGCOMBOBOX_H

@@ -21,43 +21,41 @@
 namespace arcvideo {
 
 class ChromaKeyNode : public OCIOBaseNode {
-  Q_OBJECT
- public:
-  ChromaKeyNode();
+    Q_OBJECT
 
-  NODE_DEFAULT_FUNCTIONS(ChromaKeyNode)
+public:
+    ChromaKeyNode();
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    NODE_DEFAULT_FUNCTIONS(ChromaKeyNode)
 
-  virtual void Retranslate() override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void InputValueChangedEvent(const QString& input, int element) override;
+    void Retranslate() override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
-  virtual void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
+    void InputValueChangedEvent(const QString& input, int element) override;
 
-  virtual void ConfigChanged() override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kColorInput;
-  static const QString kInvertInput;
-  static const QString kMaskOnlyInput;
-  static const QString kUpperToleranceInput;
-  static const QString kLowerToleranceInput;
-  static const QString kGarbageMatteInput;
-  static const QString kCoreMatteInput;
-  static const QString kShadowsInput;
-  static const QString kHighlightsInput;
+    void ConfigChanged() override;
+
+    static const QString kColorInput;
+    static const QString kInvertInput;
+    static const QString kMaskOnlyInput;
+    static const QString kUpperToleranceInput;
+    static const QString kLowerToleranceInput;
+    static const QString kGarbageMatteInput;
+    static const QString kCoreMatteInput;
+    static const QString kShadowsInput;
+    static const QString kHighlightsInput;
 
 private:
-  void GenerateProcessor();
-
-
-
+    void GenerateProcessor();
 };
 
-} // namespace arcvideo
+}  // namespace arcvideo
 
-#endif // CHROMAKEYNODE_H
+#endif  // CHROMAKEYNODE_H

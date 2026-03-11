@@ -26,45 +26,40 @@ namespace arcvideo {
 
 const QString SubtitleBlock::kTextIn = QStringLiteral("text_in");
 
-SubtitleBlock::SubtitleBlock()
-{
-  AddInput(kTextIn, NodeValue::kText, InputFlags(kInputFlagNotConnectable | kInputFlagNotKeyframable));
+SubtitleBlock::SubtitleBlock() {
+    AddInput(kTextIn, NodeValue::kText, InputFlags(kInputFlagNotConnectable | kInputFlagNotKeyframable));
 
-  SetInputFlag(kBufferIn, kInputFlagHidden);
-  SetInputFlag(kLengthInput, kInputFlagHidden);
-  SetInputFlag(kMediaInInput, kInputFlagHidden);
-  SetInputFlag(kSpeedInput, kInputFlagHidden);
-  SetInputFlag(kReverseInput, kInputFlagHidden);
-  SetInputFlag(kMaintainAudioPitchInput, kInputFlagHidden);
+    SetInputFlag(kBufferIn, kInputFlagHidden);
+    SetInputFlag(kLengthInput, kInputFlagHidden);
+    SetInputFlag(kMediaInInput, kInputFlagHidden);
+    SetInputFlag(kSpeedInput, kInputFlagHidden);
+    SetInputFlag(kReverseInput, kInputFlagHidden);
+    SetInputFlag(kMaintainAudioPitchInput, kInputFlagHidden);
 
-  // Undo block flag that hides in param view
-  SetFlag(kDontShowInParamView, false);
+    // Undo block flag that hides in param view
+    SetFlag(kDontShowInParamView, false);
 }
 
-QString SubtitleBlock::Name() const
-{
-  if (GetText().isEmpty()) {
-    return tr("Subtitle");
-  } else {
-    return GetText();
-  }
+QString SubtitleBlock::Name() const {
+    if (GetText().isEmpty()) {
+        return tr("Subtitle");
+    } else {
+        return GetText();
+    }
 }
 
-QString SubtitleBlock::id() const
-{
-  return QStringLiteral("org.arcvideoeditor.ArcVideo.subtitle");
+QString SubtitleBlock::id() const {
+    return QStringLiteral("org.arcvideoeditor.ArcVideo.subtitle");
 }
 
-QString SubtitleBlock::Description() const
-{
-  return tr("A time-based node representing a single subtitle element for a certain period of time.");
+QString SubtitleBlock::Description() const {
+    return tr("A time-based node representing a single subtitle element for a certain period of time.");
 }
 
-void SubtitleBlock::Retranslate()
-{
-  super::Retranslate();
+void SubtitleBlock::Retranslate() {
+    super::Retranslate();
 
-  SetInputName(kTextIn, tr("Text"));
+    SetInputName(kTextIn, tr("Text"));
 }
 
-}
+}  // namespace arcvideo

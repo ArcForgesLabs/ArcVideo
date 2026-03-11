@@ -26,32 +26,21 @@
 
 namespace arcvideo {
 
-class NodeTableWidget : public TimeBasedWidget
-{
+class NodeTableWidget : public TimeBasedWidget {
 public:
-  NodeTableWidget(QWidget* parent = nullptr);
+    NodeTableWidget(QWidget* parent = nullptr);
 
-  void SelectNodes(const QVector<Node*>& nodes)
-  {
-    view_->SelectNodes(nodes);
-  }
+    void SelectNodes(const QVector<Node*>& nodes) { view_->SelectNodes(nodes); }
 
-  void DeselectNodes(const QVector<Node*>& nodes)
-  {
-    view_->DeselectNodes(nodes);
-  }
+    void DeselectNodes(const QVector<Node*>& nodes) { view_->DeselectNodes(nodes); }
 
 protected:
-  virtual void TimeChangedEvent(const rational &time) override
-  {
-    view_->SetTime(time);
-  }
+    void TimeChangedEvent(const rational& time) override { view_->SetTime(time); }
 
 private:
-  NodeTableView* view_ = nullptr;
-
+    NodeTableView* view_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODETABLEWIDGET_H
+#endif  // NODETABLEWIDGET_H

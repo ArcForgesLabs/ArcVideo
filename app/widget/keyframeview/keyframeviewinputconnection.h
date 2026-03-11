@@ -30,70 +30,56 @@ namespace arcvideo {
 
 class KeyframeView;
 
-class KeyframeViewInputConnection : public QObject
-{
-  Q_OBJECT
+class KeyframeViewInputConnection : public QObject {
+    Q_OBJECT
+
 public:
-  KeyframeViewInputConnection(const NodeKeyframeTrackReference &input, KeyframeView *parent);
+    KeyframeViewInputConnection(const NodeKeyframeTrackReference& input, KeyframeView* parent);
 
-  const int &GetKeyframeY() const
-  {
-    return y_;
-  }
+    [[nodiscard]] const int& GetKeyframeY() const { return y_; }
 
-  void SetKeyframeY(int y);
+    void SetKeyframeY(int y);
 
-  enum YBehavior {
-    kSingleRow,
-    kValueIsHeight
-  };
+    enum YBehavior { kSingleRow, kValueIsHeight };
 
-  void SetYBehavior(YBehavior e);
+    void SetYBehavior(YBehavior e);
 
-  const QVector<NodeKeyframe*> &GetKeyframes() const
-  {
-    return input_.input().node()->GetKeyframeTracks(input_.input()).at(input_.track());
-  }
+    [[nodiscard]] const QVector<NodeKeyframe*>& GetKeyframes() const {
+        return input_.input().node()->GetKeyframeTracks(input_.input()).at(input_.track());
+    }
 
-  const QBrush &GetBrush() const
-  {
-    return brush_;
-  }
+    [[nodiscard]] const QBrush& GetBrush() const { return brush_; }
 
-  const NodeKeyframeTrackReference &GetReference() const
-  {
-    return input_;
-  }
+    [[nodiscard]] const NodeKeyframeTrackReference& GetReference() const { return input_; }
 
-  void SetBrush(const QBrush &brush);
+    void SetBrush(const QBrush& brush);
 
 signals:
-  void RequireUpdate();
+    void RequireUpdate();
 
-  void TypeChanged();
+    void TypeChanged();
 
 private:
-  KeyframeView *keyframe_view_;
+    KeyframeView* keyframe_view_;
 
-  NodeKeyframeTrackReference input_;
+    NodeKeyframeTrackReference input_;
 
-  int y_;
+    int y_;
 
-  YBehavior y_behavior_;
+    YBehavior y_behavior_;
 
-  QBrush brush_;
+    QBrush brush_;
 
 private slots:
-  void AddKeyframe(NodeKeyframe *key);
+    void AddKeyframe(NodeKeyframe* key);
 
-  void RemoveKeyframe(NodeKeyframe *key);
+    void RemoveKeyframe(NodeKeyframe* key);
 
-  void KeyframeChanged(NodeKeyframe *key);
+    void KeyframeChanged(NodeKeyframe* key);
 
-  void KeyframeTypeChanged(NodeKeyframe *key);
-
+    void KeyframeTypeChanged(NodeKeyframe* key);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // KEYFRAMEVIEWINPUTCONNECTION_H
+#endif  // KEYFRAMEVIEWINPUTCONNECTION_H

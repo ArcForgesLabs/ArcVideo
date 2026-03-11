@@ -27,27 +27,26 @@
 
 namespace arcvideo {
 
-class DragButton : public QPushButton
-{
-  Q_OBJECT
+class DragButton : public QPushButton {
+    Q_OBJECT
+
 public:
-  DragButton(QWidget* parent = nullptr);
+    DragButton(QWidget* parent = nullptr);
 
 signals:
-  void DragStarted();
+    void DragStarted();
 
 protected:
-  virtual void mousePressEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 
-  virtual void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
 
-  virtual void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
 private:
-  bool dragging_;
-
+    bool dragging_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // DRAGBUTTON_H
+#endif  // DRAGBUTTON_H

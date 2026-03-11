@@ -22,9 +22,8 @@
 
 namespace arcvideo {
 
-bool ConfigDialogBaseTab::Validate()
-{
-  return true;
+bool ConfigDialogBaseTab::Validate() {
+    return true;
 }
 
-}
+}  // namespace arcvideo

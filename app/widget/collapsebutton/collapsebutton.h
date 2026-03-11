@@ -27,17 +27,16 @@
 
 namespace arcvideo {
 
-class CollapseButton : public QPushButton
-{
-  Q_OBJECT
+class CollapseButton : public QPushButton {
+    Q_OBJECT
+
 public:
-  CollapseButton(QWidget* parent = nullptr);
+    CollapseButton(QWidget* parent = nullptr);
 
 private slots:
-  void UpdateIcon(bool e);
-
+    void UpdateIcon(bool e);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLLAPSEBUTTON_H
+#endif  // COLLAPSEBUTTON_H

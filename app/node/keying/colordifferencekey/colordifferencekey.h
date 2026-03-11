@@ -21,29 +21,28 @@
 namespace arcvideo {
 
 class ColorDifferenceKeyNode : public Node {
- public:
-  ColorDifferenceKeyNode();
+public:
+    ColorDifferenceKeyNode();
 
-  NODE_DEFAULT_FUNCTIONS(ColorDifferenceKeyNode)
+    NODE_DEFAULT_FUNCTIONS(ColorDifferenceKeyNode)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
-  virtual void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kTextureInput;
-  static const QString kGarbageMatteInput;
-  static const QString kCoreMatteInput;
-  static const QString kColorInput;
-  static const QString kShadowsInput;
-  static const QString kHighlightsInput;
-  static const QString kMaskOnlyInput;
-
+    static const QString kTextureInput;
+    static const QString kGarbageMatteInput;
+    static const QString kCoreMatteInput;
+    static const QString kColorInput;
+    static const QString kShadowsInput;
+    static const QString kHighlightsInput;
+    static const QString kMaskOnlyInput;
 };
 
 }  // namespace arcvideo

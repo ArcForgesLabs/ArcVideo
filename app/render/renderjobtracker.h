@@ -29,43 +29,38 @@ namespace arcvideo {
 
 using namespace foundation;
 
-class RenderJobTracker
-{
+class RenderJobTracker {
 public:
-  RenderJobTracker() = default;
+    RenderJobTracker() = default;
 
-  void insert(const TimeRange &range, JobTime job_time);
-  void insert(const TimeRangeList &ranges, JobTime job_time);
+    void insert(const TimeRange& range, JobTime job_time);
+    void insert(const TimeRangeList& ranges, JobTime job_time);
 
-  void clear();
+    void clear();
 
-  bool isCurrent(const rational &time, JobTime job_time) const;
+    [[nodiscard]] bool isCurrent(const rational& time, JobTime job_time) const;
 
-  TimeRangeList getCurrentSubRanges(const TimeRange &range, const JobTime &job_time) const;
+    [[nodiscard]] TimeRangeList getCurrentSubRanges(const TimeRange& range, const JobTime& job_time) const;
 
 private:
-  class TimeRangeWithJob : public TimeRange
-  {
-  public:
-    TimeRangeWithJob() = default;
-    TimeRangeWithJob(const TimeRange &range, const JobTime &job_time)
-    {
-      set_range(range.in(), range.out());
-      job_time_ = job_time;
-    }
+    class TimeRangeWithJob : public TimeRange {
+    public:
+        TimeRangeWithJob() = default;
+        TimeRangeWithJob(const TimeRange& range, const JobTime& job_time) {
+            set_range(range.in(), range.out());
+            job_time_ = job_time;
+        }
 
-    JobTime GetJobTime() const {return job_time_;}
-    void SetJobTime(JobTime jt) {job_time_ = jt;}
+        [[nodiscard]] JobTime GetJobTime() const { return job_time_; }
+        void SetJobTime(JobTime jt) { job_time_ = jt; }
 
-  private:
-    JobTime job_time_;
+    private:
+        JobTime job_time_;
+    };
 
-  };
-
-  std::vector<TimeRangeWithJob> jobs_;
-
+    std::vector<TimeRangeWithJob> jobs_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // RENDERJOBTRACKER_H
+#endif  // RENDERJOBTRACKER_H

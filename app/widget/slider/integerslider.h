@@ -25,36 +25,35 @@
 
 namespace arcvideo {
 
-class IntegerSlider : public NumericSliderBase
-{
-  Q_OBJECT
+class IntegerSlider : public NumericSliderBase {
+    Q_OBJECT
+
 public:
-  IntegerSlider(QWidget* parent = nullptr);
+    IntegerSlider(QWidget* parent = nullptr);
 
-  int64_t GetValue();
+    int64_t GetValue();
 
-  void SetValue(const int64_t& v);
+    void SetValue(const int64_t& v);
 
-  void SetMinimum(const int64_t& d);
+    void SetMinimum(const int64_t& d);
 
-  void SetMaximum(const int64_t& d);
+    void SetMaximum(const int64_t& d);
 
-  void SetDefaultValue(const int64_t& d);
+    void SetDefaultValue(const int64_t& d);
 
 protected:
-  virtual QString ValueToString(const QVariant& v) const override;
+    [[nodiscard]] QString ValueToString(const QVariant& v) const override;
 
-  virtual QVariant StringToValue(const QString& s, bool* ok) const override;
+    QVariant StringToValue(const QString& s, bool* ok) const override;
 
-  virtual void ValueSignalEvent(const QVariant &value) override;
+    void ValueSignalEvent(const QVariant& value) override;
 
-  virtual QVariant AdjustDragDistanceInternal(const QVariant &start, const double &drag) const override;
+    [[nodiscard]] QVariant AdjustDragDistanceInternal(const QVariant& start, const double& drag) const override;
 
 signals:
-  void ValueChanged(int64_t);
-
+    void ValueChanged(int64_t);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // INTEGERSLIDER_H
+#endif  // INTEGERSLIDER_H

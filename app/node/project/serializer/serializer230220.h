@@ -25,26 +25,21 @@
 
 namespace arcvideo {
 
-class ProjectSerializer230220 : public ProjectSerializer
-{
+class ProjectSerializer230220 : public ProjectSerializer {
 public:
-  ProjectSerializer230220() = default;
+    ProjectSerializer230220() = default;
 
 protected:
-  virtual LoadData Load(Project *project, QXmlStreamReader *reader, LoadType load_type, void *reserved) const override;
+    LoadData Load(Project* project, QXmlStreamReader* reader, LoadType load_type, void* reserved) const override;
 
-  virtual void Save(QXmlStreamWriter *writer, const SaveData &data, void *reserved) const override;
+    void Save(QXmlStreamWriter* writer, const SaveData& data, void* reserved) const override;
 
-  virtual uint Version() const override
-  {
-    return 230220;
-  }
+    [[nodiscard]] uint Version() const override { return 230220; }
 
 private:
-  void PostConnect(const QVector<Node*> &nodes, SerializedData *project_data) const;
-
+    static void PostConnect(const QVector<Node*>& nodes, SerializedData* project_data);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTSERIALIZER230220_H
+#endif  // PROJECTSERIALIZER230220_H

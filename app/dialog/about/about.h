@@ -34,29 +34,28 @@ namespace arcvideo {
  * The About dialog (accessible through Help > About). Contains license and version information. This can be run from
  * anywhere
  */
-class AboutDialog : public QDialog
-{
-  Q_OBJECT
+class AboutDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  /**
-   * @brief AboutDialog Constructor
-   *
-   * Creates About dialog.
-   *
-   * @param parent
-   *
-   * QWidget parent object. Usually this will be MainWindow.
-   */
-  explicit AboutDialog(bool welcome_dialog, QWidget *parent = nullptr);
+    /**
+     * @brief AboutDialog Constructor
+     *
+     * Creates About dialog.
+     *
+     * @param parent
+     *
+     * QWidget parent object. Usually this will be MainWindow.
+     */
+    explicit AboutDialog(bool welcome_dialog, QWidget* parent = nullptr);
 
 public slots:
-  virtual void accept() override;
+    void accept() override;
 
 private:
-  QCheckBox *dont_show_again_checkbox_;
-
+    QCheckBox* dont_show_again_checkbox_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // ABOUTDIALOG_H
+#endif  // ABOUTDIALOG_H

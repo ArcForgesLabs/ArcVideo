@@ -31,53 +31,49 @@
 
 namespace arcvideo {
 
-class ScopePanel : public PanelWidget
-{
-  Q_OBJECT
+class ScopePanel : public PanelWidget {
+    Q_OBJECT
+
 public:
-  enum Type {
-    kTypeWaveform,
-    kTypeHistogram,
+    enum Type {
+        kTypeWaveform,
+        kTypeHistogram,
 
-    kTypeCount
-  };
+        kTypeCount
+    };
 
-  ScopePanel();
+    ScopePanel();
 
-  void SetType(Type t);
+    void SetType(Type t);
 
-  static QString TypeToName(Type t);
+    static QString TypeToName(Type t);
 
-  void SetViewerPanel(ViewerPanelBase *vp);
+    void SetViewerPanel(ViewerPanelBase* vp);
 
-  ViewerPanelBase *GetConnectedViewerPanel() const
-  {
-    return viewer_;
-  }
+    [[nodiscard]] ViewerPanelBase* GetConnectedViewerPanel() const { return viewer_; }
 
 public slots:
-  void SetReferenceBuffer(TexturePtr frame);
+    void SetReferenceBuffer(TexturePtr frame);
 
-  void SetColorManager(ColorManager* manager);
+    void SetColorManager(ColorManager* manager);
 
 protected:
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
 private:
-  Type type_;
+    Type type_;
 
-  QStackedWidget* stack_ = nullptr;
+    QStackedWidget* stack_ = nullptr;
 
-  QComboBox* scope_type_combobox_ = nullptr;
+    QComboBox* scope_type_combobox_ = nullptr;
 
-  WaveformScope* waveform_view_ = nullptr;
+    WaveformScope* waveform_view_ = nullptr;
 
-  HistogramScope* histogram_ = nullptr;
+    HistogramScope* histogram_ = nullptr;
 
-  ViewerPanelBase *viewer_;
-
+    ViewerPanelBase* viewer_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SCOPE_PANEL_H
+#endif  // SCOPE_PANEL_H

@@ -20,52 +20,49 @@
 
 #include "renderjobtracker.h"
 
+#include <ranges>
+
 namespace arcvideo {
 
-void RenderJobTracker::insert(const TimeRange &range, JobTime job_time)
-{
-  // First remove any ranges with this (code copied
-  TimeRangeList::util_remove(&jobs_, range);
+void RenderJobTracker::insert(const TimeRange& range, JobTime job_time) {
+    // First remove any ranges with this (code copied
+    TimeRangeList::util_remove(&jobs_, range);
 
-  // Now append the job
-  TimeRangeWithJob job(range, job_time);
-  jobs_.push_back(job);
+    // Now append the job
+    TimeRangeWithJob job(range, job_time);
+    jobs_.push_back(job);
 }
 
-void RenderJobTracker::insert(const TimeRangeList &ranges, JobTime job_time)
-{
-  for (const TimeRange &r : ranges) {
-    insert(r, job_time);
-  }
-}
-
-void RenderJobTracker::clear()
-{
-  jobs_.clear();
-}
-
-bool RenderJobTracker::isCurrent(const rational &time, JobTime job_time) const
-{
-  for (auto it=jobs_.crbegin(); it!=jobs_.crend(); it++) {
-    if (it->Contains(time)) {
-      return job_time >= it->GetJobTime();
+void RenderJobTracker::insert(const TimeRangeList& ranges, JobTime job_time) {
+    for (const TimeRange& r : ranges) {
+        insert(r, job_time);
     }
-  }
-
-  return false;
 }
 
-TimeRangeList RenderJobTracker::getCurrentSubRanges(const TimeRange &range, const JobTime &job_time) const
-{
-  TimeRangeList current_ranges;
+void RenderJobTracker::clear() {
+    jobs_.clear();
+}
 
-  for (auto it=jobs_.crbegin(); it!=jobs_.crend(); it++) {
-    if (job_time >= it->GetJobTime() && it->OverlapsWith(range)) {
-      current_ranges.insert(it->Intersected(range));
+bool RenderJobTracker::isCurrent(const rational& time, JobTime job_time) const {
+    for (const auto& job : std::views::reverse(jobs_)) {
+        if (job.Contains(time)) {
+            return job_time >= job.GetJobTime();
+        }
     }
-  }
 
-  return current_ranges;
+    return false;
 }
 
+TimeRangeList RenderJobTracker::getCurrentSubRanges(const TimeRange& range, const JobTime& job_time) const {
+    TimeRangeList current_ranges;
+
+    for (const auto& job : std::views::reverse(jobs_)) {
+        if (job_time >= job.GetJobTime() && job.OverlapsWith(range)) {
+            current_ranges.insert(job.Intersected(range));
+        }
+    }
+
+    return current_ranges;
 }
+
+}  // namespace arcvideo

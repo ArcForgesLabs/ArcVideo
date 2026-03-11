@@ -22,9 +22,6 @@
 
 namespace arcvideo {
 
-CodecSection::CodecSection(QWidget *parent) :
-  QWidget(parent)
-{
-}
+CodecSection::CodecSection(QWidget* parent) : QWidget(parent) {}
 
-}
+}  // namespace arcvideo

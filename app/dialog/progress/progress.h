@@ -29,42 +29,41 @@
 
 namespace arcvideo {
 
-class ProgressDialog : public QDialog
-{
-  Q_OBJECT
+class ProgressDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  ProgressDialog(const QString &message, const QString &title, QWidget* parent = nullptr);
+    ProgressDialog(const QString& message, const QString& title, QWidget* parent = nullptr);
 
 protected:
-  virtual void showEvent(QShowEvent* e) override;
+    void showEvent(QShowEvent* e) override;
 
-  virtual void closeEvent(QCloseEvent *) override;
+    void closeEvent(QCloseEvent*) override;
 
 public slots:
-  void SetProgress(double value);
+    void SetProgress(double value);
 
 signals:
-  void Cancelled();
+    void Cancelled();
 
 protected:
-  void ShowErrorMessage(const QString& title, const QString& message);
+    void ShowErrorMessage(const QString& title, const QString& message);
 
 private:
-  QProgressBar* bar_ = nullptr;
+    QProgressBar* bar_ = nullptr;
 
-  ElapsedCounterWidget* elapsed_timer_lbl_ = nullptr;
+    ElapsedCounterWidget* elapsed_timer_lbl_ = nullptr;
 
-  bool show_progress_;
+    bool show_progress_;
 
-  bool first_show_;
+    bool first_show_;
 
 private slots:
-  void DisableSenderWidget();
+    void DisableSenderWidget();
 
-  void DisableProgressWidgets();
-
+    void DisableProgressWidgets();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROGRESSDIALOG_H
+#endif  // PROGRESSDIALOG_H

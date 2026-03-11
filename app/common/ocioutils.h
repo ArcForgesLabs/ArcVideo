@@ -28,12 +28,11 @@ namespace OCIO = OCIO_NAMESPACE;
 
 namespace arcvideo {
 
-class OCIOUtils
-{
+class OCIOUtils {
 public:
-  static OCIO::BitDepth GetOCIOBitDepthFromPixelFormat(PixelFormat format);
+    static OCIO::BitDepth GetOCIOBitDepthFromPixelFormat(PixelFormat format);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // OCIOUTILS_H
+#endif  // OCIOUTILS_H

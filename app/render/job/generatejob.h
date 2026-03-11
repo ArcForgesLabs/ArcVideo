@@ -26,18 +26,12 @@
 
 namespace arcvideo {
 
-class GenerateJob : public AcceleratedJob
-{
+class GenerateJob : public AcceleratedJob {
 public:
-  GenerateJob() = default;
-  GenerateJob(const NodeValueRow &row) :
-    GenerateJob()
-  {
-    Insert(row);
-  }
-
+    GenerateJob() = default;
+    GenerateJob(const NodeValueRow& row) : GenerateJob() { Insert(row); }
 };
 
-}
+}  // namespace arcvideo
 
-#endif // GENERATEJOB_H
+#endif  // GENERATEJOB_H

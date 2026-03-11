@@ -25,45 +25,32 @@
 
 namespace arcvideo {
 
-class MaskDistortNode : public PolygonGenerator
-{
-  Q_OBJECT
+class MaskDistortNode : public PolygonGenerator {
+    Q_OBJECT
+
 public:
-  MaskDistortNode();
+    MaskDistortNode();
 
-  NODE_DEFAULT_FUNCTIONS(MaskDistortNode)
+    NODE_DEFAULT_FUNCTIONS(MaskDistortNode)
 
-  virtual QString Name() const override
-  {
-    return tr("Mask");
-  }
+    [[nodiscard]] QString Name() const override { return tr("Mask"); }
 
-  virtual QString id() const override
-  {
-    return QStringLiteral("org.arcvideoeditor.ArcVideo.mask");
-  }
+    [[nodiscard]] QString id() const override { return QStringLiteral("org.arcvideoeditor.ArcVideo.mask"); }
 
-  virtual QVector<CategoryID> Category() const override
-  {
-    return {kCategoryDistort};
-  }
+    [[nodiscard]] QVector<CategoryID> Category() const override { return {kCategoryDistort}; }
 
-  virtual QString Description() const override
-  {
-    return tr("Apply a polygonal mask.");
-  }
+    [[nodiscard]] QString Description() const override { return tr("Apply a polygonal mask."); }
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kInvertInput;
-  static const QString kFeatherInput;
-
+    static const QString kInvertInput;
+    static const QString kFeatherInput;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // MASKDISTORTNODE_H
+#endif  // MASKDISTORTNODE_H

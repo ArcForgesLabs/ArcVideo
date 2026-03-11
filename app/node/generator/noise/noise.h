@@ -26,26 +26,26 @@
 namespace arcvideo {
 
 class NoiseGeneratorNode : public Node {
-  Q_OBJECT
- public:
-  NoiseGeneratorNode();
+    Q_OBJECT
 
-  NODE_DEFAULT_FUNCTIONS(NoiseGeneratorNode)
+public:
+    NoiseGeneratorNode();
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    NODE_DEFAULT_FUNCTIONS(NoiseGeneratorNode)
 
-  virtual void Retranslate() override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
-  virtual void Value(const NodeValueRow &value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Retranslate() override;
 
-  static const QString kBaseIn;
-  static const QString kColorInput;
-  static const QString kStrengthInput;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
+    static const QString kBaseIn;
+    static const QString kColorInput;
+    static const QString kStrengthInput;
 };
 
 }  // namespace arcvideo

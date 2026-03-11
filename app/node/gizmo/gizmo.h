@@ -28,30 +28,29 @@
 
 namespace arcvideo {
 
-class NodeGizmo : public QObject
-{
-  Q_OBJECT
+class NodeGizmo : public QObject {
+    Q_OBJECT
+
 public:
-  explicit NodeGizmo(QObject *parent = nullptr);
-  virtual ~NodeGizmo() override;
+    explicit NodeGizmo(QObject* parent = nullptr);
+    ~NodeGizmo() override;
 
-  virtual void Draw(QPainter *p) const {}
+    virtual void Draw(QPainter* p) const {}
 
-  const NodeGlobals &GetGlobals() const { return globals_; }
-  void SetGlobals(const NodeGlobals &globals) { globals_ = globals; }
+    [[nodiscard]] const NodeGlobals& GetGlobals() const { return globals_; }
+    void SetGlobals(const NodeGlobals& globals) { globals_ = globals; }
 
-  bool IsVisible() const { return visible_; }
-  void SetVisible(bool e) { visible_ = e; }
+    [[nodiscard]] bool IsVisible() const { return visible_; }
+    void SetVisible(bool e) { visible_ = e; }
 
 signals:
 
 private:
-  NodeGlobals globals_;
+    NodeGlobals globals_;
 
-  bool visible_;
-
+    bool visible_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEGIZMO_H
+#endif  // NODEGIZMO_H

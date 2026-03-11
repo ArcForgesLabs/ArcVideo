@@ -25,4 +25,4 @@ namespace arcvideo {
 QString kAppVersion = QStringLiteral(APPVERSION);
 QString kAppVersionLong = QStringLiteral(APPVERSIONLONG);
 
-}
+}  // namespace arcvideo

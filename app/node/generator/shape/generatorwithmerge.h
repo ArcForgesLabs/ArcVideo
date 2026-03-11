@@ -25,23 +25,22 @@
 
 namespace arcvideo {
 
-class GeneratorWithMerge : public Node
-{
-  Q_OBJECT
+class GeneratorWithMerge : public Node {
+    Q_OBJECT
+
 public:
-  GeneratorWithMerge();
+    GeneratorWithMerge();
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
 
-  static const QString kBaseInput;
+    static const QString kBaseInput;
 
 protected:
-  void PushMergableJob(const NodeValueRow &value, TexturePtr job, NodeValueTable *table) const;
-
+    void PushMergableJob(const NodeValueRow& value, TexturePtr job, NodeValueTable* table) const;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // GENERATORWITHMERGE_H
+#endif  // GENERATORWITHMERGE_H

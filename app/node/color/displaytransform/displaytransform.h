@@ -26,42 +26,41 @@
 
 namespace arcvideo {
 
-class DisplayTransformNode : public OCIOBaseNode
-{
-  Q_OBJECT
- public:
-  DisplayTransformNode();
+class DisplayTransformNode : public OCIOBaseNode {
+    Q_OBJECT
 
-  NODE_DEFAULT_FUNCTIONS(DisplayTransformNode)
+public:
+    DisplayTransformNode();
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    NODE_DEFAULT_FUNCTIONS(DisplayTransformNode)
 
-  virtual void Retranslate() override;
-  virtual void InputValueChangedEvent(const QString &input, int element) override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  QString GetDisplay() const;
-  QString GetView() const;
-  ColorProcessor::Direction GetDirection() const;
+    void Retranslate() override;
+    void InputValueChangedEvent(const QString& input, int element) override;
 
-  static const QString kDisplayInput;
-  static const QString kViewInput;
-  static const QString kDirectionInput;
+    [[nodiscard]] QString GetDisplay() const;
+    [[nodiscard]] QString GetView() const;
+    [[nodiscard]] ColorProcessor::Direction GetDirection() const;
+
+    static const QString kDisplayInput;
+    static const QString kViewInput;
+    static const QString kDirectionInput;
 
 protected slots:
-  virtual void ConfigChanged() override;
+    void ConfigChanged() override;
 
 private:
-  void GenerateProcessor();
+    void GenerateProcessor();
 
-  void UpdateDisplays();
+    void UpdateDisplays();
 
-  void UpdateViews();
-
+    void UpdateViews();
 };
 
-} // arcvideo
+}  // namespace arcvideo
 
-#endif // DISPLAYTRANSFORMNODE_H
+#endif  // DISPLAYTRANSFORMNODE_H

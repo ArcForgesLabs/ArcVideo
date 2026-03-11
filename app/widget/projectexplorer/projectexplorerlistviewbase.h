@@ -31,32 +31,32 @@ namespace arcvideo {
  * @brief A QListView derivative that contains functionality used by both List view and Icon view (which are both based
  * on QListView)
  */
-class ProjectExplorerListViewBase : public QListView
-{
-  Q_OBJECT
+class ProjectExplorerListViewBase : public QListView {
+    Q_OBJECT
+
 public:
-  ProjectExplorerListViewBase(QWidget* parent);
+    ProjectExplorerListViewBase(QWidget* parent);
 
 protected:
-  /**
-   * @brief Double click event override
-   *
-   * Function that signals DoubleClickedView().
-   *
-   * FIXME: This code is the same as the code in ProjectExplorerTreeView. Is there a way to merge these two through
-   * subclassing?
-   */
-  virtual void mouseDoubleClickEvent(QMouseEvent *event) override;
+    /**
+     * @brief Double click event override
+     *
+     * Function that signals DoubleClickedView().
+     *
+     * FIXME: This code is the same as the code in ProjectExplorerTreeView. Is there a way to merge these two through
+     * subclassing?
+     */
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 
 signals:
-  /**
-   * @brief Unconditional double click signal
-   *
-   * Emits a signal when the view is double clicked but not on any particular item
-   */
-  void DoubleClickedEmptyArea();
+    /**
+     * @brief Unconditional double click signal
+     *
+     * Emits a signal when the view is double clicked but not on any particular item
+     */
+    void DoubleClickedEmptyArea();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTEXPLORERLISTVIEWBASE_H
+#endif  // PROJECTEXPLORERLISTVIEWBASE_H

@@ -26,17 +26,16 @@
 
 namespace arcvideo {
 
-class ProjectLoadTask : public ProjectLoadBaseTask
-{
-  Q_OBJECT
+class ProjectLoadTask : public ProjectLoadBaseTask {
+    Q_OBJECT
+
 public:
-  ProjectLoadTask(const QString& filename);
+    ProjectLoadTask(const QString& filename);
 
 protected:
-  virtual bool Run() override;
-
+    bool Run() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTLOADMANAGER_H
+#endif  // PROJECTLOADMANAGER_H

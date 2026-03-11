@@ -32,12 +32,12 @@ namespace arcvideo {
  */
 class ProjectExplorerIconViewItemDelegate : public QStyledItemDelegate {
 public:
-  ProjectExplorerIconViewItemDelegate(QObject *parent = nullptr);
+    ProjectExplorerIconViewItemDelegate(QObject* parent = nullptr);
 
-  virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-  virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    [[nodiscard]] QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTEXPLORERICONVIEWITEMDELEGATE_H
+#endif  // PROJECTEXPLORERICONVIEWITEMDELEGATE_H

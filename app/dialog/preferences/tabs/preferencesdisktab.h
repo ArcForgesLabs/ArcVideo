@@ -27,32 +27,31 @@
 
 #include "dialog/configbase/configdialogbase.h"
 #include "render/diskmanager.h"
-#include "widget/slider/floatslider.h"
 #include "widget/path/pathwidget.h"
+#include "widget/slider/floatslider.h"
 
 namespace arcvideo {
 
-class PreferencesDiskTab : public ConfigDialogBaseTab
-{
-  Q_OBJECT
+class PreferencesDiskTab : public ConfigDialogBaseTab {
+    Q_OBJECT
+
 public:
-  PreferencesDiskTab();
+    PreferencesDiskTab();
 
-  virtual bool Validate() override;
+    bool Validate() override;
 
-  virtual void Accept(MultiUndoCommand* command) override;
+    void Accept(MultiUndoCommand* command) override;
 
 private:
-  PathWidget* disk_cache_location_ = nullptr;
+    PathWidget* disk_cache_location_ = nullptr;
 
-  FloatSlider* cache_ahead_slider_ = nullptr;
+    FloatSlider* cache_ahead_slider_ = nullptr;
 
-  FloatSlider* cache_behind_slider_ = nullptr;
+    FloatSlider* cache_behind_slider_ = nullptr;
 
-  DiskCacheFolder* default_disk_cache_folder_ = nullptr;
-
+    DiskCacheFolder* default_disk_cache_folder_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PREFERENCESDISKTAB_H
+#endif  // PREFERENCESDISKTAB_H

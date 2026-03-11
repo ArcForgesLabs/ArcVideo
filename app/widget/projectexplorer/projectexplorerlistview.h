@@ -29,16 +29,16 @@ namespace arcvideo {
 /**
  * @brief The view widget used when ProjectExplorer is in List View
  */
-class ProjectExplorerListView : public ProjectExplorerListViewBase
-{
-  Q_OBJECT
+class ProjectExplorerListView : public ProjectExplorerListViewBase {
+    Q_OBJECT
+
 public:
-  ProjectExplorerListView(QWidget* parent);
+    ProjectExplorerListView(QWidget* parent);
 
 private:
-  ProjectExplorerListViewItemDelegate delegate_;
+    ProjectExplorerListViewItemDelegate delegate_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTEXPLORERLISTVIEW_H
+#endif  // PROJECTEXPLORERLISTVIEW_H

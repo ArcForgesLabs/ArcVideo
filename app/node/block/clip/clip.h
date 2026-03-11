@@ -34,222 +34,174 @@ class ViewerOutput;
 /**
  * @brief Node that represents a block of Media
  */
-class ClipBlock : public Block
-{
-  Q_OBJECT
+class ClipBlock : public Block {
+    Q_OBJECT
+
 public:
-  ClipBlock();
+    ClipBlock();
 
-  NODE_DEFAULT_FUNCTIONS(ClipBlock)
+    NODE_DEFAULT_FUNCTIONS(ClipBlock)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void set_length_and_media_out(const rational &length) override;
-  virtual void set_length_and_media_in(const rational &length) override;
+    void set_length_and_media_out(const rational& length) override;
+    void set_length_and_media_in(const rational& length) override;
 
-  Track::Type GetTrackType() const
-  {
-    if (track()) {
-      return track()->type();
-    } else {
-      return Track::kNone;
+    [[nodiscard]] Track::Type GetTrackType() const {
+        if (track()) {
+            return track()->type();
+        } else {
+            return Track::kNone;
+        }
     }
-  }
 
-  rational media_in() const;
-  void set_media_in(const rational& media_in);
+    [[nodiscard]] rational media_in() const;
+    void set_media_in(const rational& media_in);
 
-  bool IsAutocaching() const { return GetStandardValue(kAutoCacheInput).toBool(); }
-  void SetAutocache(bool e);
+    [[nodiscard]] bool IsAutocaching() const { return GetStandardValue(kAutoCacheInput).toBool(); }
+    void SetAutocache(bool e);
 
-  void DiscardCache();
+    void DiscardCache();
 
-  virtual void InvalidateCache(const TimeRange& range, const QString& from, int element, InvalidateCacheOptions options) override;
+    void InvalidateCache(const TimeRange& range, const QString& from, int element,
+                         InvalidateCacheOptions options) override;
 
-  virtual TimeRange InputTimeAdjustment(const QString& input, int element, const TimeRange& input_time, bool clamp) const override;
+    [[nodiscard]] TimeRange InputTimeAdjustment(const QString& input, int element, const TimeRange& input_time,
+                                                bool clamp) const override;
 
-  virtual TimeRange OutputTimeAdjustment(const QString& input, int element, const TimeRange& input_time) const override;
+    [[nodiscard]] TimeRange OutputTimeAdjustment(const QString& input, int element,
+                                                 const TimeRange& input_time) const override;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  void RequestInvalidatedFromConnected(bool force_all = false, const TimeRange &intersect = TimeRange());
+    void RequestInvalidatedFromConnected(bool force_all = false, const TimeRange& intersect = TimeRange());
 
-  double speed() const
-  {
-    return GetStandardValue(kSpeedInput).toDouble();
-  }
+    [[nodiscard]] double speed() const { return GetStandardValue(kSpeedInput).toDouble(); }
 
-  bool reverse() const
-  {
-    return GetStandardValue(kReverseInput).toBool();
-  }
+    [[nodiscard]] bool reverse() const { return GetStandardValue(kReverseInput).toBool(); }
 
-  void set_reverse(bool e)
-  {
-    SetStandardValue(kReverseInput, e);
-  }
+    void set_reverse(bool e) { SetStandardValue(kReverseInput, e); }
 
-  bool maintain_audio_pitch() const
-  {
-    return GetStandardValue(kMaintainAudioPitchInput).toBool();
-  }
+    [[nodiscard]] bool maintain_audio_pitch() const { return GetStandardValue(kMaintainAudioPitchInput).toBool(); }
 
-  void set_maintain_audio_pitch(bool e)
-  {
-    SetStandardValue(kMaintainAudioPitchInput, e);
-  }
+    void set_maintain_audio_pitch(bool e) { SetStandardValue(kMaintainAudioPitchInput, e); }
 
-  TransitionBlock* in_transition()
-  {
-    return in_transition_;
-  }
+    TransitionBlock* in_transition() { return in_transition_; }
 
-  void set_in_transition(TransitionBlock* t)
-  {
-    in_transition_ = t;
-  }
+    void set_in_transition(TransitionBlock* t) { in_transition_ = t; }
 
-  TransitionBlock* out_transition()
-  {
-    return out_transition_;
-  }
+    TransitionBlock* out_transition() { return out_transition_; }
 
-  void set_out_transition(TransitionBlock* t)
-  {
-    out_transition_ = t;
-  }
+    void set_out_transition(TransitionBlock* t) { out_transition_ = t; }
 
-  const QVector<Block*>& block_links() const
-  {
-    return block_links_;
-  }
+    [[nodiscard]] const QVector<Block*>& block_links() const { return block_links_; }
 
-  FrameHashCache *connected_video_cache() const
-  {
-    if (Node *n = GetConnectedOutput(kBufferIn)) {
-      return n->video_frame_cache();
-    } else {
-      return nullptr;
+    [[nodiscard]] FrameHashCache* connected_video_cache() const {
+        if (Node* n = GetConnectedOutput(kBufferIn)) {
+            return n->video_frame_cache();
+        } else {
+            return nullptr;
+        }
     }
-  }
 
-  AudioPlaybackCache *connected_audio_cache() const
-  {
-    if (Node *n = GetConnectedOutput(kBufferIn)) {
-      return n->audio_playback_cache();
-    } else {
-      return nullptr;
+    [[nodiscard]] AudioPlaybackCache* connected_audio_cache() const {
+        if (Node* n = GetConnectedOutput(kBufferIn)) {
+            return n->audio_playback_cache();
+        } else {
+            return nullptr;
+        }
     }
-  }
 
-  FrameHashCache *thumbnails()
-  {
-    if (Node *n = GetConnectedOutput(kBufferIn)) {
-      return n->thumbnail_cache();
-    } else {
-      return nullptr;
+    FrameHashCache* thumbnails() {
+        if (Node* n = GetConnectedOutput(kBufferIn)) {
+            return n->thumbnail_cache();
+        } else {
+            return nullptr;
+        }
     }
-  }
 
-  AudioWaveformCache *waveform()
-  {
-    if (Node *n = GetConnectedOutput(kBufferIn)) {
-      return n->waveform_cache();
-    } else {
-      return nullptr;
+    AudioWaveformCache* waveform() {
+        if (Node* n = GetConnectedOutput(kBufferIn)) {
+            return n->waveform_cache();
+        } else {
+            return nullptr;
+        }
     }
-  }
 
-  void AddCachePassthroughFrom(ClipBlock *other);
+    void AddCachePassthroughFrom(ClipBlock* other);
 
-  ViewerOutput *connected_viewer() const
-  {
-    return connected_viewer_;
-  }
+    [[nodiscard]] ViewerOutput* connected_viewer() const { return connected_viewer_; }
 
-  virtual TimeRange GetVideoCacheRange() const override
-  {
-    return TimeRange(0, length());
-  }
+    [[nodiscard]] TimeRange GetVideoCacheRange() const override { return {0, length()}; }
 
-  virtual TimeRange GetAudioCacheRange() const override
-  {
-    return TimeRange(0, length());
-  }
+    [[nodiscard]] TimeRange GetAudioCacheRange() const override { return {0, length()}; }
 
-  virtual void ConnectedToPreviewEvent() override;
+    void ConnectedToPreviewEvent() override;
 
-  TimeRange media_range() const;
+    [[nodiscard]] TimeRange media_range() const;
 
-  /**
-   * @brief Get currently set loop mode
-   */
-  LoopMode loop_mode() const
-  {
-    return static_cast<LoopMode>(GetStandardValue(kLoopModeInput).toInt());
-  }
+    /**
+     * @brief Get currently set loop mode
+     */
+    [[nodiscard]] LoopMode loop_mode() const { return static_cast<LoopMode>(GetStandardValue(kLoopModeInput).toInt()); }
 
-  void set_loop_mode(LoopMode l)
-  {
-    SetStandardValue(kLoopModeInput, int(l));
-  }
+    void set_loop_mode(LoopMode l) { SetStandardValue(kLoopModeInput, int(l)); }
 
-  MultiCamNode *FindMulticam();
+    MultiCamNode* FindMulticam();
 
-  static const QString kBufferIn;
-  static const QString kMediaInInput;
-  static const QString kSpeedInput;
-  static const QString kReverseInput;
-  static const QString kMaintainAudioPitchInput;
-  static const QString kLoopModeInput;
+    static const QString kBufferIn;
+    static const QString kMediaInInput;
+    static const QString kSpeedInput;
+    static const QString kReverseInput;
+    static const QString kMaintainAudioPitchInput;
+    static const QString kLoopModeInput;
 
-  static const QString kAutoCacheInput;
+    static const QString kAutoCacheInput;
 
 protected:
-  virtual void LinkChangeEvent() override;
+    void LinkChangeEvent() override;
 
-  virtual void InputConnectedEvent(const QString& input, int element, Node *output) override;
+    void InputConnectedEvent(const QString& input, int element, Node* output) override;
 
-  virtual void InputDisconnectedEvent(const QString& input, int element, Node *output) override;
+    void InputDisconnectedEvent(const QString& input, int element, Node* output) override;
 
-  virtual void InputValueChangedEvent(const QString& input, int element) override;
-
-private:
-  enum SequenceToMediaTimeFlag
-  {
-    kSTMNone = 0x0,
-    kSTMIgnoreReverse = 0x1,
-    kSTMIgnoreSpeed = 0x2,
-    kSTMIgnoreLoop = 0x4
-  };
-
-  rational SequenceToMediaTime(const rational& sequence_time, uint64_t flags = kSTMNone) const;
-
-  rational MediaToSequenceTime(const rational& media_time) const;
-
-  void RequestRangeFromConnected(const TimeRange &range);
-
-  void RequestRangeForCache(PlaybackCache *cache, const TimeRange &max_range, const TimeRange &range, bool invalidate, bool request);
-  void RequestInvalidatedForCache(PlaybackCache *cache, const TimeRange &max_range);
-
-  bool GetAdjustedThumbnailRange(TimeRange *r) const;
-
-  QVector<Block*> block_links_;
-
-  TransitionBlock* in_transition_ = nullptr;
-  TransitionBlock* out_transition_ = nullptr;
-
-  ViewerOutput *connected_viewer_;
+    void InputValueChangedEvent(const QString& input, int element) override;
 
 private:
-  rational last_media_in_;
+    enum SequenceToMediaTimeFlag {
+        kSTMNone = 0x0,
+        kSTMIgnoreReverse = 0x1,
+        kSTMIgnoreSpeed = 0x2,
+        kSTMIgnoreLoop = 0x4
+    };
 
+    [[nodiscard]] rational SequenceToMediaTime(const rational& sequence_time, uint64_t flags = kSTMNone) const;
+
+    [[nodiscard]] rational MediaToSequenceTime(const rational& media_time) const;
+
+    void RequestRangeFromConnected(const TimeRange& range);
+
+    void RequestRangeForCache(PlaybackCache* cache, const TimeRange& max_range, const TimeRange& range, bool invalidate,
+                              bool request);
+    void RequestInvalidatedForCache(PlaybackCache* cache, const TimeRange& max_range);
+
+    bool GetAdjustedThumbnailRange(TimeRange* r) const;
+
+    QVector<Block*> block_links_;
+
+    TransitionBlock* in_transition_ = nullptr;
+    TransitionBlock* out_transition_ = nullptr;
+
+    ViewerOutput* connected_viewer_;
+
+private:
+    rational last_media_in_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINEBLOCK_H
+#endif  // TIMELINEBLOCK_H

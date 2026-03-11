@@ -22,51 +22,48 @@
 #define COLORCODING_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QObject>
 
 namespace arcvideo {
 
 using namespace foundation;
 
-class ColorCoding : public QObject
-{
-  Q_OBJECT
+class ColorCoding : public QObject {
+    Q_OBJECT
+
 public:
-  enum Code {
-    kRed,
-    kMaroon,
-    kOrange,
-    kBrown,
-    kYellow,
-    kOlive,
-    kLime,
-    kGreen,
-    kCyan,
-    kTeal,
-    kBlue,
-    kNavy,
-    kPink,
-    kPurple,
-    kSilver,
-    kGray
-  };
+    enum Code {
+        kRed,
+        kMaroon,
+        kOrange,
+        kBrown,
+        kYellow,
+        kOlive,
+        kLime,
+        kGreen,
+        kCyan,
+        kTeal,
+        kBlue,
+        kNavy,
+        kPink,
+        kPurple,
+        kSilver,
+        kGray
+    };
 
-  static QString GetColorName(int c);
+    static QString GetColorName(int c);
 
-  static Color GetColor(int c);
+    static Color GetColor(int c);
 
-  static Qt::GlobalColor GetUISelectorColor(const Color& c);
+    static Qt::GlobalColor GetUISelectorColor(const Color& c);
 
-  static const QVector<Color>& standard_colors()
-  {
-    return colors_;
-  }
+    static const QVector<Color>& standard_colors() { return colors_; }
 
 private:
-  static QVector<Color> colors_;
-
+    static QVector<Color> colors_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORCODING_H
+#endif  // COLORCODING_H

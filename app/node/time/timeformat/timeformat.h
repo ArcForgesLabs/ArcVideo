@@ -25,29 +25,28 @@
 
 namespace arcvideo {
 
-class TimeFormatNode : public Node
-{
-  Q_OBJECT
+class TimeFormatNode : public Node {
+    Q_OBJECT
+
 public:
-  TimeFormatNode();
+    TimeFormatNode();
 
-  NODE_DEFAULT_FUNCTIONS(TimeFormatNode)
+    NODE_DEFAULT_FUNCTIONS(TimeFormatNode)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kTimeInput;
-  static const QString kFormatInput;
-  static const QString kLocalTimeInput;
-
+    static const QString kTimeInput;
+    static const QString kFormatInput;
+    static const QString kLocalTimeInput;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMEFORMAT_H
+#endif  // TIMEFORMAT_H

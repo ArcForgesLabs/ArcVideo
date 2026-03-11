@@ -6,19 +6,20 @@
 
 namespace arcvideo {
 
-class MulticamPanel : public TimeBasedPanel
-{
-  Q_OBJECT
-public:
-  MulticamPanel();
+class MulticamPanel : public TimeBasedPanel {
+    Q_OBJECT
 
-  MulticamWidget *GetMulticamWidget() const { return static_cast<MulticamWidget *>(GetTimeBasedWidget()); }
+public:
+    MulticamPanel();
+
+    [[nodiscard]] MulticamWidget* GetMulticamWidget() const {
+        return static_cast<MulticamWidget*>(GetTimeBasedWidget());
+    }
 
 protected:
-  virtual void Retranslate() override;
-
+    void Retranslate() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // MULTICAMPANEL_H
+#endif  // MULTICAMPANEL_H

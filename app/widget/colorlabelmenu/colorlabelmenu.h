@@ -25,27 +25,26 @@
 
 namespace arcvideo {
 
-class ColorLabelMenu : public Menu
-{
-  Q_OBJECT
-public:
-  ColorLabelMenu(QWidget* parent = nullptr);
+class ColorLabelMenu : public Menu {
+    Q_OBJECT
 
-  virtual void changeEvent(QEvent* event) override;
+public:
+    ColorLabelMenu(QWidget* parent = nullptr);
+
+    void changeEvent(QEvent* event) override;
 
 signals:
-  void ColorSelected(int i);
+    void ColorSelected(int i);
 
 private:
-  void Retranslate();
+    void Retranslate();
 
-  QVector<QAction*> color_items_;
+    QVector<QAction*> color_items_;
 
 private slots:
-  void ActionTriggered();
-
+    void ActionTriggered();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORLABELMENU_H
+#endif  // COLORLABELMENU_H

@@ -21,53 +21,52 @@
 #ifndef OIIODECODER_H
 #define OIIODECODER_H
 
-#include <OpenImageIO/imageio.h>
 #include <OpenImageIO/imagebuf.h>
+#include <OpenImageIO/imageio.h>
 
 #include "codec/decoder.h"
 
 namespace arcvideo {
 
-class OIIODecoder : public Decoder
-{
-  Q_OBJECT
+class OIIODecoder : public Decoder {
+    Q_OBJECT
+
 public:
-  OIIODecoder();
+    OIIODecoder() = default;
 
-  DECODER_DEFAULT_DESTRUCTOR(OIIODecoder)
+    DECODER_DEFAULT_DESTRUCTOR(OIIODecoder)
 
-  virtual QString id() const override;
+    [[nodiscard]] QString id() const override;
 
-  virtual bool SupportsVideo() override{return true;}
+    bool SupportsVideo() override { return true; }
 
-  virtual FootageDescription Probe(const QString& filename, CancelAtom *cancelled) const override;
+    FootageDescription Probe(const QString& filename, CancelAtom* cancelled) const override;
 
 protected:
-  virtual bool OpenInternal() override;
-  virtual TexturePtr RetrieveVideoInternal(const RetrieveVideoParams& p) override;
-  virtual void CloseInternal() override;
+    bool OpenInternal() override;
+    TexturePtr RetrieveVideoInternal(const RetrieveVideoParams& p) override;
+    void CloseInternal() override;
 
 private:
-  std::unique_ptr<OIIO::ImageInput> image_;
+    std::unique_ptr<OIIO::ImageInput> image_;
 
-  static bool FileTypeIsSupported(const QString& fn);
+    static bool FileTypeIsSupported(const QString& fn);
 
-  bool OpenImageHandler(const QString& fn, int subimage);
+    bool OpenImageHandler(const QString& fn, int subimage);
 
-  void CloseImageHandle();
+    void CloseImageHandle();
 
-  static VideoParams GetVideoParamsFromImageSpec(const OIIO::ImageSpec &spec);
+    static VideoParams GetVideoParamsFromImageSpec(const OIIO::ImageSpec& spec);
 
-  PixelFormat pix_fmt_;
-  OIIO::TypeDesc::BASETYPE oiio_pix_fmt_;
+    PixelFormat pix_fmt_;
+    OIIO::TypeDesc::BASETYPE oiio_pix_fmt_;
 
-  Frame buffer_;
-  RetrieveVideoParams last_params_;
+    Frame buffer_;
+    RetrieveVideoParams last_params_;
 
-  static QStringList supported_formats_;
-
+    static QStringList supported_formats_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // OIIODECODER_H
+#endif  // OIIODECODER_H

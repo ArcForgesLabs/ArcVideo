@@ -22,22 +22,19 @@
 
 namespace arcvideo {
 
-ViewerPanel::ViewerPanel(const QString &object_name) :
-  ViewerPanelBase(object_name)
-{
-  // Set ViewerWidget as the central widget
-  ViewerWidget* vw = new ViewerWidget(this);
-  SetViewerWidget(vw);
+ViewerPanel::ViewerPanel(const QString& object_name) : ViewerPanelBase(object_name) {
+    // Set ViewerWidget as the central widget
+    auto* vw = new ViewerWidget(this);
+    SetViewerWidget(vw);
 
-  // Set strings
-  Retranslate();
+    // Set strings
+    Retranslate();
 }
 
-void ViewerPanel::Retranslate()
-{
-  ViewerPanelBase::Retranslate();
+void ViewerPanel::Retranslate() {
+    ViewerPanelBase::Retranslate();
 
-  SetTitle(tr("Viewer"));
+    SetTitle(tr("Viewer"));
 }
 
-}
+}  // namespace arcvideo

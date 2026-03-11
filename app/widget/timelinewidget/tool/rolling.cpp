@@ -18,24 +18,21 @@
 
 ***/
 
-#include "widget/timelinewidget/timelinewidget.h"
+#include "rolling.h"
 
 #include "node/block/gap/gap.h"
 #include "node/nodeundo.h"
-#include "rolling.h"
+#include "widget/timelinewidget/timelinewidget.h"
 
 namespace arcvideo {
 
-RollingTool::RollingTool(TimelineWidget* parent) :
-  PointerTool(parent)
-{
-  SetMovementAllowed(false);
-  SetGapTrimmingAllowed(true);
+RollingTool::RollingTool(TimelineWidget* parent) : PointerTool(parent) {
+    SetMovementAllowed(false);
+    SetGapTrimmingAllowed(true);
 }
 
-void RollingTool::InitiateDrag(Block *clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers)
-{
-  InitiateDragInternal(clicked_item, trim_mode, modifiers, false, true, false);
+void RollingTool::InitiateDrag(Block* clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers) {
+    InitiateDragInternal(clicked_item, trim_mode, modifiers, false, true, false);
 }
 
-}
+}  // namespace arcvideo

@@ -1,7 +1,7 @@
 {
   // ── Clangd ──────────────────────────────────────────────────────────
   "clangd.arguments": [
-    "--compile-commands-dir=${workspaceFolder}/build/debug",
+    "--compile-commands-dir=${workspaceFolder}/build",
     "--header-insertion=iwyu",
     "--completion-style=detailed",
     "--background-index",
@@ -47,6 +47,6 @@
   "terminal.integrated.fontFamily": "'Maple Mono NF CN', Consolas, monospace",
   "terminal.integrated.fontSize": 13,
   "[cpp]": {
-    "editor.defaultFormatter": "xaver.clang-format"
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
   }
 }

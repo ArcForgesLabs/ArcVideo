@@ -22,12 +22,10 @@
 
 namespace arcvideo {
 
-ProjectExplorerIconView::ProjectExplorerIconView(QWidget *parent) :
-  ProjectExplorerListViewBase(parent)
-{
-  setViewMode(QListView::IconMode);
+ProjectExplorerIconView::ProjectExplorerIconView(QWidget* parent) : ProjectExplorerListViewBase(parent) {
+    setViewMode(QListView::IconMode);
 
-  setItemDelegate(&delegate_);
+    setItemDelegate(&delegate_);
 }
 
-}
+}  // namespace arcvideo

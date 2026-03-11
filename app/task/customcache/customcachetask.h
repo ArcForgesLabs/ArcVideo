@@ -28,31 +28,30 @@
 
 namespace arcvideo {
 
-class CustomCacheTask : public Task
-{
-  Q_OBJECT
-public:
-  CustomCacheTask(const QString &sequence_name);
+class CustomCacheTask : public Task {
+    Q_OBJECT
 
-  void Finish();
+public:
+    CustomCacheTask(const QString& sequence_name);
+
+    void Finish();
 
 signals:
-  void Cancelled();
+    void Cancelled();
 
 protected:
-  virtual bool Run() override;
+    bool Run() override;
 
-  virtual void CancelEvent() override;
+    void CancelEvent() override;
 
 private:
-  QMutex mutex_;
+    QMutex mutex_;
 
-  QWaitCondition wait_cond_;
+    QWaitCondition wait_cond_;
 
-  bool cancelled_through_finish_;
-
+    bool cancelled_through_finish_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CUSTOMCACHETASK_H
+#endif  // CUSTOMCACHETASK_H

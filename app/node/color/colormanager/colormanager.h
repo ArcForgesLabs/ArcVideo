@@ -21,8 +21,8 @@
 #ifndef COLORSERVICE_H
 #define COLORSERVICE_H
 
-#include <memory>
 #include <QMutex>
+#include <memory>
 
 #include "codec/frame.h"
 #include "node/node.h"
@@ -30,70 +30,69 @@
 
 namespace arcvideo {
 
-class ColorManager : public QObject
-{
-  Q_OBJECT
+class ColorManager : public QObject {
+    Q_OBJECT
+
 public:
-  ColorManager(Project *project);
+    ColorManager(Project* project);
 
-  void Init();
+    void Init();
 
-  OCIO::ConstConfigRcPtr GetConfig() const;
+    [[nodiscard]] OCIO::ConstConfigRcPtr GetConfig() const;
 
-  static OCIO::ConstConfigRcPtr CreateConfigFromFile(const QString& filename);
+    static OCIO::ConstConfigRcPtr CreateConfigFromFile(const QString& filename);
 
-  QString GetConfigFilename() const;
+    [[nodiscard]] QString GetConfigFilename() const;
 
-  static OCIO::ConstConfigRcPtr GetDefaultConfig();
+    static OCIO::ConstConfigRcPtr GetDefaultConfig();
 
-  static void SetUpDefaultConfig();
+    static void SetUpDefaultConfig();
 
-  void SetConfigFilename(const QString& filename);
+    void SetConfigFilename(const QString& filename);
 
-  QStringList ListAvailableDisplays();
+    QStringList ListAvailableDisplays();
 
-  QString GetDefaultDisplay();
+    QString GetDefaultDisplay();
 
-  QStringList ListAvailableViews(QString display);
+    QStringList ListAvailableViews(QString display);
 
-  QString GetDefaultView(const QString& display);
+    QString GetDefaultView(const QString& display);
 
-  QStringList ListAvailableLooks();
+    QStringList ListAvailableLooks();
 
-  QStringList ListAvailableColorspaces() const;
+    [[nodiscard]] QStringList ListAvailableColorspaces() const;
 
-  QString GetDefaultInputColorSpace() const;
+    [[nodiscard]] QString GetDefaultInputColorSpace() const;
 
-  void SetDefaultInputColorSpace(const QString& s);
+    void SetDefaultInputColorSpace(const QString& s);
 
-  QString GetReferenceColorSpace() const;
+    [[nodiscard]] QString GetReferenceColorSpace() const;
 
-  QString GetCompliantColorSpace(const QString& s);
+    [[nodiscard]] QString GetCompliantColorSpace(const QString& s);
 
-  ColorTransform GetCompliantColorSpace(const ColorTransform& transform, bool force_display = false);
+    ColorTransform GetCompliantColorSpace(const ColorTransform& transform, bool force_display = false);
 
-  static QStringList ListAvailableColorspaces(OCIO::ConstConfigRcPtr config);
+    static QStringList ListAvailableColorspaces(OCIO::ConstConfigRcPtr config);
 
-  void GetDefaultLumaCoefs(double *rgb) const;
+    void GetDefaultLumaCoefs(double* rgb) const;
 
-  Project *project() const;
+    [[nodiscard]] Project* project() const;
 
-  void UpdateConfigFromFilename();
+    void UpdateConfigFromFilename();
 
 signals:
-  void ConfigChanged(const QString &s);
+    void ConfigChanged(const QString& s);
 
-  void ReferenceSpaceChanged(const QString &s);
+    void ReferenceSpaceChanged(const QString& s);
 
-  void DefaultInputChanged(const QString &s);
+    void DefaultInputChanged(const QString& s);
 
 private:
-  OCIO::ConstConfigRcPtr config_;
+    OCIO::ConstConfigRcPtr config_;
 
-  static OCIO::ConstConfigRcPtr default_config_;
-
+    static OCIO::ConstConfigRcPtr default_config_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // COLORSERVICE_H
+#endif  // COLORSERVICE_H

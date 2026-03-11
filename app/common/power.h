@@ -27,30 +27,28 @@
 
 namespace arcvideo {
 
-uint32_t ceil_to_power_of_2(uint32_t v)
-{
-  v--;
-  v |= v >> 1;
-  v |= v >> 2;
-  v |= v >> 4;
-  v |= v >> 8;
-  v |= v >> 16;
-  v++;
+uint32_t ceil_to_power_of_2(uint32_t v) {
+    v--;
+    v |= v >> 1;
+    v |= v >> 2;
+    v |= v >> 4;
+    v |= v >> 8;
+    v |= v >> 16;
+    v++;
 
-  return v;
+    return v;
 }
 
-uint32_t floor_to_power_of_2(uint32_t x)
-{
-  x = x | (x >> 1);
-  x = x | (x >> 2);
-  x = x | (x >> 4);
-  x = x | (x >> 8);
-  x = x | (x >> 16);
+uint32_t floor_to_power_of_2(uint32_t x) {
+    x = x | (x >> 1);
+    x = x | (x >> 2);
+    x = x | (x >> 4);
+    x = x | (x >> 8);
+    x = x | (x >> 16);
 
-  return x - (x >> 1);
+    return x - (x >> 1);
 }
 
-}
+}  // namespace arcvideo
 
-#endif // POWER_H
+#endif  // POWER_H

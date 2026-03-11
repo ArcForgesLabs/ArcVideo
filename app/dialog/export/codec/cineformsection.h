@@ -27,21 +27,20 @@
 
 namespace arcvideo {
 
-class CineformSection : public CodecSection
-{
-  Q_OBJECT
+class CineformSection : public CodecSection {
+    Q_OBJECT
+
 public:
-  CineformSection(QWidget *parent = nullptr);
+    CineformSection(QWidget* parent = nullptr);
 
-  virtual void AddOpts(EncodingParams* params) override;
+    void AddOpts(EncodingParams* params) override;
 
-  virtual void SetOpts(const EncodingParams *p) override;
+    void SetOpts(const EncodingParams* p) override;
 
 private:
-  QComboBox *quality_combobox_;
-
+    QComboBox* quality_combobox_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CINEFORMSECTION_H
+#endif  // CINEFORMSECTION_H

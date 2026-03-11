@@ -22,6 +22,7 @@
 #define RATIONALSLIDER_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QMouseEvent>
 
 #include "base/decimalsliderbase.h"
@@ -30,110 +31,105 @@ namespace arcvideo {
 
 using namespace foundation;
 
- /**
+/**
  * @brief A arcvideo::rational based slider
  *
  * A slider that can display rationals as either timecode (drop or non-drop), a timestamp (frames),
  * or a float (seconds).
  */
-class RationalSlider : public DecimalSliderBase
-{
-  Q_OBJECT
+class RationalSlider : public DecimalSliderBase {
+    Q_OBJECT
+
 public:
-  /**
-   * @brief enum containing the possibly display types
-   */
-  enum DisplayType {
-    kTime,
-    kFloat,
-    kRational
-  };
+    /**
+     * @brief enum containing the possibly display types
+     */
+    enum DisplayType { kTime, kFloat, kRational };
 
-  RationalSlider(QWidget* parent = nullptr);
+    RationalSlider(QWidget* parent = nullptr);
 
-  /**
-   * @brief Returns the sliders value as a rational
-   */
-  rational GetValue();
+    /**
+     * @brief Returns the sliders value as a rational
+     */
+    rational GetValue();
 
-  /**
-   * @brief Sets the sliders default value
-   */
-  void SetDefaultValue(const rational& r);
+    /**
+     * @brief Sets the sliders default value
+     */
+    void SetDefaultValue(const rational& r);
 
-  /**
-   * @brief Sets the sliders minimum value
-   */
-  void SetMinimum(const rational& d);
+    /**
+     * @brief Sets the sliders minimum value
+     */
+    void SetMinimum(const rational& d);
 
-  /**
-   * @brief Sets the sliders maximum value
-   */
-  void SetMaximum(const rational& d);
+    /**
+     * @brief Sets the sliders maximum value
+     */
+    void SetMaximum(const rational& d);
 
-  /**
-   * @brief Sets the display type of the slider
-   */
-  void SetDisplayType(const DisplayType& type);
+    /**
+     * @brief Sets the display type of the slider
+     */
+    void SetDisplayType(const DisplayType& type);
 
-  /**
-   * @brief Set whether the user can change the display type or not
-   */
-  void SetLockDisplayType(bool e);
+    /**
+     * @brief Set whether the user can change the display type or not
+     */
+    void SetLockDisplayType(bool e);
 
-  /**
-   * @brief Get whether the user can change the display type or not
-   */
-  bool GetLockDisplayType();
+    /**
+     * @brief Get whether the user can change the display type or not
+     */
+    [[nodiscard]] bool GetLockDisplayType() const;
 
-  /**
-   * @brief Hide display type in menu
-   */
-  void DisableDisplayType(DisplayType type);
+    /**
+     * @brief Hide display type in menu
+     */
+    void DisableDisplayType(DisplayType type);
 
 public slots:
-  /**
-   * @brief Sets the sliders timebase which is also the minimum increment of the slider
-   */
-  void SetTimebase(const rational& timebase);
+    /**
+     * @brief Sets the sliders timebase which is also the minimum increment of the slider
+     */
+    void SetTimebase(const rational& timebase);
 
-  /**
-   * @brief Sets the sliders value
-   */
-  void SetValue(const rational& d);
+    /**
+     * @brief Sets the sliders value
+     */
+    void SetValue(const rational& d);
 
 protected:
-  virtual QString ValueToString(const QVariant& v) const override;
+    [[nodiscard]] QString ValueToString(const QVariant& v) const override;
 
-  virtual QVariant StringToValue(const QString& s, bool* ok) const override;
+    QVariant StringToValue(const QString& s, bool* ok) const override;
 
-  virtual QVariant AdjustDragDistanceInternal(const QVariant &start, const double &drag) const override;
+    [[nodiscard]] QVariant AdjustDragDistanceInternal(const QVariant& start, const double& drag) const override;
 
-  virtual void ValueSignalEvent(const QVariant& v) override;
+    void ValueSignalEvent(const QVariant& v) override;
 
-  virtual bool ValueGreaterThan(const QVariant& lhs, const QVariant& rhs) const override;
+    [[nodiscard]] bool ValueGreaterThan(const QVariant& lhs, const QVariant& rhs) const override;
 
-  virtual bool ValueLessThan(const QVariant& lhs, const QVariant& rhs) const override;
+    [[nodiscard]] bool ValueLessThan(const QVariant& lhs, const QVariant& rhs) const override;
 
 signals:
-  void ValueChanged(rational);
+    void ValueChanged(rational);
 
 private slots:
-  void ShowDisplayTypeMenu();
+    void ShowDisplayTypeMenu();
 
-  void SetDisplayTypeFromMenu();
+    void SetDisplayTypeFromMenu();
 
 private:
-  DisplayType display_type_;
+    DisplayType display_type_;
 
-  rational timebase_;
+    rational timebase_;
 
-  bool lock_display_type_;
+    bool lock_display_type_;
 
-  QVector<DisplayType> disabled_;
-
+    QVector<DisplayType> disabled_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // RATIONALSLIDER_H
+#endif  // RATIONALSLIDER_H

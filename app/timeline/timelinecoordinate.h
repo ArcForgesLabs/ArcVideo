@@ -25,26 +25,24 @@
 
 namespace arcvideo {
 
-class TimelineCoordinate
-{
+class TimelineCoordinate {
 public:
-  TimelineCoordinate();
-  TimelineCoordinate(const rational& frame, const Track::Reference& track);
-  TimelineCoordinate(const rational& frame, const Track::Type& track_type, const int& track_index);
+    TimelineCoordinate();
+    TimelineCoordinate(const rational& frame, const Track::Reference& track);
+    TimelineCoordinate(const rational& frame, const Track::Type& track_type, const int& track_index);
 
-  const rational& GetFrame() const;
-  const Track::Reference& GetTrack() const;
+    [[nodiscard]] const rational& GetFrame() const;
+    [[nodiscard]] const Track::Reference& GetTrack() const;
 
-  void SetFrame(const rational& frame);
-  void SetTrack(const Track::Reference& track);
+    void SetFrame(const rational& frame);
+    void SetTrack(const Track::Reference& track);
 
 private:
-  rational frame_;
+    rational frame_;
 
-  Track::Reference track_;
-
+    Track::Reference track_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINECOORDINATE_H
+#endif  // TIMELINECOORDINATE_H

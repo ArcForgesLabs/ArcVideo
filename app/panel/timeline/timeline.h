@@ -29,106 +29,91 @@ namespace arcvideo {
 /**
  * @brief Panel container for a TimelineWidget
  */
-class TimelinePanel : public TimeBasedPanel
-{
-  Q_OBJECT
+class TimelinePanel : public TimeBasedPanel {
+    Q_OBJECT
+
 public:
-  TimelinePanel(const QString &name);
+    TimelinePanel(const QString& name);
 
-  inline TimelineWidget *timeline_widget() const
-  {
-    return static_cast<TimelineWidget*>(GetTimeBasedWidget());
-  }
+    [[nodiscard]] inline TimelineWidget* timeline_widget() const {
+        return static_cast<TimelineWidget*>(GetTimeBasedWidget());
+    }
 
-  void SplitAtPlayhead();
+    void SplitAtPlayhead() const;
 
-  virtual void LoadData(const Info &info) override;
-  virtual Info SaveData() const override;
+    void LoadData(const Info& info) override;
+    [[nodiscard]] Info SaveData() const override;
 
-  virtual void SelectAll() override;
+    void SelectAll() override;
 
-  virtual void DeselectAll() override;
+    void DeselectAll() override;
 
-  virtual void RippleToIn() override;
+    void RippleToIn() override;
 
-  virtual void RippleToOut() override;
+    void RippleToOut() override;
 
-  virtual void EditToIn() override;
+    void EditToIn() override;
 
-  virtual void EditToOut() override;
+    void EditToOut() override;
 
-  virtual void DeleteSelected() override;
+    void DeleteSelected() override;
 
-  virtual void RippleDelete() override;
+    void RippleDelete() override;
 
-  virtual void IncreaseTrackHeight() override;
+    void IncreaseTrackHeight() override;
 
-  virtual void DecreaseTrackHeight() override;
+    void DecreaseTrackHeight() override;
 
-  virtual void ToggleLinks() override;
+    void ToggleLinks() override;
 
-  virtual void PasteInsert() override;
+    void PasteInsert() override;
 
-  virtual void DeleteInToOut() override;
+    void DeleteInToOut() override;
 
-  virtual void RippleDeleteInToOut() override;
+    void RippleDeleteInToOut() override;
 
-  virtual void ToggleSelectedEnabled() override;
+    void ToggleSelectedEnabled() override;
 
-  virtual void SetColorLabel(int index) override;
+    void SetColorLabel(int index) override;
 
-  virtual void NudgeLeft() override;
+    void NudgeLeft() override;
 
-  virtual void NudgeRight() override;
+    void NudgeRight() override;
 
-  virtual void MoveInToPlayhead() override;
+    void MoveInToPlayhead() override;
 
-  virtual void MoveOutToPlayhead() override;
+    void MoveOutToPlayhead() override;
 
-  virtual void RenameSelected() override;
+    void RenameSelected() override;
 
-  void AddDefaultTransitionsToSelected()
-  {
-    timeline_widget()->AddDefaultTransitionsToSelected();
-  }
+    void AddDefaultTransitionsToSelected() const { timeline_widget()->AddDefaultTransitionsToSelected(); }
 
-  void ShowSpeedDurationDialogForSelectedClips()
-  {
-    timeline_widget()->ShowSpeedDurationDialogForSelectedClips();
-  }
+    void ShowSpeedDurationDialogForSelectedClips() const {
+        timeline_widget()->ShowSpeedDurationDialogForSelectedClips();
+    }
 
-  void NestSelectedClips()
-  {
-    timeline_widget()->NestSelectedClips();
-  }
+    void NestSelectedClips() const { timeline_widget()->NestSelectedClips(); }
 
-  void InsertFootageAtPlayhead(const QVector<ViewerOutput *> &footage);
+    void InsertFootageAtPlayhead(const QVector<ViewerOutput*>& footage) const;
 
-  void OverwriteFootageAtPlayhead(const QVector<ViewerOutput *> &footage);
+    void OverwriteFootageAtPlayhead(const QVector<ViewerOutput*>& footage) const;
 
-  const QVector<Block*>& GetSelectedBlocks() const
-  {
-    return timeline_widget()->GetSelectedBlocks();
-  }
+    [[nodiscard]] const QVector<Block*>& GetSelectedBlocks() const { return timeline_widget()->GetSelectedBlocks(); }
 
-  Sequence *GetSequence() const
-  {
-    return dynamic_cast<Sequence*>(GetConnectedViewer());
-  }
+    [[nodiscard]] Sequence* GetSequence() const { return dynamic_cast<Sequence*>(GetConnectedViewer()); }
 
 protected:
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
 signals:
-  void BlockSelectionChanged(const QVector<Block*>& selected_blocks);
+    void BlockSelectionChanged(const QVector<Block*>& selected_blocks);
 
-  void RequestCaptureStart(const TimeRange &time, const Track::Reference &track);
+    void RequestCaptureStart(const TimeRange& time, const Track::Reference& track);
 
-  void RevealViewerInProject(ViewerOutput *r);
-  void RevealViewerInFootageViewer(ViewerOutput *r, const TimeRange &range);
-
+    void RevealViewerInProject(ViewerOutput* r);
+    void RevealViewerInFootageViewer(ViewerOutput* r, const TimeRange& range);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINE_PANEL_H
+#endif  // TIMELINE_PANEL_H

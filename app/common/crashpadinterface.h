@@ -28,6 +28,6 @@
 
 bool InitializeCrashpad();
 
-#endif // USE_CRASHPAD
+#endif  // USE_CRASHPAD
 
-#endif // CRASHPAD_INTERFACE_H
+#endif  // CRASHPAD_INTERFACE_H

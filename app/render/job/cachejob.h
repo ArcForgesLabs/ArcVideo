@@ -29,28 +29,23 @@
 
 namespace arcvideo {
 
-class CacheJob : public AcceleratedJob
-{
+class CacheJob : public AcceleratedJob {
 public:
-  CacheJob() = default;
-  CacheJob(const QString &filename, const NodeValue &fallback = NodeValue())
-  {
-    filename_ = filename;
-  }
+    CacheJob() = default;
+    CacheJob(const QString& filename, const NodeValue& fallback = NodeValue()) { filename_ = filename; }
 
-  const QString &GetFilename() const { return filename_; }
-  void SetFilename(const QString &s) { filename_ = s; }
+    [[nodiscard]] const QString& GetFilename() const { return filename_; }
+    void SetFilename(const QString& s) { filename_ = s; }
 
-  const NodeValue &GetFallback() const { return fallback_; }
-  void SetFallback(const NodeValue &val) { fallback_ = val; }
+    [[nodiscard]] const NodeValue& GetFallback() const { return fallback_; }
+    void SetFallback(const NodeValue& val) { fallback_ = val; }
 
 private:
-  QString filename_;
+    QString filename_;
 
-  NodeValue fallback_;
-
+    NodeValue fallback_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CACHEJOB_H
+#endif  // CACHEJOB_H

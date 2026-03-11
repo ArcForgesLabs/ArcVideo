@@ -22,17 +22,14 @@
 
 namespace arcvideo {
 
-NodeTablePanel::NodeTablePanel() :
-  TimeBasedPanel(QStringLiteral("NodeTablePanel"))
-{
-  SetTimeBasedWidget(new NodeTableWidget(this));
+NodeTablePanel::NodeTablePanel() : TimeBasedPanel(QStringLiteral("NodeTablePanel")) {
+    SetTimeBasedWidget(new NodeTableWidget(this));
 
-  Retranslate();
+    Retranslate();
 }
 
-void NodeTablePanel::Retranslate()
-{
-  SetTitle(tr("Table View"));
+void NodeTablePanel::Retranslate() {
+    SetTitle(tr("Table View"));
 }
 
-}
+}  // namespace arcvideo

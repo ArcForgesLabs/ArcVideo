@@ -28,30 +28,29 @@
 
 namespace arcvideo {
 
-class ResizableTimelineScrollBar : public ResizableScrollBar, public TimeScaledObject
-{
-  Q_OBJECT
+class ResizableTimelineScrollBar : public ResizableScrollBar, public TimeScaledObject {
+    Q_OBJECT
+
 public:
-  ResizableTimelineScrollBar(QWidget* parent = nullptr);
-  ResizableTimelineScrollBar(Qt::Orientation orientation, QWidget* parent = nullptr);
+    ResizableTimelineScrollBar(QWidget* parent = nullptr);
+    ResizableTimelineScrollBar(Qt::Orientation orientation, QWidget* parent = nullptr);
 
-  void ConnectMarkers(TimelineMarkerList *markers);
-  void ConnectWorkArea(TimelineWorkArea *workarea);
+    void ConnectMarkers(TimelineMarkerList* markers);
+    void ConnectWorkArea(TimelineWorkArea* workarea);
 
-  void SetScale(double d);
+    void SetScale(double d);
 
 protected:
-  virtual void paintEvent(QPaintEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
 
 private:
-  TimelineMarkerList* markers_ = nullptr;
+    TimelineMarkerList* markers_ = nullptr;
 
-  TimelineWorkArea* workarea_ = nullptr;
+    TimelineWorkArea* workarea_ = nullptr;
 
-  double scale_;
-
+    double scale_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // RESIZABLETIMELINESCROLLBAR_H
+#endif  // RESIZABLETIMELINESCROLLBAR_H

@@ -27,27 +27,26 @@
 
 namespace arcvideo {
 
-ProjectImportErrorDialog::ProjectImportErrorDialog(const QStringList& filenames, QWidget* parent) :
-  QDialog(parent)
-{
-  QVBoxLayout* layout = new QVBoxLayout(this);
+ProjectImportErrorDialog::ProjectImportErrorDialog(const QStringList& filenames, QWidget* parent) : QDialog(parent) {
+    auto* layout = new QVBoxLayout(this);
 
-  setWindowTitle(tr("Import Error"));
+    setWindowTitle(tr("Import Error"));
 
-  layout->addWidget(new QLabel(tr("The following files failed to import. ArcVideo likely does not "
-                                  "support their formats.")));
+    layout->addWidget(
+        new QLabel(tr("The following files failed to import. ArcVideo likely does not "
+                      "support their formats.")));
 
-  QListWidget* list_widget = new QListWidget();
-  for (const QString& s : filenames) {
-    list_widget->addItem(s);
-  }
-  layout->addWidget(list_widget);
+    auto* list_widget = new QListWidget();
+    for (const QString& s : filenames) {
+        list_widget->addItem(s);
+    }
+    layout->addWidget(list_widget);
 
-  QDialogButtonBox* buttons = new QDialogButtonBox();
-  buttons->setStandardButtons(QDialogButtonBox::Ok);
-  buttons->setCenterButtons(true);
-  connect(buttons, &QDialogButtonBox::accepted, this, &ProjectImportErrorDialog::accept);
-  layout->addWidget(buttons);
+    auto* buttons = new QDialogButtonBox();
+    buttons->setStandardButtons(QDialogButtonBox::Ok);
+    buttons->setCenterButtons(true);
+    connect(buttons, &QDialogButtonBox::accepted, this, &ProjectImportErrorDialog::accept);
+    layout->addWidget(buttons);
 }
 
-}
+}  // namespace arcvideo

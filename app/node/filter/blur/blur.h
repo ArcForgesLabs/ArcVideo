@@ -26,62 +26,53 @@
 
 namespace arcvideo {
 
-class BlurFilterNode : public Node
-{
-  Q_OBJECT
+class BlurFilterNode : public Node {
+    Q_OBJECT
+
 public:
-  BlurFilterNode();
+    BlurFilterNode();
 
-  enum Method {
-    kBox,
-    kGaussian,
-    kDirectional,
-    kRadial
-  };
+    enum Method { kBox, kGaussian, kDirectional, kRadial };
 
-  NODE_DEFAULT_FUNCTIONS(BlurFilterNode)
+    NODE_DEFAULT_FUNCTIONS(BlurFilterNode)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  Method GetMethod() const
-  {
-    return static_cast<Method>(GetStandardValue(kMethodInput).toInt());
-  }
+    [[nodiscard]] Method GetMethod() const { return static_cast<Method>(GetStandardValue(kMethodInput).toInt()); }
 
-  virtual void UpdateGizmoPositions(const NodeValueRow &row, const NodeGlobals &globals) override;
+    void UpdateGizmoPositions(const NodeValueRow& row, const NodeGlobals& globals) override;
 
-  static const QString kTextureInput;
-  static const QString kMethodInput;
-  static const QString kRadiusInput;
-  static const QString kHorizInput;
-  static const QString kVertInput;
-  static const QString kRepeatEdgePixelsInput;
+    static const QString kTextureInput;
+    static const QString kMethodInput;
+    static const QString kRadiusInput;
+    static const QString kHorizInput;
+    static const QString kVertInput;
+    static const QString kRepeatEdgePixelsInput;
 
-  static const QString kDirectionalDegreesInput;
+    static const QString kDirectionalDegreesInput;
 
-  static const QString kRadialCenterInput;
+    static const QString kRadialCenterInput;
 
 protected slots:
-  virtual void GizmoDragMove(double x, double y, const Qt::KeyboardModifiers &modifiers) override;
+    void GizmoDragMove(double x, double y, const Qt::KeyboardModifiers& modifiers) override;
 
 protected:
-  virtual void InputValueChangedEvent(const QString& input, int element) override;
+    void InputValueChangedEvent(const QString& input, int element) override;
 
 private:
-  void UpdateInputs(Method method);
+    void UpdateInputs(Method method);
 
-  PointGizmo *radial_center_gizmo_;
-
+    PointGizmo* radial_center_gizmo_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // BLURFILTERNODE_H
+#endif  // BLURFILTERNODE_H

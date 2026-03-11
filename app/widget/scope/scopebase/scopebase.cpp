@@ -26,72 +26,61 @@ namespace arcvideo {
 
 #define super ManagedDisplayWidget
 
-ScopeBase::ScopeBase(QWidget* parent) :
-  super(parent),
-  texture_(nullptr),
-  managed_tex_up_to_date_(false)
-{
-  EnableDefaultContextMenu();
+ScopeBase::ScopeBase(QWidget* parent) : super(parent), texture_(nullptr), managed_tex_up_to_date_(false) {
+    EnableDefaultContextMenu();
 }
 
-void ScopeBase::SetBuffer(TexturePtr frame)
-{
-  texture_ = frame;
-  managed_tex_up_to_date_ = false;
-  update();
+void ScopeBase::SetBuffer(TexturePtr frame) {
+    texture_ = frame;
+    managed_tex_up_to_date_ = false;
+    update();
 }
 
-void ScopeBase::showEvent(QShowEvent* e)
-{
-  super::showEvent(e);
+void ScopeBase::showEvent(QShowEvent* e) {
+    super::showEvent(e);
 }
 
-void ScopeBase::DrawScope(TexturePtr managed_tex, QVariant pipeline)
-{
-  ShaderJob job;
+void ScopeBase::DrawScope(TexturePtr managed_tex, QVariant pipeline) {
+    ShaderJob job;
 
-  job.Insert(QStringLiteral("ove_maintex"), NodeValue(NodeValue::kTexture, QVariant::fromValue(managed_tex)));
+    job.Insert(QStringLiteral("ove_maintex"), NodeValue(NodeValue::kTexture, QVariant::fromValue(managed_tex)));
 
-  renderer()->Blit(pipeline, job, GetViewportParams());
+    renderer()->Blit(pipeline, job, GetViewportParams());
 }
 
-void ScopeBase::OnInit()
-{
-  super::OnInit();
+void ScopeBase::OnInit() {
+    super::OnInit();
 
-  pipeline_ = renderer()->CreateNativeShader(GenerateShaderCode());
+    pipeline_ = renderer()->CreateNativeShader(GenerateShaderCode());
 }
 
-void ScopeBase::OnPaint()
-{
-  // Clear display surface
-  renderer()->ClearDestination();
+void ScopeBase::OnPaint() {
+    // Clear display surface
+    renderer()->ClearDestination();
 
-  if (texture_) {
-    // Convert reference frame to display space
-    if (!managed_tex_ || !managed_tex_up_to_date_
-        || managed_tex_->params() != texture_->params()) {
-      managed_tex_ = renderer()->CreateTexture(texture_->params());
+    if (texture_) {
+        // Convert reference frame to display space
+        if (!managed_tex_ || !managed_tex_up_to_date_ || managed_tex_->params() != texture_->params()) {
+            managed_tex_ = renderer()->CreateTexture(texture_->params());
 
-      ColorTransformJob job;
-      job.SetColorProcessor(color_service());
-      job.SetInputTexture(texture_);
-      job.SetInputAlphaAssociation(kAlphaNone);
+            ColorTransformJob job;
+            job.SetColorProcessor(color_service());
+            job.SetInputTexture(texture_);
+            job.SetInputAlphaAssociation(kAlphaNone);
 
-      renderer()->BlitColorManaged(job, managed_tex_.get());
+            renderer()->BlitColorManaged(job, managed_tex_.get());
+        }
+
+        DrawScope(managed_tex_, pipeline_);
     }
-
-    DrawScope(managed_tex_, pipeline_);
-  }
 }
 
-void ScopeBase::OnDestroy()
-{
-  managed_tex_ = nullptr;
-  texture_ = nullptr;
-  pipeline_.clear();
+void ScopeBase::OnDestroy() {
+    managed_tex_ = nullptr;
+    texture_ = nullptr;
+    pipeline_.clear();
 
-  super::OnDestroy();
+    super::OnDestroy();
 }
 
-}
+}  // namespace arcvideo

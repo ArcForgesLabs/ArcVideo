@@ -22,9 +22,6 @@
 
 namespace arcvideo {
 
-StreamProperties::StreamProperties(QWidget *parent) :
-  QWidget(parent)
-{
-}
+StreamProperties::StreamProperties(QWidget* parent) : QWidget(parent) {}
 
-}
+}  // namespace arcvideo

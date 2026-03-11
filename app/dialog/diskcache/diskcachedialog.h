@@ -30,31 +30,30 @@
 
 namespace arcvideo {
 
-class DiskCacheDialog : public QDialog
-{
-  Q_OBJECT
-public:
-  DiskCacheDialog(DiskCacheFolder* folder, QWidget* parent = nullptr);
+class DiskCacheDialog : public QDialog {
+    Q_OBJECT
 
-  static void ClearDiskCache(const QString &path, QWidget *parent, QPushButton *clear_btn = nullptr);
+public:
+    DiskCacheDialog(DiskCacheFolder* folder, QWidget* parent = nullptr);
+
+    static void ClearDiskCache(const QString& path, QWidget* parent, QPushButton* clear_btn = nullptr);
 
 public slots:
-  virtual void accept() override;
+    void accept() override;
 
 private:
-  DiskCacheFolder* folder_ = nullptr;
+    DiskCacheFolder* folder_ = nullptr;
 
-  FloatSlider* maximum_cache_slider_ = nullptr;
+    FloatSlider* maximum_cache_slider_ = nullptr;
 
-  QCheckBox* clear_disk_cache_ = nullptr;
+    QCheckBox* clear_disk_cache_ = nullptr;
 
-  QPushButton* clear_cache_btn_ = nullptr;
+    QPushButton* clear_cache_btn_ = nullptr;
 
 private slots:
-  void ClearDiskCache();
-
+    void ClearDiskCache();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // DISKCACHEDIALOG_H
+#endif  // DISKCACHEDIALOG_H

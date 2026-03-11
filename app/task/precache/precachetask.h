@@ -27,28 +27,27 @@
 
 namespace arcvideo {
 
-class PreCacheTask : public RenderTask
-{
-  Q_OBJECT
-public:
-  PreCacheTask(Footage* footage, int index, Sequence* sequence);
+class PreCacheTask : public RenderTask {
+    Q_OBJECT
 
-  virtual ~PreCacheTask() override;
+public:
+    PreCacheTask(Footage* footage, int index, Sequence* sequence);
+
+    ~PreCacheTask() override;
 
 protected:
-  virtual bool Run() override;
+    bool Run() override;
 
-  virtual bool FrameDownloaded(FramePtr frame, const rational &times) override;
+    bool FrameDownloaded(FramePtr frame, const rational& times) override;
 
-  virtual bool AudioDownloaded(const TimeRange& range, const SampleBuffer &samples) override;
+    bool AudioDownloaded(const TimeRange& range, const SampleBuffer& samples) override;
 
 private:
-  Project* project_ = nullptr;
+    Project* project_ = nullptr;
 
-  Footage* footage_ = nullptr;
-
+    Footage* footage_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PRECACHETASK_H
+#endif  // PRECACHETASK_H

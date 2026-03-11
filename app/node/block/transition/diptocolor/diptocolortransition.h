@@ -25,30 +25,29 @@
 
 namespace arcvideo {
 
-class DipToColorTransition : public TransitionBlock
-{
-  Q_OBJECT
+class DipToColorTransition : public TransitionBlock {
+    Q_OBJECT
+
 public:
-  DipToColorTransition();
+    DipToColorTransition();
 
-  NODE_DEFAULT_FUNCTIONS(DipToColorTransition)
+    NODE_DEFAULT_FUNCTIONS(DipToColorTransition)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  static const QString kColorInput;
+    static const QString kColorInput;
 
 protected:
-  virtual void ShaderJobEvent(const NodeValueRow &value, ShaderJob *job) const override;
-
+    void ShaderJobEvent(const NodeValueRow& value, ShaderJob* job) const override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // DIPTOCOLORTRANSITION_H
+#endif  // DIPTOCOLORTRANSITION_H

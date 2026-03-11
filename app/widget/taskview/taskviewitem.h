@@ -41,33 +41,32 @@ namespace arcvideo {
  *
  * The main entry point is SetTask() after a Task and TaskViewItem objects are created.
  */
-class TaskViewItem : public QFrame
-{
-  Q_OBJECT
-public:
-  TaskViewItem(Task *task, QWidget* parent = nullptr);
+class TaskViewItem : public QFrame {
+    Q_OBJECT
 
-  void Failed();
+public:
+    TaskViewItem(Task* task, QWidget* parent = nullptr);
+
+    void Failed();
 
 signals:
-  void TaskCancelled(Task* t);
+    void TaskCancelled(Task* t);
 
 private:
-  QLabel* task_name_lbl_ = nullptr;
-  QProgressBar* progress_bar_ = nullptr;
-  QPushButton* cancel_btn_ = nullptr;
+    QLabel* task_name_lbl_ = nullptr;
+    QProgressBar* progress_bar_ = nullptr;
+    QPushButton* cancel_btn_ = nullptr;
 
-  QStackedWidget* status_stack_ = nullptr;
-  ElapsedCounterWidget* elapsed_timer_lbl_ = nullptr;
-  QLabel* task_error_lbl_ = nullptr;
+    QStackedWidget* status_stack_ = nullptr;
+    ElapsedCounterWidget* elapsed_timer_lbl_ = nullptr;
+    QLabel* task_error_lbl_ = nullptr;
 
-  Task* task_ = nullptr;
+    Task* task_ = nullptr;
 
 private slots:
-  void UpdateProgress(double d);
-
+    void UpdateProgress(double d);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TASKVIEWITEM_H
+#endif  // TASKVIEWITEM_H

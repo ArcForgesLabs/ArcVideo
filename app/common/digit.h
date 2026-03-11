@@ -23,23 +23,24 @@
 
 #include <stdint.h>
 
+#include <cstdlib>
+
 namespace arcvideo {
 
-inline int64_t GetDigitCount(int64_t input)
-{
-  input = std::abs(input);
+inline int64_t GetDigitCount(int64_t input) {
+    input = std::abs(input);
 
-  int64_t lim = 10;
-  int64_t digit = 1;
+    int64_t lim = 10;
+    int64_t digit = 1;
 
-  while (input >= lim) {
-    lim *= 10;
-    digit++;
-  }
+    while (input >= lim) {
+        lim *= 10;
+        digit++;
+    }
 
-  return digit;
+    return digit;
 }
 
-}
+}  // namespace arcvideo
 
-#endif // DIGIT_H
+#endif  // DIGIT_H

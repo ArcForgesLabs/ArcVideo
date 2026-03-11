@@ -26,49 +26,36 @@
 
 namespace arcvideo {
 
-class FileField : public QWidget
-{
-  Q_OBJECT
+class FileField : public QWidget {
+    Q_OBJECT
+
 public:
-  FileField(QWidget* parent = nullptr);
+    FileField(QWidget* parent = nullptr);
 
-  QString GetFilename() const
-  {
-    return line_edit_->text();
-  }
+    [[nodiscard]] QString GetFilename() const { return line_edit_->text(); }
 
-  void SetFilename(const QString& s)
-  {
-    line_edit_->setText(s);
-  }
+    void SetFilename(const QString& s) { line_edit_->setText(s); }
 
-  void SetPlaceholder(const QString& s)
-  {
-    line_edit_->setPlaceholderText(s);
-  }
+    void SetPlaceholder(const QString& s) { line_edit_->setPlaceholderText(s); }
 
-  void SetDirectoryMode(bool e)
-  {
-    directory_mode_ = e;
-  }
+    void SetDirectoryMode(bool e) { directory_mode_ = e; }
 
 signals:
-  void FilenameChanged(const QString& filename);
+    void FilenameChanged(const QString& filename);
 
 private:
-  QLineEdit* line_edit_ = nullptr;
+    QLineEdit* line_edit_ = nullptr;
 
-  QPushButton* browse_btn_ = nullptr;
+    QPushButton* browse_btn_ = nullptr;
 
-  bool directory_mode_;
+    bool directory_mode_;
 
 private slots:
-  void BrowseBtnClicked();
+    void BrowseBtnClicked();
 
-  void LineEditChanged(const QString &text);
-
+    void LineEditChanged(const QString& text);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FILEFIELD_H
+#endif  // FILEFIELD_H

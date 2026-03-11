@@ -5,44 +5,36 @@
 
 namespace arcvideo {
 
-class CancelAtom
-{
+class CancelAtom {
 public:
-  CancelAtom() :
-    cancelled_(false),
-    heard_(false)
-  {}
+    CancelAtom() : cancelled_(false), heard_(false) {}
 
-  bool IsCancelled()
-  {
-    QMutexLocker locker(&mutex_);
-    if (cancelled_) {
-      heard_ = true;
+    bool IsCancelled() {
+        QMutexLocker locker(&mutex_);
+        if (cancelled_) {
+            heard_ = true;
+        }
+        return cancelled_;
     }
-    return cancelled_;
-  }
 
-  void Cancel()
-  {
-    QMutexLocker locker(&mutex_);
-    cancelled_ = true;
-  }
+    void Cancel() {
+        QMutexLocker locker(&mutex_);
+        cancelled_ = true;
+    }
 
-  bool HeardCancel()
-  {
-    QMutexLocker locker(&mutex_);
-    return heard_;
-  }
+    bool HeardCancel() {
+        QMutexLocker locker(&mutex_);
+        return heard_;
+    }
 
 private:
-  QMutex mutex_;
+    QMutex mutex_;
 
-  bool cancelled_;
+    bool cancelled_;
 
-  bool heard_;
-
+    bool heard_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // CANCELATOM_H
+#endif  // CANCELATOM_H

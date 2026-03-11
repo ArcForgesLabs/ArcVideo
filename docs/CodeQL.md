@@ -63,7 +63,7 @@ Define targeted build presets so that each layer can be invoked individually.
   "configurePresets":[
     {
       "name": "linux-ci",
-      "generator": "Ninja", 
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/linux-ci"
     }
   ],
@@ -91,7 +91,7 @@ Define targeted build presets so that each layer can be invoked individually.
 
 ## 3. `demo.yml` (The Ultimate CI Workflow)
 
-**⚠️ Crucial Note:** 
+**⚠️ Crucial Note:**
 Do not chain multiple `init` and `analyze` steps consecutively within a single job! CodeQL uses fixed temporary directories by default, and running it multiple times sequentially in the same job will cause database corruption/conflicts.
 
 **The optimal approach:** Use a `matrix` combined with `max-parallel: 1` to force sequential queuing. They will execute sequentially on the exact same self-hosted runner, sharing the exact same physical cache block.
@@ -100,9 +100,9 @@ Do not chain multiple `init` and `analyze` steps consecutively within a single j
 name: "CodeQL Layered Scan Demo"
 
 on:
-  # Disables automatic triggers on push. 
+  # Disables automatic triggers on push.
   # Allows manual execution via the GitHub Actions UI.
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   # Step 0: Clear the dedicated CodeQL cache (Ensures the first layer does not hit the cache)
@@ -117,16 +117,16 @@ jobs:
   codeql-scan:
     needs: prepare-cache # Wait for the cache clearance to finish
     runs-on: [self-hosted, linux]
-    
+
     env:
       # Force the use of the clean, isolated cache directory
-      FASTBUILD_CACHE_PATH: /cache/fastbuild_codeql 
-      
+      FASTBUILD_CACHE_PATH: /cache/fastbuild_codeql
+
     strategy:
       fail-fast: false
       # 👈 THE SECRET WEAPON: Forces the runner to execute the matrix sequentially
       # This guarantees that the cache state carries over consecutively.
-      max-parallel: 1 
+      max-parallel: 1
       matrix:
         # STRICTLY order this from the bottom layer to the top layer!
         target_preset:[scan-services, scan-viewmodels, scan-desktop]

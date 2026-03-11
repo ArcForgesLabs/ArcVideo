@@ -22,6 +22,7 @@
 #define TYPESERIALIZER_H
 
 #include <arcvideo/foundation/foundation.h>
+
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
@@ -31,16 +32,14 @@ namespace arcvideo {
 
 using namespace foundation;
 
-class TypeSerializer
-{
+class TypeSerializer {
 public:
-  TypeSerializer() = default;
+    TypeSerializer() = default;
 
-  static AudioParams LoadAudioParams(QXmlStreamReader *reader);
-  static void SaveAudioParams(QXmlStreamWriter *writer, const AudioParams &a);
-
+    static AudioParams LoadAudioParams(QXmlStreamReader* reader);
+    static void SaveAudioParams(QXmlStreamWriter* writer, const AudioParams& a);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TYPESERIALIZER_H
+#endif  // TYPESERIALIZER_H

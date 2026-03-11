@@ -25,30 +25,29 @@
 
 namespace arcvideo {
 
-class FlipDistortNode : public Node
-{
-  Q_OBJECT
+class FlipDistortNode : public Node {
+    Q_OBJECT
+
 public:
-  FlipDistortNode();
+    FlipDistortNode();
 
-  NODE_DEFAULT_FUNCTIONS(FlipDistortNode)
+    NODE_DEFAULT_FUNCTIONS(FlipDistortNode)
 
-  virtual QString Name() const override;
-  virtual QString id() const override;
-  virtual QVector<CategoryID> Category() const override;
-  virtual QString Description() const override;
+    [[nodiscard]] QString Name() const override;
+    [[nodiscard]] QString id() const override;
+    [[nodiscard]] QVector<CategoryID> Category() const override;
+    [[nodiscard]] QString Description() const override;
 
-  virtual void Retranslate() override;
+    void Retranslate() override;
 
-  virtual ShaderCode GetShaderCode(const ShaderRequest &request) const override;
-  virtual void Value(const NodeValueRow& value, const NodeGlobals &globals, NodeValueTable *table) const override;
+    [[nodiscard]] ShaderCode GetShaderCode(const ShaderRequest& request) const override;
+    void Value(const NodeValueRow& value, const NodeGlobals& globals, NodeValueTable* table) const override;
 
-  static const QString kTextureInput;
-  static const QString kHorizontalInput;
-  static const QString kVerticalInput;
-
+    static const QString kTextureInput;
+    static const QString kHorizontalInput;
+    static const QString kVerticalInput;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // FLIPDISTORTNODE_H
+#endif  // FLIPDISTORTNODE_H

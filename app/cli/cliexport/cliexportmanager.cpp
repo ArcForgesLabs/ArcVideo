@@ -22,9 +22,6 @@
 
 namespace arcvideo {
 
-CLIExportManager::CLIExportManager()
-{
+CLIExportManager::CLIExportManager() = default;
 
-}
-
-}
+}  // namespace arcvideo

@@ -21,82 +21,72 @@
 #ifndef UNDOSTACK_H
 #define UNDOSTACK_H
 
-#include <QAction>
 #include <QAbstractItemModel>
+#include <QAction>
 
 #include "common/define.h"
 #include "undo/undocommand.h"
 
 namespace arcvideo {
 
-class UndoStack : public QAbstractItemModel
-{
-  Q_OBJECT
+class UndoStack : public QAbstractItemModel {
+    Q_OBJECT
+
 public:
-  UndoStack();
+    UndoStack();
 
-  virtual ~UndoStack() override;
+    ~UndoStack() override;
 
-  void push(UndoCommand* command, const QString &name);
+    void push(UndoCommand* command, const QString& name);
 
-  void jump(size_t index);
+    void jump(size_t index);
 
-  void clear();
+    void clear();
 
-  bool CanUndo() const;
+    [[nodiscard]] bool CanUndo() const;
 
-  bool CanRedo() const
-  {
-    return !undone_commands_.empty();
-  }
+    [[nodiscard]] bool CanRedo() const { return !undone_commands_.empty(); }
 
-  void UpdateActions();
+    void UpdateActions();
 
-  QAction* GetUndoAction()
-  {
-    return undo_action_;
-  }
+    QAction* GetUndoAction() { return undo_action_; }
 
-  QAction* GetRedoAction()
-  {
-    return redo_action_;
-  }
+    QAction* GetRedoAction() { return redo_action_; }
 
-  virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-  virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-  virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
-  virtual QModelIndex parent(const QModelIndex &index) const override;
-  virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-  virtual bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+    [[nodiscard]] QModelIndex parent(const QModelIndex& index) const override;
+    [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation,
+                                      int role = Qt::DisplayRole) const override;
+    [[nodiscard]] bool hasChildren(const QModelIndex& parent = QModelIndex()) const override;
 
 signals:
-  void indexChanged(int i);
+    void indexChanged(int i);
 
 public slots:
-  void undo();
+    void undo();
 
-  void redo();
+    void redo();
 
 private:
-  static const int kMaxUndoCommands;
+    static const int kMaxUndoCommands;
 
-  struct CommandEntry
-  {
-    UndoCommand *command;
-    QString name;
-  };
+    struct CommandEntry {
+        UndoCommand* command;
+        QString name;
+    };
 
-  std::list<CommandEntry> commands_;
+    std::list<CommandEntry> commands_;
 
-  std::list<CommandEntry> undone_commands_;
+    std::list<CommandEntry> undone_commands_;
 
-  QAction* undo_action_ = nullptr;
+    QAction* undo_action_ = nullptr;
 
-  QAction* redo_action_ = nullptr;
-
+    QAction* redo_action_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // UNDOSTACK_H
+#endif  // UNDOSTACK_H

@@ -28,17 +28,16 @@ namespace arcvideo {
 /**
  * @brief A PanelWidget wrapper around a Toolbar
  */
-class ToolPanel : public PanelWidget
-{
-  Q_OBJECT
+class ToolPanel : public PanelWidget {
+    Q_OBJECT
+
 public:
-  ToolPanel();
+    ToolPanel();
 
 private:
-  virtual void Retranslate() override;
-
+    void Retranslate() override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TOOL_PANEL_H
+#endif  // TOOL_PANEL_H

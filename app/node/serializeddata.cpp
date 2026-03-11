@@ -20,6 +20,4 @@
 
 #include "serializeddata.h"
 
-namespace arcvideo {
-
-}
+namespace arcvideo {}

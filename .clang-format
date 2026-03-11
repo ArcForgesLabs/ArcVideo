@@ -1,148 +1,45 @@
 ---
-Language:        Cpp
-# BasedOnStyle:  Google
-AccessModifierOffset: -1
-AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: false
-AlignConsecutiveDeclarations: false
-AlignEscapedNewlines: Left
-AlignOperands:   true
-AlignTrailingComments: true
-AllowAllParametersOfDeclarationOnNextLine: true
-AllowShortBlocksOnASingleLine: false
-AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: All
-AllowShortIfStatementsOnASingleLine: true
-AllowShortLoopsOnASingleLine: true
-AlwaysBreakAfterDefinitionReturnType: None
-AlwaysBreakAfterReturnType: None
-AlwaysBreakBeforeMultilineStrings: true
-AlwaysBreakTemplateDeclarations: Yes
-BinPackArguments: true
-BinPackParameters: true
-BraceWrapping:   
-  AfterClass:      false
-  AfterControlStatement: false
-  AfterEnum:       false
-  AfterFunction:   false
-  AfterNamespace:  false
-  AfterObjCDeclaration: false
-  AfterStruct:     false
-  AfterUnion:      false
-  AfterExternBlock: false
-  BeforeCatch:     false
-  BeforeElse:      false
-  IndentBraces:    false
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
-BreakBeforeBinaryOperators: None
-BreakBeforeBraces: Attach
-BreakBeforeInheritanceComma: false
-BreakInheritanceList: BeforeColon
-BreakBeforeTernaryOperators: true
-BreakConstructorInitializersBeforeComma: false
-BreakConstructorInitializers: BeforeColon
-BreakAfterJavaFieldAnnotations: false
-BreakStringLiterals: true
-ColumnLimit:     120
-CommentPragmas:  '^ IWYU pragma:'
-CompactNamespaces: false
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
-ConstructorInitializerIndentWidth: 4
-ContinuationIndentWidth: 4
-Cpp11BracedListStyle: true
-DerivePointerAlignment: true
-DisableFormat:   false
-ExperimentalAutoDetectBinPacking: false
-FixNamespaceComments: true
-ForEachMacros:   
-  - foreach
-  - Q_FOREACH
-  - BOOST_FOREACH
-IncludeBlocks:   Preserve
-IncludeCategories: 
-  - Regex:           '^<ext/.*\.h>'
-    Priority:        2
-  - Regex:           '^<.*\.h>'
-    Priority:        1
-  - Regex:           '^<.*'
-    Priority:        2
-  - Regex:           '.*'
-    Priority:        3
-IncludeIsMainRegex: '([-_](test|unittest))?$'
-IndentCaseLabels: true
-IndentPPDirectives: None
-IndentWidth:     2
-IndentWrappedFunctionNames: false
-JavaScriptQuotes: Leave
-JavaScriptWrapImports: true
-KeepEmptyLinesAtTheStartOfBlocks: false
-MacroBlockBegin: ''
-MacroBlockEnd:   ''
-MaxEmptyLinesToKeep: 1
-NamespaceIndentation: None
-ObjCBinPackProtocolList: Never
-ObjCBlockIndentWidth: 2
-ObjCSpaceAfterProperty: false
-ObjCSpaceBeforeProtocolList: true
-PenaltyBreakAssignment: 2
-PenaltyBreakBeforeFirstCallParameter: 1
-PenaltyBreakComment: 300
-PenaltyBreakFirstLessLess: 120
-PenaltyBreakString: 1000
-PenaltyBreakTemplateDeclaration: 10
-PenaltyExcessCharacter: 1000000
-PenaltyReturnTypeOnItsOwnLine: 200
-PointerAlignment: Left
-RawStringFormats: 
-  - Language:        Cpp
-    Delimiters:      
-      - cc
-      - CC
-      - cpp
-      - Cpp
-      - CPP
-      - 'c++'
-      - 'C++'
-    CanonicalDelimiter: ''
-    BasedOnStyle:    google
-  - Language:        TextProto
-    Delimiters:      
-      - pb
-      - PB
-      - proto
-      - PROTO
-    EnclosingFunctions: 
-      - EqualsProto
-      - EquivToProto
-      - PARSE_PARTIAL_TEXT_PROTO
-      - PARSE_TEST_PROTO
-      - PARSE_TEXT_PROTO
-      - ParseTextOrDie
-      - ParseTextProtoOrDie
-    CanonicalDelimiter: ''
-    BasedOnStyle:    google
-ReflowComments:  true
-SortIncludes:    true
-SortUsingDeclarations: true
-SpaceAfterCStyleCast: false
-SpaceAfterTemplateKeyword: true
-SpaceBeforeAssignmentOperators: true
-SpaceBeforeCpp11BracedList: false
-SpaceBeforeCtorInitializerColon: true
-SpaceBeforeInheritanceColon: true
-SpaceBeforeParens: ControlStatements
-SpaceBeforeRangeBasedForLoopColon: true
-SpaceInEmptyParentheses: false
-SpacesBeforeTrailingComments: 2
-SpacesInAngles:  false
-SpacesInContainerLiterals: true
-SpacesInCStyleCastParentheses: false
-SpacesInParentheses: false
-SpacesInSquareBrackets: false
-Standard:        Auto
-TabWidth:        8
-UseTab:          Never
-...
+# 1. Basic Settings
+Language: Cpp
+BasedOnStyle: Google
 
+# 2. Modern Preferences
+Standard: c++20
+ColumnLimit: 120 # Optimized for modern widescreen displays
+IndentWidth: 4 # 4 spaces per indent level
+UseTab: Never # Disallow tabs entirely
+AccessModifierOffset: -4 # Aligns public/private with class keyword when IndentWidth is 4
+IndentCaseLabels: true # Indents case labels within switch statements for better hierarchy
+
+# 3. Comment and Modifier Optimization
+FixNamespaceComments: true # Automatically appends "// namespace name" to the end of namespaces
+EmptyLineBeforeAccessModifier: Always # Forces an empty line before public/private/protected
+BreakAfterAttributes: Leave # Allows C++ attributes like [[nodiscard]] to stay on their own line
+
+# 4. Include Header Management (Grouping and Sorting)
+SortIncludes: true
+IncludeBlocks: Regroup # Automatically separates different include categories with empty lines
+IncludeCategories:
+  - Regex: '^"Config\.h"' # Project-specific global configuration (highest priority)
+    Priority: -1
+  - Regex: '^<.*\.h>' # Standard C headers (e.g., <stdio.h>)
+    Priority: 1
+  - Regex: "^<.*>" # Standard C++ STL headers (e.g., <vector>, <ranges>)
+    Priority: 2
+  - Regex: ".*" # All other custom project headers (e.g., "MyClass.h")
+    Priority: 3
+
+# 5. C++20/23 Syntax Support
+AllowShortFunctionsOnASingleLine: Inline # Allows simple getters/setters on one line
+AllowShortLambdasOnASingleLine: All # Keeps short lambdas on one line (useful for std::ranges calls)
+LambdaBodyIndentation: Signature # Aligns lambda body with its signature for better nested formatting
+
+# Concepts and Requires Clause Formatting
+BreakBeforeConceptDeclarations: Always # Forces concept declarations onto a new line
+RequiresClausePosition: OwnLine # Forces 'requires' keyword to its own line
+IndentRequiresClause: true # Indents constraints after 'requires', improving readability
+
+# 6. Style Consistency
+QualifierAlignment: Left # Enforces "West Const" style (const int* instead of int const*)
+PointerAlignment: Left # Aligns pointers/references to the type (int* a, int& b)
+...

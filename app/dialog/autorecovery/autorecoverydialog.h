@@ -28,30 +28,27 @@
 
 namespace arcvideo {
 
-class AutoRecoveryDialog : public QDialog
-{
-  Q_OBJECT
+class AutoRecoveryDialog : public QDialog {
+    Q_OBJECT
+
 public:
-  AutoRecoveryDialog(const QString& message, const QStringList& recoveries, bool autocheck_latest, QWidget* parent);
+    AutoRecoveryDialog(const QString& message, const QStringList& recoveries, bool autocheck_latest, QWidget* parent);
 
 public slots:
-  virtual void accept() override;
+    void accept() override;
 
 private:
-  void Init(const QString &header_text);
+    void Init(const QString& header_text);
 
-  void PopulateTree(const QStringList &recoveries, bool autocheck);
+    void PopulateTree(const QStringList& recoveries, bool autocheck);
 
-  QTreeWidget* tree_widget_ = nullptr;
+    QTreeWidget* tree_widget_ = nullptr;
 
-  QVector<QTreeWidgetItem*> checkable_items_;
+    QVector<QTreeWidgetItem*> checkable_items_;
 
-  enum DataRole {
-    kFilenameRole = Qt::UserRole
-  };
-
+    enum DataRole { kFilenameRole = Qt::UserRole };
 };
 
-}
+}  // namespace arcvideo
 
-#endif // AUTORECOVERYDIALOG_H
+#endif  // AUTORECOVERYDIALOG_H

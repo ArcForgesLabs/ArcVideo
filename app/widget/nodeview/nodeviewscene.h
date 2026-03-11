@@ -32,56 +32,46 @@
 
 namespace arcvideo {
 
-class NodeViewScene : public QGraphicsScene
-{
-  Q_OBJECT
+class NodeViewScene : public QGraphicsScene {
+    Q_OBJECT
+
 public:
-  NodeViewScene(QObject *parent = nullptr);
+    NodeViewScene(QObject* parent = nullptr);
 
-  void SelectAll();
-  void DeselectAll();
+    void SelectAll();
+    void DeselectAll();
 
-  QVector<NodeViewItem*> GetSelectedItems() const;
+    [[nodiscard]] QVector<NodeViewItem*> GetSelectedItems() const;
 
-  const QHash<Node*, NodeViewContext*> &context_map() const
-  {
-    return context_map_;
-  }
+    [[nodiscard]] const QHash<Node*, NodeViewContext*>& context_map() const { return context_map_; }
 
-  Qt::Orientation GetFlowOrientation() const;
+    [[nodiscard]] Qt::Orientation GetFlowOrientation() const;
 
-  NodeViewCommon::FlowDirection GetFlowDirection() const
-  {
-    return direction_;
-  }
+    [[nodiscard]] NodeViewCommon::FlowDirection GetFlowDirection() const { return direction_; }
 
-  void SetFlowDirection(NodeViewCommon::FlowDirection direction);
+    void SetFlowDirection(NodeViewCommon::FlowDirection direction);
 
-  bool GetEdgesAreCurved() const
-  {
-    return curved_edges_;
-  }
+    [[nodiscard]] bool GetEdgesAreCurved() const { return curved_edges_; }
 
 public slots:
-  NodeViewContext *AddContext(Node *node);
-  void RemoveContext(Node *node);
+    NodeViewContext* AddContext(Node* node);
+    void RemoveContext(Node* node);
 
-  /**
-   * @brief Set whether edges in this scene should be curved or not
-   */
-  void SetEdgesAreCurved(bool curved);
+    /**
+     * @brief Set whether edges in this scene should be curved or not
+     */
+    void SetEdgesAreCurved(bool curved);
 
 private:
-  QHash<Node*, NodeViewContext*> context_map_;
+    QHash<Node*, NodeViewContext*> context_map_;
 
-  Project* graph_ = nullptr;
+    Project* graph_ = nullptr;
 
-  NodeViewCommon::FlowDirection direction_;
+    NodeViewCommon::FlowDirection direction_;
 
-  bool curved_edges_;
-
+    bool curved_edges_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // NODEVIEWSCENE_H
+#endif  // NODEVIEWSCENE_H

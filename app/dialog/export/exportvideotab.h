@@ -38,180 +38,130 @@
 
 namespace arcvideo {
 
-class ExportVideoTab : public QWidget
-{
-  Q_OBJECT
+class ExportVideoTab : public QWidget {
+    Q_OBJECT
+
 public:
-  ExportVideoTab(ColorManager* color_manager, QWidget* parent = nullptr);
+    ExportVideoTab(ColorManager* color_manager, QWidget* parent = nullptr);
 
-  int SetFormat(ExportFormat::Format format);
+    int SetFormat(ExportFormat::Format format);
 
-  bool IsImageSequenceSet() const;
-  void SetImageSequence(bool e) const;
+    [[nodiscard]] bool IsImageSequenceSet() const;
+    void SetImageSequence(bool e) const;
 
-  rational GetStillImageTime() const
-  {
-    return image_section_->GetTime();
-  }
+    [[nodiscard]] rational GetStillImageTime() const { return image_section_->GetTime(); }
 
-  ExportCodec::Codec GetSelectedCodec() const
-  {
-    return static_cast<ExportCodec::Codec>(codec_combobox()->currentData().toInt());
-  }
-
-  void SetSelectedCodec(ExportCodec::Codec c)
-  {
-    QtUtils::SetComboBoxData(codec_combobox(), c);
-  }
-
-  QComboBox* codec_combobox() const
-  {
-    return codec_combobox_;
-  }
-
-  IntegerSlider* width_slider() const
-  {
-    return width_slider_;
-  }
-
-  IntegerSlider* height_slider() const
-  {
-    return height_slider_;
-  }
-
-  QCheckBox* maintain_aspect_checkbox() const
-  {
-    return maintain_aspect_checkbox_;
-  }
-
-  QComboBox* scaling_method_combobox() const
-  {
-    return scaling_method_combobox_;
-  }
-
-  rational GetSelectedFrameRate() const
-  {
-    return frame_rate_combobox_->GetFrameRate();
-  }
-
-  void SetSelectedFrameRate(const rational& fr)
-  {
-    frame_rate_combobox_->SetFrameRate(fr);
-    UpdateFrameRate(fr);
-  }
-
-  QString CurrentOCIOColorSpace()
-  {
-    return color_space_chooser_->input();
-  }
-
-  void SetOCIOColorSpace(const QString &s)
-  {
-    color_space_chooser_->set_input(s);
-  }
-
-  CodecSection* GetCodecSection() const
-  {
-    return static_cast<CodecSection*>(codec_stack_->currentWidget());
-  }
-
-  void SetCodecSection(CodecSection* section)
-  {
-    if (section) {
-      codec_stack_->setVisible(true);
-      codec_stack_->setCurrentWidget(section);
-    } else {
-      codec_stack_->setVisible(false);
+    [[nodiscard]] ExportCodec::Codec GetSelectedCodec() const {
+        return static_cast<ExportCodec::Codec>(codec_combobox()->currentData().toInt());
     }
-  }
 
-  InterlacedComboBox* interlaced_combobox() const
-  {
-    return interlaced_combobox_;
-  }
+    void SetSelectedCodec(ExportCodec::Codec c) const { QtUtils::SetComboBoxData(codec_combobox(), c); }
 
-  PixelAspectRatioComboBox* pixel_aspect_combobox() const
-  {
-    return pixel_aspect_combobox_;
-  }
+    [[nodiscard]] QComboBox* codec_combobox() const { return codec_combobox_; }
 
-  PixelFormatComboBox* pixel_format_field() const
-  {
-    return pixel_format_field_;
-  }
+    [[nodiscard]] IntegerSlider* width_slider() const { return width_slider_; }
 
-  const int& threads() const
-  {
-    return threads_;
-  }
+    [[nodiscard]] IntegerSlider* height_slider() const { return height_slider_; }
 
-  void SetThreads(int t)
-  {
-    threads_ = t;
-  }
+    [[nodiscard]] QCheckBox* maintain_aspect_checkbox() const { return maintain_aspect_checkbox_; }
 
-  const QString& pix_fmt() const { return pix_fmt_; }
-  void SetPixFmt(const QString &s) { pix_fmt_ = s; }
+    [[nodiscard]] QComboBox* scaling_method_combobox() const { return scaling_method_combobox_; }
 
-  VideoParams::ColorRange color_range() const { return color_range_; }
-  void SetColorRange(VideoParams::ColorRange c) { color_range_ = c; }
+    [[nodiscard]] rational GetSelectedFrameRate() const { return frame_rate_combobox_->GetFrameRate(); }
+
+    void SetSelectedFrameRate(const rational& fr) {
+        frame_rate_combobox_->SetFrameRate(fr);
+        UpdateFrameRate(fr);
+    }
+
+    QString CurrentOCIOColorSpace() { return color_space_chooser_->input(); }
+
+    void SetOCIOColorSpace(const QString& s) { color_space_chooser_->set_input(s); }
+
+    [[nodiscard]] CodecSection* GetCodecSection() const {
+        return static_cast<CodecSection*>(codec_stack_->currentWidget());
+    }
+
+    void SetCodecSection(CodecSection* section) {
+        if (section) {
+            codec_stack_->setVisible(true);
+            codec_stack_->setCurrentWidget(section);
+        } else {
+            codec_stack_->setVisible(false);
+        }
+    }
+
+    [[nodiscard]] InterlacedComboBox* interlaced_combobox() const { return interlaced_combobox_; }
+
+    [[nodiscard]] PixelAspectRatioComboBox* pixel_aspect_combobox() const { return pixel_aspect_combobox_; }
+
+    [[nodiscard]] PixelFormatComboBox* pixel_format_field() const { return pixel_format_field_; }
+
+    [[nodiscard]] const int& threads() const { return threads_; }
+
+    void SetThreads(int t) { threads_ = t; }
+
+    [[nodiscard]] const QString& pix_fmt() const { return pix_fmt_; }
+    void SetPixFmt(const QString& s) { pix_fmt_ = s; }
+
+    [[nodiscard]] VideoParams::ColorRange color_range() const { return color_range_; }
+    void SetColorRange(VideoParams::ColorRange c) { color_range_ = c; }
 
 public slots:
-  void VideoCodecChanged();
+    void VideoCodecChanged();
 
-  void SetTime(const rational &time);
+    void SetTime(const rational& time);
 
 signals:
-  void ColorSpaceChanged(const QString& colorspace);
+    void ColorSpaceChanged(const QString& colorspace);
 
-  void ImageSequenceCheckBoxChanged(bool e);
+    void ImageSequenceCheckBoxChanged(bool e);
 
-  void TimeChanged(const rational &time);
+    void TimeChanged(const rational& time);
 
 private:
-  QWidget* SetupResolutionSection();
-  QWidget* SetupColorSection();
-  QWidget* SetupCodecSection();
+    QWidget* SetupResolutionSection();
+    QWidget* SetupColorSection();
+    QWidget* SetupCodecSection();
 
-  QComboBox* codec_combobox_ = nullptr;
-  FrameRateComboBox* frame_rate_combobox_ = nullptr;
-  QCheckBox* maintain_aspect_checkbox_ = nullptr;
-  QComboBox* scaling_method_combobox_ = nullptr;
+    QComboBox* codec_combobox_ = nullptr;
+    FrameRateComboBox* frame_rate_combobox_ = nullptr;
+    QCheckBox* maintain_aspect_checkbox_ = nullptr;
+    QComboBox* scaling_method_combobox_ = nullptr;
 
-  CodecStack* codec_stack_ = nullptr;
-  ImageSection* image_section_ = nullptr;
-  H264Section* h264_section_ = nullptr;
-  H264Section* h265_section_ = nullptr;
-  AV1Section* av1_section_ = nullptr;
-  CineformSection *cineform_section_;
+    CodecStack* codec_stack_ = nullptr;
+    ImageSection* image_section_ = nullptr;
+    H264Section* h264_section_ = nullptr;
+    H264Section* h265_section_ = nullptr;
+    AV1Section* av1_section_ = nullptr;
+    CineformSection* cineform_section_;
 
-  ColorSpaceChooser* color_space_chooser_ = nullptr;
+    ColorSpaceChooser* color_space_chooser_ = nullptr;
 
-  IntegerSlider* width_slider_ = nullptr;
-  IntegerSlider* height_slider_ = nullptr;
+    IntegerSlider* width_slider_ = nullptr;
+    IntegerSlider* height_slider_ = nullptr;
 
-  ColorManager* color_manager_ = nullptr;
+    ColorManager* color_manager_ = nullptr;
 
-  InterlacedComboBox* interlaced_combobox_ = nullptr;
-  PixelAspectRatioComboBox* pixel_aspect_combobox_ = nullptr;
-  PixelFormatComboBox* pixel_format_field_ = nullptr;
+    InterlacedComboBox* interlaced_combobox_ = nullptr;
+    PixelAspectRatioComboBox* pixel_aspect_combobox_ = nullptr;
+    PixelFormatComboBox* pixel_format_field_ = nullptr;
 
-  int threads_;
+    int threads_;
 
-  QString pix_fmt_;
-  VideoParams::ColorRange color_range_;
+    QString pix_fmt_;
+    VideoParams::ColorRange color_range_;
 
-  ExportFormat::Format format_;
+    ExportFormat::Format format_;
 
 private slots:
-  void MaintainAspectRatioChanged(bool val);
+    void MaintainAspectRatioChanged(bool val);
 
-  void OpenAdvancedDialog();
+    void OpenAdvancedDialog();
 
-  void UpdateFrameRate(rational r);
-
+    void UpdateFrameRate(rational r);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // EXPORTVIDEOTAB_H
+#endif  // EXPORTVIDEOTAB_H

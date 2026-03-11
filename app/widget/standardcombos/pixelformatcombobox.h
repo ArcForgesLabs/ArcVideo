@@ -27,40 +27,35 @@
 
 namespace arcvideo {
 
-class PixelFormatComboBox : public QComboBox
-{
-  Q_OBJECT
+class PixelFormatComboBox : public QComboBox {
+    Q_OBJECT
+
 public:
-  PixelFormatComboBox(bool float_only, QWidget* parent = nullptr) :
-    QComboBox(parent)
-  {
-    // Set up preview formats
-    for (int i=0;i<PixelFormat::COUNT;i++) {
-      PixelFormat pix_fmt = static_cast<PixelFormat::Format>(i);
+    PixelFormatComboBox(bool float_only, QWidget* parent = nullptr) : QComboBox(parent) {
+        // Set up preview formats
+        for (int i = 0; i < PixelFormat::COUNT; i++) {
+            PixelFormat pix_fmt = static_cast<PixelFormat::Format>(i);
 
-      if (!float_only || pix_fmt.is_float()) {
-        this->addItem(VideoParams::GetFormatName(pix_fmt), static_cast<PixelFormat::Format>(pix_fmt));
-      }
+            if (!float_only || pix_fmt.is_float()) {
+                this->addItem(VideoParams::GetFormatName(pix_fmt), static_cast<PixelFormat::Format>(pix_fmt));
+            }
+        }
     }
-  }
 
-  PixelFormat GetPixelFormat() const
-  {
-    return static_cast<PixelFormat::Format>(this->currentData().toInt());
-  }
-
-  void SetPixelFormat(PixelFormat fmt)
-  {
-    for (int i=0; i<this->count(); i++) {
-      if (this->itemData(i).toInt() == fmt) {
-        this->setCurrentIndex(i);
-        break;
-      }
+    [[nodiscard]] PixelFormat GetPixelFormat() const {
+        return static_cast<PixelFormat::Format>(this->currentData().toInt());
     }
-  }
 
+    void SetPixelFormat(PixelFormat fmt) {
+        for (int i = 0; i < this->count(); i++) {
+            if (this->itemData(i).toInt() == fmt) {
+                this->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PIXELFORMATCOMBOBOX_H
+#endif  // PIXELFORMATCOMBOBOX_H

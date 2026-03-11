@@ -29,93 +29,88 @@
 
 namespace arcvideo {
 
-class SliderBase : public QStackedWidget
-{
-  Q_OBJECT
+class SliderBase : public QStackedWidget {
+    Q_OBJECT
+
 public:
-  SliderBase(QWidget* parent = nullptr);
+    SliderBase(QWidget* parent = nullptr);
 
-  void SetAlignment(Qt::Alignment alignment);
+    void SetAlignment(Qt::Alignment alignment);
 
-  bool IsTristate() const;
-  void SetTristate();
+    [[nodiscard]] bool IsTristate() const;
+    void SetTristate();
 
-  void SetFormat(const QString& s, const bool plural = false);
-  void ClearFormat();
+    void SetFormat(const QString& s, bool plural = false);
+    void ClearFormat();
 
-  bool IsFormatPlural() const;
+    [[nodiscard]] bool IsFormatPlural() const;
 
-  void SetDefaultValue(const QVariant& v);
+    void SetDefaultValue(const QVariant& v);
 
-  QString GetFormattedValueToString(const QVariant& v) const;
+    [[nodiscard]] QString GetFormattedValueToString(const QVariant& v) const;
 
-  void InsertLabelSubstitution(const QVariant &value, const QString &label)
-  {
-    label_substitutions_.append({value, label});
-    UpdateLabel();
-  }
+    void InsertLabelSubstitution(const QVariant& value, const QString& label) {
+        label_substitutions_.append({value, label});
+        UpdateLabel();
+    }
 
-  void SetColor(const QColor &c)
-  {
-    label_->SetColor(c);
-  }
+    void SetColor(const QColor& c) { label_->SetColor(c); }
 
 public slots:
-  void ShowEditor();
+    void ShowEditor();
 
 protected slots:
-  void UpdateLabel();
+    void UpdateLabel();
 
 protected:
-  const QVariant& GetValueInternal() const;
+    [[nodiscard]] const QVariant& GetValueInternal() const;
 
-  void SetValueInternal(const QVariant& v);
+    void SetValueInternal(const QVariant& v);
 
-  QString GetFormat() const;
+    [[nodiscard]] QString GetFormat() const;
 
-  QString GetFormattedValueToString() const;
+    [[nodiscard]] QString GetFormattedValueToString() const;
 
-  SliderLabel* label() { return label_; }
+    SliderLabel* label() { return label_; }
 
-  virtual QString ValueToString(const QVariant &v) const = 0;
+    [[nodiscard]] virtual QString ValueToString(const QVariant& v) const = 0;
 
-  virtual QVariant StringToValue(const QString& s, bool* ok) const = 0;
+    virtual QVariant StringToValue(const QString& s, bool* ok) const = 0;
 
-  virtual QVariant AdjustValue(const QVariant& value) const;
+    [[nodiscard]] virtual QVariant AdjustValue(const QVariant& value) const;
 
-  virtual bool CanSetValue() const;
+    [[nodiscard]] virtual bool CanSetValue() const;
 
-  virtual void ValueSignalEvent(const QVariant& value) = 0;
+    virtual void ValueSignalEvent(const QVariant& value) = 0;
 
-  virtual void changeEvent(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
-  bool GetLabelSubstitution(const QVariant &v, QString *out) const;
+    bool GetLabelSubstitution(const QVariant& v, QString* out) const;
 
-  SliderLabel* label_ = nullptr;
+    SliderLabel* label_ = nullptr;
 
-  FocusableLineEdit* editor_ = nullptr;
+    FocusableLineEdit* editor_ = nullptr;
 
-  QVariant value_;
-  QVariant default_value_;
+    QVariant value_;
+    QVariant default_value_;
 
-  bool tristate_;
+    bool tristate_;
 
-  QString custom_format_;
+    QString custom_format_;
 
-  bool format_plural_;
+    bool format_plural_;
 
-  QVector<QPair<QVariant, QString> > label_substitutions_;
+    QVector<QPair<QVariant, QString>> label_substitutions_;
 
 private slots:
-  void LineEditConfirmed();
+    void LineEditConfirmed();
 
-  void LineEditCancelled();
+    void LineEditCancelled();
 
-  void ResetValue();
-
+    void ResetValue();
 };
 
-}
+}  // namespace arcvideo
 
-#endif // SLIDERBASE_H
+#endif  // SLIDERBASE_H

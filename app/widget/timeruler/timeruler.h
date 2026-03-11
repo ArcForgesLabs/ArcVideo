@@ -24,48 +24,47 @@
 #include <QTimer>
 #include <QWidget>
 
-#include "seekablewidget.h"
 #include "render/playbackcache.h"
+#include "seekablewidget.h"
 
 namespace arcvideo {
 
-class TimeRuler : public SeekableWidget
-{
-  Q_OBJECT
+class TimeRuler : public SeekableWidget {
+    Q_OBJECT
+
 public:
-  TimeRuler(bool text_visible = true, bool cache_status_visible = false, QWidget* parent = nullptr);
+    TimeRuler(bool text_visible = true, bool cache_status_visible = false, QWidget* parent = nullptr);
 
-  void SetCenteredText(bool c);
+    void SetCenteredText(bool c);
 
-  void SetPlaybackCache(PlaybackCache* cache);
+    void SetPlaybackCache(PlaybackCache* cache);
 
 protected:
-  virtual void drawForeground(QPainter *painter, const QRectF &rect) override;
+    void drawForeground(QPainter* painter, const QRectF& rect) override;
 
-  virtual void TimebaseChangedEvent(const rational& tb) override;
+    void TimebaseChangedEvent(const rational& tb) override;
 
 protected slots:
-  virtual bool ShowContextMenu(const QPoint &p) override;
+    bool ShowContextMenu(const QPoint& p) override;
 
 private:
-  void UpdateHeight();
+    void UpdateHeight();
 
-  int CacheStatusHeight() const;
+    [[nodiscard]] int CacheStatusHeight() const;
 
-  int minimum_gap_between_lines_;
+    int minimum_gap_between_lines_;
 
-  bool text_visible_;
+    bool text_visible_;
 
-  bool centered_text_;
+    bool centered_text_;
 
-  double timebase_flipped_dbl_;
+    double timebase_flipped_dbl_;
 
-  bool show_cache_status_;
+    bool show_cache_status_;
 
-  PlaybackCache* playback_cache_ = nullptr;
-
+    PlaybackCache* playback_cache_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMERULER_H
+#endif  // TIMERULER_H

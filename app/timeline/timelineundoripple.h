@@ -21,6 +21,8 @@
 #ifndef TIMELINEUNDORIPPLE_H
 #define TIMELINEUNDORIPPLE_H
 
+#include <utility>
+
 #include "node/block/gap/gap.h"
 #include "node/output/track/track.h"
 #include "node/output/track/tracklist.h"
@@ -38,222 +40,166 @@ namespace arcvideo {
  * By default, nothing takes this area meaning all subsequent clips are pushed backward, however you can specify
  * a block to insert at the `in` point. No checking is done to ensure `insert` is the same length as `in` to `out`.
  */
-class TrackRippleRemoveAreaCommand : public UndoCommand
-{
+class TrackRippleRemoveAreaCommand : public UndoCommand {
 public:
-  TrackRippleRemoveAreaCommand(Track* track, const TimeRange& range);
+    TrackRippleRemoveAreaCommand(Track* track, const TimeRange& range);
 
-  virtual ~TrackRippleRemoveAreaCommand() override;
+    ~TrackRippleRemoveAreaCommand() override;
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return track_->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return track_->project(); }
 
-  /**
-   * @brief Block to insert after if you want to insert something between this ripple
-   */
-  Block* GetInsertionIndex() const
-  {
-    return insert_previous_;
-  }
+    /**
+     * @brief Block to insert after if you want to insert something between this ripple
+     */
+    [[nodiscard]] Block* GetInsertionIndex() const { return insert_previous_; }
 
-  Block* GetSplicedBlock() const
-  {
-    if (splice_split_command_) {
-      return splice_split_command_->new_block();
+    [[nodiscard]] Block* GetSplicedBlock() const {
+        if (splice_split_command_) {
+            return splice_split_command_->new_block();
+        }
+
+        return nullptr;
     }
 
-    return nullptr;
-  }
-
-  void SetAllowSplittingGaps(bool e)
-  {
-    allow_splitting_gaps_ = e;
-  }
+    void SetAllowSplittingGaps(bool e) { allow_splitting_gaps_ = e; }
 
 protected:
-  virtual void prepare() override;
+    void prepare() override;
 
-  virtual void redo() override;
+    void redo() override;
 
-  virtual void undo() override;
+    void undo() override;
 
 private:
-  struct TrimOperation {
-    Block* block = nullptr;
-    rational old_length;
-    rational new_length;
-  };
+    struct TrimOperation {
+        Block* block = nullptr;
+        rational old_length;
+        rational new_length;
+    };
 
-  struct RemoveOperation {
-    Block* block = nullptr;
-    Block* before = nullptr;
-  };
+    struct RemoveOperation {
+        Block* block = nullptr;
+        Block* before = nullptr;
+    };
 
-  Track* track_ = nullptr;
-  TimeRange range_;
+    Track* track_ = nullptr;
+    TimeRange range_;
 
-  TrimOperation trim_out_;
-  QVector<RemoveOperation> removals_;
-  TrimOperation trim_in_;
-  Block* insert_previous_ = nullptr;
-  bool allow_splitting_gaps_;
+    TrimOperation trim_out_;
+    QVector<RemoveOperation> removals_;
+    TrimOperation trim_in_;
+    Block* insert_previous_ = nullptr;
+    bool allow_splitting_gaps_;
 
-  BlockSplitCommand* splice_split_command_ = nullptr;
-  QVector<UndoCommand*> remove_block_commands_;
-
+    BlockSplitCommand* splice_split_command_ = nullptr;
+    QVector<UndoCommand*> remove_block_commands_;
 };
 
-class TrackListRippleRemoveAreaCommand : public UndoCommand
-{
+class TrackListRippleRemoveAreaCommand : public UndoCommand {
 public:
-  TrackListRippleRemoveAreaCommand(TrackList* list, rational in, rational out) :
-    list_(list),
-    range_(in, out)
-  {
-  }
+    TrackListRippleRemoveAreaCommand(TrackList* list, rational in, rational out) : list_(list), range_(in, out) {}
 
-  virtual ~TrackListRippleRemoveAreaCommand() override
-  {
-    qDeleteAll(commands_);
-  }
+    ~TrackListRippleRemoveAreaCommand() override { qDeleteAll(commands_); }
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return list_->parent()->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return list_->parent()->project(); }
 
 protected:
-  virtual void prepare() override;
+    void prepare() override;
 
-  virtual void redo() override;
+    void redo() override;
 
-  virtual void undo() override;
-
-private:
-  TrackList* list_ = nullptr;
-
-  QList<Track*> working_tracks_;
-
-  TimeRange range_;
-
-  QVector<TrackRippleRemoveAreaCommand*> commands_;
-
-};
-
-class TimelineRippleRemoveAreaCommand : public MultiUndoCommand
-{
-public:
-  TimelineRippleRemoveAreaCommand(Sequence* timeline, rational in, rational out);
-
-  virtual Project* GetRelevantProject() const override
-  {
-    return timeline_->project();
-  }
+    void undo() override;
 
 private:
-  Sequence* timeline_ = nullptr;
+    TrackList* list_ = nullptr;
 
+    QList<Track*> working_tracks_;
+
+    TimeRange range_;
+
+    QVector<TrackRippleRemoveAreaCommand*> commands_;
 };
 
-class TrackListRippleToolCommand : public UndoCommand
-{
+class TimelineRippleRemoveAreaCommand : public MultiUndoCommand {
 public:
-  struct RippleInfo {
-    Block* block = nullptr;
-    bool append_gap;
-  };
+    TimelineRippleRemoveAreaCommand(Sequence* timeline, rational in, rational out);
 
-  TrackListRippleToolCommand(TrackList* track_list,
-                             const QHash<Track*, RippleInfo>& info,
-                             const rational& ripple_movement,
-                             const Timeline::MovementMode& movement_mode);
+    [[nodiscard]] Project* GetRelevantProject() const override { return timeline_->project(); }
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return track_list_->parent()->project();
-  }
+private:
+    Sequence* timeline_ = nullptr;
+};
+
+class TrackListRippleToolCommand : public UndoCommand {
+public:
+    struct RippleInfo {
+        Block* block = nullptr;
+        bool append_gap;
+    };
+
+    TrackListRippleToolCommand(TrackList* track_list, const QHash<Track*, RippleInfo>& info,
+                               const rational& ripple_movement, const Timeline::MovementMode& movement_mode);
+
+    [[nodiscard]] Project* GetRelevantProject() const override { return track_list_->parent()->project(); }
 
 protected:
-  virtual void redo() override
-  {
-    ripple(true);
-  }
+    void redo() override { ripple(true); }
 
-  virtual void undo() override
-  {
-    ripple(false);
-  }
+    void undo() override { ripple(false); }
 
 private:
-  void ripple(bool redo);
+    void ripple(bool redo);
 
-  TrackList* track_list_ = nullptr;
+    TrackList* track_list_ = nullptr;
 
-  QHash<Track*, RippleInfo> info_;
-  rational ripple_movement_;
-  Timeline::MovementMode movement_mode_;
+    QHash<Track*, RippleInfo> info_;
+    rational ripple_movement_;
+    Timeline::MovementMode movement_mode_;
 
-  struct WorkingData {
-    GapBlock* created_gap = nullptr;
-    Block* removed_gap_after = nullptr;
-    rational old_length;
-    rational earliest_point_of_change;
-  };
+    struct WorkingData {
+        GapBlock* created_gap = nullptr;
+        Block* removed_gap_after = nullptr;
+        rational old_length;
+        rational earliest_point_of_change;
+    };
 
-  QHash<Track*, WorkingData> working_data_;
+    QHash<Track*, WorkingData> working_data_;
 
-  QObject memory_manager_;
-
+    QObject memory_manager_;
 };
 
-class TimelineRippleDeleteGapsAtRegionsCommand : public UndoCommand
-{
+class TimelineRippleDeleteGapsAtRegionsCommand : public UndoCommand {
 public:
-  using RangeList = QVector<QPair<Track*, TimeRange> >;
+    using RangeList = QVector<QPair<Track*, TimeRange>>;
 
-  TimelineRippleDeleteGapsAtRegionsCommand(Sequence* vo, const RangeList& regions) :
-    timeline_(vo),
-    regions_(regions)
-  {
-  }
+    TimelineRippleDeleteGapsAtRegionsCommand(Sequence* vo, RangeList regions)
+        : timeline_(vo), regions_(std::move(regions)) {}
 
-  virtual ~TimelineRippleDeleteGapsAtRegionsCommand() override
-  {
-    qDeleteAll(commands_);
-  }
+    ~TimelineRippleDeleteGapsAtRegionsCommand() override { qDeleteAll(commands_); }
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return timeline_->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return timeline_->project(); }
 
-  bool HasCommands() const
-  {
-    return !commands_.isEmpty();
-  }
+    [[nodiscard]] bool HasCommands() const { return !commands_.isEmpty(); }
 
 protected:
-  virtual void prepare() override;
+    void prepare() override;
 
-  virtual void redo() override;
+    void redo() override;
 
-  virtual void undo() override;
+    void undo() override;
 
 private:
-  Sequence* timeline_ = nullptr;
-  RangeList regions_;
+    Sequence* timeline_ = nullptr;
+    RangeList regions_;
 
-  QVector<UndoCommand*> commands_;
+    QVector<UndoCommand*> commands_;
 
-  struct RemovalRequest {
-    GapBlock *gap;
-    TimeRange range;
-  };
-
+    struct RemovalRequest {
+        GapBlock* gap;
+        TimeRange range;
+    };
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINEUNDORIPPLE_H
+#endif  // TIMELINEUNDORIPPLE_H

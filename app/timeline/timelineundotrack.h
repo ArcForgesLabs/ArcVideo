@@ -25,103 +25,62 @@
 
 namespace arcvideo {
 
-class TrackRippleRemoveBlockCommand : public UndoCommand
-{
+class TrackRippleRemoveBlockCommand : public UndoCommand {
 public:
-  TrackRippleRemoveBlockCommand(Track* track, Block* block) :
-    track_(track),
-    block_(block)
-  {
-  }
+    TrackRippleRemoveBlockCommand(Track* track, Block* block) : track_(track), block_(block) {}
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return track_->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return track_->project(); }
 
 protected:
-  virtual void redo() override
-  {
-    before_ = block_->previous();
-    track_->RippleRemoveBlock(block_);
-  }
+    void redo() override {
+        before_ = block_->previous();
+        track_->RippleRemoveBlock(block_);
+    }
 
-  virtual void undo() override
-  {
-    track_->InsertBlockAfter(block_, before_);
-  }
+    void undo() override { track_->InsertBlockAfter(block_, before_); }
 
 private:
-  Track* track_ = nullptr;
+    Track* track_ = nullptr;
 
-  Block* block_ = nullptr;
+    Block* block_ = nullptr;
 
-  Block* before_ = nullptr;
-
+    Block* before_ = nullptr;
 };
 
-class TrackPrependBlockCommand : public UndoCommand
-{
+class TrackPrependBlockCommand : public UndoCommand {
 public:
-  TrackPrependBlockCommand(Track* track, Block* block) :
-    track_(track),
-    block_(block)
-  {
-  }
+    TrackPrependBlockCommand(Track* track, Block* block) : track_(track), block_(block) {}
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return track_->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return track_->project(); }
 
 protected:
-  virtual void redo() override
-  {
-    track_->PrependBlock(block_);
-  }
+    void redo() override { track_->PrependBlock(block_); }
 
-  virtual void undo() override
-  {
-    track_->RippleRemoveBlock(block_);
-  }
+    void undo() override { track_->RippleRemoveBlock(block_); }
 
 private:
-  Track* track_ = nullptr;
-  Block* block_ = nullptr;
+    Track* track_ = nullptr;
+    Block* block_ = nullptr;
 };
 
-class TrackInsertBlockAfterCommand : public UndoCommand
-{
+class TrackInsertBlockAfterCommand : public UndoCommand {
 public:
-  TrackInsertBlockAfterCommand(Track* track, Block* block, Block* before) :
-    track_(track),
-    block_(block),
-    before_(before)
-  {
-  }
+    TrackInsertBlockAfterCommand(Track* track, Block* block, Block* before)
+        : track_(track), block_(block), before_(before) {}
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return block_->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return block_->project(); }
 
 protected:
-  virtual void redo() override
-  {
-    track_->InsertBlockAfter(block_, before_);
-  }
+    void redo() override { track_->InsertBlockAfter(block_, before_); }
 
-  virtual void undo() override
-  {
-    track_->RippleRemoveBlock(block_);
-  }
+    void undo() override { track_->RippleRemoveBlock(block_); }
 
 private:
-  Track* track_ = nullptr;
+    Track* track_ = nullptr;
 
-  Block* block_ = nullptr;
+    Block* block_ = nullptr;
 
-  Block* before_ = nullptr;
+    Block* before_ = nullptr;
 };
 
 /**
@@ -129,39 +88,23 @@ private:
  *
  * Both blocks must have equal lengths.
  */
-class TrackReplaceBlockCommand : public UndoCommand
-{
+class TrackReplaceBlockCommand : public UndoCommand {
 public:
-  TrackReplaceBlockCommand(Track* track, Block* old, Block* replace) :
-    track_(track),
-    old_(old),
-    replace_(replace)
-  {
-  }
+    TrackReplaceBlockCommand(Track* track, Block* old, Block* replace) : track_(track), old_(old), replace_(replace) {}
 
-  virtual Project* GetRelevantProject() const override
-  {
-    return track_->project();
-  }
+    [[nodiscard]] Project* GetRelevantProject() const override { return track_->project(); }
 
 protected:
-  virtual void redo() override
-  {
-    track_->ReplaceBlock(old_, replace_);
-  }
+    void redo() override { track_->ReplaceBlock(old_, replace_); }
 
-  virtual void undo() override
-  {
-    track_->ReplaceBlock(replace_, old_);
-  }
+    void undo() override { track_->ReplaceBlock(replace_, old_); }
 
 private:
-  Track* track_ = nullptr;
-  Block* old_ = nullptr;
-  Block* replace_ = nullptr;
-
+    Track* track_ = nullptr;
+    Block* old_ = nullptr;
+    Block* replace_ = nullptr;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TIMELINEUNDOTRACK_H
+#endif  // TIMELINEUNDOTRACK_H

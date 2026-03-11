@@ -25,15 +25,14 @@
 
 namespace arcvideo {
 
-class RollingTool : public PointerTool
-{
+class RollingTool : public PointerTool {
 public:
-  RollingTool(TimelineWidget* parent);
+    RollingTool(TimelineWidget* parent);
 
 protected:
-  virtual void InitiateDrag(Block* clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers) override;
+    void InitiateDrag(Block* clicked_item, Timeline::MovementMode trim_mode, Qt::KeyboardModifiers modifiers) override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // ROLLINGTIMELINETOOL_H
+#endif  // ROLLINGTIMELINETOOL_H

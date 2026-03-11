@@ -29,215 +29,172 @@ namespace arcvideo {
 
 #define super QGraphicsView
 
-HandMovableView::HandMovableView(QWidget* parent) :
-  super(parent),
-  dragging_hand_(false),
-  is_timeline_axes_(false)
-{
-  connect(Core::instance(), &Core::ToolChanged, this, &HandMovableView::ApplicationToolChanged);
+HandMovableView::HandMovableView(QWidget* parent) : super(parent), dragging_hand_(false), is_timeline_axes_(false) {
+    connect(Core::instance(), &Core::ToolChanged, this, &HandMovableView::ApplicationToolChanged);
 }
 
-void HandMovableView::ApplicationToolChanged(Tool::Item tool)
-{
-  if (tool == Tool::kHand) {
-    setDragMode(ScrollHandDrag);
-    setInteractive(false);
-  } else {
+void HandMovableView::ApplicationToolChanged(Tool::Item tool) {
+    if (tool == Tool::kHand) {
+        setDragMode(ScrollHandDrag);
+        setInteractive(false);
+    } else {
+        setDragMode(default_drag_mode_);
+        setInteractive(true);
+    }
+
+    ToolChangedEvent(tool);
+}
+
+bool HandMovableView::HandPress(QMouseEvent* event) {
+    if (event->button() == Qt::MiddleButton) {
+        pre_hand_drag_mode_ = dragMode();
+        dragging_hand_ = true;
+
+        setDragMode(ScrollHandDrag);
+        setInteractive(false);
+
+        // Transform mouse event to act like the left button is pressed
+        QMouseEvent transformed(event->type(), event->position(), event->globalPosition(), Qt::LeftButton,
+                                Qt::LeftButton, event->modifiers());
+
+        transformed_pos_ = QPoint(0, 0);
+
+        super::mousePressEvent(&transformed);
+
+        return true;
+    }
+
+    return false;
+}
+
+bool HandMovableView::HandMove(QMouseEvent* event) {
+    if (dragging_hand_) {
+        // Transform mouse event to act like the left button is pressed
+        QPoint adjustment(0, 0);
+
+        QMouseEvent transformed(event->type(), event->position() - QPointF(transformed_pos_), event->globalPosition(),
+                                Qt::LeftButton, Qt::LeftButton, event->modifiers());
+
+        if (event->position().toPoint().x() < 0) {
+            transformed_pos_.setX(transformed_pos_.x() + width());
+            adjustment.setX(width());
+        } else if (event->position().toPoint().x() >= width()) {
+            transformed_pos_.setX(transformed_pos_.x() - width());
+            adjustment.setX(-width());
+        }
+
+        if (event->position().toPoint().y() < 0) {
+            transformed_pos_.setY(transformed_pos_.y() + height());
+            adjustment.setY(height());
+        } else if (event->position().toPoint().y() >= height()) {
+            transformed_pos_.setY(transformed_pos_.y() - height());
+            adjustment.setY(-height());
+        }
+
+        if (!adjustment.isNull()) {
+            QCursor::setPos(QCursor::pos() + adjustment);
+        }
+
+        super::mouseMoveEvent(&transformed);
+    }
+    return dragging_hand_;
+}
+
+bool HandMovableView::HandRelease(QMouseEvent* event) {
+    if (dragging_hand_) {
+        // Transform mouse event to act like the left button is pressed
+        QMouseEvent transformed(event->type(), event->position(), event->scenePosition(), event->globalPosition(),
+                                Qt::LeftButton, Qt::LeftButton, event->modifiers());
+
+        super::mouseReleaseEvent(&transformed);
+
+        setInteractive(true);
+        setDragMode(pre_hand_drag_mode_);
+
+        dragging_hand_ = false;
+
+        return true;
+    }
+
+    return false;
+}
+
+void HandMovableView::SetDefaultDragMode(HandMovableView::DragMode mode) {
+    default_drag_mode_ = mode;
     setDragMode(default_drag_mode_);
-    setInteractive(true);
-  }
-
-  ToolChangedEvent(tool);
 }
 
-bool HandMovableView::HandPress(QMouseEvent *event)
-{
-  if (event->button() == Qt::MiddleButton) {
-    pre_hand_drag_mode_ = dragMode();
-    dragging_hand_ = true;
-
-    setDragMode(ScrollHandDrag);
-    setInteractive(false);
-
-    // Transform mouse event to act like the left button is pressed
-    QMouseEvent transformed(event->type(),
-                            event->position(),
-                            event->globalPosition(),
-                            Qt::LeftButton,
-                            Qt::LeftButton,
-                            event->modifiers());
-
-    transformed_pos_ = QPoint(0, 0);
-
-    super::mousePressEvent(&transformed);
-
-    return true;
-  }
-
-  return false;
+const HandMovableView::DragMode& HandMovableView::GetDefaultDragMode() const {
+    return default_drag_mode_;
 }
 
-bool HandMovableView::HandMove(QMouseEvent *event)
-{
-  if (dragging_hand_) {
-    // Transform mouse event to act like the left button is pressed
-    QPoint adjustment(0, 0);
+bool HandMovableView::WheelEventIsAZoomEvent(QWheelEvent* event) {
+    return (static_cast<bool>(event->modifiers() & Qt::ControlModifier) == !ARCVIDEO_CONFIG("ScrollZooms").toBool());
+}
 
-    QMouseEvent transformed(event->type(),
-                            event->position() - QPointF(transformed_pos_),
-                            event->globalPosition(),
-                            Qt::LeftButton,
-                            Qt::LeftButton,
-                            event->modifiers());
-
-    if (event->position().toPoint().x() < 0) {
-      transformed_pos_.setX(transformed_pos_.x() + width());
-      adjustment.setX(width());
-    } else if (event->position().toPoint().x() >= width()) {
-      transformed_pos_.setX(transformed_pos_.x() - width());
-      adjustment.setX(-width());
+qreal HandMovableView::GetScrollZoomMultiplier(QWheelEvent* event) {
+    qreal v = (static_cast<qreal>(event->angleDelta().x() + event->angleDelta().y()) * 0.001);
+    if (event->inverted()) {
+        v = -v;
     }
-
-    if (event->position().toPoint().y() < 0) {
-      transformed_pos_.setY(transformed_pos_.y() + height());
-      adjustment.setY(height());
-    } else if (event->position().toPoint().y() >= height()) {
-      transformed_pos_.setY(transformed_pos_.y() - height());
-      adjustment.setY(-height());
-    }
-
-    if (!adjustment.isNull()) {
-      QCursor::setPos(QCursor::pos() + adjustment);
-    }
-
-    super::mouseMoveEvent(&transformed);
-  }
-  return dragging_hand_;
+    return 1.0 + v;
 }
 
-bool HandMovableView::HandRelease(QMouseEvent *event)
-{
-  if (dragging_hand_) {
-    // Transform mouse event to act like the left button is pressed
-    QMouseEvent transformed(event->type(),
-                            event->position(),
-                            event->scenePosition(),
-                            event->globalPosition(),
-                            Qt::LeftButton,
-                            Qt::LeftButton,
-                            event->modifiers());
+void HandMovableView::wheelEvent(QWheelEvent* event) {
+    if (WheelEventIsAZoomEvent(event)) {
+        if (!event->angleDelta().isNull()) {
+            qreal multiplier = GetScrollZoomMultiplier(event);
 
-    super::mouseReleaseEvent(&transformed);
-
-    setInteractive(true);
-    setDragMode(pre_hand_drag_mode_);
-
-    dragging_hand_ = false;
-
-    return true;
-  }
-
-  return false;
-}
-
-void HandMovableView::SetDefaultDragMode(HandMovableView::DragMode mode)
-{
-  default_drag_mode_ = mode;
-  setDragMode(default_drag_mode_);
-}
-
-const HandMovableView::DragMode &HandMovableView::GetDefaultDragMode() const
-{
-  return default_drag_mode_;
-}
-
-bool HandMovableView::WheelEventIsAZoomEvent(QWheelEvent *event)
-{
-  return (static_cast<bool>(event->modifiers() & Qt::ControlModifier) == !ARCVIDEO_CONFIG("ScrollZooms").toBool());
-}
-
-qreal HandMovableView::GetScrollZoomMultiplier(QWheelEvent *event)
-{
-  qreal v = (static_cast<qreal>(event->angleDelta().x() + event->angleDelta().y()) * 0.001);
-  if (event->inverted()) {
-    v = -v;
-  }
-  return 1.0 + v;
-}
-
-void HandMovableView::wheelEvent(QWheelEvent *event)
-{
-  if (WheelEventIsAZoomEvent(event)) {
-    if (!event->angleDelta().isNull()) {
-      qreal multiplier = GetScrollZoomMultiplier(event);
-
-      QPointF cursor_pos;
+            QPointF cursor_pos;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-      cursor_pos = event->position();
+            cursor_pos = event->position();
 #else
-      cursor_pos = event->posF();
+            cursor_pos = event->posF();
 #endif
 
-      ZoomIntoCursorPosition(event, multiplier, cursor_pos);
-    }
-  } else if (is_timeline_axes_) {
+            ZoomIntoCursorPosition(event, multiplier, cursor_pos);
+        }
+    } else if (is_timeline_axes_) {
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
 
-    QPoint angle_delta = event->angleDelta();
+        QPoint angle_delta = event->angleDelta();
 
-    if (ARCVIDEO_CONFIG("InvertTimelineScrollAxes").toBool() // Check if config is set to invert timeline axes
-        && event->source() != Qt::MouseEventSynthesizedBySystem) { // Never flip axes on Apple trackpads though
-      angle_delta = QPoint(angle_delta.y(), angle_delta.x());
-    }
+        if (ARCVIDEO_CONFIG("InvertTimelineScrollAxes").toBool()  // Check if config is set to invert timeline axes
+            && event->source() != Qt::MouseEventSynthesizedBySystem) {  // Never flip axes on Apple trackpads though
+            angle_delta = QPoint(angle_delta.y(), angle_delta.x());
+        }
 
-    QWheelEvent e(
-      #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-          event->position(),
-          event->globalPosition(),
-      #else
-          event->position().toPoint(),
-          event->globalPos(),
-      #endif
-          event->pixelDelta(),
-          angle_delta,
-          event->buttons(),
-          event->modifiers(),
-          event->phase(),
-          event->inverted(),
-          event->source()
-          );
+        QWheelEvent e(
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+            event->position(), event->globalPosition(),
+#else
+            event->position().toPoint(), event->globalPos(),
+#endif
+            event->pixelDelta(), angle_delta, event->buttons(), event->modifiers(), event->phase(), event->inverted(),
+            event->source());
 
 #else
 
-    Qt::Orientation orientation = event->orientation();
+        Qt::Orientation orientation = event->orientation();
 
-    if (ARCVIDEO_CONFIG("InvertTimelineScrollAxes").toBool()) {
-      orientation = (orientation == Qt::Horizontal) ? Qt::Vertical : Qt::Horizontal;
-    }
+        if (ARCVIDEO_CONFIG("InvertTimelineScrollAxes").toBool()) {
+            orientation = (orientation == Qt::Horizontal) ? Qt::Vertical : Qt::Horizontal;
+        }
 
-    QWheelEvent e(
-          event->position().toPoint(),
-          event->globalPos(),
-          event->pixelDelta(),
-          event->angleDelta(),
-          event->delta(),
-          orientation,
-          event->buttons(),
-          event->modifiers()
-          );
+        QWheelEvent e(event->position().toPoint(), event->globalPos(), event->pixelDelta(), event->angleDelta(),
+                      event->delta(), orientation, event->buttons(), event->modifiers());
 #endif
 
-    super::wheelEvent(&e);
-  } else {
-    super::wheelEvent(event);
-  }
+        super::wheelEvent(&e);
+    } else {
+        super::wheelEvent(event);
+    }
 }
 
-void HandMovableView::ZoomIntoCursorPosition(QWheelEvent *event, double multiplier, const QPointF &cursor_pos)
-{
-  Q_UNUSED(event)
-  Q_UNUSED(multiplier)
-  Q_UNUSED(cursor_pos)
+void HandMovableView::ZoomIntoCursorPosition(QWheelEvent* event, double multiplier, const QPointF& cursor_pos) {
+    Q_UNUSED(event)
+    Q_UNUSED(multiplier)
+    Q_UNUSED(cursor_pos)
 }
 
-}
+}  // namespace arcvideo

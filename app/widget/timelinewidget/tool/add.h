@@ -25,25 +25,25 @@
 
 namespace arcvideo {
 
-class AddTool : public BeamTool
-{
+class AddTool : public BeamTool {
 public:
-  AddTool(TimelineWidget* parent);
+    AddTool(TimelineWidget* parent);
 
-  virtual void MousePress(TimelineViewMouseEvent *event) override;
-  virtual void MouseMove(TimelineViewMouseEvent *event) override;
-  virtual void MouseRelease(TimelineViewMouseEvent *event) override;
+    void MousePress(TimelineViewMouseEvent* event) override;
+    void MouseMove(TimelineViewMouseEvent* event) override;
+    void MouseRelease(TimelineViewMouseEvent* event) override;
 
-  static Node *CreateAddableClip(MultiUndoCommand *command, Sequence *sequence, const Track::Reference &track, const rational &in, const rational &length, const QRectF &rect = QRectF());
+    static Node* CreateAddableClip(MultiUndoCommand* command, Sequence* sequence, const Track::Reference& track,
+                                   const rational& in, const rational& length, const QRectF& rect = QRectF());
 
 protected:
-  void MouseMoveInternal(const rational& cursor_frame, bool outwards);
+    void MouseMoveInternal(const rational& cursor_frame, bool outwards);
 
-  TimelineViewGhostItem* ghost_ = nullptr;
+    TimelineViewGhostItem* ghost_ = nullptr;
 
-  rational drag_start_point_;
+    rational drag_start_point_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // ADDTIMELINETOOL_H
+#endif  // ADDTIMELINETOOL_H

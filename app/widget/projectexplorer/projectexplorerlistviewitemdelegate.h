@@ -30,15 +30,14 @@ namespace arcvideo {
 /**
  * @brief The delegate that's used to draw items when ProjectExplorer is in List view
  */
-class ProjectExplorerListViewItemDelegate : public QStyledItemDelegate
-{
+class ProjectExplorerListViewItemDelegate : public QStyledItemDelegate {
 public:
-  ProjectExplorerListViewItemDelegate(QObject *parent = nullptr);
+    ProjectExplorerListViewItemDelegate(QObject* parent = nullptr);
 
-  virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-  virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    [[nodiscard]] QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // PROJECTEXPLORERLISTVIEWITEMDELEGATE_H
+#endif  // PROJECTEXPLORERLISTVIEWITEMDELEGATE_H

@@ -21,15 +21,16 @@
 #ifndef AUDIOMANAGER_H
 #define AUDIOMANAGER_H
 
-#include <memory>
-#include <QtConcurrent/QtConcurrent>
-#include <QThread>
 #include <portaudio.h>
 
-#include "audiovisualwaveform.h"
+#include <QThread>
+#include <QtConcurrent/QtConcurrent>
+#include <memory>
+
 #include "audio/audioprocessor.h"
-#include "common/define.h"
+#include "audiovisualwaveform.h"
 #include "codec/ffmpeg/ffmpegencoder.h"
+#include "common/define.h"
 #include "render/audioplaybackcache.h"
 #include "render/previewaudiodevice.h"
 
@@ -41,76 +42,69 @@ namespace arcvideo {
  * Wraps around a QAudioOutput and AudioHybridDevice, connecting them together and exposing audio functionality to
  * the rest of the system.
  */
-class AudioManager : public QObject
-{
-  Q_OBJECT
+class AudioManager : public QObject {
+    Q_OBJECT
+
 public:
-  static void CreateInstance();
-  static void DestroyInstance();
+    static void CreateInstance();
+    static void DestroyInstance();
 
-  static AudioManager* instance();
+    static AudioManager* instance();
 
-  void SetOutputNotifyInterval(int n);
+    void SetOutputNotifyInterval(int n);
 
-  bool PushToOutput(const AudioParams &params, const QByteArray& samples, QString *error = nullptr);
+    bool PushToOutput(const AudioParams& params, const QByteArray& samples, QString* error = nullptr);
 
-  void ClearBufferedOutput();
+    void ClearBufferedOutput();
 
-  void StopOutput();
+    void StopOutput();
 
-  PaDeviceIndex GetOutputDevice() const
-  {
-    return output_device_;
-  }
+    [[nodiscard]] PaDeviceIndex GetOutputDevice() const { return output_device_; }
 
-  PaDeviceIndex GetInputDevice() const
-  {
-    return input_device_;
-  }
+    [[nodiscard]] PaDeviceIndex GetInputDevice() const { return input_device_; }
 
-  void SetOutputDevice(PaDeviceIndex device);
+    void SetOutputDevice(PaDeviceIndex device);
 
-  void SetInputDevice(PaDeviceIndex device);
+    void SetInputDevice(PaDeviceIndex device);
 
-  void HardReset();
+    void HardReset();
 
-  bool StartRecording(const EncodingParams &params, QString *error_str = nullptr);
+    bool StartRecording(const EncodingParams& params, QString* error_str = nullptr);
 
-  void StopRecording();
+    void StopRecording();
 
-  static PaDeviceIndex FindConfigDeviceByName(bool is_output_device);
-  static PaDeviceIndex FindDeviceByName(const QString &s, bool is_output_device);
+    static PaDeviceIndex FindConfigDeviceByName(bool is_output_device);
+    static PaDeviceIndex FindDeviceByName(const QString& s, bool is_output_device);
 
-  static PaStreamParameters GetPortAudioParams(const AudioParams &p, PaDeviceIndex device);
+    static PaStreamParameters GetPortAudioParams(const AudioParams& p, PaDeviceIndex device);
 
 signals:
-  void OutputNotify();
+    void OutputNotify();
 
-  void OutputParamsChanged();
+    void OutputParamsChanged();
 
 private:
-  AudioManager();
+    AudioManager();
 
-  virtual ~AudioManager() override;
+    ~AudioManager() override;
 
-  static PaSampleFormat GetPortAudioSampleFormat(SampleFormat fmt);
+    static PaSampleFormat GetPortAudioSampleFormat(SampleFormat fmt);
 
-  void CloseOutputStream();
+    void CloseOutputStream();
 
-  static AudioManager* instance_;
+    static AudioManager* instance_;
 
-  PaDeviceIndex output_device_;
-  PaStream *output_stream_;
-  AudioParams output_params_;
-  PreviewAudioDevice *output_buffer_;
+    PaDeviceIndex output_device_;
+    PaStream* output_stream_;
+    AudioParams output_params_;
+    PreviewAudioDevice* output_buffer_;
 
-  PaDeviceIndex input_device_;
-  PaStream *input_stream_;
+    PaDeviceIndex input_device_;
+    PaStream* input_stream_;
 
-  FFmpegEncoder *input_encoder_;
-
+    FFmpegEncoder* input_encoder_;
 };
 
-}
+}  // namespace arcvideo
 
-#endif // AUDIOMANAGER_H
+#endif  // AUDIOMANAGER_H

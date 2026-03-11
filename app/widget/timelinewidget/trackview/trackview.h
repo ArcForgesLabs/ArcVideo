@@ -30,42 +30,40 @@
 
 namespace arcvideo {
 
-class TrackView : public QScrollArea
-{
-  Q_OBJECT
-public:
-  TrackView(Qt::Alignment vertical_alignment = Qt::AlignTop,
-            QWidget* parent = nullptr);
+class TrackView : public QScrollArea {
+    Q_OBJECT
 
-  void ConnectTrackList(TrackList* list);
-  void DisconnectTrackList();
+public:
+    TrackView(Qt::Alignment vertical_alignment = Qt::AlignTop, QWidget* parent = nullptr);
+
+    void ConnectTrackList(TrackList* list);
+    void DisconnectTrackList();
 
 signals:
-  void AboutToDeleteTrack(Track *track);
+    void AboutToDeleteTrack(Track* track);
 
 protected:
-  virtual void resizeEvent(QResizeEvent *e) override;
+    void resizeEvent(QResizeEvent* e) override;
 
 private:
-  TrackList* list_ = nullptr;
+    TrackList* list_ = nullptr;
 
-  TrackViewSplitter* splitter_ = nullptr;
+    TrackViewSplitter* splitter_ = nullptr;
 
-  Qt::Alignment alignment_;
+    Qt::Alignment alignment_;
 
-  int last_scrollbar_max_;
+    int last_scrollbar_max_;
 
 private slots:
-  void ScrollbarRangeChanged(int min, int max);
+    void ScrollbarRangeChanged(int min, int max);
 
-  void TrackHeightChanged(int index, int height);
+    void TrackHeightChanged(int index, int height);
 
-  void InsertTrack(Track* track);
+    void InsertTrack(Track* track);
 
-  void RemoveTrack(Track* track);
-
+    void RemoveTrack(Track* track);
 };
 
-}
+}  // namespace arcvideo
 
-#endif // TRACKVIEW_H
+#endif  // TRACKVIEW_H
