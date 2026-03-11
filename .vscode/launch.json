@@ -5,20 +5,10 @@
       "name": "Debug (LLDB)",
       "type": "lldb",
       "request": "launch",
-      "program": "${workspaceFolder}/build/debug/bin/arcvideo-editor.exe",
+      "program": "${command:cmake.launchTargetPath}",
       "args": [],
       "cwd": "${workspaceFolder}",
       "env": {},
-      "preLaunchTask": "CMake: Build Debug"
-    },
-    {
-      "name": "Debug (MSVC)",
-      "type": "cppvsdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/build/debug/bin/arcvideo-editor.exe",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "environment": [],
       "preLaunchTask": "CMake: Build Debug"
     }
   ]
