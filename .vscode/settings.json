@@ -46,6 +46,10 @@
   // ── Terminal ────────────────────────────────────────────────────────
   "terminal.integrated.fontFamily": "'Maple Mono NF CN', Consolas, monospace",
   "terminal.integrated.fontSize": 13,
+
+  // ── Debugger ────────────────────────────────────────────────────────
+  "lldb.useNativePDBReader": true,
+
   "[cpp]": {
     "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
   }
